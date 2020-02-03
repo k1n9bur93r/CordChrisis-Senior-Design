@@ -1,3 +1,4 @@
 name                    email
 ----------------------------------------
-Austin Merrick          merrick@unlv.nevada.edu    
+Austin Merrick          merrick@unlv.nevada.edu
+Joshua Arber            arber@unlv.nevada.edu
