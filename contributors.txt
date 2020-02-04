@@ -1,5 +1,6 @@
-name                    email
+Name                    Email
 ----------------------------------------
 Austin Merrick          merrick@unlv.nevada.edu
 Joshua Arber            arber@unlv.nevada.edu
 Bryan Takemoto          takemb1@unlv.nevada.edu
+Justin-Chadd Alasco		alasco@unlv.nevada.edu
