@@ -4,13 +4,38 @@ using UnityEngine;
 
 public class NoteController : MonoBehaviour
 {
-    // Update is called once per frame
+    public bool pressable;
+    public KeyCode key;
+    private Vector3 originalPos;
+
+    void Start()
+    {
+        originalPos = transform.position;
+    }
+
     void Update()
     {
         transform.position += new Vector3(0, -1.0f * Time.deltaTime, 0);
-        if (transform.position.y <= 0.375f && transform.position.y >= -0.375f && Input.GetKeyDown(KeyCode.Q))
+
+        if (pressable && Input.GetKeyDown(key))
         {
-            Destroy(gameObject);
+            transform.position = originalPos;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Button"))
+        {
+            pressable = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Button"))
+        {
+            pressable = false;
         }
     }
 }
