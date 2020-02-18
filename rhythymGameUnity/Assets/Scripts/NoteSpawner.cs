@@ -9,19 +9,19 @@ public class NoteSpawner : MonoBehaviour
     public List<float> noteXoffsets;
     //units of movement per second
     public float noteSpeed;
-    //how long until the note hits the reciever
-    public float noteTravelTime;
+    //where the notes start from
+    public float startDistance;
+    //how long until the note hits the reciever - this gets computed from startDistance and noteSpeed
+    private float noteTravelTime;
     //what y position the notes should be spawned at
     public float yOffset;
     private Transform noteReciever;
-    private float zOffset;
     // Start is called before the first frame update
     void Start()
     {
         noteReciever = transform.Find("noteReceiver").transform;
-        print(noteReciever.position.z);
-        zOffset = noteTravelTime * noteSpeed + noteReciever.position.z;
-        
+        noteTravelTime = startDistance / noteSpeed;
+        print("Note travel time in seconds is: " + noteTravelTime);
     }
 
     // Update is called once per frame
@@ -48,8 +48,8 @@ public class NoteSpawner : MonoBehaviour
     //This function takes a note number from 0-3 and spawns it
     public void spawnNote(int noteNum)
     {
-        print(zOffset);
-        GameObject curNote = Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, zOffset), transform.rotation);
+        GameObject curNote = Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z+startDistance), transform.rotation);
+        curNote.GetComponent<NoteMovement>().noteSpeed = noteSpeed;
         curNote.transform.parent = transform;
     }
 }
