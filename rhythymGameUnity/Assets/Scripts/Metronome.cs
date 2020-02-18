@@ -15,12 +15,12 @@ public class Metronome : MonoBehaviour
 	public Text tempoText;
 	public Text timeElapsedText;
 	public Text beatsElapsedText;
-	public Text secPerBeatText;
+	//public Text secPerBeatText;
 
-	private double secPerBeat; // How many seconds before one beat. This may need to be public at some points to let other things access it
-	private double timeElapsed;
+	/*private*/ public double secPerBeat; // How many seconds before one beat. This may need to be public at some points to let other things access it
+	/*private*/ public double timeElapsed;
 	private double timeElapsedDelta;
-	private double beatsElapsed;
+	/*private*/ public double beatsElapsed;
 
 	/*
 		Initialize all tickers to 0.
@@ -103,10 +103,10 @@ public class Metronome : MonoBehaviour
 
 	void PrintStats()
 	{
-		tempoText.text = "Tempo: " + tempo;
+		tempoText.text = "Tempo: " + tempo + " (" + secPerBeat + " sec/beat)";
 		timeElapsedText.text = "Time: " + timeElapsed;
 		beatsElapsedText.text = "Beat: " + beatsElapsed;
-		secPerBeatText.text = "Sec/Beat: " + secPerBeat;
+		//secPerBeatText.text = "Sec/Beat: " + secPerBeat;
 	}
 
 	/*
