@@ -18,6 +18,7 @@ public class Metronome : MonoBehaviour
 	//public Text secPerBeatText;
 
 	/*private*/ public double secPerBeat; // How many seconds in one beat
+	public double beatsPerSec; // How many beats in one second
 	/*private*/ public double timeElapsed;
 	private double timeElapsedDelta;
 	/*private*/ public double beatsElapsed;
@@ -33,7 +34,7 @@ public class Metronome : MonoBehaviour
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 
-		UpdateSPB();
+		UpdateRate();
 	}
 
 	/*
@@ -60,12 +61,10 @@ public class Metronome : MonoBehaviour
 		Call this to recalculate amount of seconds per beat to account for BPM changes.
 	*/
 
-	void UpdateSPB()
+	void UpdateRate()
 	{
-		//tickRate = tempo / SEC_PER_MIN / MAX_QUANT;
-		//tickRate = MAX_QUANT / tempo / SEC_PER_MIN;
-		//tickRate = (SEC_PER_MIN / tempo) / MAX_QUANT;
 		secPerBeat = SEC_PER_MIN / tempo;
+		beatsPerSec = tempo / SEC_PER_MIN;
 	}
 
 	/*
@@ -94,7 +93,7 @@ public class Metronome : MonoBehaviour
 			tempo += 1;
 		}
 
-		UpdateSPB();
+		UpdateRate();
 	}
 
 	/*

@@ -556,18 +556,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '"Fantastic": +/- 0.016 sec (1 frame)
-
-    "Excellent": +/- 0.033 sec (2
-    frames)
-
-    "Great": +/- 0.083 sec (5 frames)
-
-    "Good": +/- 0.166 sec (10
-    frames)
-
-    Attempting to hit a note beyond the "Good" window is either not
-    counted (early) or missed (late)'
+  m_Text: Judgment help text
 --- !u!222 &495688478
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1442,6 +1431,11 @@ PrefabInstance:
       propertyPath: judgmentText
       value: 
       objectReference: {fileID: 862753955}
+    - target: {fileID: 9188857543302376157, guid: 071824e82f75869448cf1a41ea47e290,
+        type: 3}
+      propertyPath: judgmentHelpText
+      value: 
+      objectReference: {fileID: 495688477}
     - target: {fileID: 9188857543302376158, guid: 071824e82f75869448cf1a41ea47e290,
         type: 3}
       propertyPath: m_LocalPosition.x
