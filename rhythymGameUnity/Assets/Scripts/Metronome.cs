@@ -25,7 +25,7 @@ public class Metronome : MonoBehaviour
 
 	/*
 		Initialize all tickers to 0.
-		Determine amount of seconds per beat.
+		Determine amount of seconds per beat and beats per second.
 	*/
 	
 	void Start()
@@ -34,7 +34,7 @@ public class Metronome : MonoBehaviour
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 
-		UpdateRate();
+		UpdateRates();
 	}
 
 	/*
@@ -58,10 +58,10 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
-		Call this to recalculate amount of seconds per beat to account for BPM changes.
+		Call this to recalculate tick rates.
 	*/
 
-	void UpdateRate()
+	void UpdateRates()
 	{
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
@@ -93,7 +93,7 @@ public class Metronome : MonoBehaviour
 			tempo += 1;
 		}
 
-		UpdateRate();
+		UpdateRates();
 	}
 
 	/*
