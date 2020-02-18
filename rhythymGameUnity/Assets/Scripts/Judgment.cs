@@ -27,21 +27,39 @@ public class Judgment : MonoBehaviour
 
 	/*
 		Debug function to compare timing of a key press versus the metronome.
-
-		For the purposes of actually timing the player, compare beat.
-		For the purposes of displaying the results, compare time.
 	*/
 
 	void JudgeTiming()
 	{
+		/*
+			As it turns out I accidentally made the timing beat-relative instead of time-relative, whoops
+		*/
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			/*
+			// Old beat-relative method
+
 			double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset once needed
 			float diff = (float)(currentBeat - 8.0); // 8.0 represents a note at this position for testing purposes
 
 			PrintText(diff);
 
 			//Debug.Log(Mathf.Abs((float)(currentTiming - master.beatsElapsed)));
+			*/
+
+			/*
+				New time-relative method
+				Instead, get the TIME of the note's beat and compare it to the current time!
+			*/
+
+			double currentTime = Time.time; // Time at moment of input // Be wary of any changes that may be needed once music is implemented
+			double noteTime = (8.0 * master.secPerBeat); // Placeholder until note-reading process is figured out // (beat of note * master.secPerBeat) // Time of note's location
+
+			float diff = (float)(currentTime - noteTime);
+			Debug.Log("currentTime: " + currentTime + " | noteTime: " + noteTime + " | diff: " + diff);
+
+			PrintText(diff);
 		}
 	}
 
@@ -51,8 +69,6 @@ public class Judgment : MonoBehaviour
 
 	void PrintText(float diff)
 	{
-		diff = diff * (float)master.secPerBeat;
-
 		if (diff < -framesGood)
 		{
 			judgmentText.text = "Way too early!";
@@ -60,8 +76,8 @@ public class Judgment : MonoBehaviour
 
 		else
 		{
-			if (Mathf.Abs(diff) <= framesJustCrisis) { judgmentText.text = "Extremely good timing!"; }
-			else if (Mathf.Abs(diff) <= framesCrisis) { judgmentText.text = "Very good timing!"; }
+			if (Mathf.Abs(diff) <= framesJustCrisis) { judgmentText.text = "Fantastic timing!"; }
+			else if (Mathf.Abs(diff) <= framesCrisis) { judgmentText.text = "Excellent timing!"; }
 			else if (Mathf.Abs(diff) <= framesGreat) { judgmentText.text = "Great timing!"; }
 			else if (Mathf.Abs(diff) <= framesGood) { judgmentText.text = "Good timing!"; }
 			else { judgmentText.text = "Way too late!"; }

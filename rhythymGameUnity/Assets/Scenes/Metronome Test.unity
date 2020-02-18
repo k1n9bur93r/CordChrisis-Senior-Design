@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 495688478}
   - component: {fileID: 495688477}
   m_Layer: 5
-  m_Name: Judgment help text
+  m_Name: Judgment Help Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,18 +556,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '"Extremely good": +/- 0.016 sec (1 frame)
+  m_Text: '"Fantastic": +/- 0.016 sec (1 frame)
 
-    "Very good": +/- 0.033
-    sec (2 frames)
+    "Excellent": +/- 0.033 sec (2
+    frames)
 
     "Great": +/- 0.083 sec (5 frames)
 
-    "Good": +/- 0.166
-    sec (10 frames)
+    "Good": +/- 0.166 sec (10
+    frames)
 
-    Attempting to hit a note beyond the "Good" window is either
-    not counted (early) or missed (late)'
+    Attempting to hit a note beyond the "Good" window is either not
+    counted (early) or missed (late)'
 --- !u!222 &495688478
 CanvasRenderer:
   m_ObjectHideFlags: 0
