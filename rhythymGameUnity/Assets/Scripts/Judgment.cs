@@ -13,35 +13,16 @@ public class Judgment : MonoBehaviour
 	private const double framesCrisis = 2.0 / 60.0; // 2 frames early/late
 	private const double framesGreat = 5.0 / 60.0; // 5 frames early/late
 	private const double framesGood = 10.0 / 60.0; // 10 frames early/late
-	//private double timingMiss; // 11+ frames late
-
-	/*
-	public double beatsJustCrisis;
-	public double beatsCrisis;
-	public double beatsGreat;
-	public double beatsGood;
-	*/
+	//private double timingMiss; // More than 10 frames late
 
 	void Start()
 	{
-		//CalculateWindows();
 		judgmentText.text = "Press SPACE on beat 8.0!";
 	}
 
 	void Update()
 	{
 		JudgeTiming();
-	}
-
-	/*
-		Compare beat of input to beat of note, absolute value.
-		
-		ALTERNATIVE: Compare time of input to time of note, absolute value.
-	*/
-
-	void CalculateWindows()
-	{
-		// Won't use this?
 	}
 
 	/*

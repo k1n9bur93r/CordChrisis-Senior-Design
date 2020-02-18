@@ -17,7 +17,7 @@ public class Metronome : MonoBehaviour
 	public Text beatsElapsedText;
 	//public Text secPerBeatText;
 
-	/*private*/ public double secPerBeat; // How many seconds before one beat. This may need to be public at some points to let other things access it
+	/*private*/ public double secPerBeat; // How many seconds in one beat
 	/*private*/ public double timeElapsed;
 	private double timeElapsedDelta;
 	/*private*/ public double beatsElapsed;
