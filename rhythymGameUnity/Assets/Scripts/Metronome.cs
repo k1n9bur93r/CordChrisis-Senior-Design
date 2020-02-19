@@ -3,12 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+	METRONOME CLASS
+
+	The driving force of the game's timing logic: an internal clock expressed in number of beats.
+	By using the song's time elapsed and tempo, it expresses where we are in the song by number of beats.
+	This value is used to help position notes (see NoteSpawner) and rate the player's input timing (see Judgment).
+
+	Please keep ALL references to time beat-relative by using the public variable beatsElapsed!
+	
+	Important public variables:
+		double tempo: Current tempo of the song.
+		double songDelay: Measurement (in seconds) of how much silence there is in the audio file before audio starts playing.
+		double beatsElapsed: Current position in the song (in number of beats).
+
+	Important public methods:
+		- None yet, maybe
+*/
+
 public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 
 	public double tempo;
-	public double songDelay; // Time before audio starts
+	public double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
 
 	public GameObject visualTicker;
 
@@ -17,11 +35,11 @@ public class Metronome : MonoBehaviour
 	public Text beatsElapsedText;
 	//public Text secPerBeatText;
 
-	/*private*/ public double secPerBeat; // How many seconds in one beat
+	public double secPerBeat; // How many seconds in one beat
 	public double beatsPerSec; // How many beats in one second
-	/*private*/ public double timeElapsed;
+	private double timeElapsed; // Position in seconds
 	private double timeElapsedDelta;
-	/*private*/ public double beatsElapsed;
+	public double beatsElapsed; // Position in beats
 
 	/*
 		Initialize all tickers to 0.
