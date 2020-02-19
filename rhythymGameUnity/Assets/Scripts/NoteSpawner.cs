@@ -17,11 +17,13 @@ public class NoteSpawner : MonoBehaviour
     public float yOffset;
     private Transform noteReciever;
     // Start is called before the first frame update
+    public float bpm; // this will need to be a reference to the metronomes bpm
     void Start()
     {
+        bpm = 60f; //this is temporary and for testing purposes!
         noteReciever = transform.Find("noteReceiver").transform;
         noteTravelTime = startDistance / noteSpeed;
-        print("Note travel time in seconds is: " + noteTravelTime);
+        print("The first notes should play in " + noteTravelTime + " seconds");
     }
 
     // Update is called once per frame
@@ -29,27 +31,41 @@ public class NoteSpawner : MonoBehaviour
     {
         if (Input.GetKeyDown("q"))
         {
-            spawnNote(0);
+            spawnNote(0, 0);
         }
         if (Input.GetKeyDown("w"))
         {
-            spawnNote(1);
+            spawnNote(1, 0);
         }
         if (Input.GetKeyDown("e"))
         {
-            spawnNote(2);
+            spawnNote(2, 0);
         }
         if (Input.GetKeyDown("r"))
         {
-            spawnNote(3);
+            spawnNote(3, 0);
         }
     }
 
-    //This function takes a note number from 0-3 and spawns it
-    public void spawnNote(int noteNum)
+    private float beatToDistance(float beat)
     {
-        GameObject curNote = Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z+startDistance), transform.rotation);
+        float time, distance;
+        //convert beat to time
+        time = (60 / bpm) * beat;
+        print(time);
+        //convert time to distance
+        distance = (time * noteSpeed);
+        return distance;
+    }
+
+    //This function takes a note number from 0-3 and spawns it
+    public void spawnNote(int noteNum, float beat)
+    {
+        GameObject curNote =
+            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z+startDistance+beatToDistance(beat)), transform.rotation);
         curNote.GetComponent<NoteMovement>().noteSpeed = noteSpeed;
         curNote.transform.parent = transform;
     }
+
+
 }
