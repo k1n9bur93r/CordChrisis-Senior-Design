@@ -1,17 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = null;
+    //Layout = null;
 }
 <html>
 <head>
     <title>Hello React</title>
 </head>
 <body>
+    @*@Html.React("CommentsBox",new{null});*@
+    <button id="Supdood">Hello this is pretty cool!</button>
     <div id="content"></div>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.8.0/umd/react.development.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.0/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
-    <div id="content"></div>
+    <div id="contentz"></div>
+    <script src="~/js/ReactDevelopment.js"></script>
+    <script src="~/js/reactdomdevelopment.js"></script>
     <script src="@Url.Content("~/js/HomeComponents.jsx")"></script>
+    @Html.ReactInitJavaScript()
 </body>
 </html>
