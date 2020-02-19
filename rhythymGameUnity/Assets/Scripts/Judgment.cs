@@ -118,7 +118,7 @@ public class Judgment : MonoBehaviour
 	*/
 
 	/*
-	enum AccRating { Marvelous, Perfect, Great, Good, Miss, None }; // Put in some global object somewhere?
+	enum AccRating { Marvelous, Perfect, Great, Good, Miss, None }; // Put in some global object somewhere? Maybe in Metronome?
 
 	AccRating JudgeTimingDebug(<name of note type> currentNote)
 	{

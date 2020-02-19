@@ -14,7 +14,6 @@ using UnityEngine.UI;
 	
 	Important public variables:
 		double tempo: Current tempo of the song.
-		double songDelay: Measurement (in seconds) of how much silence there is in the audio file before audio starts playing.
 		double beatsElapsed: Current position in the song (in number of beats).
 
 	Important public methods:
@@ -26,7 +25,7 @@ public class Metronome : MonoBehaviour
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 
 	public double tempo;
-	public double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
+	private double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
 
 	public double secPerBeat; // How many seconds in one beat
 	public double beatsPerSec; // How many beats in one second
