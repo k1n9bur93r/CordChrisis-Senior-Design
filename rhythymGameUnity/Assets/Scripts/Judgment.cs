@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /*
 	JUDGMENT CLASS
 
-	The game's hit detection system.
+	The receptor versus note hit detection system.
 	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
 	The difference between these two elements is used to rate the user's timing.
 

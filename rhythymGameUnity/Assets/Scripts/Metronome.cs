@@ -18,7 +18,7 @@ using UnityEngine.UI;
 		double beatsElapsed: Current position in the song (in number of beats).
 
 	Important public methods:
-		- None yet, maybe
+		void UpdateRates(): Update the beats per second and seconds per beat values in the event of a tempo change.
 */
 
 public class Metronome : MonoBehaviour
@@ -28,13 +28,6 @@ public class Metronome : MonoBehaviour
 	public double tempo;
 	public double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
 
-	public GameObject visualTicker;
-
-	public Text tempoText;
-	public Text timeElapsedText;
-	public Text beatsElapsedText;
-	//public Text secPerBeatText;
-
 	public double secPerBeat; // How many seconds in one beat
 	public double beatsPerSec; // How many beats in one second
 	private double timeElapsed; // Position in seconds
@@ -42,7 +35,7 @@ public class Metronome : MonoBehaviour
 	public double beatsElapsed; // Position in beats
 
 	/*
-		Initialize all tickers to 0.
+		Initialize all timekeepers to 0.0.
 		Determine amount of seconds per beat and beats per second.
 	*/
 	
@@ -62,102 +55,20 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-		ChangeTempo();
-
         // These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
 		timeElapsed = Time.time; //Time.time; //AudioSettings.dspTime;
 		timeElapsedDelta = Time.deltaTime;
 
-		//beatsElapsed = timeElapsed / secPerBeat; // Reminder to avoid this, this would completely change what beat we're on if the BPM changes
 		beatsElapsed += timeElapsedDelta / secPerBeat;
-
-		DrawTicker();
-		PrintStats();
 	}
 
 	/*
-		Call this to recalculate tick rates.
+		Call this to recalculate tick rates if the tempo changes.
 	*/
 
-	void UpdateRates()
+	public void UpdateRates()
 	{
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
-	}
-
-	/*
-		Debugging tool. Changes song BPM.
-	*/
-
-	void ChangeTempo()
-	{
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-		{
-			tempo += 20;
-		}
-
-		else if (Input.GetKeyDown(KeyCode.DownArrow))
-		{
-			tempo -= 20;
-		}
-
-		else if (Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			tempo -= 1;
-		}
-
-		else if (Input.GetKeyDown(KeyCode.RightArrow))
-		{
-			tempo += 1;
-		}
-
-		UpdateRates();
-	}
-
-	/*
-		Print debugging text.
-	*/
-
-	void PrintStats()
-	{
-		tempoText.text = "Tempo: " + tempo + " (" + secPerBeat + " sec/beat)";
-		timeElapsedText.text = "Time: " + timeElapsed;
-		beatsElapsedText.text = "Beat: " + beatsElapsed;
-		//secPerBeatText.text = "Sec/Beat: " + secPerBeat;
-	}
-
-	/*
-		Draw the metronome's visual aid.
-	*/
-
-	void DrawTicker()
-	{
-		float tickerBeat = (Mathf.Repeat((float)beatsElapsed, 4.0f)); // WHY IS % NOT MODULO
-		//Debug.Log("tickerBeat: " + tickerBeat);
-
-		if (tickerBeat < 1.0f)
-		{
-			visualTicker.transform.position = new Vector3(-3.0f, 0.0f, 5.0f);
-		}
-
-		else if ((tickerBeat >= 1.0f) && (tickerBeat < 2.0f))
-		{
-			visualTicker.transform.position = new Vector3(-1.0f, 0.0f, 5.0f);
-		}
-
-		else if ((tickerBeat >= 2.0f) && (tickerBeat < 3.0f))
-		{
-			visualTicker.transform.position = new Vector3(1.0f, 0.0f, 5.0f);
-		}
-
-		else if ((tickerBeat >= 3.0f) && (tickerBeat < 4.0f))
-		{
-			visualTicker.transform.position = new Vector3(3.0f, 0.0f, 5.0f);
-		}
-
-		else
-		{
-			Debug.Log("ERROR: Metronome visual aid fell through!");
-		}
 	}
 }
