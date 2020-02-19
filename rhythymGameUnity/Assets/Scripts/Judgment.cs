@@ -19,7 +19,7 @@ using UnityEngine.UI;
 		- None yet, maybe
 
 	Important public methods:
-		- None yet
+		[NOT USABLE YET] AccRating JudgeTiming(<name of note class>)
 */
 
 public class Judgment : MonoBehaviour
@@ -47,7 +47,7 @@ public class Judgment : MonoBehaviour
 	void Update()
 	{
 		CalculateWindows();
-		JudgeTiming();
+		JudgeTimingDebug();
 	}
 
 	/*
@@ -79,10 +79,10 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Debug function to compare timing of a key press versus the metronome.
+		Debug function to compare timing of a key press versus the metronome's ticker.
 	*/
 
-	void JudgeTiming()
+	void JudgeTimingDebug()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
@@ -110,4 +110,39 @@ public class Judgment : MonoBehaviour
 				+ (diff * (float)master.secPerBeat) + " sec";
 		}
 	}
+
+	/*
+		Compares timing of the current note(s?) versus the time of the player's input.
+		This function can't be used until the note's actual class exists.
+		Eventually, make it return what judgment came through, probably using an enum.
+	*/
+
+	/*
+	enum AccRating { Marvelous, Perfect, Great, Good, Miss, None }; // Put in some global object somewhere?
+
+	AccRating JudgeTimingDebug(<name of note type> currentNote)
+	{
+		double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset and dsp stuff later
+		double noteBeat = 8.0; // Placeholder until note-reading process is figured out
+
+		AccRating rating;
+		float diff = (float)(currentBeat - noteBeat);
+
+		if (!(diff < -beatsGood))
+		{
+			if (Mathf.Abs(diff) <= beatsMarvelous) { rating = AccRating.Marvelous; }
+			else if (Mathf.Abs(diff) <= beatsPerfect) { rating = AccRating.Perfect; }
+			else if (Mathf.Abs(diff) <= beatsGreat) { rating = AccRating.Great; }
+			else if (Mathf.Abs(diff) <= beatsGood) { rating = AccRating.Good; }
+			else { judgmentText.text = "Way too late!"; } // Not sure how to handle misses yet
+		}
+
+		else
+		{
+			rating = AccRating.None;
+		}
+				
+		return rating; // C# scoping can't handle this?!
+	}
+	*/
 }

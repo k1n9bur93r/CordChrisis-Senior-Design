@@ -7,6 +7,10 @@ using UnityEngine.UI;
     TICKER CLASS
 
     Debugging tools for the Metronome.
+    
+    Draws a box that changes position every time a beat occurs.
+    Displays current beat, tempo, and time.
+    Tempo can be changed directly using the arrow keys.
 */
 
 public class Ticker : MonoBehaviour
