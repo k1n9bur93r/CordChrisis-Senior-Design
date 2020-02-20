@@ -4,17 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	METRONOME CLASS
+	METRONOME
 
-	The driving force of the game's timing logic: an internal clock expressed in number of beats.
-	By using the song's time elapsed and tempo, it expresses where we are in the song by number of beats.
-	This value is used to help position notes (see NoteSpawner) and rate the player's input timing (see Judgment).
+	The driving force of the game's timing logic: an internal clock expressed in number of beats progressed in the song.
+	This value is used to help position notes and judge the player's input timing.
 
-	Please keep ALL references to time beat-relative by using the public variable beatsElapsed!
+	ALL game logic references to time should be relative to the beat via beatsElapsed and NOT Time.time!
 	
 	Important public variables:
-		double tempo: Current tempo of the song.
 		double beatsElapsed: Current position in the song (in number of beats).
+		double tempo: Current tempo of the song.
+
+	Important enums:
+		[NOT USABLE YET] AccRating?
 
 	Important public methods:
 		void UpdateRates(): Update the beats per second and seconds per beat values in the event of a tempo change.
@@ -22,6 +24,8 @@ using UnityEngine.UI;
 
 public class Metronome : MonoBehaviour
 {
+	//public enum AccRating { Marvelous, Perfect, Great, Good, Miss, None };
+
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 
 	public double tempo;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-    TICKER CLASS
+    TICKER
 
     Debugging tools for the Metronome.
     

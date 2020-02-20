@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	JUDGMENT CLASS
+	JUDGMENT
 
 	The receptor versus note hit detection system.
 	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
@@ -71,10 +71,10 @@ public class Judgment : MonoBehaviour
 	void UpdateHelpText()
 	{
 		judgmentHelpText.text =
-			"Fantastic: +/- " + (float)beatsMarvelous + " beats + (+/- " + (float)(framesMarvelous) + " sec)\n"
-			+ "Excellent: +/- " + (float)beatsPerfect + " beats + (+/- " + (float)(framesPerfect) + " sec)\n"
-			+ "Great: +/- " + (float)beatsGreat + " beats + (+/- " + (float)(framesGreat) + " sec)\n"
-			+ "Good: +/- " + (float)beatsGood + " beats + (+/- " + (float)(framesGood) + " sec)\n"
+			"Fantastic: +/- " + (float)beatsMarvelous + " beats (+/- " + (float)(framesMarvelous) + " sec)\n"
+			+ "Excellent: +/- " + (float)beatsPerfect + " beats (+/- " + (float)(framesPerfect) + " sec)\n"
+			+ "Great: +/- " + (float)beatsGreat + " beats (+/- " + (float)(framesGreat) + " sec)\n"
+			+ "Good: +/- " + (float)beatsGood + " beats (+/- " + (float)(framesGood) + " sec)\n"
 			+ "Attempting to hit a note beyond the [Good] window is either not counted (early) or missed (late)";
 	}
 
