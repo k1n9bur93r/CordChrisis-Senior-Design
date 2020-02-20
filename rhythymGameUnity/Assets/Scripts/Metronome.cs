@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	METRONOME
+	> Metronome
 
 	The driving force of the game's timing logic: an internal clock expressed in number of beats progressed in the song.
 	This value is used to help position notes and judge the player's input timing.
 
 	ALL game logic references to time should be relative to the beat via beatsElapsed and NOT Time.time!
+	The only exception to this so far should be the instance in the Judgment class to to needing time-relativity.
 	
 	Important public variables:
 		double beatsElapsed: Current position in the song (in number of beats).
@@ -29,13 +30,13 @@ public class Metronome : MonoBehaviour
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 
 	public double tempo;
-	private double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
-
 	public double secPerBeat; // How many seconds in one beat
 	public double beatsPerSec; // How many beats in one second
+	public double beatsElapsed; // Position in beats
+
+	private double songDelay; // Time before audio starts, determine via AudioSettings.dspTime later
 	private double timeElapsed; // Position in seconds
 	private double timeElapsedDelta;
-	public double beatsElapsed; // Position in beats
 
 	/*
 		Initialize all timekeepers to 0.0.

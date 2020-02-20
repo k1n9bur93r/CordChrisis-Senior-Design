@@ -20,6 +20,8 @@ using UnityEngine.UI;
 
 	Important public methods:
 		[NOT USABLE YET] AccRating JudgeTiming(<name of note class>)
+
+	GET RID OF DEBUGGERS AT SOME POINT
 */
 
 public class Judgment : MonoBehaviour
@@ -33,10 +35,10 @@ public class Judgment : MonoBehaviour
 	private const double framesGreat = 5.0 / 60.0; // 5/60ths
 	private const double framesGood = 10.0 / 60.0; // 10/60ths
 
-	double beatsMarvelous;
-	double beatsPerfect;
-	double beatsGreat;
-	double beatsGood;
+	private double beatsMarvelous;
+	private double beatsPerfect;
+	private double beatsGreat;
+	private double beatsGood;
 
 	void Start()
 	{
@@ -47,7 +49,7 @@ public class Judgment : MonoBehaviour
 	void Update()
 	{
 		CalculateWindows();
-		JudgeTimingDebug();
+		JudgeTimingDebug(); // DEBUG
 	}
 
 	/*
@@ -61,11 +63,11 @@ public class Judgment : MonoBehaviour
 		beatsGreat = master.beatsPerSec * framesGreat;
 		beatsGood = master.beatsPerSec * framesGood;
 
-		UpdateHelpText();
+		UpdateHelpText(); // DEBUG
 	}
 
 	/*
-		Update the help information
+		DEBUG: Update the help information
 	*/
 
 	void UpdateHelpText()
@@ -79,13 +81,14 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Debug function to compare timing of a key press versus the metronome's ticker.
+		DEBUG: compare timing of a key press versus the metronome's ticker.
 	*/
 
 	void JudgeTimingDebug()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			// The following line breaks the "don't use Time.time" policy, due to judgment relying on time-relativity instead of beat-relativity
 			double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset and dsp stuff later
 			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
 
@@ -121,6 +124,7 @@ public class Judgment : MonoBehaviour
 		ALTERNATIVE
 
 		Get data from the JSON-reading object
+		[???]
 	*/
 
 	/*
