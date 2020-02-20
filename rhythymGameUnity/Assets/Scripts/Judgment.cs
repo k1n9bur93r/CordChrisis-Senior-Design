@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	JUDGMENT
+	> Judgment class
 
 	The receptor versus note hit detection system.
 	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
@@ -118,9 +118,15 @@ public class Judgment : MonoBehaviour
 	*/
 
 	/*
+		ALTERNATIVE
+
+		Get data from the JSON-reading object
+	*/
+
+	/*
 	enum AccRating { Marvelous, Perfect, Great, Good, Miss, None }; // Put in some global object somewhere? Maybe in Metronome?
 
-	AccRating JudgeTimingDebug(<name of note type> currentNote)
+	AccRating JudgeTiming(<name of note type> currentNote)
 	{
 		double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset and dsp stuff later
 		double noteBeat = 8.0; // Placeholder until note-reading process is figured out

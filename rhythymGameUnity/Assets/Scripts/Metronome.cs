@@ -58,7 +58,7 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-        // These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
+		// These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
 		timeElapsed = Time.time; //Time.time; //AudioSettings.dspTime;
 		timeElapsedDelta = Time.deltaTime;
 

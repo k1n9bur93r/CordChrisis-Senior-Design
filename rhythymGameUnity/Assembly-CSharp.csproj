@@ -48,11 +48,12 @@
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
      <Compile Include="Assets\Scripts\Judgment.cs" />
+     <Compile Include="Assets\Scripts\JudgmentDebugger.cs" />
      <Compile Include="Assets\Scripts\Metronome.cs" />
+     <Compile Include="Assets\Scripts\MetronomeDebugger.cs" />
      <Compile Include="Assets\Scripts\NoteController.cs" />
      <Compile Include="Assets\Scripts\NoteMovement.cs" />
      <Compile Include="Assets\Scripts\NoteSpawner.cs" />
-     <Compile Include="Assets\Scripts\Ticker.cs" />
      <Compile Include="Assets\Scripts\Track.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/BlueMoon/Documents/School/Spring 2020/CS 472-1001/Game One/cs472spring2020team4/rhythymGameUnity/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
