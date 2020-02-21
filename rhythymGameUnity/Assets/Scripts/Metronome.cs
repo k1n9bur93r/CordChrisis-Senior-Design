@@ -53,7 +53,7 @@ public class Metronome : MonoBehaviour
 
 		songStart = AudioSettings.dspTime;
 		timeElapsedDelta = songStart;
-		GetComponent<AudioSource>().Play();
+		GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately
 
 		startFlag = true;
 	}
@@ -65,27 +65,30 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-		// These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
-		/*
-		timeElapsed = Time.time; //AudioSettings.dspTime;
-		timeElapsedDelta = Time.deltaTime;
+		if (startFlag)
+		{
+			// These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
+			/*
+			timeElapsed = Time.time; //AudioSettings.dspTime;
+			timeElapsedDelta = Time.deltaTime;
 
-		beatsElapsed += timeElapsedDelta / secPerBeat; // Needs to increment rather than set to honor BPM changes
-		*/
+			beatsElapsed += timeElapsedDelta / secPerBeat; // Needs to increment rather than set to honor BPM changes
+			*/
 
-		// BAD - Does not honor tempo changes!
-		timeElapsed = AudioSettings.dspTime - songStart;
-		beatsElapsed = timeElapsed / secPerBeat;
+			// BAD - Does not honor tempo changes!
+			timeElapsed = AudioSettings.dspTime - songStart;
+			beatsElapsed = timeElapsed / secPerBeat;
 
-		// Incrementating instead of setting is a must in order to account for tempo changes.
+			// Incrementating instead of setting is a must in order to account for tempo changes.
 
-		/*
-		timeElapsed = AudioSettings.dspTime - songStart;
-		timeElapsedDelta = timeElapsed - timeElapsedDelta;
-		beatsElapsed = (timeElapsedDelta) / secPerBeat;
-		*/
+			/*
+			timeElapsed = AudioSettings.dspTime - songStart;
+			timeElapsedDelta = timeElapsed - timeElapsedDelta;
+			beatsElapsed = (timeElapsedDelta) / secPerBeat;
+			*/
 
-		UpdateRates();
+			UpdateRates();
+		}
 	}
 
 	/*

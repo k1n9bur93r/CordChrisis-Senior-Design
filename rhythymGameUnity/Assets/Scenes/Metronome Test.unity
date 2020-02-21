@@ -1428,7 +1428,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 69a1102ddb13aa8428c6bdd35ab7af2c, type: 3}
+      objectReference: {fileID: 8300000, guid: e5ff26ee1d35c354ca4ae9d4c5ce08db, type: 3}
     - target: {fileID: 2130661558223192344, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_PlayOnAwake
@@ -1517,7 +1517,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: tempo
-      value: 161
+      value: 120
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
