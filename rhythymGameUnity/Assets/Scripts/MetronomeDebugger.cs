@@ -76,7 +76,7 @@ public class MetronomeDebugger : MonoBehaviour
 	{
 		tempoText.text = "Tempo: " + master.tempo + " (" + master.secPerBeat + " sec/beat)";
 		//timeElapsedText.text = "Time: " + master.timeElapsed; // Whoops it's private now
-		timeElapsedText.text = "Time: " + (master.beatsElapsed * master.secPerBeat);
+		timeElapsedText.text = "Time: " + Time.time; //(master.beatsElapsed * master.secPerBeat);
 		beatsElapsedText.text = "Beat: " + master.beatsElapsed;
 		//secPerBeatText.text = "Sec/Beat: " + secPerBeat;
 	}
