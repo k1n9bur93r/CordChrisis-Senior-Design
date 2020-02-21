@@ -106,7 +106,5 @@ public class MetronomeDebugger : MonoBehaviour
 		{
 			master.tempo += 1;
 		}
-
-		master.UpdateRates();
 	}
 }

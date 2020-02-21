@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
      <Compile Include="Assets\Scripts\Judgment.cs" />
+     <Compile Include="Assets\Scripts\JudgmentTester.cs" />
      <Compile Include="Assets\Scripts\Metronome.cs" />
      <Compile Include="Assets\Scripts\MetronomeDebugger.cs" />
      <Compile Include="Assets\Scripts\NoteController.cs" />

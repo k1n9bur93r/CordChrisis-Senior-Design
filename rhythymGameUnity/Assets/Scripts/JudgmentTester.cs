@@ -4,24 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	> Judgment class
+	> Judgment Tester class
 
-	The receptor versus note hit detection system.
-	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
-	The difference between these two elements is used to rate the user's timing.
-
-	This class currently has no functions usable by other classes besides Metronome yet.
-	
-	Important public variables:
-		- None yet, maybe
-
-	Important public methods:
-		- None yet
+	Test version of the hit detection system. For use in the Metronome Tester scene only.
+	Compares the time of the user's input (in beats) versus the 8th beat clocked by the metronome.
 */
 
-public class Judgment : MonoBehaviour
+public class JudgmentTester : MonoBehaviour
 {
 	public Metronome master;
+	public Text judgmentText;
+	public Text judgmentHelpText;
 
 	private const double framesMarvelous = 1.0 / 60.0; // 1/60th of a second early/late
 	private const double framesPerfect = 2.0 / 60.0; // 2/60ths
@@ -35,12 +28,14 @@ public class Judgment : MonoBehaviour
 
 	void Start()
 	{
+		judgmentText.text = "Press SPACE on beat 8.0!";
 		CalculateWindows();
 	}
 
 	void Update()
 	{
 		CalculateWindows();
+		JudgeTimingDebug();
 	}
 
 	/*
@@ -53,22 +48,29 @@ public class Judgment : MonoBehaviour
 		beatsPerfect = master.beatsPerSec * framesPerfect;
 		beatsGreat = master.beatsPerSec * framesGreat;
 		beatsGood = master.beatsPerSec * framesGood;
+
+		//master.UpdateRates();
+		UpdateHelpText(); // DEBUG
 	}
 
 	/*
-		This function will eventually rate the player's input timing versus incoming notes.
+		DEBUG: Update the help information
 	*/
 
-	void JudgeTiming()
+	private void UpdateHelpText()
 	{
-		// ...
+		judgmentHelpText.text =
+			"Fantastic: +/- " + (float)beatsMarvelous + " beats (+/- " + (float)(framesMarvelous) + " sec)\n"
+			+ "Excellent: +/- " + (float)beatsPerfect + " beats (+/- " + (float)(framesPerfect) + " sec)\n"
+			+ "Great: +/- " + (float)beatsGreat + " beats (+/- " + (float)(framesGreat) + " sec)\n"
+			+ "Good: +/- " + (float)beatsGood + " beats (+/- " + (float)(framesGood) + " sec)\n"
+			+ "Attempting to hit a note beyond the [Good] window is either not counted (early) or missed (late)";
 	}
 
 	/*
-		FOR REFERENCE ONLY: Compare timing of a key press versus the metronome's 8th beat.
+		DEBUG: compare timing of a key press versus the metronome's ticker.
 	*/
 
-	/*
 	private void JudgeTimingDebug()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
@@ -99,5 +101,4 @@ public class Judgment : MonoBehaviour
 			//Debug.Log("Spacebar pressed at: " + master.timeElapsed + " sec, " + master.beatsElapsed + " beats");
 		}
 	}
-	*/
 }

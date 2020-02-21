@@ -18,9 +18,6 @@ using UnityEngine.UI;
 
 	Important enums:
 		[NOT USABLE YET] AccRating?
-
-	Important public methods:
-		void UpdateRates(): Call this whenever a tempo change occurs to recalculate tick rates and timing windows.
 */
 
 public class Metronome : MonoBehaviour
@@ -64,13 +61,15 @@ public class Metronome : MonoBehaviour
 		timeElapsedDelta = Time.deltaTime;
 
 		beatsElapsed += timeElapsedDelta / secPerBeat;
+
+		UpdateRates();
 	}
 
 	/*
 		Call this to recalculate tick rates if the tempo changes.
 	*/
 
-	public void UpdateRates()
+	private void UpdateRates()
 	{
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
