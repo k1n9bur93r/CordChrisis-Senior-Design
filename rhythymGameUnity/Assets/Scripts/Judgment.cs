@@ -91,8 +91,7 @@ public class Judgment : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			// The following line breaks the "don't use Time.time" policy, due to the need for judgment to rely on time-relativity instead of beat-relativity
-			double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset and dsp stuff later
+			double currentBeat = master.beatsElapsed; // Compensate for song start offset and dsp stuff later
 			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);
@@ -114,6 +113,8 @@ public class Judgment : MonoBehaviour
 			judgmentText.text = 
 				judgmentText.text + "\n" + diff + " beats\n"
 				+ (diff * (float)master.secPerBeat) + " sec";
+
+			//Debug.Log("Spacebar pressed at: " + master.timeElapsed + " sec, " + master.beatsElapsed + " beats");
 		}
 	}
 
