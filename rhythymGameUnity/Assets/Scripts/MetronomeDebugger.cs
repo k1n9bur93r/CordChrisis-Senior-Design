@@ -72,7 +72,7 @@ public class MetronomeDebugger : MonoBehaviour
 		Print debugging text.
 	*/
 
-	void PrintStats()
+	private void PrintStats()
 	{
 		tempoText.text = "Tempo: " + master.tempo + " (" + master.secPerBeat + " sec/beat)";
 		//timeElapsedText.text = "Time: " + master.timeElapsed; // Whoops it's private now
@@ -85,7 +85,7 @@ public class MetronomeDebugger : MonoBehaviour
 		Changes song BPM.
 	*/
 
-	void ChangeTempo()
+	private void ChangeTempo()
 	{
 		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{

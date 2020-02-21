@@ -19,9 +19,11 @@ using UnityEngine.UI;
 		- None yet, maybe
 
 	Important public methods:
-		[NOT USABLE YET] AccRating JudgeTiming(<name of note class>)
+		- None yet
 
-	GET RID OF DEBUGGERS AT SOME POINT
+	TO DO:
+		- Fix BPM change stuff
+		- Get rid of debuggers / separate them from this class somehow
 */
 
 public class Judgment : MonoBehaviour
@@ -56,13 +58,14 @@ public class Judgment : MonoBehaviour
 		Determine how many beats are in each timing window.
 	*/
 
-	void CalculateWindows()
+	private void CalculateWindows()
 	{
 		beatsMarvelous = master.beatsPerSec * framesMarvelous;
 		beatsPerfect = master.beatsPerSec * framesPerfect;
 		beatsGreat = master.beatsPerSec * framesGreat;
 		beatsGood = master.beatsPerSec * framesGood;
 
+		//master.UpdateRates();
 		UpdateHelpText(); // DEBUG
 	}
 
@@ -70,7 +73,7 @@ public class Judgment : MonoBehaviour
 		DEBUG: Update the help information
 	*/
 
-	void UpdateHelpText()
+	private void UpdateHelpText()
 	{
 		judgmentHelpText.text =
 			"Fantastic: +/- " + (float)beatsMarvelous + " beats (+/- " + (float)(framesMarvelous) + " sec)\n"
@@ -84,11 +87,11 @@ public class Judgment : MonoBehaviour
 		DEBUG: compare timing of a key press versus the metronome's ticker.
 	*/
 
-	void JudgeTimingDebug()
+	private void JudgeTimingDebug()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			// The following line breaks the "don't use Time.time" policy, due to judgment relying on time-relativity instead of beat-relativity
+			// The following line breaks the "don't use Time.time" policy, due to the need for judgment to rely on time-relativity instead of beat-relativity
 			double currentBeat = Time.time / master.secPerBeat; // Compensate for song start offset and dsp stuff later
 			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
 
