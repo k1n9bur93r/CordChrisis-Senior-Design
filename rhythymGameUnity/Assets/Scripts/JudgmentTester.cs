@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-	> Judgment Tester class
+	> JudgmentTester class
 
 	Test version of the hit detection system. For use in the Metronome Tester scene only.
 	Compares the time of the user's input (in beats) versus the 8th beat clocked by the metronome.
