@@ -6,4 +6,4 @@
     }
 }
 
-ReactDOM.render(<CommentBox />, document.getElementById('content'));
+ReactDOM.render(<CommentBox />, document.getElementById('contentz'));

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using JavaScriptEngineSwitcher.V8;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using React.AspNet;
-
+using React;
 
 namespace Chord_Crisis
 {
@@ -60,6 +60,10 @@ namespace Chord_Crisis
                 //config
                 //  .AddScript("~/js/First.jsx")
                 //  .AddScript("~/js/Second.jsx");
+
+                ReactSiteConfiguration.Configuration = new ReactSiteConfiguration()
+                .AddScript("~/js/HomeComponents.jsx");
+
 
                 // If you use an external build too (for example, Babel, Webpack,
                 // Browserify or Gulp), you can improve performance by disabling

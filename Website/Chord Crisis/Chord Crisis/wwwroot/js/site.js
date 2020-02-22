@@ -2,3 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$('body').on('click', 'button#Supdood', function () {
+
+    alert('This is cool!');
+});
