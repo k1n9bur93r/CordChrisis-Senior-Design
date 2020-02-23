@@ -13,6 +13,7 @@ public class GridSpawner : MonoBehaviour
         GameObject go = Instantiate(Grid, StartPos.position, StartPos.rotation);
         go.AddComponent<GridWave>();
         go.transform.localScale = new Vector3(GScale, GScale, 100);
+        Destroy(go, 100f);
     }
     // Update is called once per frame
     void Update()
@@ -23,6 +24,7 @@ public class GridSpawner : MonoBehaviour
             GameObject go = Instantiate(Grid, StartPos.position, StartPos.rotation);
             go.AddComponent<GridWave>();
             go.transform.localScale = new Vector3(GScale, GScale, 100);
+            Destroy(go, 100f);
             Timer = 60f;
         }
     }
