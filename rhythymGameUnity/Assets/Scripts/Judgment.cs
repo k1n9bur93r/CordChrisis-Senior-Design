@@ -73,7 +73,7 @@ public class Judgment : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			double currentBeat = master.beatsElapsed; // Compensate for song start offset and dsp stuff later
+			double currentBeat = master.beatsElapsed;
 			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);

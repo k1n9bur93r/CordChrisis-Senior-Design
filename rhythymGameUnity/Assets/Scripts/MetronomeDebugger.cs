@@ -21,6 +21,10 @@ public class MetronomeDebugger : MonoBehaviour
 	public Text timeElapsedText;
 	public Text beatsElapsedText;
 
+	private bool ticked;
+	private int currentPos;
+	private int lastPos;
+
 	void Start()
 	{
 		// ...
@@ -42,30 +46,40 @@ public class MetronomeDebugger : MonoBehaviour
 		float tickerBeat = (Mathf.Repeat((float)master.beatsElapsed, 4.0f)); // WHY IS % NOT MODULO
 		//Debug.Log("tickerBeat: " + tickerBeat);
 
-		if (tickerBeat < 1.0f)
+		if ((tickerBeat < 1.0f) && (currentPos != 0))
 		{
 			transform.position = new Vector3(-3.0f, 0.0f, 5.0f);
+			currentPos = 0;
+			GetComponent<AudioSource>().Play();
 		}
 
-		else if ((tickerBeat >= 1.0f) && (tickerBeat < 2.0f))
+		else if ((tickerBeat >= 1.0f) && (tickerBeat < 2.0f) && (currentPos != 1))
 		{
 			transform.position = new Vector3(-1.0f, 0.0f, 5.0f);
+			currentPos = 1;
+			GetComponent<AudioSource>().Play();
 		}
 
-		else if ((tickerBeat >= 2.0f) && (tickerBeat < 3.0f))
+		else if ((tickerBeat >= 2.0f) && (tickerBeat < 3.0f) && (currentPos != 2))
 		{
 			transform.position = new Vector3(1.0f, 0.0f, 5.0f);
+			currentPos = 2;
+			GetComponent<AudioSource>().Play();
 		}
 
-		else if ((tickerBeat >= 3.0f) && (tickerBeat < 4.0f))
+		else if ((tickerBeat >= 3.0f) && (tickerBeat < 4.0f) && (currentPos != 3))
 		{
 			transform.position = new Vector3(3.0f, 0.0f, 5.0f);
+			currentPos = 3;
+			GetComponent<AudioSource>().Play();
 		}
 
+		/*
 		else
 		{
-			Debug.Log("ERROR: Metronome debugger fell through!");
+			Debug.Log("ERROR: Metronome debugger fell through! tickerBeat = " + tickerBeat + " | currentPos = " + currentPos);
 		}
+		*/
 	}
 
 	/*

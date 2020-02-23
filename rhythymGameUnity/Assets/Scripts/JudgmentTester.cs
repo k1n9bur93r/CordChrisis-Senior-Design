@@ -28,7 +28,7 @@ public class JudgmentTester : MonoBehaviour
 
 	void Start()
 	{
-		judgmentText.text = "Press SPACE on beat 8.0!";
+		judgmentText.text = "Press SPACE on beat 12.0!";
 		CalculateWindows();
 	}
 
@@ -75,8 +75,8 @@ public class JudgmentTester : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			double currentBeat = master.beatsElapsed; // Compensate for song start offset and dsp stuff later
-			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
+			double currentBeat = master.beatsElapsed;
+			double noteBeat = 12.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);
 

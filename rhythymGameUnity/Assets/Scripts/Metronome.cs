@@ -28,9 +28,8 @@ public class Metronome : MonoBehaviour
 	public double beatsPerSec; // How many beats in one second
 	public double beatsElapsed; // Song position in beats
 
-	private bool startFlag;
 	private double beatsElapsedDelta; // Beats elapsed since last frame
-	private double songStart; // DSP time of song
+	private double songStart; // DSP time of song <- More precise than Time.time
 	private double timeElapsed; // Song position in seconds
 	private double timeElapsedDelta; // Time elapsed since the last frame
 
@@ -42,8 +41,6 @@ public class Metronome : MonoBehaviour
 	
 	void Start()
 	{
-		startFlag = false;
-
 		beatsElapsed = 0.0;
 		//beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
@@ -54,8 +51,6 @@ public class Metronome : MonoBehaviour
 		songStart = AudioSettings.dspTime;
 		timeElapsedDelta = songStart;
 		GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately
-
-		startFlag = true;
 	}
 
 	/*
@@ -65,34 +60,31 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-		if (startFlag)
-		{
-			// These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
-			/*
-			timeElapsed = Time.time; //AudioSettings.dspTime;
-			timeElapsedDelta = Time.deltaTime;
+		// These will have to be determined via (AudioSettings.dspTime - songDelay) once we get music-playing going
+		/*
+		timeElapsed = Time.time; //AudioSettings.dspTime;
+		timeElapsedDelta = Time.deltaTime;
 
-			beatsElapsed += timeElapsedDelta / secPerBeat; // Needs to increment rather than set to honor BPM changes
-			*/
+		beatsElapsed += timeElapsedDelta / secPerBeat; // Needs to increment rather than set to honor BPM changes
+		*/
 
-			// BAD - Does not honor tempo changes!
-			timeElapsed = AudioSettings.dspTime - songStart;
-			beatsElapsed = timeElapsed / secPerBeat;
+		// BAD - Does not honor tempo changes!
+		timeElapsed = AudioSettings.dspTime - songStart;
+		beatsElapsed = timeElapsed / secPerBeat;
 
-			// Incrementating instead of setting is a must in order to account for tempo changes.
+		// Incrementating instead of setting is a must in order to account for tempo changes.
 
-			/*
-			timeElapsed = AudioSettings.dspTime - songStart;
-			timeElapsedDelta = timeElapsed - timeElapsedDelta;
-			beatsElapsed = (timeElapsedDelta) / secPerBeat;
-			*/
+		/*
+		timeElapsed = AudioSettings.dspTime - songStart;
+		timeElapsedDelta = timeElapsed - timeElapsedDelta;
+		beatsElapsed = (timeElapsedDelta) / secPerBeat;
+		*/
 
-			UpdateRates();
-		}
+		UpdateRates();
 	}
 
 	/*
-		DEBUG: Get time elapsed via DSP.
+		DEBUG: Get time elapsed via DSP. Delete once no longer needed.
 	*/
 
 	public double getTimeElapsedDEBUG()
