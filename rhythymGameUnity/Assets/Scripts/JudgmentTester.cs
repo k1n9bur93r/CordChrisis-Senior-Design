@@ -19,7 +19,7 @@ public class JudgmentTester : MonoBehaviour
 	private const double framesMarvelous = 1.0 / 60.0; // 1/60th of a second early/late
 	private const double framesPerfect = 2.0 / 60.0; // 2/60ths
 	private const double framesGreat = 5.0 / 60.0; // 5/60ths
-	private const double framesGood = 10.0 / 60.0; // 10/60ths
+	private const double framesGood = 12.0 / 60.0; // 12/60ths
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -28,7 +28,7 @@ public class JudgmentTester : MonoBehaviour
 
 	void Start()
 	{
-		judgmentText.text = "Press SPACE on beat 12.0!";
+		judgmentText.text = "Press SPACE on beat 16.0!";
 		CalculateWindows();
 	}
 
@@ -76,7 +76,7 @@ public class JudgmentTester : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			double currentBeat = master.beatsElapsed;
-			double noteBeat = 12.0; // Placeholder until note-reading process is figured out
+			double noteBeat = 16.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);
 
