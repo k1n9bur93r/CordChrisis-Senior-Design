@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5385148469038368955}
   - component: {fileID: 5385148469038368932}
   m_Layer: 0
-  m_Name: Btn3
+  m_Name: Btn4
   m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 151e2a41204c0314089a67128394b397, type: 2}
+  - {fileID: 2100000, guid: aa9b7f2e6489e6d41b1e7e90fbf0cc36, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,6 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 101
+  key: 114
   mouseClick: 0
   colliders: []

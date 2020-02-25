@@ -7,6 +7,7 @@ public class NoteController : MonoBehaviour
     public bool pressable;
     public KeyCode key;
     private Vector3 originalPos;
+    public int score;
 
     void Start()
     {
@@ -15,12 +16,18 @@ public class NoteController : MonoBehaviour
 
     void Update()
     {
-        transform.position += new Vector3(0, -1.0f * Time.deltaTime, 0);
+        transform.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
 
         if (pressable && Input.GetKeyDown(key))
         {
-            transform.position = originalPos;
+            score++;
+            ResetPosition();
         }
+    }
+
+    private void ResetPosition()
+    {
+        transform.position = originalPos;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +35,7 @@ public class NoteController : MonoBehaviour
         if (other.CompareTag("Button"))
         {
             pressable = true;
+
         }
     }
 
@@ -38,4 +46,5 @@ public class NoteController : MonoBehaviour
             pressable = false;
         }
     }
+
 }
