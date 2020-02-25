@@ -47,22 +47,21 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
-    private float beatToDistance(float beat)
+    private float beatToDistance(double beat)
     {
-        float time, distance;
+        double time, distance;
         //convert beat to time
         time = (60 / bpm) * beat;
-        print(time);
         //convert time to distance
         distance = (time * noteSpeed);
-        return distance;
+        return (float)distance;
     }
 
     //This function takes a note number from 0-3 and spawns it
-    public void spawnNote(int noteNum, float beat)
+    public void spawnNote(int noteNum, double beat)
     {
         GameObject curNote =
-            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z+startDistance+beatToDistance(beat)), transform.rotation);
+            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
         curNote.GetComponent<NoteMovement>().noteSpeed = noteSpeed;
         curNote.transform.parent = transform;
     }
