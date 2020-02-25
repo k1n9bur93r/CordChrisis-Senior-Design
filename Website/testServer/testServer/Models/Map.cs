@@ -11,6 +11,9 @@ namespace testServer.Models
         [Key]
         public string ID { get; set; }
 
+        [MaxLength(100)]
+        public string GroupID { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }

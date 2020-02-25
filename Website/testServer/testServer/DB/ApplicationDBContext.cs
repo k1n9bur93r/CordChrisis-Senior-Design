@@ -10,7 +10,7 @@ namespace DB
     public class ApplicationDBContext : DbContext
     {
         #region
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<UserLogin> UserLogin { get; set; }
         public DbSet<UserStats> UserStats { get; set; }
         public DbSet<Map> Map { get; set; }
