@@ -108,9 +108,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   master: {fileID: 0}
+  note: {fileID: 0}
+  receptor: {fileID: 0}
   tempoText: {fileID: 0}
   timeElapsedText: {fileID: 0}
   beatsElapsedText: {fileID: 0}
+  speedMod: 1
 --- !u!82 &6803812847765526740
 AudioSource:
   m_ObjectHideFlags: 0
