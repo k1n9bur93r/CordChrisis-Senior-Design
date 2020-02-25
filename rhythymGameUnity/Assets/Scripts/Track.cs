@@ -62,7 +62,7 @@ public class Track : MonoBehaviour
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
-            Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, 0, ((float) beat) * note_spacing);
+            Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, -1, ((float) beat) * note_spacing);
             note_game_objects[i] = createNote(position);
         }
     }
