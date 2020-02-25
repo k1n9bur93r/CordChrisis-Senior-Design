@@ -10,8 +10,8 @@ using UnityEngine.UI;
 	This value is used to help position notes, judge the player's timing, and time the music (it also plays it).
 
 	ALL game logic references to time should be relative to the beat via beatsElapsed and NOT Time.time! It will desync otherwise!
-	Time.time/Time.timeSinceLevelLoad is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from) due to the latter
-	being tied to the sound system and updating faster than a frame can update.
+	Time.time/Time.timeSinceLevelLoad is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from)
+	due to the latter being tied to the sound system and updating faster than a frame can update.
 	
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
@@ -37,7 +37,6 @@ public class Metronome : MonoBehaviour
 	/*
 		Initialize all timekeepers to 0.0.
 		Determine amount of seconds per beat and beats per second.
-		Start the music.
 	*/
 	
 	void Start()
@@ -63,12 +62,6 @@ public class Metronome : MonoBehaviour
 
 		if (GetComponent<AudioSource>().isPlaying)
 		{
-			/*
-			// BAD - Does not honor tempo changes!
-			timeElapsed = AudioSettings.dspTime - songStart;
-			beatsElapsed = timeElapsed / secPerBeat;
-			*/
-
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of setting it to accomodate for tempo changes
 			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 
@@ -98,7 +91,7 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
-		Recalculate tick rates to compensate for tempo changes.
+		Calculate tick rates based on tempo.
 	*/
 
 	private void UpdateRates()
