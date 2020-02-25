@@ -7,14 +7,22 @@ using UnityEngine.UI;
 	> MetronomeDebugger class
 
 	Debugging tools for the Metronome class.
-	
-	Draws a box that changes position every time a beat occurs.
+
+	Draws these visual aids:
+		Aid 1: A green shape that changes position with every beat that occurs.
+		Aid 2: A red shape that scrolls to the left towards a white shape. Simulates note scrolling and the receptor, respectively.
+
 	Displays current beat, tempo, and time.
 	Tempo can be changed directly using the arrow keys.
+
+	Important public variables:
+		- float speedMod: Affects scroll speed of visual aid 2.
 */
 
 public class MetronomeDebugger : MonoBehaviour
 {
+	private const float NOTE_PADDING = 1.0f;
+
 	public Metronome master;
 	public GameObject note;
 	public GameObject receptor;
@@ -24,7 +32,6 @@ public class MetronomeDebugger : MonoBehaviour
 	public Text beatsElapsedText;
 
 	public float speedMod;
-	public float notePadding;
 
 	private bool ticked;
 	private int currentPos;
@@ -44,7 +51,7 @@ public class MetronomeDebugger : MonoBehaviour
 	}
 
 	/*
-		Draw the first visual aid: a ticker that changes position with every beat.
+		Draw the visual aid 1: a ticker that changes position with every beat.
 	*/
 
 	void DrawTicker()
@@ -89,12 +96,12 @@ public class MetronomeDebugger : MonoBehaviour
 	}
 
 	/*
-		Draw the second visual aid: a mockup note at beat 16.0.
+		Draw visual aid 2: a mockup note at beat 16.0.
 
-		"Speed mod" refers to a user-selected note speed setting, effectively "zooming in" and creating more space between notes.
+		"Speed mod" refers to a user-selected note spacing setting, effectively changing scroll speed and overall note density.
 		"Padding" refers to an arbitrary constant to space the notes further. Not user-selectable.
 
-		The note is drawn at a distance relative to the receptor's position, and modified by beats elapsed, tempo, and speed mod.
+		The note is drawn at a distance relative to the receptor's position, modified by beats elapsed, tempo, speed mod, and padding.
 		Ideally, when the metronome's current location equals the notes's location, the note will land exactly on top of the receptor.
 	*/
 
@@ -103,7 +110,7 @@ public class MetronomeDebugger : MonoBehaviour
 		// Note position formula: Receptor position + ((Note location - Beats elapsed) * Speed mod * Padding))
 
 		note.transform.position = 
-			new Vector3(receptor.transform.position.x + ((16.0f - (float)master.beatsElapsed) * speedMod * notePadding),
+			new Vector3(receptor.transform.position.x + ((16.0f - (float)master.beatsElapsed) * speedMod * NOTE_PADDING),
 			receptor.transform.position.y, receptor.transform.position.z);
 	}
 
