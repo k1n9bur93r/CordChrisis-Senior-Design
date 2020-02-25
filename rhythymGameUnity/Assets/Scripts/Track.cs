@@ -8,7 +8,8 @@ class JsonTrack
     // 'JsonTrack.notes' is never assigned to, and will always have its default value null
     // It gets assigned to in the json serializer
     #pragma warning disable 0649
-    public double[] notes;
+    public double[] beats;
+    public int[] notes;
     public double tempo;
     public double offset;
     #pragma warning restore 0649
@@ -36,11 +37,16 @@ public class Track : MonoBehaviour
     {
         JsonTrack json = readJsonFile(track_file);
 
-        int c = 0;
-        foreach (double entry in json.notes) {
-            Vector3 position = new Vector3((((float) entry) - 1) * note_width, 0, c * note_spacing);
+        Debug.Log(json.notes);
+        if (json.notes.Length != json.beats.Length) {
+            throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
+        }
+
+        for (int i = 0; i < json.notes.Length; i++) {
+            int note = json.notes[i];
+            double beat = json.beats[i];
+            Vector3 position = new Vector3((note - 1) * note_width, 0, ((float) beat) * note_spacing);
             createNote(position);
-            c++;
         }
     }
 }
