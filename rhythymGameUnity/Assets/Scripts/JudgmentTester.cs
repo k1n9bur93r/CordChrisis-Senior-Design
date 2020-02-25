@@ -28,7 +28,7 @@ public class JudgmentTester : MonoBehaviour
 
 	void Start()
 	{
-		judgmentText.text = "Press SPACE on beat 16.0!";
+		judgmentText.text = "Press Z to start the music! Then press SPACE on beat 16.0!";
 		CalculateWindows();
 	}
 

@@ -10,11 +10,12 @@ using UnityEngine.UI;
 	This value is used to help position notes, judge the player's timing, and time the music (it also plays it).
 
 	ALL game logic references to time should be relative to the beat via beatsElapsed and NOT Time.time! It will desync otherwise!
-	Time.time is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from) due to the latter being tied to the sound system and being independent of framerate.
+	Time.time/Time.timeSinceLevelLoad is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from) due to the latter
+	being tied to the sound system and updating faster than a frame can update.
 	
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
-		- double songDelay: User-determined delay. Used to compensate for silence at the beginning of the song.
+		- double songDelay: User-determined delay. Used to compensate for silence at the beginning of the song. NOT IMPLEMENTED YET
 		- double tempo: Current tempo of the song.
 */
 
@@ -45,7 +46,7 @@ public class Metronome : MonoBehaviour
 		timeElapsed = 0.0;
 
 		UpdateRates();
-		startSong();
+		//startSong();
 	}
 
 	/*
@@ -55,6 +56,11 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
+		if ((Input.GetKeyDown(KeyCode.Z)) && !GetComponent<AudioSource>().isPlaying)
+		{
+			startSong();
+		}
+
 		if (GetComponent<AudioSource>().isPlaying)
 		{
 			/*
@@ -63,7 +69,8 @@ public class Metronome : MonoBehaviour
 			beatsElapsed = timeElapsed / secPerBeat;
 			*/
 
-			// Increment the timer instead of setting it to accomodate for tempo changes
+			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of setting it to accomodate for tempo changes
+			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 
 			timeElapsed = AudioSettings.dspTime - songStart;
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
@@ -76,6 +83,11 @@ public class Metronome : MonoBehaviour
 
 		UpdateRates();
 	}
+
+	/*
+		Initialize song start point.
+		Play music.
+	*/
 
 	private void startSong()
 	{
@@ -96,7 +108,7 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
-		DEBUG: Get time elapsed via DSP. Delete once no longer needed.
+		DEBUG: Get time elapsed via DSP time. Delete once no longer needed.
 	*/
 
 	public double getTimeElapsedDEBUG()
