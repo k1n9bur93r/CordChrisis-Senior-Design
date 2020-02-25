@@ -19,10 +19,14 @@ public class JsonTrack
 
 public class Track : MonoBehaviour
 {
+    // This is the main class for this file
+    // if you want to access members of JsonTrack such as json.notes
+    // do so through 'Track.json'
     public string track_file = "Text/more";
     public float note_spacing = 5;
-    public float note_width = 5;
+    public float track_width = 20;
     public JsonTrack json;
+    public GameObject[] note_game_objects;
 
     GameObject createNote(Vector3 position) {
         // creates a note at the given position
@@ -47,12 +51,19 @@ public class Track : MonoBehaviour
             throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
         }
 
+        int max_note = 0;
+        foreach (int note in json.notes) {
+            max_note = (max_note > note) ? (max_note) : (note);
+        }
+        float note_width = track_width / max_note;
+
         // place notes in the game field
+        note_game_objects = new GameObject[json.notes.Length];
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
-            Vector3 position = new Vector3((note - 1) * note_width, 0, ((float) beat) * note_spacing);
-            createNote(position);
+            Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, -1, ((float) beat) * note_spacing);
+            note_game_objects[i] = createNote(position);
         }
     }
 }
