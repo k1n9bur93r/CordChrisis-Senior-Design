@@ -75,7 +75,7 @@ public class JudgmentTester : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			double currentBeat = master.beatsElapsed;
+			double currentBeat = master.beatsElapsed; //Time.time / master.secPerBeat;
 			double noteBeat = 16.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);
