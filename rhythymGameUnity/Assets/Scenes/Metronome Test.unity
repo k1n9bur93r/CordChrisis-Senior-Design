@@ -1589,6 +1589,11 @@ PrefabInstance:
       propertyPath: speedMod
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -2118010029016256237, guid: 20928871699babf4f99184ae42344029,
+        type: 3}
+      propertyPath: padding
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3632884004830225192, guid: 20928871699babf4f99184ae42344029,
         type: 3}
       propertyPath: m_LocalPosition.x

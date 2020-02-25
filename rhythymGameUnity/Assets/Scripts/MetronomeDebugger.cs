@@ -23,7 +23,8 @@ public class MetronomeDebugger : MonoBehaviour
 	public Text timeElapsedText;
 	public Text beatsElapsedText;
 
-	public int speedMod;
+	public float speedMod;
+	public float notePadding;
 
 	private bool ticked;
 	private int currentPos;
@@ -88,17 +89,21 @@ public class MetronomeDebugger : MonoBehaviour
 	}
 
 	/*
-		Draw the second visual aid: a mockup note at beat 16.
-		"Speed mod" refers to a user-selected note speed setting.
-		"Note size" refers to the size of the notes in Unity units.
+		Draw the second visual aid: a mockup note at beat 16.0.
+
+		"Speed mod" refers to a user-selected note speed setting, effectively "zooming in" and creating more space between notes.
+		"Padding" refers to an arbitrary constant to space the notes further. Not user-selectable.
+
+		The note is drawn at a distance relative to the receptor's position, and modified by beats elapsed, tempo, and speed mod.
+		Ideally, when the metronome's current location equals the notes's location, the note will land exactly on top of the receptor.
 	*/
 
 	private void DrawNote()
 	{
-		// Note position formula: Receptor position + ((Note location - Beats elapsed) * Speed mod * Note size?))
+		// Note position formula: Receptor position + ((Note location - Beats elapsed) * Speed mod * Padding))
 
 		note.transform.position = 
-			new Vector3(receptor.transform.position.x + ((16.0f - (float)master.beatsElapsed) * speedMod * 1.0f),
+			new Vector3(receptor.transform.position.x + ((16.0f - (float)master.beatsElapsed) * speedMod * notePadding),
 			receptor.transform.position.y, receptor.transform.position.z);
 	}
 
