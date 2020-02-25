@@ -16,10 +16,14 @@ using UnityEngine.UI;
 public class MetronomeDebugger : MonoBehaviour
 {
 	public Metronome master;
+	public GameObject note;
+	public GameObject receptor;
 
 	public Text tempoText;
 	public Text timeElapsedText;
 	public Text beatsElapsedText;
+
+	public int speedMod;
 
 	private bool ticked;
 	private int currentPos;
@@ -33,12 +37,13 @@ public class MetronomeDebugger : MonoBehaviour
 	void Update()
 	{
 		DrawTicker();
+		DrawNote();
 		PrintStats();
 		ChangeTempo();
 	}
 
 	/*
-		Draw the visual aid.
+		Draw the first visual aid: a ticker that changes position with every beat.
 	*/
 
 	void DrawTicker()
@@ -48,28 +53,28 @@ public class MetronomeDebugger : MonoBehaviour
 
 		if ((tickerBeat < 1.0f) && (currentPos != 0))
 		{
-			transform.position = new Vector3(-3.0f, 0.0f, 5.0f);
+			transform.position = new Vector3(0.5f, 2.0f, 5.0f);
 			currentPos = 0;
 			GetComponent<AudioSource>().Play();
 		}
 
 		else if ((tickerBeat >= 1.0f) && (tickerBeat < 2.0f) && (currentPos != 1))
 		{
-			transform.position = new Vector3(-1.0f, 0.0f, 5.0f);
+			transform.position = new Vector3(1.5f, 2.0f, 5.0f);
 			currentPos = 1;
 			GetComponent<AudioSource>().Play();
 		}
 
 		else if ((tickerBeat >= 2.0f) && (tickerBeat < 3.0f) && (currentPos != 2))
 		{
-			transform.position = new Vector3(1.0f, 0.0f, 5.0f);
+			transform.position = new Vector3(2.5f, 2.0f, 5.0f);
 			currentPos = 2;
 			GetComponent<AudioSource>().Play();
 		}
 
 		else if ((tickerBeat >= 3.0f) && (tickerBeat < 4.0f) && (currentPos != 3))
 		{
-			transform.position = new Vector3(3.0f, 0.0f, 5.0f);
+			transform.position = new Vector3(3.5f, 2.0f, 5.0f);
 			currentPos = 3;
 			GetComponent<AudioSource>().Play();
 		}
@@ -80,6 +85,21 @@ public class MetronomeDebugger : MonoBehaviour
 			Debug.Log("ERROR: Metronome debugger fell through! tickerBeat = " + tickerBeat + " | currentPos = " + currentPos);
 		}
 		*/
+	}
+
+	/*
+		Draw the second visual aid: a mockup note at beat 16.
+		"Speed mod" refers to a user-selected note speed setting.
+		"Note size" refers to the size of the notes in Unity units.
+	*/
+
+	private void DrawNote()
+	{
+		// Note position formula: Receptor position + ((Note location - Beats elapsed) * Speed mod * Note size?))
+
+		note.transform.position = 
+			new Vector3(receptor.transform.position.x + ((16.0f - (float)master.beatsElapsed) * speedMod * 1.0f),
+			receptor.transform.position.y, receptor.transform.position.z);
 	}
 
 	/*
