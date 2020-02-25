@@ -10,7 +10,11 @@ namespace testServer.Controllers
     {
         public IActionResult Index()
         {
+            
+
             return View();
         }
+
+
     }
 }
