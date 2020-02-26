@@ -7,7 +7,7 @@ using UnityEngine.UI;
 	> JudgmentTester class
 
 	Test version of the hit detection system. For use in the Metronome Tester scene only.
-	Compares the time of the user's input (in beats) versus the 8th beat clocked by the metronome.
+	Compares the time of the user's input (in beats) versus the 16th beat ticked by the metronome.
 */
 
 public class JudgmentTester : MonoBehaviour
@@ -61,7 +61,7 @@ public class JudgmentTester : MonoBehaviour
 	private void UpdateHelpText()
 	{
 		judgmentHelpText.text =
-			"Fantastic: +/- " + (float)beatsMarvelous + " beats (+/- " + (float)(framesMarvelous) + " sec)\n"
+			"Marvelous: +/- " + (float)beatsMarvelous + " beats (+/- " + (float)(framesMarvelous) + " sec)\n"
 			+ "Excellent: +/- " + (float)beatsPerfect + " beats (+/- " + (float)(framesPerfect) + " sec)\n"
 			+ "Great: +/- " + (float)beatsGreat + " beats (+/- " + (float)(framesGreat) + " sec)\n"
 			+ "Good: +/- " + (float)beatsGood + " beats (+/- " + (float)(framesGood) + " sec)\n"
@@ -76,7 +76,7 @@ public class JudgmentTester : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			double currentBeat = master.beatsElapsed; //Time.time / master.secPerBeat;
+			double currentBeat = master.beatsElapsed;
 			double noteBeat = 16.0; // Placeholder until note-reading process is figured out
 
 			float diff = (float)(currentBeat - noteBeat);
@@ -88,7 +88,7 @@ public class JudgmentTester : MonoBehaviour
 
 			else
 			{
-				if (Mathf.Abs(diff) <= beatsMarvelous) { judgmentText.text = "Fantastic timing!"; }
+				if (Mathf.Abs(diff) <= beatsMarvelous) { judgmentText.text = "Marvelous timing!"; }
 				else if (Mathf.Abs(diff) <= beatsPerfect) { judgmentText.text = "Excellent timing!"; }
 				else if (Mathf.Abs(diff) <= beatsGreat) { judgmentText.text = "Great timing!"; }
 				else if (Mathf.Abs(diff) <= beatsGood) { judgmentText.text = "Good timing!"; }

@@ -23,10 +23,11 @@ public class Judgment : MonoBehaviour
 {
 	public Metronome master;
 
-	private const double framesMarvelous = 1.0 / 60.0; // 1/60th of a second early/late
-	private const double framesPerfect = 2.0 / 60.0; // 2/60ths
-	private const double framesGreat = 5.0 / 60.0; // 5/60ths
-	private const double framesGood = 10.0 / 60.0; // 10/60ths
+	// Timing window measurements are on the assumption that that the game runs at 60 FPS. Measurements are made in fractions of a second (ie: 1.0/60.0 = 1/60th of a second)
+	private const double framesMarvelous = 1.0 / 60.0;
+	private const double framesPerfect = 2.0 / 60.0;
+	private const double framesGreat = 5.0 / 60.0;
+	private const double framesGood = 12.0 / 60.0;
 
 	private double beatsMarvelous;
 	private double beatsPerfect;

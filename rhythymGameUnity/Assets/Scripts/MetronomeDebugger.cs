@@ -98,11 +98,12 @@ public class MetronomeDebugger : MonoBehaviour
 	/*
 		Draw visual aid 2: a mockup note at beat 16.0.
 
-		"Speed mod" refers to a user-selected note spacing setting, effectively changing scroll speed and overall note density.
-		"Padding" refers to an arbitrary constant to space the notes further. Not user-selectable.
+		"Note location" refers to where in the chart the note exists, in beats.
+		"Speed mod" refers to a user-selected (public) note spacing setting, effectively changing scroll speed and overall note density.
+		"Padding" refers to an arbitrary constant to space the notes further. Not user-selectable (private).
 
 		The note is drawn at a distance relative to the receptor's position, modified by beats elapsed, tempo, speed mod, and padding.
-		Ideally, when the metronome's current location equals the notes's location, the note will land exactly on top of the receptor.
+		When the metronome's current location equals the notes's location, the note will land exactly on top of the receptor.
 	*/
 
 	private void DrawNote()

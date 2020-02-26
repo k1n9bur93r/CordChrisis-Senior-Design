@@ -14,6 +14,9 @@ using UnityEngine.UI;
 	
 	The Time class is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from)
 	due to the latter being tied to the sound system rather than frame updates.
+
+	Notes using this class must have their position set directly relative to the receptor, at a distance determined via beatsElapsed.
+	Using actual velocity to move the notes will cause audio desync!
 	
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
@@ -67,13 +70,10 @@ public class Metronome : MonoBehaviour
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
 			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 
-			timeElapsed = AudioSettings.dspTime - songStart; //Time.time - songStart;
+			timeElapsed = AudioSettings.dspTime - songStart;
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			beatsElapsed += timeElapsedDelta / secPerBeat; //Time.deltaTime / secPerBeat;
+			beatsElapsed += timeElapsedDelta / secPerBeat;
 			timeElapsedLast = timeElapsed;
-
-			//Debug.Log("timeElapsed: " + timeElapsed + " | delta: " + timeElapsedDelta);
-			//Debug.Log("DSP time: " + timeElapsed + " | Real time: " + Time.time);
 		}
 
 		UpdateRates();
@@ -86,8 +86,8 @@ public class Metronome : MonoBehaviour
 
 	private void startSong()
 	{
-		songStart = AudioSettings.dspTime; //Time.time;
-		timeElapsedLast = AudioSettings.dspTime - songStart; //Time.time - songStart;
+		songStart = AudioSettings.dspTime;
+		timeElapsedLast = AudioSettings.dspTime - songStart;
 		GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately because sounds don't play "immediately", delay it instead
 		//GetComponent<AudioSource>().PlayScheduled(songStart + songDelay);
 	}
