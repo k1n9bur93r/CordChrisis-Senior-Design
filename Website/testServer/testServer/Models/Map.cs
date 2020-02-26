@@ -48,7 +48,5 @@ namespace testServer.Models
         [Required]
         [MaxLength(25)]
         public string Author { get; set; }
-
-
     }
 }

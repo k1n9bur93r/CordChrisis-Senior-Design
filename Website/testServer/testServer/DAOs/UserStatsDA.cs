@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using testServer.Models;
+using System.Linq;
 
 namespace testServer.DAOs
 {
@@ -11,16 +13,34 @@ namespace testServer.DAOs
 
         public void Create(UserStats user)
         {
-            throw new NotImplementedException();
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                context.Add(user);
+            }
         }
         public UserStats ReadSingle(string userID)
         {
-            throw new NotImplementedException();
+            UserStats data = new UserStats();
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                data = context.UserStats.Where(a => a.ID==userID).FirstOrDefault();
+            }
+            return data;
+
         }
 
         public void Update(UserStats userStats)
         {
-            throw new NotImplementedException();
+            using (var context = new ApplicationDBContext())
+            {
+                var row = context.UserStats.Where(a => a.ID == userStats.ID).FirstOrDefault();
+                if (row == null) return;
+                row = userStats;
+                context.UserStats.Update(row);
+                context.SaveChanges();
+            }
         }
 
         public void Delete(string ID)
