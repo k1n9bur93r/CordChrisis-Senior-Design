@@ -16,5 +16,8 @@ namespace testServer.Models
         [Required]
         [MaxLength(3)]
         public int Rank { get; set; }
+        [Required]
+        [MaxLength(1)]
+        public bool IsDeleted { get; set; }
     }
 }
