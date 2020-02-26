@@ -14,7 +14,10 @@ public class JsonTrack
     public int[] notes;
     public double tempo;
     public double offset;
-    #pragma warning restore 0649
+
+#pragma warning restore 0649
+
+
 }
 
 public class Track : MonoBehaviour
@@ -26,6 +29,7 @@ public class Track : MonoBehaviour
     public float note_spacing = 5;
     public float track_width = 20;
     public JsonTrack json;
+    public NoteSpawner noteSpawner;
     public GameObject[] note_game_objects;
 
     GameObject createNote(Vector3 position) {
@@ -62,8 +66,9 @@ public class Track : MonoBehaviour
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
-            Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, -1, ((float) beat) * note_spacing);
-            note_game_objects[i] = createNote(position);
+            noteSpawner.spawnNote(note - 1, beat);
+            //Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, -1, ((float) beat) * note_spacing);
+            //note_game_objects[i] = createNote(position);
         }
     }
 }
