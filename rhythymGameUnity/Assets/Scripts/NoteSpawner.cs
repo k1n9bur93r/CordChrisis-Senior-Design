@@ -19,10 +19,18 @@ public class NoteSpawner : MonoBehaviour
     // Start is called before the first frame update
     public double bpm; // this will need to be a reference to the metronomes bpm
     public Metronome metronome;
+
+    //creating the queues for notes
+    public List<GameObject>[] notes = new List<GameObject>[4];
+
     void Start()
     {
-        //bpm = metronome.tempo; //getting tempo from metronome
-        bpm = 120;
+           for (int i=0;i<4;i++)
+            {
+                notes[i] = new List<GameObject>();
+            }
+
+        bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
         noteTravelTime = startDistance / noteSpeed;
         print("The first notes should play in " + noteTravelTime + " seconds");
@@ -32,7 +40,6 @@ public class NoteSpawner : MonoBehaviour
     void Update()
     {
         //bpm = metronome.tempo; //getting tempo from metronome
-        //these are for debugging
         if (Input.GetKeyDown("q"))
         {
             spawnNote(0, 0);
@@ -66,8 +73,15 @@ public class NoteSpawner : MonoBehaviour
     {
         GameObject curNote =
             Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+        
+        notes[noteNum].Add(curNote.gameObject);
+
         curNote.GetComponent<NoteMovement>().noteSpeed = noteSpeed;
         curNote.transform.parent = transform;
+        curNote.GetComponent<NoteMovement>().metronome = metronome;
+        curNote.GetComponent<NoteMovement>().beat = beat;
+
+        
     }
 
 
