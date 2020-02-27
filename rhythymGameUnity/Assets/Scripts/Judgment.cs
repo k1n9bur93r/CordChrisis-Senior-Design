@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +11,9 @@ using UnityEngine.UI;
 	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
 	The difference between these two elements is used to rate the user's timing.
 
-	This class currently has no functions usable by other classes besides Metronome yet.
-	
-	Important public variables:
-		- None yet, maybe
-
 	Important public methods:
-		- None yet
+		- bool JudgeTiming(): For use by NoteController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed, and returns a value based on timing.
+		- bool CheckMiss(): For use by NoteController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
 */
 
 public class Judgment : MonoBehaviour
@@ -36,12 +33,12 @@ public class Judgment : MonoBehaviour
 
 	void Start()
 	{
-		CalculateWindows();
+		//CalculateWindows();
 	}
 
 	void Update()
 	{
-		CalculateWindows();
+		//CalculateWindows();
 	}
 
 	/*
@@ -57,48 +54,63 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		This function will eventually rate the player's input timing versus incoming notes.
+		When a key is pressed, judge the player's timing by checking the beat of the note sent from the queue versus the current beat.
+
+		Returns a number to pass back to NoteController:
+			- 1 to 4: The note was hit, delete it from the queue, score accordingly
+			- 0: The note was hit too early, don't delete from the queue
 	*/
 
-	void JudgeTiming()
+	public int JudgeTiming(double receivedBeat)
 	{
-		// ...
-	}
+		CalculateWindows();
 
-	/*
-		FOR REFERENCE ONLY: Compare timing of a key press versus the metronome's 8th beat.
-	*/
+		double currentBeat = master.beatsElapsed;
+		double noteBeat = receivedBeat;
+		double diff = currentBeat - noteBeat;
 
-	/*
-	private void JudgeTimingDebug()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		// Check if the player hits at least the early "Good" window
+		if (diff >= -beatsGood)
 		{
-			double currentBeat = master.beatsElapsed;
-			double noteBeat = 8.0; // Placeholder until note-reading process is figured out
-
-			float diff = (float)(currentBeat - noteBeat);
-
-			if (diff < -beatsGood) //(diff < -framesGood)
-			{
-				judgmentText.text = "Way too early!";
-			}
-
+			if (Math.Abs(diff) <= beatsMarvelous) { return 4; }
+			else if (Math.Abs(diff) <= beatsPerfect) { return 3; }
+			else if (Math.Abs(diff) <= beatsGreat) { return 2; }
+			else if (Math.Abs(diff) <= beatsGood) { return 1; }
+			
+			// C# complains if there isn't a return for every possible code path
 			else
 			{
-				if (Mathf.Abs(diff) <= beatsMarvelous) { judgmentText.text = "Fantastic timing!"; }
-				else if (Mathf.Abs(diff) <= beatsPerfect) { judgmentText.text = "Excellent timing!"; }
-				else if (Mathf.Abs(diff) <= beatsGreat) { judgmentText.text = "Great timing!"; }
-				else if (Mathf.Abs(diff) <= beatsGood) { judgmentText.text = "Good timing!"; }
-				else { judgmentText.text = "Way too late!"; }
+				Debug.Log("ERROR: JudgeTiming() fell through!");
+				return 0;
 			}
-
-			judgmentText.text = 
-				judgmentText.text + "\n" + diff + " beats\n"
-				+ (diff * (float)master.secPerBeat) + " sec";
-
-			//Debug.Log("Spacebar pressed at: " + master.timeElapsed + " sec, " + master.beatsElapsed + " beats");
 		}
+
+		// The player tried to hit a note before it passed the early "Good" window
+		else
+		{
+			return 0;
+		}
+
+		// It should not be possible to hit beyond the late "Good" window, because the note should be deleted from the queue by now
 	}
+
+	/*
+		Check if the note at the top of the queue has gone unpressed for too long.
+		Returns true if its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
 	*/
+
+	public bool CheckMiss(double receivedBeat)
+	{
+		CalculateWindows();
+
+		double currentBeat = master.beatsElapsed;
+		double noteBeat = receivedBeat;
+		double diff = currentBeat - noteBeat;
+
+		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit
+		if (diff > beatsGood) { return true; }
+
+		// Otherwise, keep the note in play
+		else { return false; }
+	}
 }

@@ -54,7 +54,7 @@ public class MetronomeDebugger : MonoBehaviour
 		Draw the visual aid 1: a ticker that changes position with every beat.
 	*/
 
-	void DrawTicker()
+	private void DrawTicker()
 	{
 		float tickerBeat = (Mathf.Repeat((float)master.beatsElapsed, 4.0f)); // WHY IS % NOT MODULO
 		//Debug.Log("tickerBeat: " + tickerBeat);
