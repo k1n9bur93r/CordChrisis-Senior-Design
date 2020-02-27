@@ -29,15 +29,15 @@ public class Metronome : MonoBehaviour
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 
 	public double tempo; // Song speed in beats per minute
-	public double secPerBeat; // How many seconds in one beat <- So far MetronomeDebugger needs this to be public
-	public double beatsPerSec; // How many beats in one second
+	public double secPerBeat; // How many seconds in one beat <- Public for MetronomeDebugger
+	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
 	public double songDelay; // User-determined song start delay
 
-	private double songStart; // DSP time of song <- More precise than Time.time
-	private double timeElapsed; // Song position in seconds
+	private double songStart; // DSP time reference point for beginning of playback
+	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
 	private double timeElapsedLast;
-	private double timeElapsedDelta; // Time elapsed since the last frame
+	private double timeElapsedDelta; // DSP time elapsed since the last frame
 
 	/*
 		Initialize all timekeepers to 0.0.
@@ -60,7 +60,7 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-		if ((Input.GetKeyDown(KeyCode.Z)) && !GetComponent<AudioSource>().isPlaying)
+		if ((Input.GetKeyDown(KeyCode.Z)) && (!GetComponent<AudioSource>().isPlaying))
 		{
 			startSong();
 		}
