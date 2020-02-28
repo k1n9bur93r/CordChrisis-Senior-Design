@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: abd0cec0ec174d644b3dd07c329fd54d
+guid: 7cdc573628e7d44b8a5c911e28dc0766
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,33 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Blue Rim
-    second: {fileID: 2100000, guid: f5b604bc27682a247953487387f296fe, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Box Color
-    second: {fileID: 2100000, guid: bb364bf7d6a56e04cafcd0a4711e9313, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Green Rim
-    second: {fileID: 2100000, guid: f667f6bafb0a5d9479007627a9b64af5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Orange Rim
-    second: {fileID: 2100000, guid: 032a559c6515bbc449b5739cd81d5fec, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Red Rim
-    second: {fileID: 2100000, guid: 317e148e04872004db54a4b3dd75193c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: White Outline
+      name: Inner Ring
     second: {fileID: 2100000, guid: f62fc696e9d8a5f4cba63edf661a276d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outer Ring
+    second: {fileID: 2100000, guid: 663c93a0b5f14437ea3825441395564d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RedRing
+    second: {fileID: 2100000, guid: 317e148e04872004db54a4b3dd75193c, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
