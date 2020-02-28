@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /*
 	> Judgment class
 
-	The receptor versus note hit detection system.
+	The timing aspect of the hit detection system.
 	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
 	The difference between these two elements is used to rate the user's timing.
 
@@ -107,10 +107,10 @@ public class Judgment : MonoBehaviour
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
-		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit
+		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
 		if (diff > beatsGood) { return true; }
 
-		// Otherwise, keep the note in play
+		// Otherwise, do not delete from the queue
 		else { return false; }
 	}
 }
