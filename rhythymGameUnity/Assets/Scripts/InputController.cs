@@ -1,39 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InputController : MonoBehaviour
 {
+    // used for testing button presses
     private Renderer r;
     private Color pressedColor;
     private Color btnColor;
-    public KeyCode key;
+
+    // input types
+    public KeyCode keyPressed;
     public bool mouseClick;
-    public Collider[] colliders;
+
+    public NoteSpawner noteQueue;
+    public Judgment judge;
+    public Metronome metronome;
+    public double bpm;
 
     // Start is called before the first frame update
     void Start()
     {
-        mouseClick = false;
         r = GetComponent<Renderer>();
         btnColor = r.material.color;
         pressedColor = new Color(btnColor.r + 0.2f, btnColor.g + 0.2f, btnColor.b + 0.2f);
 
-        colliders = GetComponents<Collider>();
+        mouseClick = false;
+
+        bpm = metronome.tempo;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(key))
+        if (Input.GetKeyDown(keyPressed))
         {
             SetPressedBtnColor();
         }
-        else if (Input.GetKeyUp(key))
+        else if (Input.GetKeyUp(keyPressed))
         {
             SetDefaultBtnColor();
         }
+    }
+
+    public bool IsKeyDown()
+    {
+        return Input.GetKeyDown(keyPressed);
+    }
+
+    public bool IsKeyUp()
+    {
+        return Input.GetKeyUp(keyPressed);
     }
 
     // using MouseDown functions in lieu of touch inputs for now

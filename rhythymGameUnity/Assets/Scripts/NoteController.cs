@@ -35,7 +35,6 @@ public class NoteController : MonoBehaviour
         if (other.CompareTag("Button"))
         {
             pressable = true;
-
         }
     }
 
