@@ -9,8 +9,9 @@ using UnityEngine.UI;
 	The driving force of the game's timing logic: a running count of how many beats have elapsed in the music.
 	This value is used to help position notes, judge the player's timing, and synchronize the music.
 
-	ALL game logic references to time should be relative to the current beat via beatsElapsed (because we're dealing with objects located by their assigned beat).
+	With one exception, ALL game logic references to time should be relative to the current beat via beatsElapsed (because we're dealing with objects located by their assigned beat).
 	Getting the current time via Time.time and Time.deltaTime will cause audio desync!
+	The public variable startOffset is the exception to this due to needing a precise time rather than beat.
 	
 	The Time class is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from)
 	due to the latter being tied to the sound system rather than frame updates.
@@ -20,8 +21,8 @@ using UnityEngine.UI;
 	
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
-		//- double startOffset: User-determined delay. Used to allow for arbitrary chart start times (but not song start times). // NOT IMPLEMENTED YET
-		- double tempo: Current tempo of the song.
+		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
+		- double tempo: Chart-determined tempo of the song.
 */
 
 public class Metronome : MonoBehaviour
@@ -32,7 +33,7 @@ public class Metronome : MonoBehaviour
 	public double secPerBeat; // How many seconds in one beat <- Public for MetronomeDebugger
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
-	public double startOffset; // User-determined chart start delay
+	public double startOffset; // Chart-determined chart/song offset
 
 	private double songStart; // DSP time reference point for beginning of playback
 	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
@@ -68,12 +69,16 @@ public class Metronome : MonoBehaviour
 		if (GetComponent<AudioSource>().isPlaying)
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
-			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-
 			timeElapsed = AudioSettings.dspTime - songStart;
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			beatsElapsed += timeElapsedDelta / secPerBeat;
 			timeElapsedLast = timeElapsed;
+
+			// If startDelay has not elapsed yet, do not increase beatsElapsed
+			if (timeElapsed >= startOffset)
+			{
+				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
+				beatsElapsed += timeElapsedDelta / secPerBeat;
+			}
 		}
 
 		UpdateRates();
@@ -86,7 +91,7 @@ public class Metronome : MonoBehaviour
 
 	private void startSong()
 	{
-		songStart = AudioSettings.dspTime;
+		songStart = AudioSettings.dspTime; //- startOffset;
 		timeElapsedLast = AudioSettings.dspTime - songStart;
 		GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately because sounds don't play "immediately", delay it instead
 		//GetComponent<AudioSource>().PlayScheduled(songStart + startOffset);
