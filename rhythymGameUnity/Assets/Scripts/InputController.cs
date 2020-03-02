@@ -32,6 +32,7 @@ public class InputController : MonoBehaviour
 
     private double beatPressed;
     public double nextBeat;
+    private double currBeat;
     private int hitGrade;
     private int queueNum;
     private bool[] notesOnNextBeat;
@@ -66,14 +67,17 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // looking for the next beat
+        // look for the next beat
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < noteSpawner.notes[i].Count; j++)
-                if (noteSpawner.notes[i][j].GetComponent<NoteMovement>().beat < metronome.beatsElapsed)
+            if (noteSpawner.notes[i].Count > 0)
+            {
+                currBeat = noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat;
+                if (currBeat < metronome.beatsElapsed)
                 {
-                    nextBeat = noteSpawner.notes[i][j].GetComponent<NoteMovement>().beat;
+                    nextBeat = currBeat;
                 }
+            }
         }
         t3.text = "NextBeatToPress: " + nextBeat.ToString();
 
@@ -84,22 +88,17 @@ public class InputController : MonoBehaviour
 
             // the beat that the player pressed on
             t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
-                       
+
             int hitResult = judge.JudgeTiming(nextBeat);
             t4.text = "HitResult: " + hitResult.ToString();
 
             if (hitResult > 0)
             {
                 // player hit within valid window, delete top note from queue
-                noteController.RemoveTopNote(queueNum);                
+                noteController.RemoveTopNote(queueNum);
             }
 
             SetHitGrade(hitResult);
-        }
-
-        if (IsKeyUp())
-        {
-            SetDefaultBtnColor();
         }
 
         // go through queues to find all notes having nextBeat
@@ -119,9 +118,14 @@ public class InputController : MonoBehaviour
         {
             if (judge.CheckMiss(nextBeat) && notesOnNextBeat[i])
             {
-                //noteController.RemoveTopNote(i);
+                noteController.RemoveTopNote(i);
                 SetHitGrade(0);
             }
+        }
+
+        if (IsKeyUp())
+        {
+            SetDefaultBtnColor();
         }
     }
 
