@@ -4,30 +4,25 @@ using UnityEngine;
 
 public class NoteController : MonoBehaviour
 {
-    public Metronome metronome;
+    /*  This class handles the removal of notes from their respective queue.
+     *  
+     *  Functions:
+     *  RemoveNote()
+     *      - Deletes the note block at the top of the queue if the player
+     *      has pressed within a valid timing window
+     *      
+     */
+
     public NoteSpawner noteSpawner;
     public int cutoff;
 
-    void Start()
+    public void RemoveTopNote(int queueNum)
     {
-
-    }
-
-    void Update()
-    {
-        for (int i = 0; i < 4; i++)
+        if (noteSpawner.notes[queueNum].Count > 0)
         {
-            if (NoteIsOutOfRange(i))
-                RemoveTopNote(i);
+            noteSpawner.notes[queueNum][0].SetActive(false);
+            noteSpawner.notes[queueNum].RemoveAt(0);            
         }
-    }
-
-    private void RemoveTopNote(int queueNum)
-    {
-        noteSpawner.notes[queueNum][0].SetActive(false);
-
-        if (!(noteSpawner.notes[queueNum].Count < 0))
-            noteSpawner.notes[queueNum].RemoveAt(0);
     }
 
     private bool NoteIsOutOfRange(int queueNum)
