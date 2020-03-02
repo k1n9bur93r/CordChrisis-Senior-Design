@@ -4,46 +4,36 @@ using UnityEngine;
 
 public class NoteController : MonoBehaviour
 {
-    public bool pressable;
-    public KeyCode key;
-    private Vector3 originalPos;
-    public int score;
+    public Metronome metronome;
+    public NoteSpawner noteSpawner;
+    public int cutoff;
 
     void Start()
     {
-        originalPos = transform.position;
+
     }
 
     void Update()
     {
-        transform.position += new Vector3(1.0f * Time.deltaTime, 0, 0);
-
-        if (pressable && Input.GetKeyDown(key))
+        for (int i = 0; i < 4; i++)
         {
-            score++;
-            ResetPosition();
+            if (NoteIsOutOfRange(i))
+                RemoveTopNote(i);
         }
     }
 
-    private void ResetPosition()
+    private void RemoveTopNote(int queueNum)
     {
-        transform.position = originalPos;
+        noteSpawner.notes[queueNum][0].SetActive(false);
+
+        if (!(noteSpawner.notes[queueNum].Count < 0))
+            noteSpawner.notes[queueNum].RemoveAt(0);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool NoteIsOutOfRange(int queueNum)
     {
-        if (other.CompareTag("Button"))
-        {
-            pressable = true;
-        }
+        if (noteSpawner.notes[queueNum].Count > 0)
+            return (noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().transform.position.z < cutoff) ? true : false;
+        else return false;
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Button"))
-        {
-            pressable = false;
-        }
-    }
-
 }

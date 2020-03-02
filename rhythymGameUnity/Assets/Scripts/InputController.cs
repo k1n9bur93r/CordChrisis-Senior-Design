@@ -9,14 +9,14 @@ public class InputController : MonoBehaviour
      *  
      *  Key Functions:
      *  
-     *  BeatOnKeyPress()
-     *      - Returns a double indicating the beat that the player has pressed  
+     *  GetBeatOnKeyPress()
+     *      - Returns a double indicating the beat at which the player pressed  
      *      
-     *  DeleteCurrNote()
+     *  RemoveNote()
      *      - Deletes the note block at the top of the queue if the player
      *      has pressed within a valid timing window
      *      
-     *  IsNoteOutOfRange()
+     *  NotIsOutOfRange()
      *      - Returns a boolean indicating if the note block's position has 
      *      moved passed the designated receptor
      */
@@ -33,13 +33,15 @@ public class InputController : MonoBehaviour
     public NoteSpawner noteSpawner;
     public Judgment judge;
     public Metronome metronome;
+
     private double bpm;
     private double beatPressed;
-    private double noteBeat;
-    private List<GameObject>[] noteQueues = new List<GameObject>[4];
-    
+    public double nextBeat;
+
+    // Text for testing
     public Text t1;
     public Text t2;
+    public Text t3;
 
     // Start is called before the first frame update
     void Start()
@@ -51,22 +53,32 @@ public class InputController : MonoBehaviour
         mouseClick = false;
 
         bpm = metronome.tempo;
-        noteQueues = noteSpawner.notes;
-        
-        t1.text = "Key: ";
-        t2.text = "Beat: ";
+        nextBeat = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // looking for the next beat
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < noteSpawner.notes[i].Count; j++)
+                if (noteSpawner.notes[i][j].GetComponent<NoteMovement>().beat < metronome.beatsElapsed)
+                {
+                    nextBeat = noteSpawner.notes[i][j].GetComponent<NoteMovement>().beat;
+                }
+        }
+
+        t3.text = " NextBeatToPress: " + nextBeat.ToString();
+
         if (IsKeyDown())
         {
             SetPressedBtnColor();
-            t2.text = "Beat: " + BeatOnKeyPress().ToString();
+            SetBeatOnKeyPress();
 
-
-
+            // the beat that the player pressed on
+            t2.text = "BeatOnKeyPress: " + GetBeatOnKeyPress().ToString();
+                       
             int beatToCheck = judge.JudgeTiming(beatPressed);
             if (beatToCheck > 0)
             {
@@ -77,7 +89,7 @@ public class InputController : MonoBehaviour
             if (beatToCheck == 0)
             {
                 // player tried to hit too early (before "good" window)
-                // don't delete top note in queue
+                // don't delete
                 
             }
         }
@@ -86,27 +98,41 @@ public class InputController : MonoBehaviour
         {
             SetDefaultBtnColor();
         }
+
+/*        for (int i = 0; i < 4; i++)
+        {
+            if (NoteIsOutOfRange(i))
+                RemoveTopNote(i);
+        }
+*/
     }
 
-    public double BeatOnKeyPress()
+    public double GetBeatOnKeyPress()
     {
-        beatPressed = metronome.beatsElapsed;
         return beatPressed;
     }
 
-    private void DeleteCurrNote()
+    public void SetBeatOnKeyPress()
     {
-
-        noteQueues[0].RemoveAt(0);
-        noteQueues[1].RemoveAt(0);
-        noteQueues[2].RemoveAt(0);
-        noteQueues[3].RemoveAt(0);
+        beatPressed = metronome.beatsElapsed;
     }
 
-    private bool IsNoteOutOfRange()
+    /*
+    private void RemoveTopNote(int queueNum)
     {
-        return false;
+        noteSpawner.notes[queueNum][0].SetActive(false);
+
+        if (!(noteSpawner.notes[queueNum].Count < 0)) 
+            noteSpawner.notes[queueNum].RemoveAt(0);
     }
+
+    private bool NoteIsOutOfRange(int queueNum)
+    {
+        if (noteSpawner.notes[queueNum] != null)
+            return (noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().transform.position.z < 0) ? true : false;
+        else return false;
+    }
+    */
 
     private bool IsKeyDown()
     {
