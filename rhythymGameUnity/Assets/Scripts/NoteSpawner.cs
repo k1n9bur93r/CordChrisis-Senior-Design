@@ -95,7 +95,6 @@ public class NoteSpawner : MonoBehaviour
                         notes[x][y].transform.position.y,
                         (float)( noteReciever.transform.position.z + (curBeat-metronome.beatsElapsed) * noteSpeed )
                     );
-                print(metronome.beatsElapsed);
             }
         }
     }
