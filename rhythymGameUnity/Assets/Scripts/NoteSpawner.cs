@@ -80,9 +80,24 @@ public class NoteSpawner : MonoBehaviour
         curNote.transform.parent = transform;
         curNote.GetComponent<NoteMovement>().metronome = metronome;
         curNote.GetComponent<NoteMovement>().beat = beat;
-
-        
     }
 
+    void FixedUpdate()
+    {
+        for (int x=0;x<4;x++)
+        {
+            for (int y=0;y<notes[x].Count;y++)
+            {
+                double curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
+                notes[x][y].transform.position = new Vector3 
+                    (
+                        notes[x][y].transform.position.x,
+                        notes[x][y].transform.position.y,
+                        (float)( noteReciever.transform.position.z + (curBeat-metronome.beatsElapsed) * noteSpeed )
+                    );
+                print(metronome.beatsElapsed);
+            }
+        }
+    }
 
 }
