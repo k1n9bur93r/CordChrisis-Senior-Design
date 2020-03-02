@@ -17,8 +17,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Dust Cover
+    second: {fileID: 2100000, guid: 1d6f931b32d34eb4fb0da0756597a794, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Green Rim
     second: {fileID: 2100000, guid: f667f6bafb0a5d9479007627a9b64af5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Inner Cone
+    second: {fileID: 2100000, guid: 93a8b560307bebb46b817a087646b985, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -27,8 +37,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Outer Cone
+    second: {fileID: 2100000, guid: 54b9c280c3d9ec14d82cf753c66411a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Red Rim
     second: {fileID: 2100000, guid: 317e148e04872004db54a4b3dd75193c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White Outline
+    second: {fileID: 2100000, guid: f62fc696e9d8a5f4cba63edf661a276d, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

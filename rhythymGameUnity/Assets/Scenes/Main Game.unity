@@ -563,7 +563,7 @@ PrefabInstance:
     - target: {fileID: 3447156844880064054, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064054, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
@@ -794,7 +794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593fb9ee99b77410fb1ec1ce0fe46102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track_file: Text/more
+  track_file: Text/lucky_star
   note_spacing: 5
   track_width: 20
   noteSpawner: {fileID: 789386881}
@@ -922,13 +922,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630905173}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 0, z: -4.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1633799215}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &1633799214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1062,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1403950479}
     m_Modifications:
+    - target: {fileID: 2130661558223192344, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 79a2a74e288b87643a94a7801861bbca, type: 3}
     - target: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_Name
@@ -1125,7 +1130,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: tempo
-      value: 150
+      value: 162
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
