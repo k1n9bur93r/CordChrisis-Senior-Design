@@ -23,6 +23,11 @@ public class NoteSpawner : MonoBehaviour
     //creating the queues for notes
     public List<GameObject>[] notes = new List<GameObject>[4];
 
+    //values for transparency 
+    //(notes phase in from background as if coming from fog)
+    public float transparentStart;
+    public float transparentEnd;
+
     void Start()
     {
            for (int i=0;i<4;i++)
@@ -84,19 +89,41 @@ public class NoteSpawner : MonoBehaviour
 
     void FixedUpdate()
     {
+        //set location of all notes according to beatsElapsed
         for (int x=0;x<4;x++)
         {
             for (int y=0;y<notes[x].Count;y++)
             {
                 double curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
+                float beatDistance = (float)(curBeat-metronome.beatsElapsed) * noteSpeed;
                 notes[x][y].transform.position = new Vector3 
                     (
                         notes[x][y].transform.position.x,
                         notes[x][y].transform.position.y,
-                        (float)( noteReciever.transform.position.z + (curBeat-metronome.beatsElapsed) * noteSpeed )
+                        (float)( noteReciever.transform.position.z + beatDistance )
                     );
+                
+                var curNoteColor = notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
+                //set transparency of note
+                if (beatDistance < transparentEnd)
+                {
+                    curNoteColor.a = 1f;
+                }
+                else if (beatDistance > transparentStart)
+                {
+                    curNoteColor.a = 0f;
+                }
+                else
+                {
+                    curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
+                }
+                notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
             }
+
+            
         }
+
+
     }
 
 }
