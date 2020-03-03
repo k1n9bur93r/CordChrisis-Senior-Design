@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 	With one exception, ALL game logic references to time should be relative to the current beat via beatsElapsed (because we're dealing with objects located by their assigned beat).
 	Getting the current time via Time.time and Time.deltaTime will cause audio desync!
-	The public variable startOffset is the exception to this due to needing a precise time rather than beat.
+	The public variable startOffset is the exception to this due to needing a precise time in the music OUTSIDE of the context of the game.
 	
 	The Time class is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from)
 	due to the latter being tied to the sound system rather than frame updates.
@@ -41,7 +41,7 @@ public class Metronome : MonoBehaviour
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
 
 	/*
-		Initialize all timekeepers to 0.0.
+		Initialize timekeepers.
 		Determine amount of seconds per beat and beats per second.
 	*/
 	
@@ -66,7 +66,7 @@ public class Metronome : MonoBehaviour
 			startSong();
 		}
 
-		if (GetComponent<AudioSource>().isPlaying)
+		if (GetComponent<AudioSource>().isPlaying) // Returns true if PlayScheduled is used, regardless if audio is actually playing
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
 			timeElapsed = AudioSettings.dspTime - songStart;
@@ -74,7 +74,7 @@ public class Metronome : MonoBehaviour
 			timeElapsedLast = timeElapsed;
 
 			// If startDelay has not elapsed yet, do not increase beatsElapsed
-			if (timeElapsed >= startOffset)
+			if (timeElapsed >= startOffset + 1.0)
 			{
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
@@ -93,8 +93,8 @@ public class Metronome : MonoBehaviour
 	{
 		songStart = AudioSettings.dspTime; //- startOffset;
 		timeElapsedLast = AudioSettings.dspTime - songStart;
-		GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately because sounds don't play "immediately", delay it instead
-		//GetComponent<AudioSource>().PlayScheduled(songStart + startOffset);
+		//GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately because sounds don't play "immediately", delay it instead
+		GetComponent<AudioSource>().PlayScheduled(songStart + 1.0);//startOffset);
 	}
 
 	/*

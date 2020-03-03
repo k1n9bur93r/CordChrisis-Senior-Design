@@ -61,6 +61,7 @@ public class MetronomeDebugger : MonoBehaviour
 
 		if ((tickerBeat < 1.0f) && (currentPos != 0))
 		{
+			//Debug.Log(master.beatsElapsed);
 			transform.position = new Vector3(0.5f, 2.0f, 5.0f);
 			currentPos = 0;
 			GetComponent<AudioSource>().Play();
@@ -68,6 +69,7 @@ public class MetronomeDebugger : MonoBehaviour
 
 		else if ((tickerBeat >= 1.0f) && (tickerBeat < 2.0f) && (currentPos != 1))
 		{
+			//Debug.Log(master.beatsElapsed);
 			transform.position = new Vector3(1.5f, 2.0f, 5.0f);
 			currentPos = 1;
 			GetComponent<AudioSource>().Play();
@@ -75,6 +77,7 @@ public class MetronomeDebugger : MonoBehaviour
 
 		else if ((tickerBeat >= 2.0f) && (tickerBeat < 3.0f) && (currentPos != 2))
 		{
+			//Debug.Log(master.beatsElapsed);
 			transform.position = new Vector3(2.5f, 2.0f, 5.0f);
 			currentPos = 2;
 			GetComponent<AudioSource>().Play();
@@ -82,6 +85,7 @@ public class MetronomeDebugger : MonoBehaviour
 
 		else if ((tickerBeat >= 3.0f) && (tickerBeat < 4.0f) && (currentPos != 3))
 		{
+			//Debug.Log(master.beatsElapsed);
 			transform.position = new Vector3(3.5f, 2.0f, 5.0f);
 			currentPos = 3;
 			GetComponent<AudioSource>().Play();

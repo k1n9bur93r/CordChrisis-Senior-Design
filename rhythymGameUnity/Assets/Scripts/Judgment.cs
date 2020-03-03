@@ -77,7 +77,6 @@ public class Judgment : MonoBehaviour
 			else if (Math.Abs(diff) <= beatsGreat) { return 2; }
 			else if (Math.Abs(diff) <= beatsGood) { return 1; }
 			
-			// C# complains if there isn't a return for every possible code path
 			else
 			{
 				Debug.Log("ERROR: JudgeTiming() fell through!");

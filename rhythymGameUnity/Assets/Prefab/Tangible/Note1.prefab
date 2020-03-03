@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90189f67f88cf78579ecf5527c717b8f, type: 2}
+  - {fileID: 2100000, guid: 4f7b3c6116d1ead4981149449af2c3c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,6 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noteSpeed: 0
+  metronome: {fileID: 0}
+  beat: 0
 --- !u!54 &765386518086902401
 Rigidbody:
   m_ObjectHideFlags: 0

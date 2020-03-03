@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Metronome Test.unity
     guid: beb1ca520245d1f43aafe8495853bc12
+  - enabled: 0
+    path: Assets/Scenes/Main Game.unity
+    guid: 39e2ad9cde4791a40adde9c2d5577005
   m_configObjects: {}

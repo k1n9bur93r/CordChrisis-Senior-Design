@@ -372,7 +372,7 @@ PrefabInstance:
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
@@ -592,7 +592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e78bd3cbcd51d4c81da4d5b05e23a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  metronome: {fileID: 251699263}
   noteSpawner: {fileID: 789386881}
   cutoff: -5
 --- !u!1001 &545186393
@@ -695,7 +694,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
@@ -879,6 +878,16 @@ PrefabInstance:
       propertyPath: metronome
       value: 
       objectReference: {fileID: 251699263}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: startDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: noteSpeed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 206241700027747e58ab9410e343c31c, type: 3}
 --- !u!114 &789386881 stripped
@@ -1063,7 +1072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593fb9ee99b77410fb1ec1ce0fe46102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track_file: Text/lucky_star
+  track_file: Text/generic
   note_spacing: 5
   track_width: 20
   noteSpawner: {fileID: 789386881}
@@ -1708,7 +1717,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 79a2a74e288b87643a94a7801861bbca, type: 3}
+      objectReference: {fileID: 8300000, guid: f1807cd308b04504188aa27ae6cd0192, type: 3}
     - target: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_Name
@@ -1912,7 +1921,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
