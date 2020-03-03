@@ -9,13 +9,19 @@ public class JsonTrack
     // Disable warnings of the form:
     // 'JsonTrack.notes' is never assigned to, and will always have its default value null
     // It gets assigned to in the json serializer
+
     #pragma warning disable 0649
+
+    // required
     public double[] beats;
-    public double[] note_lengths;
     public int[] notes;
-    public int[] note_gesture;
     public double tempo;
+
+    // optional
+    public double[] note_lengths;
+    public int[] note_gesture;
     public double offset;
+
     #pragma warning restore 0649
 }
 
@@ -31,13 +37,6 @@ public class Track : MonoBehaviour
     public NoteSpawner noteSpawner;
     public GameObject[] note_game_objects;
 
-    GameObject createNote(Vector3 position) {
-        // creates a note at the given position
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = position;
-        return cube;
-    }
-
     JsonTrack readJsonFile(string filename) {
         // reads a json file and returns the parsed object as JsonTrack object
         string json_string = Resources.Load<TextAsset>(filename).ToString();
@@ -45,20 +44,32 @@ public class Track : MonoBehaviour
         return json;
     }
 
+    JsonTrack validateInput(JsonTrack track) {
+        // variables in c# are automatically initialized,
+        // so they are not explicitly initialized here
+
+        int length = track.notes.Length;
+
+        if (track.notes.Length != track.beats.Length) {
+            throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
+        }
+
+        if (track.note_lengths is null) {
+            track.note_lengths = new double [length];
+        }
+
+        if (track.note_gesture is null) {
+            track.note_gesture = new int [length];
+        }
+
+        return track;
+    }
+
     void Start()
     {
         // read json track file
         json = readJsonFile(track_file);
-
-        if (json.notes.Length != json.beats.Length) {
-            throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
-        }
-
-        // int max_note = 0;
-        // foreach (int note in json.notes) {
-        //     max_note = (max_note > note) ? (max_note) : (note);
-        // }
-        // float note_width = track_width / max_note;
+        json = validateInput(json);
 
         // place notes in the game field
         note_game_objects = new GameObject[json.notes.Length];
@@ -66,8 +77,6 @@ public class Track : MonoBehaviour
             int note = json.notes[i];
             double beat = json.beats[i];
             noteSpawner.spawnNote(note - 1, beat);
-            //Vector3 position = new Vector3((note - 1) * note_width - (track_width - note_width) / 2, -1, ((float) beat) * note_spacing);
-            //note_game_objects[i] = createNote(position);
         }
     }
 }
