@@ -11,13 +11,11 @@ public class JsonTrack
     // It gets assigned to in the json serializer
     #pragma warning disable 0649
     public double[] beats;
+    public double[] note_lengths;
     public int[] notes;
     public double tempo;
     public double offset;
-
-#pragma warning restore 0649
-
-
+    #pragma warning restore 0649
 }
 
 public class Track : MonoBehaviour
@@ -55,11 +53,11 @@ public class Track : MonoBehaviour
             throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
         }
 
-        int max_note = 0;
-        foreach (int note in json.notes) {
-            max_note = (max_note > note) ? (max_note) : (note);
-        }
-        float note_width = track_width / max_note;
+        // int max_note = 0;
+        // foreach (int note in json.notes) {
+        //     max_note = (max_note > note) ? (max_note) : (note);
+        // }
+        // float note_width = track_width / max_note;
 
         // place notes in the game field
         note_game_objects = new GameObject[json.notes.Length];
