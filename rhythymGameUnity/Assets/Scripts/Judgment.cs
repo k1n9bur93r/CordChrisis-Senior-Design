@@ -12,8 +12,8 @@ using UnityEngine.UI;
 	The difference between these two elements is used to rate the user's timing.
 
 	Important public methods:
-		- bool JudgeTiming(): For use by NoteController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed, and returns a value based on timing.
-		- bool CheckMiss(): For use by NoteController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
+		- bool JudgeTiming(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed, and returns a value based on timing.
+		- bool CheckMiss(): For use by InputController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
 */
 
 public class Judgment : MonoBehaviour
@@ -56,7 +56,7 @@ public class Judgment : MonoBehaviour
 	/*
 		When a key is pressed, judge the player's timing by checking the beat of the note sent from the queue versus the current beat.
 
-		Returns a number to pass back to NoteController:
+		Returns a number to pass back to InputController:
 			- 1 to 4: The note was hit, delete it from the queue, score accordingly
 			- 0: The note was hit too early, don't delete from the queue
 	*/
@@ -71,7 +71,7 @@ public class Judgment : MonoBehaviour
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
-		Debug.Log("Input beat: + " + currentBeat + " | This note's beat: " + noteBeat + " | diff: " + diff);
+		Debug.Log("Input beat: " + currentBeat + " | Note beat: " + noteBeat + " | Difference: " + diff);
 
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
@@ -83,7 +83,6 @@ public class Judgment : MonoBehaviour
 			
 			else
 			{
-				//Debug.Log("FALLTHROUGH: diff: " + diff + " | -beatsGood: " + -beatsGood);
 				Debug.Log("ERROR: JudgeTiming() fell through!");
 				return 0;
 			}
