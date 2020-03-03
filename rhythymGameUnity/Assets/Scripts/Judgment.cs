@@ -65,9 +65,13 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		double currentBeat = master.beatsElapsed;
+		//Debug.Log("curr: " + master.beatsElapsed + " | old: " + master.beatsElapsedOld);
+
+		double currentBeat = master.beatsElapsed; //master.beatsElapsedOld;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
+
+		Debug.Log("Input beat: + " + currentBeat + " | This note's beat: " + noteBeat + " | diff: " + diff);
 
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
@@ -79,6 +83,7 @@ public class Judgment : MonoBehaviour
 			
 			else
 			{
+				//Debug.Log("FALLTHROUGH: diff: " + diff + " | -beatsGood: " + -beatsGood);
 				Debug.Log("ERROR: JudgeTiming() fell through!");
 				return 0;
 			}
@@ -87,6 +92,7 @@ public class Judgment : MonoBehaviour
 		// The player tried to hit a note before it passed the early "Good" window
 		else
 		{
+			//Debug.Log("diff: " + diff + " | -beatsGood: " + -beatsGood);
 			return 0;
 		}
 
