@@ -125,8 +125,8 @@ public class MetronomeDebugger : MonoBehaviour
 
 	private void PrintStats()
 	{
-		tempoText.text = "Tempo: " + master.tempo + " (" + master.secPerBeat + " sec/beat)";
-		timeElapsedText.text = "Time: " + master.getTimeElapsedDEBUG();//Time.time;
+		//tempoText.text = "Tempo: " + master.tempo + " (" + master.secPerBeat + " sec/beat)";
+		//timeElapsedText.text = "Time: " + master.getTimeElapsedDEBUG();//Time.time;
 		beatsElapsedText.text = "Beat: " + master.beatsElapsed;
 	}
 
