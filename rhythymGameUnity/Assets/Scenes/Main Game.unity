@@ -797,7 +797,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' Key: '
+  m_Text: 'Key: '
 --- !u!222 &621184327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1159,7 +1159,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' NextBeatToPress: '
+  m_Text: 'NextBeatToPress: '
 --- !u!222 &1331966832
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1620,7 +1620,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' HitResult: '
+  m_Text: 'HitResult: '
 --- !u!222 &1738733490
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1697,7 +1697,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ' BeatOnKeyPress: '
+  m_Text: 'BeatOnKeyPress: '
 --- !u!222 &1916113840
 CanvasRenderer:
   m_ObjectHideFlags: 0
