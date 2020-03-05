@@ -27,7 +27,7 @@ using UnityEngine.UI;
 
 	TO DO:
 		- Arbitrary seeking/playback
-		- Get metadata from JSON files
+		- See if anything can be done about sound latency
 */
 
 public class Metronome : MonoBehaviour
@@ -60,7 +60,7 @@ public class Metronome : MonoBehaviour
 		beatsElapsed = 0.0;
 		timeElapsed = 0.0;
 
-		//GetSongData();
+		//GetSongData(); // Game manager?
 		//UpdateRates();
 	}
 

@@ -20,11 +20,10 @@ public class Judgment : MonoBehaviour
 {
 	public Metronome master;
 
-	// Timing window measurements are on the assumption that that the game runs at 60 FPS. Measurements are made in fractions of a second (ie: 1.0/60.0 = 1/60th of a second)
-	private const double framesMarvelous = 1.0 / 60.0;
-	private const double framesPerfect = 2.0 / 60.0;
-	private const double framesGreat = 5.0 / 60.0;
-	private const double framesGood = 12.0 / 60.0;
+	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
+	private const double framesPerfect = 2.0 / 60.0; // +/-33.3ms
+	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms // originally 50.0ms
+	private const double framesGood = 12.0 / 60.0; // +/-200.0ms // originally 100.0ms
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -39,6 +38,7 @@ public class Judgment : MonoBehaviour
 	void Update()
 	{
 		//CalculateWindows();
+		//PrintWindows();
 	}
 
 	/*
@@ -65,13 +65,11 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		//Debug.Log("curr: " + master.beatsElapsed + " | old: " + master.beatsElapsedOld);
-
 		double currentBeat = master.beatsElapsed; //master.beatsElapsedOld;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
-		Debug.Log("Input beat: " + currentBeat + " | Note beat: " + noteBeat + " | Difference: " + diff);
+		//Debug.Log("Input beat: " + currentBeat + " | Note beat: " + noteBeat + " | Difference: " + diff);
 
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
@@ -116,5 +114,20 @@ public class Judgment : MonoBehaviour
 
 		// Otherwise, do not delete from the queue
 		else { return false; }
+	}
+
+	/*
+		Debug function to check the size of the timing windows.
+	*/
+
+	private void PrintWindows()
+	{
+		string judgmentWindows =
+			"Marvelous: +/- " + beatsMarvelous + " beats (+/- " + framesMarvelous + " sec)\n"
+			+ "Excellent: +/- " + beatsPerfect + " beats (+/- " + framesPerfect + " sec)\n"
+			+ "Great: +/- " + beatsGreat + " beats (+/- " + framesGreat + " sec)\n"
+			+ "Good: +/- " + beatsGood + " beats (+/- " + framesGood + " sec)";
+
+		Debug.Log(judgmentWindows);
 	}
 }
