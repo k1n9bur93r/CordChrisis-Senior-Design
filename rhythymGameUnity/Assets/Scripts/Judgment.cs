@@ -22,22 +22,17 @@ public class Judgment : MonoBehaviour
 
 	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
 	private const double framesPerfect = 2.0 / 60.0; // +/-33.3ms
-	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms // originally 50.0ms
-	private const double framesGood = 12.0 / 60.0; // +/-200.0ms // originally 100.0ms
+	private const double framesGreat = 4.0 / 60.0; // +/-66.7ms
+	private const double framesGood = 6.0 / 60.0; // +/-100.0ms
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
 	private double beatsGreat;
 	private double beatsGood;
 
-	//private int missCount;
-	//private int hitsMarvelous;
-
 	void Start()
 	{
 		//CalculateWindows();
-		//missCount = 0;
-		//hitsMarvelous = 0;
 	}
 
 	void Update()
@@ -74,15 +69,32 @@ public class Judgment : MonoBehaviour
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
-		//Debug.Log("Input beat: " + currentBeat + " | Note beat: " + noteBeat + " | Difference: " + diff);
+		// ---
 
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
 		{
-			if (Math.Abs(diff) <= beatsMarvelous) { return 4; } //{ hitsMarvelous++; Debug.Log(hitsMarvelous); return 4; }
-			else if (Math.Abs(diff) <= beatsPerfect) { return 3; }
-			else if (Math.Abs(diff) <= beatsGreat) { return 2; }
-			else if (Math.Abs(diff) <= beatsGood) { return 1; }
+			if (Math.Abs(diff) <= beatsMarvelous)
+			{
+				return 4;
+			}
+
+			else if (Math.Abs(diff) <= beatsPerfect)
+			{
+				JudgeLean(diff);
+				return 3;
+			}
+			else if (Math.Abs(diff) <= beatsGreat)
+			{
+				JudgeLean(diff);
+				return 3;
+			}
+
+			else if (Math.Abs(diff) <= beatsGood)
+			{
+				JudgeLean(diff);
+				return 3;
+			}
 			
 			else
 			{
@@ -94,7 +106,6 @@ public class Judgment : MonoBehaviour
 		// The player tried to hit a note before it passed the early "Good" window
 		else
 		{
-			//Debug.Log("diff: " + diff + " | -beatsGood: " + -beatsGood);
 			return 0;
 		}
 
@@ -102,11 +113,18 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
+		Check if the non-best input hit the early or late side of the timing window.
+	*/
+
+	private void JudgeLean(double diff)
+	{
+		if (diff < 0.0) { ; } // Something happens
+		else if (diff > 0.0) { ; } // Something happens
+	}
+
+	/*
 		Check if the note at the top of the queue has gone unpressed for too long.
 		Returns true if its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
-
-		ISSUES:
-			- InputController calls this 4 times per miss!
 	*/
 
 	public bool CheckMiss(double receivedBeat)
