@@ -22,8 +22,8 @@ public class Judgment : MonoBehaviour
 
 	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
 	private const double framesPerfect = 2.0 / 60.0; // +/-33.3ms
-	private const double framesGreat = 4.0 / 60.0; // +/-66.7ms
-	private const double framesGood = 6.0 / 60.0; // +/-100.0ms
+	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms
+	private const double framesGood = 12.0 / 60.0; // +/-200.0ms
 
 	private double beatsMarvelous;
 	private double beatsPerfect;

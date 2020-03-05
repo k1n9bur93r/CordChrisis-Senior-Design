@@ -898,6 +898,11 @@ PrefabInstance:
       propertyPath: transparentEnd
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: speedMod
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 206241700027747e58ab9410e343c31c, type: 3}
 --- !u!114 &789386881 stripped
@@ -1798,6 +1803,11 @@ PrefabInstance:
       propertyPath: meta
       value: 
       objectReference: {fileID: 1285531791}
+    - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+        type: 3}
+      propertyPath: tempo
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
 --- !u!4 &1946964992 stripped

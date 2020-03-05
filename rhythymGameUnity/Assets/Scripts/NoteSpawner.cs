@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class NoteSpawner : MonoBehaviour
 {
+    private const float NOTE_PADDING = 2.0f;
+
     //holds all 4 note prefabs so they may be spawned
     public List<GameObject> noteObjects;
     public List<float> noteXoffsets;
     //units of movement per second
-    public float noteSpeed;
+    public float speedMod;
     //where the notes start from
     public float startDistance;
-    //how long until the note hits the reciever - this gets computed from startDistance and noteSpeed
+    //how long until the note hits the reciever - this gets computed from startDistance and speedMod
     private float noteTravelTime;
     //what y position the notes should be spawned at
     public float yOffset;
@@ -37,7 +39,7 @@ public class NoteSpawner : MonoBehaviour
 
         bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
-        noteTravelTime = startDistance / noteSpeed;
+        noteTravelTime = startDistance / speedMod;
         print("The first notes should play in " + noteTravelTime + " seconds");
     }
 
@@ -69,7 +71,7 @@ public class NoteSpawner : MonoBehaviour
         //convert beat to time
         time = (60 / bpm) * beat;
         //convert time to distance
-        distance = (time * noteSpeed);
+        distance = (time * speedMod);
         return (float)distance;
     }
 
@@ -81,7 +83,7 @@ public class NoteSpawner : MonoBehaviour
         
         notes[noteNum].Add(curNote.gameObject);
 
-        curNote.GetComponent<NoteMovement>().noteSpeed = noteSpeed;
+        curNote.GetComponent<NoteMovement>().speedMod = speedMod;
         curNote.transform.parent = transform;
         curNote.GetComponent<NoteMovement>().metronome = metronome;
         curNote.GetComponent<NoteMovement>().beat = beat;
@@ -95,7 +97,7 @@ public class NoteSpawner : MonoBehaviour
             for (int y=0;y<notes[x].Count;y++)
             {
                 double curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
-                float beatDistance = (float)(curBeat-metronome.beatsElapsed) * noteSpeed;
+                float beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
                 notes[x][y].transform.position = new Vector3 
                     (
                         notes[x][y].transform.position.x,
