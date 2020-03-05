@@ -30,9 +30,14 @@ public class Judgment : MonoBehaviour
 	private double beatsGreat;
 	private double beatsGood;
 
+	//private int missCount;
+	//private int hitsMarvelous;
+
 	void Start()
 	{
 		//CalculateWindows();
+		//missCount = 0;
+		//hitsMarvelous = 0;
 	}
 
 	void Update()
@@ -74,7 +79,7 @@ public class Judgment : MonoBehaviour
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
 		{
-			if (Math.Abs(diff) <= beatsMarvelous) { return 4; }
+			if (Math.Abs(diff) <= beatsMarvelous) { return 4; } //{ hitsMarvelous++; Debug.Log(hitsMarvelous); return 4; }
 			else if (Math.Abs(diff) <= beatsPerfect) { return 3; }
 			else if (Math.Abs(diff) <= beatsGreat) { return 2; }
 			else if (Math.Abs(diff) <= beatsGood) { return 1; }
@@ -99,6 +104,9 @@ public class Judgment : MonoBehaviour
 	/*
 		Check if the note at the top of the queue has gone unpressed for too long.
 		Returns true if its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
+
+		ISSUES:
+			- InputController calls this 4 times per miss!
 	*/
 
 	public bool CheckMiss(double receivedBeat)
@@ -110,7 +118,7 @@ public class Judgment : MonoBehaviour
 		double diff = currentBeat - noteBeat;
 
 		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
-		if (diff > beatsGood) { return true; }
+		if (diff > beatsGood) { return true; } //{ missCount++; Debug.Log("Miss! (" + missCount + ")"); return true; }
 
 		// Otherwise, do not delete from the queue
 		else { return false; }

@@ -123,14 +123,15 @@ public class InputController : MonoBehaviour
         }
 
         // remove those notes who share the beat if they were missed
-        for (int i = 0; i < 4; i++)
+        if (notesOnNextBeat[queueNum])
         {
-            if (judge.CheckMiss(nextBeat) && notesOnNextBeat[i])
+            if (judge.CheckMiss(nextBeat))
             {
-                noteController.RemoveTopNote(i);
-                SetHitGrade(0);
+                noteController.RemoveTopNote(queueNum);
+                SetHitGrade(0); 
             }
         }
+
         t4.text = "HitResult: " + GetHitGrade().ToString();
     }
 
