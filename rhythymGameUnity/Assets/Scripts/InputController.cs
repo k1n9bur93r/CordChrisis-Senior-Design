@@ -43,7 +43,7 @@ public class InputController : MonoBehaviour
     public Text t1;
     public Text t2;
     public Text t3;
-    public Text t4;
+    //public Text t4;
 
     // Start is called before the first frame update
     void Start()
@@ -105,15 +105,13 @@ public class InputController : MonoBehaviour
             // check if it's the right queue before grading the attempt
             if (notesOnNextBeat[queueNum])
             {
-                int hitResult = judge.JudgeTiming(nextBeat);
-
-                if (hitResult > 0)
+                if (judge.CheckHit(nextBeat))
                 {
                     // player hit within valid window, delete top note from queue
                     noteController.RemoveTopNote(queueNum);
                 }
 
-                SetHitGrade(hitResult);
+                //SetHitGrade(hitResult);
             }
         }
 
@@ -132,7 +130,7 @@ public class InputController : MonoBehaviour
             }
         }
 
-        t4.text = "HitResult: " + GetHitGrade().ToString();
+        //t4.text = "HitResult: " + GetHitGrade().ToString();
     }
 
     public int GetHitGrade()

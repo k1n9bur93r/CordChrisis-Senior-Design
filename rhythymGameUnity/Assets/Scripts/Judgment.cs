@@ -8,22 +8,28 @@ using UnityEngine.UI;
 	> Judgment class
 
 	The timing aspect of the hit detection system.
-	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
-	The difference between these two elements is used to rate the user's timing.
+	Compares the time of the user's input versus the time of the note in question
 
 	Important public methods:
-		- bool JudgeTiming(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed, and returns a value based on timing.
+		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
 		- bool CheckMiss(): For use by InputController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
 */
 
 public class Judgment : MonoBehaviour
 {
 	public Metronome master;
+	//public Scoreboard stats;
 
+	// Placeholders until Scoreboard/something else implements UI!
+	public Text ratingText;
+	public Text leanText;
+
+	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+	
 	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
 	private const double framesPerfect = 2.0 / 60.0; // +/-33.3ms
-	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms
-	private const double framesGood = 12.0 / 60.0; // +/-200.0ms
+	private const double framesGreat = 3.0 / 60.0; // +/-50.0ms
+	private const double framesGood = 6.0 / 60.0; // +/-100.0ms
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -33,6 +39,8 @@ public class Judgment : MonoBehaviour
 	void Start()
 	{
 		//CalculateWindows();
+		ratingText.text = "";
+		leanText.text = "";
 	}
 
 	void Update()
@@ -55,13 +63,10 @@ public class Judgment : MonoBehaviour
 
 	/*
 		When a key is pressed, judge the player's timing by checking the beat of the note sent from the queue versus the current beat.
-
-		Returns a number to pass back to InputController:
-			- 1 to 4: The note was hit, delete it from the queue, score accordingly
-			- 0: The note was hit too early, don't delete from the queue
+		Returns true if the note was inside a timing window during the input.
 	*/
 
-	public int JudgeTiming(double receivedBeat)
+	public bool CheckHit(double receivedBeat)
 	{
 		CalculateWindows();
 
@@ -76,37 +81,34 @@ public class Judgment : MonoBehaviour
 		{
 			if (Math.Abs(diff) <= beatsMarvelous)
 			{
-				return 4;
+				ratingText.text = "Marvelous!!!";
+				leanText.text = "";
+				return true;
 			}
 
-			else if (Math.Abs(diff) <= beatsPerfect)
-			{
-				JudgeLean(diff);
-				return 3;
-			}
-			else if (Math.Abs(diff) <= beatsGreat)
-			{
-				JudgeLean(diff);
-				return 3;
-			}
-
-			else if (Math.Abs(diff) <= beatsGood)
-			{
-				JudgeLean(diff);
-				return 3;
-			}
-			
 			else
 			{
-				Debug.Log("ERROR: JudgeTiming() fell through!");
-				return 0;
+				// Pass to some Scoreboard function later
+				if (Math.Abs(diff) <= beatsPerfect) { ratingText.text = "Excellent!!"; }
+				else if (Math.Abs(diff) <= beatsGreat) { ratingText.text = "Great!"; }
+				else if (Math.Abs(diff) <= beatsGood) { ratingText.text = "Good"; }
+				
+				else
+				{
+					Debug.Log("ERROR: CheckHit() fell through!");
+					Debug.Log("diff = currentBeat - noteBeat: " + diff + " = " + " currentBeat - " + " noteBeat");
+					return false;
+				}
+
+				CheckLean(diff);
+				return true;
 			}
 		}
 
 		// The player tried to hit a note before it passed the early "Good" window
 		else
 		{
-			return 0;
+			return false;
 		}
 
 		// It should not be possible to hit beyond the late "Good" window, because the note should be deleted from the queue by now
@@ -116,10 +118,10 @@ public class Judgment : MonoBehaviour
 		Check if the non-best input hit the early or late side of the timing window.
 	*/
 
-	private void JudgeLean(double diff)
+	private void CheckLean(double diff)
 	{
-		if (diff < 0.0) { ; } // Something happens
-		else if (diff > 0.0) { ; } // Something happens
+		if (diff < 0.0) { leanText.text = "EARLY"; } // Pass to some Scoreboard function later
+		else if (diff > 0.0) { leanText.text = "LATE"; } // This too
 	}
 
 	/*
@@ -136,7 +138,14 @@ public class Judgment : MonoBehaviour
 		double diff = currentBeat - noteBeat;
 
 		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
-		if (diff > beatsGood) { return true; } //{ missCount++; Debug.Log("Miss! (" + missCount + ")"); return true; }
+		if (diff > beatsGood)
+		{
+			// Pass to some Scoreboard function later
+			//stats.UpdateScoreTap(Ratings.Miss);
+			ratingText.text = "Miss...";
+			leanText.text = "";
+			return true;
+		}
 
 		// Otherwise, do not delete from the queue
 		else { return false; }
