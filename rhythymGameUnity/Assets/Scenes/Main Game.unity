@@ -566,6 +566,11 @@ PrefabInstance:
       propertyPath: statsText
       value: 
       objectReference: {fileID: 625745372}
+    - target: {fileID: 9188857543302376157, guid: 071824e82f75869448cf1a41ea47e290,
+        type: 3}
+      propertyPath: clock
+      value: 
+      objectReference: {fileID: 251699263}
     - target: {fileID: 9188857543302376158, guid: 071824e82f75869448cf1a41ea47e290,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1065,7 +1070,7 @@ PrefabInstance:
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: transparentStart
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
@@ -1076,6 +1081,26 @@ PrefabInstance:
         type: 3}
       propertyPath: speedMod
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: noteXoffsets.Array.data[0]
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: noteXoffsets.Array.data[1]
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: noteXoffsets.Array.data[2]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: noteXoffsets.Array.data[3]
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 206241700027747e58ab9410e343c31c, type: 3}

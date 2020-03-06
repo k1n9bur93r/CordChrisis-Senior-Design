@@ -17,7 +17,7 @@ using UnityEngine.UI;
 
 public class Judgment : MonoBehaviour
 {
-	public Metronome master;
+	public Metronome clock;
 	//public Scoreboard stats;
 
 	// Placeholders until Scoreboard/something else implements UI!
@@ -32,11 +32,13 @@ public class Judgment : MonoBehaviour
 	// End of placeholders
 
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
-	
-	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
-	private const double framesPerfect = 2.0 / 60.0; // +/-33.4ms
-	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms
-	private const double framesGood = 12.0 / 60.0; // +/-200.0ms
+
+	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
+
+	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
+	private const double FRAMES_PERFECT = 45.0 / 1000.0;
+	private const double FRAMES_GREAT = 90.0 / 1000.0;
+	private const double FRAMES_GOOD = 180.0 / 1000.0;
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -71,10 +73,10 @@ public class Judgment : MonoBehaviour
 
 	private void CalculateWindows()
 	{
-		beatsMarvelous = master.beatsPerSec * framesMarvelous;
-		beatsPerfect = master.beatsPerSec * framesPerfect;
-		beatsGreat = master.beatsPerSec * framesGreat;
-		beatsGood = master.beatsPerSec * framesGood;
+		beatsMarvelous = clock.beatsPerSec * FRAMES_MARVELOUS;
+		beatsPerfect = clock.beatsPerSec * FRAMES_PERFECT;
+		beatsGreat = clock.beatsPerSec * FRAMES_GREAT;
+		beatsGood = clock.beatsPerSec * FRAMES_GOOD;
 	}
 
 	/*
@@ -86,7 +88,7 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		double currentBeat = master.beatsElapsed; //master.beatsElapsedOld;
+		double currentBeat = clock.beatsElapsed; //clock.beatsElapsedOld;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
@@ -133,7 +135,7 @@ public class Judgment : MonoBehaviour
 				else
 				{
 					Debug.Log("ERROR: CheckHit() fell through!");
-					Debug.Log("diff = currentBeat - noteBeat: " + diff + " = " + currentBeat + " - " + noteBeat);
+					Debug.Log("currentBeat: " + currentBeat + " | noteBeat: " + noteBeat + " | diff: " + diff);
 
 					return false;
 				}
@@ -180,7 +182,7 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		double currentBeat = master.beatsElapsed;
+		double currentBeat = clock.beatsElapsed;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
@@ -212,10 +214,10 @@ public class Judgment : MonoBehaviour
 	private void PrintWindows()
 	{
 		string judgmentWindows =
-			"Marvelous: +/- " + beatsMarvelous + " beats (+/- " + framesMarvelous + " sec)\n"
-			+ "Excellent: +/- " + beatsPerfect + " beats (+/- " + framesPerfect + " sec)\n"
-			+ "Great: +/- " + beatsGreat + " beats (+/- " + framesGreat + " sec)\n"
-			+ "Good: +/- " + beatsGood + " beats (+/- " + framesGood + " sec)";
+			"Marvelous: +/- " + beatsMarvelous + " beats (+/- " + FRAMES_MARVELOUS + " sec)\n"
+			+ "Excellent: +/- " + beatsPerfect + " beats (+/- " + FRAMES_PERFECT + " sec)\n"
+			+ "Great: +/- " + beatsGreat + " beats (+/- " + FRAMES_GREAT + " sec)\n"
+			+ "Good: +/- " + beatsGood + " beats (+/- " + FRAMES_GOOD + " sec)";
 
 		Debug.Log(judgmentWindows);
 	}
