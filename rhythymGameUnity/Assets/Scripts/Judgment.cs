@@ -23,13 +23,20 @@ public class Judgment : MonoBehaviour
 	// Placeholders until Scoreboard/something else implements UI!
 	public Text ratingText;
 	public Text leanText;
+	public Text comboText;
+	public Text statsText;
+	
+	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesEarly, notesLate;
+	private int combo;
+	// End of placeholders
 
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
 	
-	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
-	private const double framesPerfect = 2.0 / 60.0; // +/-33.3ms
-	private const double framesGreat = 3.0 / 60.0; // +/-50.0ms
-	private const double framesGood = 6.0 / 60.0; // +/-100.0ms
+	private const double framesMarvelous = 1.0 / 60.0;
+	private const double framesPerfect = 2.0 / 60.0;
+	private const double framesGreat = 6.0 / 60.0;
+	private const double framesGood = 12.0 / 60.0;
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -41,12 +48,21 @@ public class Judgment : MonoBehaviour
 		//CalculateWindows();
 		ratingText.text = "";
 		leanText.text = "";
+		comboText.text = "";
+
+		notesMarvelous = 0;
+		notesPerfect = 0;
+		notesGreat = 0;
+		notesGood = 0;
+		notesMiss = 0;
+		combo = 0;
 	}
 
 	void Update()
 	{
 		//CalculateWindows();
 		//PrintWindows();
+		DrawStats();
 	}
 
 	/*
@@ -83,15 +99,17 @@ public class Judgment : MonoBehaviour
 			{
 				ratingText.text = "Marvelous!!!";
 				leanText.text = "";
+				notesMarvelous++;
+				combo++;
 				return true;
 			}
 
 			else
 			{
 				// Pass to some Scoreboard function later
-				if (Math.Abs(diff) <= beatsPerfect) { ratingText.text = "Excellent!!"; }
-				else if (Math.Abs(diff) <= beatsGreat) { ratingText.text = "Great!"; }
-				else if (Math.Abs(diff) <= beatsGood) { ratingText.text = "Good"; }
+				if (Math.Abs(diff) <= beatsPerfect) { ratingText.text = "Excellent!!"; notesPerfect++; }
+				else if (Math.Abs(diff) <= beatsGreat) { ratingText.text = "Great!"; notesGreat++; }
+				else if (Math.Abs(diff) <= beatsGood) { ratingText.text = "Good"; notesGood++; }
 				
 				else
 				{
@@ -100,6 +118,7 @@ public class Judgment : MonoBehaviour
 					return false;
 				}
 
+				combo++;
 				CheckLean(diff);
 				return true;
 			}
@@ -120,8 +139,8 @@ public class Judgment : MonoBehaviour
 
 	private void CheckLean(double diff)
 	{
-		if (diff < 0.0) { leanText.text = "EARLY"; } // Pass to some Scoreboard function later
-		else if (diff > 0.0) { leanText.text = "LATE"; } // This too
+		if (diff < 0.0) { leanText.text = "EARLY"; notesEarly++; } // Pass to some Scoreboard function later
+		else if (diff > 0.0) { leanText.text = "LATE"; notesLate++; } // This too
 	}
 
 	/*
@@ -143,7 +162,10 @@ public class Judgment : MonoBehaviour
 			// Pass to some Scoreboard function later
 			//stats.UpdateScoreTap(Ratings.Miss);
 			ratingText.text = "Miss...";
+			comboText.text = "";
 			leanText.text = "";
+			notesMiss++;
+			combo = 0;
 			return true;
 		}
 
@@ -152,7 +174,7 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Debug function to check the size of the timing windows.
+		Debug function to print the size of the timing windows.
 	*/
 
 	private void PrintWindows()
@@ -164,5 +186,23 @@ public class Judgment : MonoBehaviour
 			+ "Good: +/- " + beatsGood + " beats (+/- " + framesGood + " sec)";
 
 		Debug.Log(judgmentWindows);
+	}
+
+	/*
+		Debug function to display play statistics.
+	*/
+
+	private void DrawStats()
+	{
+		if (combo > 0) { comboText.text = combo.ToString(); }
+
+		statsText.text =
+			notesMarvelous.ToString() + " Marvelous\n"
+			+ notesPerfect.ToString() + " Excellent\n"
+			+ notesGreat.ToString() + " Great\n"
+			+ notesGood.ToString() + " Good\n"
+			+ notesMiss.ToString() + " Miss\n\n"
+			+ notesEarly.ToString() + " Early\n"
+			+ notesLate.ToString() + " Late";
 	}
 }
