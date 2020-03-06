@@ -33,10 +33,10 @@ public class Judgment : MonoBehaviour
 
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
 	
-	private const double framesMarvelous = 1.0 / 60.0;
-	private const double framesPerfect = 2.0 / 60.0;
-	private const double framesGreat = 6.0 / 60.0;
-	private const double framesGood = 12.0 / 60.0;
+	private const double framesMarvelous = 1.0 / 60.0; // +/-16.7ms
+	private const double framesPerfect = 2.0 / 60.0; // +/-33.4ms
+	private const double framesGreat = 6.0 / 60.0; // +/-100.0ms
+	private const double framesGood = 12.0 / 60.0; // +/-200.0ms
 
 	private double beatsMarvelous;
 	private double beatsPerfect;
@@ -101,24 +101,43 @@ public class Judgment : MonoBehaviour
 				leanText.text = "";
 				notesMarvelous++;
 				combo++;
+				
 				return true;
 			}
 
 			else
 			{
 				// Pass to some Scoreboard function later
-				if (Math.Abs(diff) <= beatsPerfect) { ratingText.text = "Excellent!!"; notesPerfect++; }
-				else if (Math.Abs(diff) <= beatsGreat) { ratingText.text = "Great!"; notesGreat++; }
-				else if (Math.Abs(diff) <= beatsGood) { ratingText.text = "Good"; notesGood++; }
+				if (Math.Abs(diff) <= beatsPerfect)
+				{
+					ratingText.text = "Excellent!!";
+					notesPerfect++; 
+					combo++;
+				}
+
+				else if (Math.Abs(diff) <= beatsGreat)
+				{
+					ratingText.text = "Great!";
+					notesGreat++;
+					combo++;
+				}
+				
+				else if (Math.Abs(diff) <= beatsGood)
+				{
+					combo = 0;
+					comboText.text = "";
+					ratingText.text = "Good";
+					notesGood++;
+				}
 				
 				else
 				{
 					Debug.Log("ERROR: CheckHit() fell through!");
-					Debug.Log("diff = currentBeat - noteBeat: " + diff + " = " + " currentBeat - " + " noteBeat");
+					Debug.Log("diff = currentBeat - noteBeat: " + diff + " = " + currentBeat + " - " + noteBeat);
+
 					return false;
 				}
 
-				combo++;
 				CheckLean(diff);
 				return true;
 			}
@@ -139,8 +158,17 @@ public class Judgment : MonoBehaviour
 
 	private void CheckLean(double diff)
 	{
-		if (diff < 0.0) { leanText.text = "EARLY"; notesEarly++; } // Pass to some Scoreboard function later
-		else if (diff > 0.0) { leanText.text = "LATE"; notesLate++; } // This too
+		if (diff < 0.0)  // Pass to some Scoreboard function later
+		{ 
+			leanText.text = "EARLY";
+			notesEarly++;
+		}
+
+		else if (diff > 0.0)
+		{
+			leanText.text = "LATE";
+			notesLate++; // This too
+		}
 	}
 
 	/*
@@ -166,11 +194,15 @@ public class Judgment : MonoBehaviour
 			leanText.text = "";
 			notesMiss++;
 			combo = 0;
+
 			return true;
 		}
 
 		// Otherwise, do not delete from the queue
-		else { return false; }
+		else
+		{
+			return false;
+		}
 	}
 
 	/*
