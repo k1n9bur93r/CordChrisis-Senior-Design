@@ -28,7 +28,7 @@ public class Judgment : MonoBehaviour
 	
 	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
 	private int notesEarly, notesLate;
-	private int combo;
+	private int combo, comboMax;
 	// End of placeholders
 
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
@@ -40,10 +40,7 @@ public class Judgment : MonoBehaviour
 	private const double FRAMES_GREAT = 90.0 / 1000.0;
 	private const double FRAMES_GOOD = 180.0 / 1000.0;
 
-	private double beatsMarvelous;
-	private double beatsPerfect;
-	private double beatsGreat;
-	private double beatsGood;
+	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
 	void Start()
 	{
@@ -58,6 +55,7 @@ public class Judgment : MonoBehaviour
 		notesGood = 0;
 		notesMiss = 0;
 		combo = 0;
+		comboMax = 0;
 	}
 
 	void Update()
@@ -228,7 +226,15 @@ public class Judgment : MonoBehaviour
 
 	private void DrawStats()
 	{
-		if (combo > 0) { comboText.text = combo.ToString(); }
+		if (combo > 0)
+		{
+			comboText.text = combo.ToString();
+		}
+
+		if (comboMax < combo)
+		{
+			comboMax = combo;
+		}
 
 		statsText.text =
 			notesMarvelous.ToString() + " Marvelous\n"
@@ -237,6 +243,7 @@ public class Judgment : MonoBehaviour
 			+ notesGood.ToString() + " Good\n"
 			+ notesMiss.ToString() + " Miss\n\n"
 			+ notesEarly.ToString() + " Early\n"
-			+ notesLate.ToString() + " Late";
+			+ notesLate.ToString() + " Late\n\n"
+			+ comboMax.ToString() + " Max Combo";
 	}
 }
