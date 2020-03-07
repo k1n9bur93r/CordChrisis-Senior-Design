@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - DEffect: -0.00007846579
+    - DEffect: 1.1
     - NoiseLevel: 30
     - Vector1_ACF8B640: 0
     - Vector1_C63F083: 30
