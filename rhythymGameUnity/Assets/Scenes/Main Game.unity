@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593fb9ee99b77410fb1ec1ce0fe46102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track_file: Text/lucky_star_s
+  track_file: Text/staircase
   note_spacing: 0
   track_width: 32
   noteSpawner: {fileID: 789386881}

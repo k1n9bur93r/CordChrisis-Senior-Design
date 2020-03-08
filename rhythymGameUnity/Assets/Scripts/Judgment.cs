@@ -29,9 +29,11 @@ public class Judgment : MonoBehaviour
 	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
 	private int notesEarly, notesLate;
 	private int combo, comboMax;
+	private int score;
 	// End of placeholders
 
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+	enum Leanings { Early, Late };
 
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
@@ -56,13 +58,15 @@ public class Judgment : MonoBehaviour
 		notesMiss = 0;
 		combo = 0;
 		comboMax = 0;
+		score = 0;
 	}
 
 	void Update()
 	{
 		//CalculateWindows();
 		//PrintWindows();
-		DrawStats();
+		DrawStats(); // DEBUG
+		//CalculateScore(); // DEBUG
 	}
 
 	/*
@@ -101,6 +105,7 @@ public class Judgment : MonoBehaviour
 				leanText.text = "";
 				notesMarvelous++;
 				combo++;
+				CalculateScore(Ratings.Marvelous);
 				
 				return true;
 			}
@@ -113,6 +118,7 @@ public class Judgment : MonoBehaviour
 					ratingText.text = "Excellent!!";
 					notesPerfect++; 
 					combo++;
+					CalculateScore(Ratings.Perfect);
 				}
 
 				else if (Math.Abs(diff) <= beatsGreat)
@@ -120,6 +126,7 @@ public class Judgment : MonoBehaviour
 					ratingText.text = "Great!";
 					notesGreat++;
 					combo++;
+					CalculateScore(Ratings.Great);
 				}
 				
 				else if (Math.Abs(diff) <= beatsGood)
@@ -128,6 +135,7 @@ public class Judgment : MonoBehaviour
 					comboText.text = "";
 					ratingText.text = "Good";
 					notesGood++;
+					CalculateScore(Ratings.Good);
 				}
 				
 				else
@@ -139,6 +147,7 @@ public class Judgment : MonoBehaviour
 				}
 
 				CheckLean(diff);
+
 				return true;
 			}
 		}
@@ -206,6 +215,64 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
+		Debug functions to test out a normalized combo scoring system.
+	*/
+
+	private void CalculateScore(Ratings rate)
+	{
+		//AccuracyScore(rate);
+		//ComboScore();
+	}
+
+	private void AccuracyScore(Ratings rate)
+	{
+		const double accScoreBase = 700000.0;
+		const double totalNotes = 164.0;
+
+		double baseNoteValue = accScoreBase / totalNotes;
+
+		double valueMarvelous = baseNoteValue;
+		double valuePerfect = baseNoteValue - 50;
+		double valueGreat = baseNoteValue * 0.7;
+		double valueGood = baseNoteValue * 0.3;
+
+		switch (rate)
+		{
+			case Ratings.Marvelous:
+				score += (int)valueMarvelous;
+				break;
+
+			case Ratings.Perfect:
+				score += (int)valuePerfect;
+				break;
+
+			case Ratings.Great:
+				score += (int)valueGreat;
+				break;
+
+			case Ratings.Good:
+				score += (int)valueGood;
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void ComboScore()
+	{
+		const double comboScoreBase = 300000.0;
+		const double totalNotes = 164.0;
+
+		double comboBonus = comboScoreBase * (1.0 / (totalNotes - 1.0));
+
+		if (combo > 10)
+		{
+			score += (int)comboBonus;
+		}
+	}
+
+	/*
 		Debug function to print the size of the timing windows.
 	*/
 
@@ -237,7 +304,8 @@ public class Judgment : MonoBehaviour
 		}
 
 		statsText.text =
-			notesMarvelous.ToString() + " Marvelous\n"
+			score.ToString() + " Score\n\n"
+			+ notesMarvelous.ToString() + " Marvelous\n"
 			+ notesPerfect.ToString() + " Excellent\n"
 			+ notesGreat.ToString() + " Great\n"
 			+ notesGood.ToString() + " Good\n"
