@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2fd853f6bb7ced14c8afe4139d85e65e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,4 +108,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyPressed: 100
   mouseClick: 0
+  noteSpawner: {fileID: 0}
   judge: {fileID: 0}
+  metronome: {fileID: 0}
+  noteController: {fileID: 0}
+  t1: {fileID: 0}
+  t2: {fileID: 0}
+  t3: {fileID: 0}

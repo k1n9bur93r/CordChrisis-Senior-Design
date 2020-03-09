@@ -8,37 +8,72 @@ using UnityEngine.UI;
 	> Judgment class
 
 	The timing aspect of the hit detection system.
-	Compares the time of the user's input (in beats) versus the time of the note in question (in beats).
-	The difference between these two elements is used to rate the user's timing.
+	Compares the time of the user's input versus the time of the note in question
 
 	Important public methods:
-		- bool JudgeTiming(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed, and returns a value based on timing.
+		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
 		- bool CheckMiss(): For use by InputController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
 */
 
 public class Judgment : MonoBehaviour
 {
-	public Metronome master;
+	public Metronome clock;
+	//public Scoreboard stats;
 
-	// Timing window measurements are on the assumption that that the game runs at 60 FPS. Measurements are made in fractions of a second (ie: 1.0/60.0 = 1/60th of a second)
-	private const double framesMarvelous = 1.0 / 60.0;
-	private const double framesPerfect = 2.0 / 60.0;
-	private const double framesGreat = 5.0 / 60.0;
-	private const double framesGood = 12.0 / 60.0;
+	// Placeholders until Scoreboard/something else implements UI!
+	public Text ratingText;
+	public Text leanText;
+	public Text comboText;
+	public Text statsText;
+	
+	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesEarly, notesLate;
+	private int combo, comboMax;
+	private int score;
+	// End of placeholders
 
-	private double beatsMarvelous;
-	private double beatsPerfect;
-	private double beatsGreat;
-	private double beatsGood;
+	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+	enum Leanings { Early, Late };
+
+	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
+
+	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
+	private const double FRAMES_PERFECT = 45.0 / 1000.0;
+	private const double FRAMES_GREAT = 90.0 / 1000.0;
+	private const double FRAMES_GOOD = 180.0 / 1000.0;
+
+	/*
+	// Stricter windows
+	private const double FRAMES_MARVELOUS = 1.0 / 60.0;
+	private const double FRAMES_PERFECT = 2.0 / 60.0;
+	private const double FRAMES_GREAT = 4.0 / 60.0;
+	private const double FRAMES_GOOD = 8.0 / 60.0;
+	*/
+
+	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
 	void Start()
 	{
 		//CalculateWindows();
+		ratingText.text = "";
+		leanText.text = "";
+		comboText.text = "";
+
+		notesMarvelous = 0;
+		notesPerfect = 0;
+		notesGreat = 0;
+		notesGood = 0;
+		notesMiss = 0;
+		combo = 0;
+		comboMax = 0;
+		score = 0;
 	}
 
 	void Update()
 	{
 		//CalculateWindows();
+		//PrintWindows();
+		DrawStats(); // DEBUG
 	}
 
 	/*
@@ -47,55 +82,109 @@ public class Judgment : MonoBehaviour
 
 	private void CalculateWindows()
 	{
-		beatsMarvelous = master.beatsPerSec * framesMarvelous;
-		beatsPerfect = master.beatsPerSec * framesPerfect;
-		beatsGreat = master.beatsPerSec * framesGreat;
-		beatsGood = master.beatsPerSec * framesGood;
+		beatsMarvelous = clock.beatsPerSec * FRAMES_MARVELOUS;
+		beatsPerfect = clock.beatsPerSec * FRAMES_PERFECT;
+		beatsGreat = clock.beatsPerSec * FRAMES_GREAT;
+		beatsGood = clock.beatsPerSec * FRAMES_GOOD;
 	}
 
 	/*
 		When a key is pressed, judge the player's timing by checking the beat of the note sent from the queue versus the current beat.
-
-		Returns a number to pass back to InputController:
-			- 1 to 4: The note was hit, delete it from the queue, score accordingly
-			- 0: The note was hit too early, don't delete from the queue
+		Returns true if the note was inside a timing window during the input.
 	*/
 
-	public int JudgeTiming(double receivedBeat)
+	public bool CheckHit(double receivedBeat)
 	{
 		CalculateWindows();
 
-		//Debug.Log("curr: " + master.beatsElapsed + " | old: " + master.beatsElapsedOld);
-
-		double currentBeat = master.beatsElapsed; //master.beatsElapsedOld;
+		double currentBeat = clock.beatsElapsed; //clock.beatsElapsedOld;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
-		Debug.Log("Input beat: " + currentBeat + " | Note beat: " + noteBeat + " | Difference: " + diff);
+		// ---
 
 		// Check if the player hits at least the early "Good" window
 		if (diff >= -beatsGood)
 		{
-			if (Math.Abs(diff) <= beatsMarvelous) { return 4; }
-			else if (Math.Abs(diff) <= beatsPerfect) { return 3; }
-			else if (Math.Abs(diff) <= beatsGreat) { return 2; }
-			else if (Math.Abs(diff) <= beatsGood) { return 1; }
-			
+			if (Math.Abs(diff) <= beatsMarvelous)
+			{
+				ratingText.text = "Marvelous!!!";
+				leanText.text = "";
+				notesMarvelous++;
+				combo++;
+				CalculateScore(Ratings.Marvelous);
+				
+				return true;
+			}
+
 			else
 			{
-				Debug.Log("ERROR: JudgeTiming() fell through!");
-				return 0;
+				// Pass to some Scoreboard function later
+				if (Math.Abs(diff) <= beatsPerfect)
+				{
+					ratingText.text = "Excellent!!";
+					notesPerfect++; 
+					combo++;
+					CalculateScore(Ratings.Perfect);
+				}
+
+				else if (Math.Abs(diff) <= beatsGreat)
+				{
+					ratingText.text = "Great!";
+					notesGreat++;
+					combo++;
+					CalculateScore(Ratings.Great);
+				}
+				
+				else if (Math.Abs(diff) <= beatsGood)
+				{
+					combo = 0;
+					comboText.text = "";
+					ratingText.text = "Good";
+					notesGood++;
+					CalculateScore(Ratings.Good);
+				}
+				
+				else
+				{
+					Debug.Log("ERROR: CheckHit() fell through!");
+					Debug.Log("currentBeat: " + currentBeat + " | noteBeat: " + noteBeat + " | diff: " + diff);
+
+					return false;
+				}
+
+				CheckLean(diff);
+
+				return true;
 			}
 		}
 
 		// The player tried to hit a note before it passed the early "Good" window
 		else
 		{
-			//Debug.Log("diff: " + diff + " | -beatsGood: " + -beatsGood);
-			return 0;
+			return false;
 		}
 
 		// It should not be possible to hit beyond the late "Good" window, because the note should be deleted from the queue by now
+	}
+
+	/*
+		Check if the non-best input hit the early or late side of the timing window.
+	*/
+
+	private void CheckLean(double diff)
+	{
+		if (diff < 0.0)  // Pass to some Scoreboard function later
+		{ 
+			leanText.text = "EARLY";
+			notesEarly++;
+		}
+
+		else if (diff > 0.0)
+		{
+			leanText.text = "LATE";
+			notesLate++; // This too
+		}
 	}
 
 	/*
@@ -107,14 +196,129 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		double currentBeat = master.beatsElapsed;
+		double currentBeat = clock.beatsElapsed;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
 		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
-		if (diff > beatsGood) { return true; }
+		if (diff > beatsGood)
+		{
+			// Pass to some Scoreboard function later
+			//stats.UpdateScoreTap(Ratings.Miss);
+			ratingText.text = "Miss...";
+			comboText.text = "";
+			leanText.text = "";
+			notesMiss++;
+			combo = 0;
+
+			return true;
+		}
 
 		// Otherwise, do not delete from the queue
-		else { return false; }
+		else
+		{
+			return false;
+		}
+	}
+
+	/*
+		Debug functions to test out a normalized combo scoring system.
+	*/
+
+	private void CalculateScore(Ratings rate)
+	{
+		//AccuracyScore(rate);
+		//ComboScore();
+	}
+
+	private void AccuracyScore(Ratings rate)
+	{
+		const double accScoreBase = 700000.0;
+		const double totalNotes = 164.0;
+
+		double baseNoteValue = accScoreBase / totalNotes;
+
+		double valueMarvelous = baseNoteValue;
+		double valuePerfect = baseNoteValue - 50;
+		double valueGreat = baseNoteValue * 0.7;
+		double valueGood = baseNoteValue * 0.3;
+
+		switch (rate)
+		{
+			case Ratings.Marvelous:
+				score += (int)valueMarvelous;
+				break;
+
+			case Ratings.Perfect:
+				score += (int)valuePerfect;
+				break;
+
+			case Ratings.Great:
+				score += (int)valueGreat;
+				break;
+
+			case Ratings.Good:
+				score += (int)valueGood;
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void ComboScore()
+	{
+		const double comboScoreBase = 300000.0;
+		const double totalNotes = 164.0;
+
+		double comboBonus = comboScoreBase * (1.0 / (totalNotes - 1.0));
+
+		if (combo > 10)
+		{
+			score += (int)comboBonus;
+		}
+	}
+
+	/*
+		Debug function to print the size of the timing windows.
+	*/
+
+	private void PrintWindows()
+	{
+		string judgmentWindows =
+			"Marvelous: +/- " + beatsMarvelous + " beats (+/- " + FRAMES_MARVELOUS + " sec)\n"
+			+ "Excellent: +/- " + beatsPerfect + " beats (+/- " + FRAMES_PERFECT + " sec)\n"
+			+ "Great: +/- " + beatsGreat + " beats (+/- " + FRAMES_GREAT + " sec)\n"
+			+ "Good: +/- " + beatsGood + " beats (+/- " + FRAMES_GOOD + " sec)";
+
+		Debug.Log(judgmentWindows);
+	}
+
+	/*
+		Debug function to display play statistics.
+	*/
+
+	private void DrawStats()
+	{
+		if (combo > 0)
+		{
+			comboText.text = combo.ToString();
+		}
+
+		if (comboMax < combo)
+		{
+			comboMax = combo;
+		}
+
+		statsText.text =
+			score.ToString() + " Score\n\n"
+			+ notesMarvelous.ToString() + " Marvelous\n"
+			+ notesPerfect.ToString() + " Excellent\n"
+			+ notesGreat.ToString() + " Great\n"
+			+ notesGood.ToString() + " Good\n"
+			+ notesMiss.ToString() + " Miss\n\n"
+			+ notesEarly.ToString() + " Early\n"
+			+ notesLate.ToString() + " Late\n\n"
+			+ comboMax.ToString() + " Max Combo";
 	}
 }

@@ -6,14 +6,16 @@ using UnityEngine.UI;
 public class InputController : MonoBehaviour
 {
     /*  This class handles player input of keyboard and/or touch presses.
+     *  Also handles the removal of notes if the player has hit within a 
+     *  timing window or when the note has moved past the largest window.
      *  
-     *  Functions:
+     *  Public Functions:
      *  
      *  GetBeatOnKeyPress()
      *      - Returns a double indicating the beat at which the player pressed  
      *      
      *  GetHitGrade()
-     *      - Returns an int indicating the resultant grade player got her hit
+     *      - Returns an int indicating the resultant grade player got on her hit
      */
 
     // used to indicate key presses
@@ -25,15 +27,15 @@ public class InputController : MonoBehaviour
     public KeyCode keyPressed;
     public bool mouseClick;
 
+    // needed classes
     public NoteSpawner noteSpawner;
     public Judgment judge;
     public Metronome metronome;
     public NoteController noteController;
 
     private double beatPressed;
-    public double nextBeat;
-    private double currBeat;
-    private int hitGrade;
+    private double nextBeat;
+    private static int hitGrade;
     private int queueNum;
     private bool[] notesOnNextBeat;
 
@@ -41,7 +43,7 @@ public class InputController : MonoBehaviour
     public Text t1;
     public Text t2;
     public Text t3;
-    public Text t4;
+    //public Text t4;
 
     // Start is called before the first frame update
     void Start()
@@ -58,50 +60,29 @@ public class InputController : MonoBehaviour
         else if (name == "Btn4") queueNum = 3;
         else queueNum = -1;
 
+        nextBeat = 0;
         notesOnNextBeat = new bool[4];
-
-        // setting first beat to 16 for now; need a way to find first beat of track
-        nextBeat = 16;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // look for the next beat
+        // look at the top of each queue for the next beat        
+        double temp = double.MaxValue;
         for (int i = 0; i < 4; i++)
         {
             if (noteSpawner.notes[i].Count > 0)
             {
-                currBeat = noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat;
-                if (currBeat < metronome.beatsElapsed)
+                if (noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat < temp)
                 {
-                    nextBeat = currBeat;
+                    temp = noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat;
                 }
             }
         }
+        nextBeat = temp;
         t3.text = "NextBeatToPress: " + nextBeat.ToString();
 
-        if (IsKeyDown())
-        {
-            SetPressedBtnColor();
-            SetBeatOnKeyPress();
-
-            // the beat that the player pressed on
-            t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
-
-            int hitResult = judge.JudgeTiming(nextBeat);
-            t4.text = "HitResult: " + hitResult.ToString();
-
-            if (hitResult > 0)
-            {
-                // player hit within valid window, delete top note from queue
-                noteController.RemoveTopNote(queueNum);
-            }
-
-            SetHitGrade(hitResult);
-        }
-
-        // go through queues to find all notes having nextBeat
+        // mark all notes on nextBeat
         for (int i = 0; i < 4; i++)
         {
             if (noteSpawner.notes[i].Count > 0)
@@ -113,13 +94,32 @@ public class InputController : MonoBehaviour
             }
         }
 
-        // remove those notes who share the beat
-        for (int i = 0; i < 4; i++)
+        if (IsKeyDown())
         {
-            if (judge.CheckMiss(nextBeat) && notesOnNextBeat[i])
+            SetPressedBtnColor();
+            SetBeatOnKeyPress();
+
+            // the beat that the player pressed on
+            t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
+
+            /*
+            // check if it's the right queue before grading the attempt
+            if (notesOnNextBeat[queueNum])
             {
-                noteController.RemoveTopNote(i);
-                SetHitGrade(0);
+                if (judge.CheckHit(nextBeat))
+                {
+                    // player hit within valid window, delete top note from queue
+                    noteController.RemoveTopNote(queueNum);
+                }
+
+                //SetHitGrade(hitResult);
+            }
+            */
+
+            // Check if the note at the top of this lane's queue can be judged
+            if ((noteSpawner.notes[queueNum].Count != 0) && (judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat)))
+            {
+                noteController.RemoveTopNote(queueNum);
             }
         }
 
@@ -127,6 +127,18 @@ public class InputController : MonoBehaviour
         {
             SetDefaultBtnColor();
         }
+
+        // remove those notes who share the beat if they were missed
+        if (notesOnNextBeat[queueNum])
+        {
+            if (judge.CheckMiss(nextBeat))
+            {
+                noteController.RemoveTopNote(queueNum);
+                SetHitGrade(0); 
+            }
+        }
+
+        //t4.text = "HitResult: " + GetHitGrade().ToString();
     }
 
     public int GetHitGrade()

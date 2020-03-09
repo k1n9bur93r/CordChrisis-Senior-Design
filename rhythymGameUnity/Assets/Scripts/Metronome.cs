@@ -22,68 +22,75 @@ using UnityEngine.UI;
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
 		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
-		- double globalOffset: User-determined chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
+		- double globalOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
+
+	TO DO:
+		- Arbitrary seeking/playback
+		- See if anything can be done about sound latency
 */
 
 public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
+	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
+	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+
+	public Track meta;
 
 	public double tempo; // Song speed in beats per minute
-	public double secPerBeat; // How many seconds in one beat <- Public for MetronomeDebugger
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
-	//public double beatsElapsedOld; // Song position in beats for input purposes <- Public for Judgment
 	public double startOffset; // Chart-determined chart/song offset
 	public double globalOffset; // User-determined chart/song offset
 
 	private double songStart; // DSP time reference point for beginning of playback
+	private double secPerBeat; // How many seconds in one beat
 	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
 	private double timeElapsedLast;
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
 
 	/*
-		Initialize timekeepers.
+		Initialize timekeepers.	
 		Determine amount of seconds per beat and beats per second.
 	*/
 	
 	void Start()
 	{
 		beatsElapsed = 0.0;
-		//beatsElapsedOld = 0.0;
 		timeElapsed = 0.0;
 
-		UpdateRates();
-		//startSong();
+		//GetSongData(); // Game manager?
+		//UpdateRates();
 	}
 
 	/*
-		Calculate what beat we're on using tempo and time elapsed, relative to when the song actually started according to the DSP (not Time.time).
-		Eventually we'll want to store notes based on what BEAT and button they occur (and under no circumstances what TIME they occur).
+		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the DSP (not Time.time).
+		Notes are utilized relative to the exact beat (as opposed to the exact time) they are used on.
 	*/
 
 	void Update()
 	{
+		GetSongData();
+
 		if ((Input.GetKeyDown(KeyCode.Z)) && (!GetComponent<AudioSource>().isPlaying))
 		{
 			startSong();
 		}
 
-		if (GetComponent<AudioSource>().isPlaying) // Returns true if PlayScheduled is used, regardless if audio is actually playing
+		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
-			//beatsElapsedOld = beatsElapsed;
-
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
 			timeElapsed = AudioSettings.dspTime - songStart;
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
 			timeElapsedLast = timeElapsed;
 
-			// If startDelay has not elapsed yet, do not increase beatsElapsed
-			if (timeElapsed >= startOffset + globalOffset + 1.0)
+			// If the initial delays have not elapsed yet, do not increase beatsElapsed
+			if (timeElapsed >= (startOffset + globalOffset + BUFFER_DELAY))
 			{
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
+				//Debug.Log("timeElapsedDelta: " + timeElapsedDelta + " |  secPerBeat: " + secPerBeat + " | result: " + (timeElapsedDelta / secPerBeat));
 			}
 		}
 
@@ -92,15 +99,30 @@ public class Metronome : MonoBehaviour
 
 	/*
 		Initialize song start point.
-		Play music.
+		Play music after a brief delay.
+
+		Sounds in Unity do not play immediately when Play() is called (audio latency).
+		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
+
+		ISSUES:
+		- Unpredictable start times means there's still a slight random offset
 	*/
 
 	private void startSong()
 	{
 		songStart = AudioSettings.dspTime; //- startOffset;
 		timeElapsedLast = AudioSettings.dspTime - songStart;
-		//GetComponent<AudioSource>().Play(); // Eventually, we'll want it to play some time that isn't immediately because sounds don't play "immediately", delay it instead
-		GetComponent<AudioSource>().PlayScheduled(songStart + 1.0);//startOffset);
+		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+	}
+
+	/*
+		Get song metadata from JSON file.
+	*/
+
+	private void GetSongData()
+	{
+		tempo = meta.json.tempo;
+		startOffset = meta.json.offset;
 	}
 
 	/*
@@ -111,14 +133,5 @@ public class Metronome : MonoBehaviour
 	{
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
-	}
-
-	/*
-		DEBUG: Get time elapsed via DSP time. Delete once no longer needed.
-	*/
-
-	public double getTimeElapsedDEBUG()
-	{
-		return timeElapsed;
 	}
 }

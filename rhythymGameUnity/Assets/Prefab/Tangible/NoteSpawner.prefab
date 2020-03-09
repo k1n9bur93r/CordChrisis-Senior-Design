@@ -54,10 +54,13 @@ MonoBehaviour:
   - -0.33
   - 0.33
   - 1
-  noteSpeed: 5
+  speedMod: 0
   startDistance: 10
   yOffset: -2
   bpm: 0
+  metronome: {fileID: 0}
+  transparentStart: 0
+  transparentEnd: 0
 --- !u!1001 &3447156842976343093
 PrefabInstance:
   m_ObjectHideFlags: 0

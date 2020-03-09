@@ -6,6 +6,8 @@ using UnityEngine.UI;
 /*
 	> JudgmentTester class
 
+	NOTICE: This class represents an outdated version of Judgment! Please don't reference it!
+
 	Test version of the hit detection system. For use in the Metronome Tester scene only.
 	Compares the time of the user's input (in beats) versus the 16th beat ticked by the metronome.
 */
@@ -95,9 +97,11 @@ public class JudgmentTester : MonoBehaviour
 				else { judgmentText.text = "Way too late!"; }
 			}
 
+			/*
 			judgmentText.text = 
 				judgmentText.text + "\n" + diff + " beats\n"
 				+ (diff * (float)master.secPerBeat) + " sec";
+			*/
 
 			//Debug.Log("Spacebar pressed at: " + master.timeElapsed + " sec, " + master.beatsElapsed + " beats");
 		}

@@ -25,6 +25,7 @@ public class NoteController : MonoBehaviour
         }
     }
 
+    // deprecated
     private bool NoteIsOutOfRange(int queueNum)
     {
         if (noteSpawner.notes[queueNum].Count > 0)
