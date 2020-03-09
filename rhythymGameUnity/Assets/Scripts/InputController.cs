@@ -102,6 +102,7 @@ public class InputController : MonoBehaviour
             // the beat that the player pressed on
             t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
 
+            /*
             // check if it's the right queue before grading the attempt
             if (notesOnNextBeat[queueNum])
             {
@@ -112,6 +113,13 @@ public class InputController : MonoBehaviour
                 }
 
                 //SetHitGrade(hitResult);
+            }
+            */
+
+            // Check if the note at the top of this lane's queue can be judged
+            if (noteSpawner.notes[queueNum].Count != 0 && judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat))
+            {
+                noteController.RemoveTopNote(queueNum);
             }
         }
 
