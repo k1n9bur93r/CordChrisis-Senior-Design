@@ -117,7 +117,7 @@ public class InputController : MonoBehaviour
             */
 
             // Check if the note at the top of this lane's queue can be judged
-            if (noteSpawner.notes[queueNum].Count != 0 && judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat))
+            if ((noteSpawner.notes[queueNum].Count != 0) && (judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat)))
             {
                 noteController.RemoveTopNote(queueNum);
             }

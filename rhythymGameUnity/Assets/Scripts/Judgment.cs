@@ -42,6 +42,14 @@ public class Judgment : MonoBehaviour
 	private const double FRAMES_GREAT = 90.0 / 1000.0;
 	private const double FRAMES_GOOD = 180.0 / 1000.0;
 
+	/*
+	// Stricter windows
+	private const double FRAMES_MARVELOUS = 1.0 / 60.0;
+	private const double FRAMES_PERFECT = 2.0 / 60.0;
+	private const double FRAMES_GREAT = 4.0 / 60.0;
+	private const double FRAMES_GOOD = 8.0 / 60.0;
+	*/
+
 	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
 	void Start()
@@ -66,7 +74,6 @@ public class Judgment : MonoBehaviour
 		//CalculateWindows();
 		//PrintWindows();
 		DrawStats(); // DEBUG
-		//CalculateScore(); // DEBUG
 	}
 
 	/*

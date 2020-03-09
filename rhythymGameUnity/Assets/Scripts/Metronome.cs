@@ -33,8 +33,8 @@ using UnityEngine.UI;
 public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
-	private const double FRAME_LENGTH = 1.0 / 60.0;
-	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
+	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 
 	public Track meta;
 
@@ -103,6 +103,9 @@ public class Metronome : MonoBehaviour
 
 		Sounds in Unity do not play immediately when Play() is called (audio latency).
 		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
+
+		ISSUES:
+		- Unpredictable start times means there's still a slight random offset
 	*/
 
 	private void startSong()
