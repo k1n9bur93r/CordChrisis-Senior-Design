@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 /*
 	> GameManager class
 
-	Watchdog class to check what section of the game we're on and to run timing-sensitive classes.
-	Wakes up relevant classes and plays relevant Update()-like functions in a set order.
+	Master game state handler.
+	Changes scenes, wakes up objects, and executes them in the correct order as needed.
 
 	ISSUES:
 		- Need to refactor how the public objects are found due to not having a reference to them during a scene change
@@ -18,7 +18,7 @@ using UnityEngine.SceneManagement;
 */
 public class GameManager : MonoBehaviour
 {
-	enum GameState { Play, Results, None };
+	enum GameState { Play, Results, Zero };
 	private const int MAX_RECEPTORS = 4;
 
 	// GameObject versions of the classes <- need to find a way to activate things without doing stuff like this
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 	void Awake()
 	{
 		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
-		mode = GameState.None;
+		mode = GameState.Zero;
 	}
 
 	void Update()
@@ -50,8 +50,8 @@ public class GameManager : MonoBehaviour
 			case GameState.Results:
 				break;
 
-			case GameState.None:
-				NoneModeLoop();
+			case GameState.Zero:
+				ZeroModeLoop();
 				break;
 
 			default:
@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
 		metaGO.SetActive(true);
 		clockGO.SetActive(true);
 		clock.StartSong();
+
+		mode = GameState.Play;
 	}
 
 	/*
@@ -97,15 +99,14 @@ public class GameManager : MonoBehaviour
 	}
 
 	/*
-		Inactive initialization and update loop
+		Inactive screen initialization and update loop
 	*/
 
-	private void NoneModeLoop()
+	private void ZeroModeLoop()
 	{
 		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			PlayModeInit();
-			mode = GameState.Play;
 		}
 	}
 }
