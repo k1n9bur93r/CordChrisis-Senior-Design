@@ -33,6 +33,7 @@ public class Track : MonoBehaviour
     public string track_file = "Text/more";
     public JsonTrack json;
     public NoteSpawner noteSpawner;
+    public string[] intToGesture = new string[] {"", "l", "r", "u", "d"};
 
     JsonTrack readJsonFile(string filename) {
         // reads a json file and returns the parsed object as JsonTrack object
@@ -73,6 +74,8 @@ public class Track : MonoBehaviour
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
+            string gesture = intToGesture[json.note_gesture[i]];
+            
             noteSpawner.spawnNote(note - 1, beat);
         }
     }
