@@ -55,11 +55,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\80s\Scripts\Destroy.cs" />
+     <Compile Include="Assets\80s\Scripts\GridSpawner.cs" />
+     <Compile Include="Assets\80s\Scripts\GridWave.cs" />
      <Compile Include="Assets\Dissolve Effect\DissolveTest.cs" />
-     <Compile Include="Assets\RowSet\Movement\Destroy.cs" />
-     <Compile Include="Assets\RowSet\Movement\GridSpawner.cs" />
-     <Compile Include="Assets\RowSet\Movement\GridWave.cs" />
-     <Compile Include="Assets\RowSet\Movement\PingPong.cs" />
+     <Compile Include="Assets\Misc\PingPong.cs" />
  <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
  <HintPath>/Users/bryantakemoto/Desktop/CS472/CC_Background/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
  </Reference>
