@@ -31,11 +31,8 @@ public class Track : MonoBehaviour
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
     public string track_file = "Text/more";
-    public float note_spacing = 5;
-    public float track_width = 20;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
-    public GameObject[] note_game_objects;
 
     JsonTrack readJsonFile(string filename) {
         // reads a json file and returns the parsed object as JsonTrack object
@@ -72,7 +69,6 @@ public class Track : MonoBehaviour
         json = validateInput(json);
 
         // place notes in the game field
-        note_game_objects = new GameObject[json.notes.Length];
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
