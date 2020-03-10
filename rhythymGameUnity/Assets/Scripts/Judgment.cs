@@ -37,18 +37,18 @@ public class Judgment : MonoBehaviour
 
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
+	/*
 	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
 	private const double FRAMES_PERFECT = 45.0 / 1000.0;
 	private const double FRAMES_GREAT = 90.0 / 1000.0;
 	private const double FRAMES_GOOD = 180.0 / 1000.0;
+	*/
 
-	/*
 	// Stricter windows
 	private const double FRAMES_MARVELOUS = 1.0 / 60.0;
 	private const double FRAMES_PERFECT = 2.0 / 60.0;
 	private const double FRAMES_GREAT = 4.0 / 60.0;
 	private const double FRAMES_GOOD = 8.0 / 60.0;
-	*/
 
 	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 

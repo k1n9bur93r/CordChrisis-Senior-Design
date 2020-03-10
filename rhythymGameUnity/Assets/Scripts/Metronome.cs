@@ -43,13 +43,16 @@ public class Metronome : MonoBehaviour
 	public double startOffset; // Chart-determined chart/song offset
 	public double globalOffset; // User-determined chart/song offset
 
-	private double songStart; // DSP time reference point for beginning of playback
+	private bool startFlag;
+	private bool overtimeFlag;
+	//private double songStart; // DSP time reference point for beginning of playback
 	private double secPerBeat; // How many seconds in one beat
+	private double timeMaster;
 	private double timeElapsedDSP; // Song position based on DSP time's original reference point and current point in time
 	private double timeElapsedLastDSP;
 	private double timeElapsedDeltaDSP; // DSP time elapsed since the last frame
-	private double timeElapsedReal; // Latency compensator
-	private double finalDelta;
+	private double scheduledTime;
+	//private double timeElapsedReal; // Overtime compensator
 
 	/*
 		Initialize timekeepers.	
@@ -60,6 +63,9 @@ public class Metronome : MonoBehaviour
 	{
 		beatsElapsed = 0.0;
 		timeElapsedDSP = 0.0;
+
+		startFlag = false;
+		overtimeFlag = false;
 
 		//GetSongData(); // Game manager?
 		//UpdateRates();
@@ -73,53 +79,38 @@ public class Metronome : MonoBehaviour
 	{
 		GetSongData();
 
-		if ((Input.GetKeyDown(KeyCode.Z)) && (!GetComponent<AudioSource>().isPlaying))
+		if ((Input.GetKeyDown(KeyCode.Z)) && (!startFlag))
 		{
 			startSong();
 		}
 
-		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		if (startFlag)
 		{
 			// DSP delta time calculation
-			timeElapsedDSP = AudioSettings.dspTime - songStart;
+			timeElapsedDSP = AudioSettings.dspTime;
+			
+			if (!overtimeFlag)
+			{
+				if (timeElapsedDSP > scheduledTime)
+				{
+					timeElapsedDSP = scheduledTime;
+					Debug.Log("Overtime!");
+
+					Debug.Log("(scheduledTime + startOffset + globalOffset) = " + (scheduledTime + startOffset + globalOffset) + " | DSP: " + timeElapsedDSP);
+
+					overtimeFlag = true;
+				}
+			}
+
 			timeElapsedDeltaDSP = timeElapsedDSP - timeElapsedLastDSP;
 			timeElapsedLastDSP = timeElapsedDSP;
 
-			finalDelta = timeElapsedDeltaDSP;
-
-			Debug.Log("finalDelta (early): " + finalDelta);
-
-			// Real delta time calculation
-			timeElapsedReal += Time.deltaTime;
-
-			/*
-				Audio overtime/undertime compensator
-
-				If (DSP time < real time): Decerase | Visuals fired off before audio
-				If (DSP time > real time): Add | Audio fired off before visuals
-				If (DSP time == real time): Do nothing
-			*/
-
-			/*
-			if (timeElapsedDSP < timeElapsedReal)
-			{
-				finalDelta -= timeElapsedReal - timeElapsedDSP;
-			}
-			*/
-
-			/*else*/ if (timeElapsedDSP > timeElapsedReal)
-			{
-				finalDelta += timeElapsedDSP - timeElapsedReal;
-			}
-
-			Debug.Log("DSP: " + timeElapsedDSP + " | Real: " + timeElapsedReal + " | finalDelta (late):" + finalDelta);
-
 			// If the initial delays have not elapsed yet, do not increase beatsElapsed
-			if (timeElapsedDSP >= (startOffset + globalOffset + BUFFER_DELAY))
+			if (((timeElapsedDSP > (scheduledTime + startOffset + globalOffset)) && overtimeFlag))
 			{
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				// Increment the timer by calculating DSP delta time instead of directly setting it to accomodate for tempo changes
-				beatsElapsed += finalDelta / secPerBeat;
+				beatsElapsed += timeElapsedDeltaDSP / secPerBeat;
 			}
 		}
 
@@ -139,11 +130,12 @@ public class Metronome : MonoBehaviour
 
 	private void startSong()
 	{
-		songStart = AudioSettings.dspTime; //- startOffset;
-		timeElapsedLastDSP = AudioSettings.dspTime - songStart;
-		timeElapsedReal = timeElapsedLastDSP;
+		timeElapsedLastDSP = AudioSettings.dspTime;
+		scheduledTime = timeElapsedLastDSP + BUFFER_DELAY;
 
-		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+		GetComponent<AudioSource>().PlayScheduled(BUFFER_DELAY);
+
+		startFlag = true;
 	}
 
 	/*
