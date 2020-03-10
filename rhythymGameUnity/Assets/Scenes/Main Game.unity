@@ -1395,9 +1395,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593fb9ee99b77410fb1ec1ce0fe46102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track_file: Text/lucky_star_s
-  note_spacing: 5
-  track_width: 20
+  track_file: Charts/lucky_star_s [Hard]
+  note_spacing: 0
+  track_width: 32
   noteSpawner: {fileID: 789386881}
   note_game_objects: []
 --- !u!4 &1285531792

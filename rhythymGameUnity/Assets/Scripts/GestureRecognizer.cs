@@ -10,14 +10,14 @@ public class GestureRecognizer : MonoBehaviour
     private float abs(float x) {return (x < 0) ? -x : x;}
 
     // Update is called once per frame
-    // void Update()
-    // {
-    //     // must store response of IsSwipe() because it will only return once with the swipe direction
-    //     string swipe = IsSwipe();
-    //     if (swipe != "") {
-    //         Debug.Log(swipe);
-    //     }
-    // }
+    void Update()
+    {
+        // must store response of IsSwipe() because it will only return once with the swipe direction
+        string swipe = IsSwipe();
+        if (swipe != "") {
+            Debug.Log(swipe);
+        }
+    }
 
     void OnMouseDown()
     {

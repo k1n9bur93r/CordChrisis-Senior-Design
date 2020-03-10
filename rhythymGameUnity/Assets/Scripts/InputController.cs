@@ -94,6 +94,16 @@ public class InputController : MonoBehaviour
             }
         }
 
+        // Check if the notes at this beat should be deleted and marked as missed
+        if (notesOnNextBeat[queueNum])
+        {
+            if (judge.CheckMiss(nextBeat))
+            {
+                noteController.RemoveTopNote(queueNum);
+                SetHitGrade(0); 
+            }
+        }
+
         if (IsKeyDown())
         {
             SetPressedBtnColor();
@@ -126,16 +136,6 @@ public class InputController : MonoBehaviour
         if (IsKeyUp())
         {
             SetDefaultBtnColor();
-        }
-
-        // remove those notes who share the beat if they were missed
-        if (notesOnNextBeat[queueNum])
-        {
-            if (judge.CheckMiss(nextBeat))
-            {
-                noteController.RemoveTopNote(queueNum);
-                SetHitGrade(0); 
-            }
         }
 
         //t4.text = "HitResult: " + GetHitGrade().ToString();

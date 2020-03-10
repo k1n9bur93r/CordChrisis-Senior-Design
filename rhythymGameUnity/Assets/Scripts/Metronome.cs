@@ -9,9 +9,7 @@ using UnityEngine.UI;
 	The driving force of the game's timing logic: a running count of how many beats have elapsed in the music.
 	This value is used to help position notes, judge the player's timing, and synchronize the music.
 
-	With some exceptions, ALL game logic references to time should be relative to the current beat via beatsElapsed (because we're dealing with objects located by their assigned beat).
-	Getting the current time via Time.time and Time.deltaTime will cause audio/visual drift!
-	The public variables startOffset and globalOffset are exceptions to this due to needing a precise time in the music OUTSIDE of the context of the game.
+	With some exceptions, all game logic references to time should be relative to the current beat via beatsElapsed (because we're dealing with objects located by their assigned beat).
 	
 	The Time class is less accurate than AudioSettings.dspTime (which beatsElapsed is derived from)
 	due to the latter being tied to the sound system rather than frame updates.
@@ -34,7 +32,7 @@ public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
-	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 
 	public Track meta;
 
@@ -44,11 +42,13 @@ public class Metronome : MonoBehaviour
 	public double startOffset; // Chart-determined chart/song offset
 	public double globalOffset; // User-determined chart/song offset
 
+	private bool pastSchedule;
 	private double songStart; // DSP time reference point for beginning of playback
 	private double secPerBeat; // How many seconds in one beat
 	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
 	private double timeElapsedLast;
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
+	private double overtime;
 
 	/*
 		Initialize timekeepers.	
@@ -59,14 +59,15 @@ public class Metronome : MonoBehaviour
 	{
 		beatsElapsed = 0.0;
 		timeElapsed = 0.0;
+		timeElapsedDelta = 0.0;
+		pastSchedule = false;
 
 		//GetSongData(); // Game manager?
 		//UpdateRates();
 	}
 
 	/*
-		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the DSP (not Time.time).
-		Notes are utilized relative to the exact beat (as opposed to the exact time) they are used on.
+		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
 	void Update()
@@ -81,17 +82,28 @@ public class Metronome : MonoBehaviour
 		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
-			timeElapsed = AudioSettings.dspTime - songStart;
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
+			timeElapsed = AudioSettings.dspTime - songStart - overtime;
 
 			// If the initial delays have not elapsed yet, do not increase beatsElapsed
 			if (timeElapsed >= (startOffset + globalOffset + BUFFER_DELAY))
 			{
+				// Once the timer passes the initial delay for the first time, force its value to equal the initial delay.
+				if (!pastSchedule)
+				{
+					//Debug.Log("timeElapsed (old): " + timeElapsed + " | stuff: " + (startOffset + globalOffset + BUFFER_DELAY));
+					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
+					timeElapsed -= overtime;
+					//Debug.Log("timeElapsed (new): " + timeElapsed);
+
+					pastSchedule = true;
+				}
+				
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
-				//Debug.Log("timeElapsedDelta: " + timeElapsedDelta + " |  secPerBeat: " + secPerBeat + " | result: " + (timeElapsedDelta / secPerBeat));
 			}
+
+			timeElapsedDelta = timeElapsed - timeElapsedLast;
+			timeElapsedLast = timeElapsed;
 		}
 
 		UpdateRates();
