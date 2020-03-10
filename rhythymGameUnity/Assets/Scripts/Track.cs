@@ -30,7 +30,7 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
-    public string track_file = "Text/more";
+    public string track_file;
     public float note_spacing = 5;
     public float track_width = 20;
     public JsonTrack json;
@@ -68,6 +68,8 @@ public class Track : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Note chart reading...");
+
         // read json track file
         json = readJsonFile(track_file);
         json = validateInput(json);
@@ -79,5 +81,7 @@ public class Track : MonoBehaviour
             double beat = json.beats[i];
             noteSpawner.spawnNote(note - 1, beat);
         }
+
+        Debug.Log("Note chart read!");
     }
 }

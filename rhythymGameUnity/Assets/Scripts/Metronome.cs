@@ -70,7 +70,7 @@ public class Metronome : MonoBehaviour
 		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
-	void Update()
+	public void Action() //Update()
 	{
 		GetSongData();
 
@@ -92,7 +92,7 @@ public class Metronome : MonoBehaviour
 				{
 					//Debug.Log("timeElapsed (old): " + timeElapsed + " | stuff: " + (startOffset + globalOffset + BUFFER_DELAY));
 					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
-					timeElapsed -= overtime;
+					//timeElapsed -= overtime;
 					//Debug.Log("timeElapsed (new): " + timeElapsed);
 
 					pastSchedule = true;

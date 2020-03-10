@@ -43,6 +43,7 @@ public class NoteSpawner : MonoBehaviour
         print("The first notes should play in " + noteTravelTime + " seconds");
     }
 
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -64,6 +65,7 @@ public class NoteSpawner : MonoBehaviour
             spawnNote(3, 0);
         }
     }
+    */
 
     private float beatToDistance(double beat)
     {
@@ -89,7 +91,7 @@ public class NoteSpawner : MonoBehaviour
         curNote.GetComponent<NoteMovement>().beat = beat;
     }
 
-    void FixedUpdate()
+    public void Action() //FixedUpdate()
     {
         //set location of all notes according to beatsElapsed
         for (int x=0;x<4;x++)
