@@ -44,6 +44,7 @@ public class Metronome : MonoBehaviour
 	public double startOffset; // Chart-determined chart/song offset
 	public double globalOffset; // User-determined chart/song offset
 
+	private bool overtimeFlag;
 	private double songStart; // DSP time reference point for beginning of playback
 	private double secPerBeat; // How many seconds in one beat
 	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
@@ -59,14 +60,15 @@ public class Metronome : MonoBehaviour
 	{
 		beatsElapsed = 0.0;
 		timeElapsed = 0.0;
+		timeElapsedDelta = 0.0;
+		overtimeFlag = false;
 
 		//GetSongData(); // Game manager?
 		//UpdateRates();
 	}
 
 	/*
-		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the DSP (not Time.time).
-		Notes are utilized relative to the exact beat (as opposed to the exact time) they are used on.
+		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
 	void Update()
@@ -82,16 +84,22 @@ public class Metronome : MonoBehaviour
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
 			timeElapsed = AudioSettings.dspTime - songStart;
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
 
 			// If the initial delays have not elapsed yet, do not increase beatsElapsed
 			if (timeElapsed >= (startOffset + globalOffset + BUFFER_DELAY))
 			{
+				if (!overtimeFlag)
+				{
+					timeElapsed = (startOffset + globalOffset + BUFFER_DELAY);
+					overtimeFlag = true;
+				}
+				
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
-				//Debug.Log("timeElapsedDelta: " + timeElapsedDelta + " |  secPerBeat: " + secPerBeat + " | result: " + (timeElapsedDelta / secPerBeat));
 			}
+
+			timeElapsedDelta = timeElapsed - timeElapsedLast;
+			timeElapsedLast = timeElapsed;
 		}
 
 		UpdateRates();
