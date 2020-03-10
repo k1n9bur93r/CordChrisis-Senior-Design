@@ -51,6 +51,7 @@ public class Track : MonoBehaviour
         int length = track.notes.Length;
 
         if (track.notes.Length != track.beats.Length) {
+            Debug.Log("notes: " + track.notes.Length + " | beats: " + track.beats.Length);
             throw new System.ArrayTypeMismatchException("Invalid Json file, notes and beats length don't match.");
         }
 

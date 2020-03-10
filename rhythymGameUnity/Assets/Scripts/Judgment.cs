@@ -44,7 +44,7 @@ public class Judgment : MonoBehaviour
 	private const double FRAMES_GOOD = 180.0 / 1000.0;
 	*/
 
-	// Stricter windows
+	// Stricter windows for testing issue
 	private const double FRAMES_MARVELOUS = 1.0 / 60.0;
 	private const double FRAMES_PERFECT = 2.0 / 60.0;
 	private const double FRAMES_GREAT = 4.0 / 60.0;
@@ -113,7 +113,8 @@ public class Judgment : MonoBehaviour
 				notesMarvelous++;
 				combo++;
 				CalculateScore(Ratings.Marvelous);
-				
+				//CheckLean(diff); // DEBUG ONLY
+
 				return true;
 			}
 
@@ -184,6 +185,12 @@ public class Judgment : MonoBehaviour
 		{
 			leanText.text = "LATE";
 			notesLate++; // This too
+		}
+
+		// DEBUG ONLY
+		else if (diff == 0.0)
+		{
+			leanText.text = "JUST";
 		}
 	}
 
