@@ -149,8 +149,8 @@ public class Judgment : MonoBehaviour
 				
 				else
 				{
-					Debug.Log("ERROR: CheckHit() fell through!");
-					Debug.Log("currentBeat: " + currentBeat + " | noteBeat: " + noteBeat + " | diff: " + diff);
+					Debug.Log("[Judgment] CheckHit() fell through!");
+					Debug.Log("[Judgment] currentBeat: " + currentBeat + " | noteBeat: " + noteBeat + " | diff: " + diff);
 
 					return false;
 				}

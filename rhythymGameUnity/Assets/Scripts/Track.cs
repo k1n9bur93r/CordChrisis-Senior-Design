@@ -68,11 +68,13 @@ public class Track : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Note chart reading...");
+        Debug.Log("[Track] Reading...");
 
         // read json track file
         json = readJsonFile(track_file);
         json = validateInput(json);
+
+        Debug.Log("[Track] Spawning...");
 
         // place notes in the game field
         note_game_objects = new GameObject[json.notes.Length];
@@ -82,6 +84,6 @@ public class Track : MonoBehaviour
             noteSpawner.spawnNote(note - 1, beat);
         }
 
-        Debug.Log("Note chart read!");
+        Debug.Log("[Track] Ready!");
     }
 }

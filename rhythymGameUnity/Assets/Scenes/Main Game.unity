@@ -236,7 +236,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1946964991}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1764186700}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 128abea45fbf6d24cb485deac8c2ac76, type: 3}
@@ -1804,6 +1804,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1698737278}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1764186700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 1946964991}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1916113837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,6 +1903,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Metronome
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5573155426960535794, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
@@ -2354,6 +2365,16 @@ PrefabInstance:
       propertyPath: receptor.Array.data[3]
       value: 
       objectReference: {fileID: 284495022}
+    - target: {fileID: 2015292473381154846, guid: 57a7b54c0b89fd54382451cca0321696,
+        type: 3}
+      propertyPath: clockGO
+      value: 
+      objectReference: {fileID: 1764186700}
+    - target: {fileID: 2015292473381154846, guid: 57a7b54c0b89fd54382451cca0321696,
+        type: 3}
+      propertyPath: metaGO
+      value: 
+      objectReference: {fileID: 1285531790}
     - target: {fileID: 2015292473381154847, guid: 57a7b54c0b89fd54382451cca0321696,
         type: 3}
       propertyPath: m_LocalPosition.x

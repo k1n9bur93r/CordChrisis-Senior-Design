@@ -17,6 +17,9 @@ using UnityEngine.UI;
 	Notes must have their position set directly relative to the receptor, at a distance determined via beatsElapsed.
 	Using actual velocity to move the notes will cause audio/visual drift!
 	
+	Important public methods:
+		- void StartSong(): Starts the music.
+
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
 		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
@@ -62,8 +65,8 @@ public class Metronome : MonoBehaviour
 		timeElapsedDelta = 0.0;
 		pastSchedule = false;
 
-		//GetSongData(); // Game manager?
-		//UpdateRates();
+		GetSongData();
+		UpdateRates();
 	}
 
 	/*
@@ -72,13 +75,6 @@ public class Metronome : MonoBehaviour
 
 	public void Action() //Update()
 	{
-		GetSongData();
-
-		if ((Input.GetKeyDown(KeyCode.Z)) && (!GetComponent<AudioSource>().isPlaying))
-		{
-			startSong();
-		}
-
 		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
@@ -120,7 +116,7 @@ public class Metronome : MonoBehaviour
 		- Unpredictable start times means there's still a slight random offset
 	*/
 
-	private void startSong()
+	public void StartSong()
 	{
 		songStart = AudioSettings.dspTime; //- startOffset;
 		timeElapsedLast = AudioSettings.dspTime - songStart;
