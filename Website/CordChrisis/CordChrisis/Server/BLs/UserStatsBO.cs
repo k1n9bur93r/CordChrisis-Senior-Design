@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
-using CordChrisis.Models;
+using CordChrisis.Shared.Models;
 
 namespace CordChrisis.BOs
 {

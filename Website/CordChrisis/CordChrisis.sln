@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CordChrisis.Server", "CordChrisis\Server\CordChrisis.Server.csproj", "{F3740BBF-F0BD-4888-BC3C-53C4EC18B181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CordChrisis.Server", "CordChrisis\Server\CordChrisis.Server.csproj", "{F3740BBF-F0BD-4888-BC3C-53C4EC18B181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CordChrisis.Client", "CordChrisis\Client\CordChrisis.Client.csproj", "{82CE0B27-24B2-406D-B7E3-58F1B2173388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CordChrisis.Client", "CordChrisis\Client\CordChrisis.Client.csproj", "{82CE0B27-24B2-406D-B7E3-58F1B2173388}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CordChrisis.Shared", "CordChrisis\Shared\CordChrisis.Shared.csproj", "{A2AF7CC3-5B2F-4FAE-AE14-AC1CBA747859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CordChrisis.Shared", "CordChrisis\Shared\CordChrisis.Shared.csproj", "{A2AF7CC3-5B2F-4FAE-AE14-AC1CBA747859}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,14 @@
+﻿@page "/alert";
+@using CordChrisis.Shared
+@inject HttpClient Http
+@inject Alert AlertBase
+
+<div id="Alert" class="alert" role="alert">
+    <strong> this is text</strong>
+</div>
+
+@code {
+
+    Alert Info { get; set; }
+
+}

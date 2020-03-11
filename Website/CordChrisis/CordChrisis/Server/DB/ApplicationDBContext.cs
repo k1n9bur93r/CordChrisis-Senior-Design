@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CordChrisis.Models;
+using CordChrisis.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

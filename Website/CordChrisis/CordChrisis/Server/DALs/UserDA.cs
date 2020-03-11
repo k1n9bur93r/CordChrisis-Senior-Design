@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CordChrisis.Models;
+using CordChrisis.Shared.Models;
 using DB;
 
 namespace CordChrisis.DAOs
