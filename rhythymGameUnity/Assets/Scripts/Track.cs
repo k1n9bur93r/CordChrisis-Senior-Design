@@ -30,7 +30,7 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
-    public string track_file = "Text/more";
+    public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
     public string[] intToGesture = new string[] {"", "l", "r", "u", "d"};
@@ -66,9 +66,13 @@ public class Track : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("[Track] Reading...");
+
         // read json track file
         json = readJsonFile(track_file);
         json = validateInput(json);
+
+        Debug.Log("[Track] Spawning...");
 
         // place notes in the game field
         for (int i = 0; i < json.notes.Length; i++) {
@@ -78,5 +82,7 @@ public class Track : MonoBehaviour
             
             noteSpawner.spawnNote(note - 1, beat);
         }
+
+        Debug.Log("[Track] Ready!");
     }
 }
