@@ -6,11 +6,22 @@ using UnityEngine.SceneManagement;
 /*
 	> GameManager class
 
-	Master game state handler.
-	Changes scenes, wakes up objects, and executes them in the correct order as needed.
+	Master game loop and state handler.
 
-	ISSUES:
-		- Need to refactor how the public objects are found due to not having a reference to them during a scene change
+	Wakes up objects and/or executes them in the correct order as needed.
+	Objects that have an Update() method and rely on execution order should be transitioned to work with this class.
+	Set those objects up as follows:
+		1.) Set the object as a public class of itself.
+		x.) If the object must be activated (not updated!) at a certain time, set the object up as a public GameObject.
+		2.) Rename Update() or FixedUpdate() to Action().
+		3.) Call YourObject.Action() in the appropriate looping function.
+
+	This class also handles which "state" of the game we are currently in.
+	The states are as follows:
+		- Play: The main game screen.
+		- Results: The results screen.
+		- Zero: An empty screen that waits for the Play screen to start.
+	These have their own initialization and update/loop functions.
 
 	REFERENCE MATERIALS:
 		- https://bemuse.ninja/project/docs/game-loop.html
@@ -39,6 +50,10 @@ public class GameManager : MonoBehaviour
 		mode = GameState.Zero;
 	}
 
+	/*
+		Game loop selector. Changes depending on which state of the game we are currently in.
+	*/
+
 	void Update()
 	{
 		switch (mode)
@@ -48,6 +63,7 @@ public class GameManager : MonoBehaviour
 				break;
 
 			case GameState.Results:
+				ResultsModeLoop();
 				break;
 
 			case GameState.Zero:
@@ -61,7 +77,13 @@ public class GameManager : MonoBehaviour
 	}
 
 	/*
-		Play screen initialization and update loop
+		Play screen initialization and update loop.
+
+		Does the following in this order:
+			1.) Runs the Metronome
+			2.) Handles audio output
+			3.) Handles input
+			4.) Handles video output
 	*/
 
 	private void PlayModeLoop()
@@ -90,7 +112,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	/*
-		Results screen initialization and update loop
+		Results screen initialization and update loop.
 	*/
 
 	private void ResultsModeLoop()
@@ -99,7 +121,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	/*
-		Inactive screen initialization and update loop
+		Inactive screen initialization and update loop.
 	*/
 
 	private void ZeroModeLoop()

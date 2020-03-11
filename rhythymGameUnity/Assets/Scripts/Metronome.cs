@@ -18,7 +18,7 @@ using UnityEngine.UI;
 	Using actual velocity to move the notes will cause audio/visual drift!
 	
 	Important public methods:
-		- void StartSong(): Starts the music.
+		- void StartSong(): For use by GameManager. Starts the music.
 
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
@@ -86,11 +86,7 @@ public class Metronome : MonoBehaviour
 				// Once the timer passes the initial delay for the first time, force its value to equal the initial delay.
 				if (!pastSchedule)
 				{
-					//Debug.Log("timeElapsed (old): " + timeElapsed + " | stuff: " + (startOffset + globalOffset + BUFFER_DELAY));
 					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
-					//timeElapsed -= overtime;
-					//Debug.Log("timeElapsed (new): " + timeElapsed);
-
 					pastSchedule = true;
 				}
 				
