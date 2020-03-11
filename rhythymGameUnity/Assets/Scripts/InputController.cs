@@ -65,7 +65,7 @@ public class InputController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Action() //Update()
     {
         // look at the top of each queue for the next beat        
         double temp = double.MaxValue;

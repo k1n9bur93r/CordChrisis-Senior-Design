@@ -38,9 +38,9 @@ public class Scoreboard : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Action() //Update()
     {
-
+        // ...
     }
 
     // UpdateScoreTap is used for scoring the single tap notes 
