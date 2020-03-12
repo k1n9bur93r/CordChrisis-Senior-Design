@@ -80,10 +80,10 @@ public class GameManager : MonoBehaviour
 		Play screen initialization and update loop.
 
 		Does the following in this order:
-			1.) Runs the Metronome
-			2.) Handles audio output
-			3.) Handles input
-			4.) Handles video output
+			1.) Timer
+			2.) Audio
+			3.) Input
+			4.) Note movement
 	*/
 
 	private void PlayModeLoop()
@@ -106,7 +106,8 @@ public class GameManager : MonoBehaviour
 		//SceneManager.LoadScene("Main Game");
 		metaGO.SetActive(true);
 		clockGO.SetActive(true);
-		clock.StartSong();
+		//clock.StartSong();
+		clock.StartSongAnywhere(); // DEBUG ONLY
 
 		mode = GameState.Play;
 	}

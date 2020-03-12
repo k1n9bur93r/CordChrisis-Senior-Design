@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\GestureRecognizer.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
      <Compile Include="Assets\Scripts\Judgment.cs" />
      <Compile Include="Assets\Scripts\JudgmentTester.cs" />

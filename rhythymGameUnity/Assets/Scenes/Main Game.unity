@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &30325612 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8481453430583766343, guid: 42dd97046928c2740a95e69038001050,
+    type: 3}
+  m_PrefabInstance: {fileID: 1698737278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &92931091
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,8 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8571ae9f899774706b59e65487457a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start_position: {x: 0, y: 0, z: 0}
-  has_swiped: 0
 --- !u!65 &92931094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -229,18 +239,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92931091}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &30325612 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8481453430583766343, guid: 42dd97046928c2740a95e69038001050,
-    type: 3}
-  m_PrefabInstance: {fileID: 1698737278}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &169246979
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,7 +940,7 @@ GameObject:
   - component: {fileID: 621184327}
   - component: {fileID: 621184326}
   m_Layer: 5
-  m_Name: KeyText
+  m_Name: CurrentBeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,10 +993,10 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Key: '
+  m_Text: 'Current beat:'
 --- !u!222 &621184327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1477,7 +1475,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'NextBeatToPress: '
+  m_Text: 'Next note beat:'
 --- !u!222 &1331966832
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1990,9 +1988,9 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'BeatOnKeyPress: '
+  m_Text: 'Beat on press:'
 --- !u!222 &1916113840
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2012,7 +2010,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: f1807cd308b04504188aa27ae6cd0192, type: 3}
+      objectReference: {fileID: 8300000, guid: 220f763537e6c994293138f993189dea, type: 3}
     - target: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_Name
@@ -2092,6 +2090,16 @@ PrefabInstance:
         type: 3}
       propertyPath: tempo
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+        type: 3}
+      propertyPath: beatsElapsedText
+      value: 
+      objectReference: {fileID: 621184326}
+    - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
+        type: 3}
+      propertyPath: startBeat
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -2378,8 +2386,13 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/lucky_star_s [Hard]
+      value: Charts/Milky Way
       objectReference: {fileID: 0}
+    - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
+        type: 3}
+      propertyPath: clockGO
+      value: 
+      objectReference: {fileID: 1764186700}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: m_Name
@@ -2423,7 +2436,7 @@ PrefabInstance:
         type: 3}
       propertyPath: meta
       value: 
-      objectReference: {fileID: 1285531790}
+      objectReference: {fileID: 1285531791}
     - target: {fileID: 2015292473381154846, guid: 57a7b54c0b89fd54382451cca0321696,
         type: 3}
       propertyPath: clock

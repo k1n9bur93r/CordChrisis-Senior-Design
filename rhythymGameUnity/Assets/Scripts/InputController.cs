@@ -67,6 +67,8 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     public void Action() //Update()
     {
+        t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
+
         // look at the top of each queue for the next beat        
         double temp = double.MaxValue;
         for (int i = 0; i < 4; i++)
@@ -80,7 +82,7 @@ public class InputController : MonoBehaviour
             }
         }
         nextBeat = temp;
-        t3.text = "NextBeatToPress: " + nextBeat.ToString();
+        t3.text = "Next note beat: " + nextBeat.ToString();
 
         // mark all notes on nextBeat
         for (int i = 0; i < 4; i++)
@@ -110,7 +112,7 @@ public class InputController : MonoBehaviour
             SetBeatOnKeyPress();
 
             // the beat that the player pressed on
-            t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
+            t2.text = "Beat on press: " + beatPressed.ToString();
 
             /*
             // check if it's the right queue before grading the attempt
@@ -186,7 +188,7 @@ public class InputController : MonoBehaviour
 
     private void SetPressedBtnColor()
     {
-        t1.text = "Key: " + keyPressed.ToString();
+        //t1.text = "Key: " + keyPressed.ToString();
         r.material.color = pressedColor;
     }
 

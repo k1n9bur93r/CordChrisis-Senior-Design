@@ -39,6 +39,10 @@ public class Metronome : MonoBehaviour
 
 	public Track meta;
 
+	// -DEBUG VARS-
+	public double startBeat;
+	private double startTime;
+
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
@@ -75,6 +79,37 @@ public class Metronome : MonoBehaviour
 
 	public void Action() //Update()
 	{
+		//UpdateTime();
+		UpdateTimeAnywhere(); // DEBUG ONLY
+		UpdateRates();
+	}
+
+	/*
+		Initialize song start point.
+		Play music after a brief delay.
+
+		Sounds in Unity do not play immediately when Play() is called (audio latency).
+		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
+
+		ISSUES:
+		- Unpredictable start times means there's still a slight random offset (enough to affect the early/late windows)
+	*/
+
+	public void StartSong()
+	{
+		songStart = AudioSettings.dspTime; //- startOffset;
+		timeElapsedLast = AudioSettings.dspTime - songStart;
+
+		UpdateRates();
+		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+	}
+
+	/*
+		Update timers.
+	*/
+
+	public void UpdateTime()
+	{
 		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
 			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
@@ -88,8 +123,8 @@ public class Metronome : MonoBehaviour
 				{
 					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
 					pastSchedule = true;
-				}
-				
+				}				
+
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
 			}
@@ -97,26 +132,53 @@ public class Metronome : MonoBehaviour
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
 			timeElapsedLast = timeElapsed;
 		}
-
-		UpdateRates();
 	}
 
 	/*
-		Initialize song start point.
-		Play music after a brief delay.
-
-		Sounds in Unity do not play immediately when Play() is called (audio latency).
-		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
-
-		ISSUES:
-		- Unpredictable start times means there's still a slight random offset
+		-DEBUG FUNCTION-
+		Start music at an arbitrary point.
 	*/
 
-	public void StartSong()
+	public void StartSongAnywhere()
 	{
-		songStart = AudioSettings.dspTime; //- startOffset;
-		timeElapsedLast = AudioSettings.dspTime - songStart;
-		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+		GetComponent<AudioSource>().Play();
+	}
+
+	/*
+		-DEBUG FUNCTION-
+		Update the timer based on the arbitrary start point.
+	*/
+
+	public void UpdateTimeAnywhere()
+	{
+		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		{
+			if (!pastSchedule)
+			{
+				UpdateRates();
+				GetSongData();
+
+				startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
+				//beatsElapsed = startBeat;
+
+				//Debug.Log("[Metronome] startTime: " + startTime);
+
+				songStart = AudioSettings.dspTime + startTime;
+				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+				GetComponent<AudioSource>().time = (float)startTime;
+				beatsElapsed = startBeat;
+				pastSchedule = true;
+			}
+
+			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
+			timeElapsed = AudioSettings.dspTime - songStart + startTime;
+
+			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
+			beatsElapsed += timeElapsedDelta / secPerBeat;
+
+			timeElapsedDelta = timeElapsed - timeElapsedLast;
+			timeElapsedLast = timeElapsed;
+		}
 	}
 
 	/*
