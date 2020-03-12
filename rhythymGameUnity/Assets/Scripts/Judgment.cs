@@ -261,7 +261,7 @@ public class Judgment : MonoBehaviour
 		{
 			// Pass to some Scoreboard function later
 			//stats.UpdateScoreTap(Ratings.Miss);
-			ratingText.text = "Dire...";
+			ratingText.text = "Miss...";
 			comboText.text = "";
 			leanText.text = "";
 			notesMiss++;
@@ -372,7 +372,7 @@ public class Judgment : MonoBehaviour
 			+ notesPerfect.ToString() + " Atomic\n"
 			+ notesGreat.ToString() + " Bravo\n"
 			+ notesGood.ToString() + " Close\n"
-			+ notesMiss.ToString() + " Dire\n\n"
+			+ notesMiss.ToString() + " Miss\n\n"
 			+ notesEarly.ToString() + " Early\n"
 			+ notesLate.ToString() + " Late\n\n"
 			+ comboMax.ToString() + " Max Combo";

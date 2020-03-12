@@ -26,9 +26,9 @@ using UnityEngine.UI;
 		- double globalOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
 
-	TO DO:
-		- Arbitrary seeking/playback
-		- See if anything can be done about sound latency
+	ISSUES:
+		- Latency
+		- Stutter: https://forum.unity.com/threads/heavy-audio-stutter-in-5-4-but-not-5-3.436664/
 */
 
 public class Metronome : MonoBehaviour
@@ -92,7 +92,7 @@ public class Metronome : MonoBehaviour
 		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
 
 		ISSUES:
-		- Unpredictable start times means there's still a slight random offset (enough to affect the early/late windows)
+		- Unpredictable start times means there's still a slight amount of random, uncontrolled latency (enough to mess up timing)
 	*/
 
 	public void StartSong()
