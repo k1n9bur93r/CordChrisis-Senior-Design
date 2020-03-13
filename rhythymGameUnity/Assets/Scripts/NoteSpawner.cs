@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NoteSpawner : MonoBehaviour
 {
-    private const float NOTE_PADDING = 2.0f;
+    private const float NOTE_PADDING = 4.0f;
 
     //holds all 4 note prefabs so they may be spawned
     public List<GameObject> noteObjects;
