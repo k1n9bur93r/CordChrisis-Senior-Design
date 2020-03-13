@@ -7,9 +7,11 @@ using UnityEngine;
 public class AudioSpectrum : MonoBehaviour
 {
     AudioSource audioSource;
+    public float meterDropSpeed = 0.01f;
     public static int sampleRange = 512;
     public static float[] samples = new float[sampleRange];    // Stores the frequency sample
     public static float[] freqBand = new float[8];
+    public static float[] bandBuffer = new float[8];
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class AudioSpectrum : MonoBehaviour
     {
         GetSpectrumAudioSource();
         MakeFrequencyBands();
+        BandBuffer();
     }
 
     void GetSpectrumAudioSource()
@@ -50,6 +53,22 @@ public class AudioSpectrum : MonoBehaviour
             }
             average /= count;
             freqBand[i] = average * 10;
+        }
+    }
+
+    void BandBuffer()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            // Assign the bandBuffer to the value of freqBand if it's lower than it
+            if(bandBuffer[i] < freqBand[i])
+            {
+                bandBuffer[i] = freqBand[i];
+            }
+            else if(bandBuffer[i] >= freqBand[i] && bandBuffer[i] > 0)
+            {
+                bandBuffer[i] -= meterDropSpeed;
+            }
         }
     }
 }

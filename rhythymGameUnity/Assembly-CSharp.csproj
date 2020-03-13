@@ -115,6 +115,9 @@
     <Compile Include="Assets\The Grid Map\Audio Visualizer\FreqBands.cs" />
     <Compile Include="Assets\The Grid Map\Audio Visualizer\VU\VU.cs" />
     <Compile Include="Assets\The Grid Map\Audio Visualizer\VU\VU_Behavior.cs" />
+    <Compile Include="Assets\The Grid Map\Grid\Destroy.cs" />
+    <Compile Include="Assets\The Grid Map\Grid\GridSpawner.cs" />
+    <Compile Include="Assets\The Grid Map\Grid\GridWave.cs" />
     <Compile Include="Assets\The Grid Map\movement.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
