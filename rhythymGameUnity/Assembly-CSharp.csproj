@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Audio Visualizer\AudioSpectrum.cs" />
+    <Compile Include="Assets\Audio Visualizer\VU.cs" />
     <Compile Include="Assets\Scripts\FPSLimiter.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GestureRecognizer.cs" />

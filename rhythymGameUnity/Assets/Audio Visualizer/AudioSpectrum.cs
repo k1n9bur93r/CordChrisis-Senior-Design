@@ -7,7 +7,7 @@ using UnityEngine;
 public class AudioSpectrum : MonoBehaviour
 {
     AudioSource audioSource;
-    public float[] samples = new float[512];
+    public static float[] samples = new float[512];    // Stores the frequency sample
     // Start is called before the first frame update
     void Start()
     {
