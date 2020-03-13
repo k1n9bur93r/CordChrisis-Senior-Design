@@ -23,6 +23,8 @@ using UnityEngine.SceneManagement;
 		- Zero: An empty screen that waits for the Play screen to start.
 	These have their own initialization and update/loop functions.
 
+	We are currently using a SINGLE SCENE for the game.
+
 	REFERENCE MATERIALS:
 		- https://bemuse.ninja/project/docs/game-loop.html
 		- https://forum.unity.com/threads/how-to-avoid-execution-order-nightmares.517578/

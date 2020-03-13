@@ -44,10 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128abea45fbf6d24cb485deac8c2ac76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meta: {fileID: 0}
+  startBeat: 0
   tempo: 150
-  secPerBeat: 0
   beatsPerSec: 0
   beatsElapsed: 0
+  startOffset: 0
+  globalOffset: 0
 --- !u!82 &2130661558223192344
 AudioSource:
   m_ObjectHideFlags: 0
