@@ -6,11 +6,11 @@ public class VU : MonoBehaviour
 {
     public float maxScale;
     public GameObject sampleCubePrefab;
-    GameObject[] sampleCube = new GameObject[512];
+    GameObject[] sampleCube = new GameObject[AudioSpectrum.sampleRange];
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < 512; i++)
+        for(int i = 0; i < AudioSpectrum.sampleRange; i++)
         {
             GameObject instanceSampleCube = (GameObject)Instantiate(sampleCubePrefab);
             instanceSampleCube.transform.position = this.transform.position;
@@ -25,7 +25,7 @@ public class VU : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i < 512; i++)
+        for(int i = 0; i < AudioSpectrum.sampleRange; i++)
         {
             if(sampleCube != null)
             {
