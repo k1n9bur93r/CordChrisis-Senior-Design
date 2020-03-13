@@ -29,7 +29,7 @@ public class VU : MonoBehaviour
         {
             if(sampleCube != null)
             {
-                sampleCube[i].transform.localScale = new Vector3(10, (AudioSpectrum.samples[i] * maxScale) + 2, 10);
+                sampleCube[i].transform.localScale = new Vector3(1, (AudioSpectrum.samples[i] * maxScale) + 2, 1);
             }
         }
     }
