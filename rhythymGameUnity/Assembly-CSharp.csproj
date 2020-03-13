@@ -118,6 +118,7 @@
     <Compile Include="Assets\The Grid Map\Grid\Destroy.cs" />
     <Compile Include="Assets\The Grid Map\Grid\GridSpawner.cs" />
     <Compile Include="Assets\The Grid Map\Grid\GridWave.cs" />
+    <Compile Include="Assets\The Grid Map\Sun\LightIntensity.cs" />
     <Compile Include="Assets\The Grid Map\movement.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />

@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 402985487}
   - component: {fileID: 402985486}
   m_Layer: 0
-  m_Name: Point Light
+  m_Name: SunPinkLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1267,6 +1267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1051941700}
+  - component: {fileID: 1051941701}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -1286,9 +1287,25 @@ Transform:
   m_LocalScale: {x: 500, y: 500, z: 1}
   m_Children:
   - {fileID: 1348878994}
+  - {fileID: 2017979785}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1051941701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051941699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a96c3d8996f43447a6e031a73e513bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartPos: {fileID: 2017979785}
+  Grid: {fileID: -927199367670048503, guid: b6c1d1743aefa10419e93e7587aecfa8, type: 3}
+  Timer: 60
 --- !u!1001 &1063192057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2635,6 +2652,36 @@ MonoBehaviour:
   bandNum: 0
   startScale: 1
   scaleMultiplier: 5
+--- !u!1 &2017979784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2017979785}
+  m_Layer: 0
+  m_Name: Grid Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2017979785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017979784}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.03125, z: 300}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1051941700}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2029303395 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5818052547751543510, guid: ace9ef4027750da41956229965989a8a,
