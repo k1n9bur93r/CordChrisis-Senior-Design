@@ -20,6 +20,7 @@ public class AudioSpectrum : MonoBehaviour
     void Update()
     {
         GetSpectrumAudioSource();
+        MakeFrequencyBands();
     }
 
     void GetSpectrumAudioSource()
@@ -29,6 +30,26 @@ public class AudioSpectrum : MonoBehaviour
 
     void MakeFrequencyBands()
     {
+        int count = 0;
+        float average;
 
+        for(int i = 0; i < 8; i++)
+        {
+            average = 0;
+            int sampleCount = (int)Mathf.Pow(2, i) * 2;
+            // 7 Frequency Bands
+            if(i == 7)
+            {
+                sampleCount += 2;
+            }
+
+            for(int j = 0; j < sampleCount; j++)
+            {
+                average += samples[count] * (count + 1);
+                count++;
+            }
+            average /= count;
+            freqBand[i] = average * 10;
+        }
     }
 }
