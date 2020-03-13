@@ -9,6 +9,7 @@ public class AudioSpectrum : MonoBehaviour
     AudioSource audioSource;
     public static int sampleRange = 512;
     public static float[] samples = new float[sampleRange];    // Stores the frequency sample
+    public static float[] freqBand = new float[8];
     // Start is called before the first frame update
     void Start()
     {
@@ -24,5 +25,10 @@ public class AudioSpectrum : MonoBehaviour
     void GetSpectrumAudioSource()
     {
         audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
+    }
+
+    void MakeFrequencyBands()
+    {
+
     }
 }
