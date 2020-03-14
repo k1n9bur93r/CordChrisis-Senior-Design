@@ -129,8 +129,7 @@ public class InputController : MonoBehaviour
             */
 
             // Check if the note at the top of this lane's queue can be judged
-            // Don't let notes be judged out of beat order either
-            if ((noteSpawner.notes[queueNum].Count != 0) && (noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat == nextBeat))
+            if ((noteSpawner.notes[queueNum].Count != 0)) //&& (noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat = nextBeat)))
             {
                 if (judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat))
                 {
