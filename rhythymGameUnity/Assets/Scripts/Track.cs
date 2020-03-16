@@ -30,6 +30,8 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
+    //public GameObject clockGO;
+
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
