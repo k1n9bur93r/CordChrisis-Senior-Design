@@ -64,7 +64,9 @@
     int IntDifficulty { get; set; }
     int?SelectedRating { get; set; }
     string MapName { get; set; }
+    //string hasError=" ";
     List<Map> ReturnedMaps;
+
     void UpdateDifficultyEasy() { SelectedDifficulty = "Easy"; IntDifficulty = 1; }
     void UpdateDifficultyMedium(){ SelectedDifficulty = "Medium";IntDifficulty = 2; }
     void UpdateDifficultyHard() { SelectedDifficulty = "Hard";IntDifficulty = 3;}
@@ -80,15 +82,17 @@
         //Validate
         if (MapName == String.Empty)
         {
-            //CallAlertService
+            //call alert box 
         }
         Search UserSearch = new Search {
             Name = MapName,
-            Ratings = (double)SelectedRating,
+            Ratings = SelectedRating!=null?(double)SelectedRating:0.0,
             Difficulty = IntDifficulty
         };
-       ReturnedMaps=await Http.PostJsonAsync<List<Map>>(@"searchpage/post",UserSearch);
-      MapName=ReturnedMaps[0].Name;
+        ReturnedMaps=await Http.PostJsonAsync<List<Map>>(@"searchpage/post",UserSearch);
+        MapName=ReturnedMaps[0].Name;
         return ReturnedMaps;
     }
+
+    
 }
