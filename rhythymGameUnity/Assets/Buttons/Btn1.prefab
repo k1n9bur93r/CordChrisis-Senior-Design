@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8481453430583766360}
   - component: {fileID: 8481453430583766361}
   - component: {fileID: 8481453430583766342}
-  - component: {fileID: 8481453430583766343}
+  - component: {fileID: -6306476366043379627}
   m_Layer: 0
   m_Name: Btn1
   m_TagString: Button
@@ -94,7 +94,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1, z: 1}
   m_Center: {x: 0.375, y: 0, z: 0}
---- !u!114 &8481453430583766343
+--- !u!114 &-6306476366043379627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,15 +103,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8481453430583766340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
+  m_Script: {fileID: 11500000, guid: d09d18ce6bb927844a2c0e5fbb7d8941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyPressed: 97
-  mouseClick: 0
-  noteSpawner: {fileID: 0}
-  judge: {fileID: 0}
-  metronome: {fileID: 0}
-  noteController: {fileID: 0}
-  t1: {fileID: 0}
-  t2: {fileID: 0}
-  t3: {fileID: 0}

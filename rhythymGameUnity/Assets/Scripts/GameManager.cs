@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
 	// Actual classes
 	public Metronome clock; // Metronome
-	public InputController[] receptor; // All receptors
+	public InputController input; // Receptor controller
 	//public Scoreboard score; // Scoreboard
 	public NoteSpawner spawner; // NoteSpawner
 
@@ -94,10 +94,7 @@ public class GameManager : MonoBehaviour
 		clock.Action();
 
 		// Input
-		for (int i = 0; i < MAX_RECEPTORS; i++)
-		{
-			receptor[i].Action();
-		}
+		input.Action();
 
 		// Visuals
 		spawner.Action();
