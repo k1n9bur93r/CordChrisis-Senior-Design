@@ -11,7 +11,7 @@ namespace DB
     {
         #region
         public DbSet<User> Users { get; set; }
-        public DbSet<UserLogin> UserLogin { get; set; }
+        public DbSet<Login> UserLogin { get; set; }
         public DbSet<UserStats> UserStats { get; set; }
         public DbSet<Map> Map { get; set; }
         public DbSet<UserMapStats> UserMapStats { get; set; }
