@@ -3,13 +3,14 @@
 @using CordChrisis.Shared.Models
 @inject HttpClient Http
 
-<h3>Search Page</h3>
-
-<form>
+<h1>Search Page</h1>
+<h1>Search Page</h1>
+<div class="m-1" style="margin-top:30px">
+<form class="form-inline">
     <div class="input-group mb-2 mr-sm-2">
         <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="MapName">
         <label class="sr-only">Difficulty </label>
-        <div class="input-group mb-2 mr-sm-2">
+        <div class="input-group ">
             <div class="input-group-prepend">
 
                 <div class="dropdown">
@@ -29,7 +30,7 @@
             </div>
             <input id="MapRatingtext" type="text" class="form-control mb-2 mr-sm-2" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
         </div>
-        <div class="input-group mb-2 mr-sm-2">
+        <div class="input-group">
             <div class="input-group-prepend">
 
                 <div class="dropdown">
@@ -48,13 +49,23 @@
                 </div>
 
             </div>
-            <input id="MapDifficultyText" type="text" class="form-control mb-2 mr-sm-2" placeholder="Rating" @bind="SelectedRating" disabled="true">
+            <input id="MapDifficultyText" type="text" class="form-control " placeholder="Rating" @bind="SelectedRating" disabled="true">
         </div>
     </div>
     
 </form>
-<button id="SubmitSearchQuery" class="btn btn-primary" @onclick="SubmitSearchQuery"> Submit</button>
-
+<button id="SubmitSearchQuery" class="btn btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
+</div>
+<div>
+    @if (ReturnedMaps == null)
+    {
+    <p>Waiting for maps</p>
+    }
+    else
+    { 
+    <p>@ReturnedMaps[0].Name</p>
+    }
+</div>
 
 
 
