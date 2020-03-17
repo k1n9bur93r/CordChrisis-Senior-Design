@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &30325612 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8481453430583766343, guid: 42dd97046928c2740a95e69038001050,
+    type: 3}
+  m_PrefabInstance: {fileID: 1698737278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &92931091
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,8 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8571ae9f899774706b59e65487457a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start_position: {x: 0, y: 0, z: 0}
-  has_swiped: 0
 --- !u!65 &92931094
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -229,18 +239,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 92931091}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &30325612 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8481453430583766343, guid: 42dd97046928c2740a95e69038001050,
-    type: 3}
-  m_PrefabInstance: {fileID: 1698737278}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &169246979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,6 +1161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
+      propertyPath: gestureObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
       propertyPath: metronome
       value: 
       objectReference: {fileID: 251699263}
@@ -1211,6 +1214,30 @@ PrefabInstance:
       propertyPath: noteXoffsets.Array.data[3]
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: gestureObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 242083137293929784, guid: bb5c07ad8aa2f237b825717f677c18a7,
+        type: 3}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: gestureObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 8646553621430682628, guid: eb08531f1fd7cd3b386c7195fcdef530,
+        type: 3}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: gestureObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 1971825264462359688, guid: 91697f66e612897c2b9448dc694c1a42,
+        type: 3}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: gestureObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 7029464937348956926, guid: 949f72edd9f7aac3a8d69824e4276f10,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 206241700027747e58ab9410e343c31c, type: 3}
 --- !u!114 &789386881 stripped
