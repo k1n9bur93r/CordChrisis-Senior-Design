@@ -1,0 +1,67 @@
+﻿
+@page "/login"
+@using CordChrisis.Shared
+@using CordChrisis.Shared.Models
+@using System.Security;
+@inject HttpClient Http
+
+<h3>Login!</h3>
+
+<form>
+    <div class="input-group mb-2 mr-sm-2">
+        <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
+        <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
+    </div>
+    <div>
+
+    </div>
+</form>
+<div>
+    <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
+    @if (success == false)
+    {
+        <p>ITS FALSE BOOY</p>
+    }
+    else
+    {
+        <p>Its TRUE</p>
+    }
+</div>
+
+
+@code {
+
+    string email { get; set; }
+    string password { get; set; }
+    Boolean success { get; set; }
+
+    public async Task<Boolean> SubmitLoginQuery()
+    {
+        if (email == String.Empty)
+        {
+            //alert email field is empty
+        }
+        else if (password == String.Empty)
+        {
+            //alert password is empty
+        }
+
+        SecureString newPass = new SecureString();
+        for (int i = 0; i < password.Length; i++)
+            newPass.AppendChar(password[i]);
+
+
+
+        Login loginObject = new Login
+        {
+            Email = email,
+            Password = newPass
+        };
+
+
+        success = await Http.PostJsonAsync<Boolean>(@"login/post", loginObject);
+        return success;
+
+    }
+
+}
