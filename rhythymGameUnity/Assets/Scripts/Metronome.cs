@@ -56,6 +56,7 @@ public class Metronome : MonoBehaviour
 	private double timeElapsedLast;
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
 	private double overtime;
+	private int tempoIndex;
 
 	/*
 		Initialize timekeepers.	
@@ -68,6 +69,7 @@ public class Metronome : MonoBehaviour
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 		pastSchedule = false;
+		tempoIndex = 0;
 
 		GetSongData();
 		UpdateRates();
@@ -197,6 +199,12 @@ public class Metronome : MonoBehaviour
 
 	private void UpdateRates()
 	{
+		if ((tempoIndex < meta.json.tempo_change_beat.Length) && (beatsElapsed >= meta.json.tempo_change_beat[tempoIndex]))
+		{
+			tempo = meta.json.tempo_change_amount[tempoIndex];
+			tempoIndex++;
+		}
+
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
 	}

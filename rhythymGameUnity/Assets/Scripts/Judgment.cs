@@ -248,7 +248,7 @@ public class Judgment : MonoBehaviour
 		Check if the note at the top of the queue has gone unpressed for too long.
 		Returns true if either...
 			- its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
-			- the Marvelous window of the note after this one is here.
+			- the beat of the note after the top note is overlapping the receptor.
 	*/
 
 	public bool CheckMiss(double nearBeat, double farBeat)

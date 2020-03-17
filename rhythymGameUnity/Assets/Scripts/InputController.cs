@@ -35,8 +35,7 @@ public class InputController : MonoBehaviour
     // Text for testing
     public Text t1;
     public Text t2;
-    //public Text t3;
-    //public Text t4;
+    public Text t3;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +47,7 @@ public class InputController : MonoBehaviour
     public void Action() //Update()
     {
         t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
+        t3.text = "Tempo: " + metronome.tempo.ToString();
 
         // Check if the notes at this beat should be deleted and marked as missed
         
@@ -76,9 +76,10 @@ public class InputController : MonoBehaviour
             {
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    t2.text = "Beat on press: " + beatPressed.ToString();
                     noteController.RemoveTopNote(i);
                 }
+
+                t2.text = "Beat on press: " + beatPressed.ToString();
             }
         }
 
@@ -106,29 +107,4 @@ public class InputController : MonoBehaviour
     {
         beatPressed = metronome.beatsElapsed;
     }
-
-    /*
-    private bool IsKeyDown()
-    {
-        return Input.GetKeyDown(keyPressed);
-    }
-
-    private bool IsKeyUp()
-    {
-        return Input.GetKeyUp(keyPressed);
-    }
-
-    // using MouseDown functions in lieu of touch inputs for now
-    private void OnMouseDown()
-    {
-        mouseClick = true;
-        SetPressedBtnColor();
-    }
-
-    private void OnMouseUp()
-    {
-        mouseClick = false;
-        SetDefaultBtnColor();
-    }
-	*/
 }

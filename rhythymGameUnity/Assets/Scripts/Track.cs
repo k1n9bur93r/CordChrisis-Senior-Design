@@ -21,6 +21,8 @@ public class JsonTrack
     public double[] note_lengths;
     public int[] note_gesture;
     public double offset;
+    public double[] tempo_change_amount;
+    public double[] tempo_change_beat;
 
     #pragma warning restore 0649
 }
