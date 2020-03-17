@@ -11,7 +11,7 @@ namespace CordChrisis.BOs
 {
     public class UserStatsBO : IUserStats
     {
-        public bool LogInUser(Login login) {
+        public bool LogInUser(UserLogin login) {
             try
             {
                 throw new NotImplementedException();
@@ -48,7 +48,7 @@ namespace CordChrisis.BOs
             }
         }
 
-        public void UpdateUserPassword(Login login) {
+        public void UpdateUserPassword(UserLogin login) {
             try
             {
                 throw new NotImplementedException();

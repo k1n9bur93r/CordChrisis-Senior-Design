@@ -2,68 +2,66 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @inject HttpClient Http
-
-<h1>Search Page</h1>
 <h1>Search Page</h1>
 <div class="m-1" style="margin-top:30px">
-<form class="form-inline">
-    <div class="input-group mb-2 mr-sm-2">
-        <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="MapName">
-        <label class="sr-only">Difficulty </label>
-        <div class="input-group ">
-            <div class="input-group-prepend">
+    <form class="form-inline">
+        <div class="input-group mb-2 mr-sm-2">
+            <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="MapName">
+            <label class="sr-only">Difficulty </label>
+            <div class="input-group ">
+                <div class="input-group-prepend">
 
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle"
-                            type="button" id="MapDifficultyDrop" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        Difficulty
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="MapDifficultyDrop">
-                        <a class="dropdown-item" @onclick="UpdateDifficultyEasy">Easy</a>
-                        <a class="dropdown-item" @onclick="UpdateDifficultyMedium">Medium</a>
-                        <a class="dropdown-item" @onclick="UpdateDifficultyHard">Hard</a>
-                        <a class="dropdown-item" @onclick="UpdateDifficultyUltra">Ultra</a>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button" id="MapDifficultyDrop" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Difficulty
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="MapDifficultyDrop">
+                            <a class="dropdown-item" @onclick="UpdateDifficultyEasy">Easy</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyMedium">Medium</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyHard">Hard</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyUltra">Ultra</a>
+                        </div>
                     </div>
+
                 </div>
-
+                <input id="MapRatingtext" type="text" class="form-control mb-2 mr-sm-2" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
             </div>
-            <input id="MapRatingtext" type="text" class="form-control mb-2 mr-sm-2" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
+            <div class="input-group">
+                <div class="input-group-prepend">
 
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle"
-                            type="button" id="MapRatingDrop" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        Rating
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="MapRatingDrop">
-                        <a class="dropdown-item" @onclick="UpdateRating1">1</a>
-                        <a class="dropdown-item" @onclick="UpdateRating2">2</a>
-                        <a class="dropdown-item" @onclick="UpdateRating3">3</a>
-                        <a class="dropdown-item" @onclick="UpdateRating4">4</a>
-                        <a class="dropdown-item" @onclick="UpdateRating5">5</a>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button" id="MapRatingDrop" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Rating
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="MapRatingDrop">
+                            <a class="dropdown-item" @onclick="UpdateRating1">1</a>
+                            <a class="dropdown-item" @onclick="UpdateRating2">2</a>
+                            <a class="dropdown-item" @onclick="UpdateRating3">3</a>
+                            <a class="dropdown-item" @onclick="UpdateRating4">4</a>
+                            <a class="dropdown-item" @onclick="UpdateRating5">5</a>
+                        </div>
                     </div>
-                </div>
 
+                </div>
+                <input id="MapDifficultyText" type="text" class="form-control " placeholder="Rating" @bind="SelectedRating" disabled="true">
             </div>
-            <input id="MapDifficultyText" type="text" class="form-control " placeholder="Rating" @bind="SelectedRating" disabled="true">
         </div>
-    </div>
-    
-</form>
-<button id="SubmitSearchQuery" class="btn btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
+
+    </form>
+    <button id="SubmitSearchQuery" class="btn btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
 </div>
 <div>
     @if (ReturnedMaps == null)
     {
-    <p>Waiting for maps</p>
+        <p>Waiting for maps</p>
     }
     else
-    { 
-    <p>@ReturnedMaps[0].Name</p>
+    {
+        <p>@ReturnedMaps[0].Name</p>
     }
 </div>
 
@@ -73,15 +71,15 @@
 @code {
     string SelectedDifficulty { get; set; }
     int IntDifficulty { get; set; }
-    int?SelectedRating { get; set; }
+    int? SelectedRating { get; set; }
     string MapName { get; set; }
     //string hasError=" ";
     List<Map> ReturnedMaps;
 
     void UpdateDifficultyEasy() { SelectedDifficulty = "Easy"; IntDifficulty = 1; }
-    void UpdateDifficultyMedium(){ SelectedDifficulty = "Medium";IntDifficulty = 2; }
-    void UpdateDifficultyHard() { SelectedDifficulty = "Hard";IntDifficulty = 3;}
-    void UpdateDifficultyUltra() { SelectedDifficulty = "Ultra";IntDifficulty = 4;}
+    void UpdateDifficultyMedium() { SelectedDifficulty = "Medium"; IntDifficulty = 2; }
+    void UpdateDifficultyHard() { SelectedDifficulty = "Hard"; IntDifficulty = 3; }
+    void UpdateDifficultyUltra() { SelectedDifficulty = "Ultra"; IntDifficulty = 4; }
     void UpdateRating1() => SelectedRating = 1;
     void UpdateRating2() => SelectedRating = 2;
     void UpdateRating3() => SelectedRating = 3;
@@ -93,17 +91,18 @@
         //Validate
         if (MapName == String.Empty)
         {
-            //call alert box 
+            //call alert box
         }
-        Search UserSearch = new Search {
+        Search UserSearch = new Search
+        {
             Name = MapName,
-            Ratings = SelectedRating!=null?(double)SelectedRating:0.0,
+            Ratings = SelectedRating != null ? (double)SelectedRating : 0.0,
             Difficulty = IntDifficulty
         };
-        ReturnedMaps=await Http.PostJsonAsync<List<Map>>(@"searchpage/post",UserSearch);
-        MapName=ReturnedMaps[0].Name;
+        ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
+        MapName = ReturnedMaps[0].Name;
         return ReturnedMaps;
     }
 
-    
+
 }
