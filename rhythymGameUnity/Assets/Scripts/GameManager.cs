@@ -23,8 +23,6 @@ using UnityEngine.SceneManagement;
 		- Zero: An empty screen that waits for the Play screen to start.
 	These have their own initialization and update/loop functions.
 
-	We are currently using a SINGLE SCENE for the game.
-
 	REFERENCE MATERIALS:
 		- https://bemuse.ninja/project/docs/game-loop.html
 		- https://forum.unity.com/threads/how-to-avoid-execution-order-nightmares.517578/
@@ -82,10 +80,10 @@ public class GameManager : MonoBehaviour
 		Play screen initialization and update loop.
 
 		Does the following in this order:
-			1.) Timer
-			2.) Audio
-			3.) Input
-			4.) Note movement
+			1.) Runs the Metronome
+			2.) Handles audio output
+			3.) Handles input
+			4.) Handles video output
 	*/
 
 	private void PlayModeLoop()
@@ -108,8 +106,7 @@ public class GameManager : MonoBehaviour
 		//SceneManager.LoadScene("Main Game");
 		metaGO.SetActive(true);
 		clockGO.SetActive(true);
-		//clock.StartSong();
-		clock.StartSongAnywhere(); // DEBUG ONLY
+		clock.StartSong();
 
 		mode = GameState.Play;
 	}

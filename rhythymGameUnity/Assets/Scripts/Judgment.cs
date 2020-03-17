@@ -94,11 +94,12 @@ public class Judgment : MonoBehaviour
 		Returns true if the note was inside a timing window during the input.
 	*/
 
-	public bool CheckHit(double noteBeat)
+	public bool CheckHit(double receivedBeat)
 	{
 		CalculateWindows();
 
-		double currentBeat = clock.beatsElapsed;
+		double currentBeat = clock.beatsElapsed; //clock.beatsElapsedOld;
+		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
 		// ---
@@ -108,7 +109,7 @@ public class Judgment : MonoBehaviour
 		{
 			if (Math.Abs(diff) <= beatsMarvelous)
 			{
-				ratingText.text = "Superb!!!";
+				ratingText.text = "Marvelous!!!";
 				leanText.text = "";
 				notesMarvelous++;
 				combo++;
@@ -123,7 +124,7 @@ public class Judgment : MonoBehaviour
 				// Pass to some Scoreboard function later
 				if (Math.Abs(diff) <= beatsPerfect)
 				{
-					ratingText.text = "Atomic!!";
+					ratingText.text = "Excellent!!";
 					notesPerfect++; 
 					combo++;
 					CalculateScore(Ratings.Perfect);
@@ -131,7 +132,7 @@ public class Judgment : MonoBehaviour
 
 				else if (Math.Abs(diff) <= beatsGreat)
 				{
-					ratingText.text = "Bravo!";
+					ratingText.text = "Great!";
 					notesGreat++;
 					combo++;
 					CalculateScore(Ratings.Great);
@@ -141,7 +142,7 @@ public class Judgment : MonoBehaviour
 				{
 					combo = 0;
 					comboText.text = "";
-					ratingText.text = "Close";
+					ratingText.text = "Good";
 					notesGood++;
 					CalculateScore(Ratings.Good);
 				}
@@ -167,56 +168,6 @@ public class Judgment : MonoBehaviour
 		}
 
 		// It should not be possible to hit beyond the late "Good" window, because the note should be deleted from the queue by now
-	}
-
-	/*
-		When the beginning of a swipe is detected, get that time. If it falls into a timing window, returns true.		
-		If that function returns true, when the end of a swipe is detected, get that time. If it falls into a timing window, returns true and scores.
-	*/
-
-	public bool CheckSwipeStart(double noteBeat)
-	{
-		CalculateWindows();
-
-		double currentBeat = clock.beatsElapsed;
-		double diff = currentBeat - noteBeat;
-
-		// ---
-
-		// Huge start window
-		if (diff >= -beatsGood)
-		{
-			return true;
-		}
-
-		// Too early, do not judge
-		else
-		{
-			return false;
-		}
-	}
-
-	public bool CheckSwipeEnd(double noteBeat)
-	{
-		CalculateWindows();
-
-		double currentBeat = clock.beatsElapsed;
-		double diff = currentBeat - noteBeat;
-
-		// ---
-
-		// Huge start window
-		if (diff >= -beatsGood)
-		{
-			// Pass stuff to scoreboard
-			return true;
-		}
-
-		// Too early, do not judge
-		else
-		{
-			return false;
-		}
 	}
 
 	/*
@@ -249,11 +200,12 @@ public class Judgment : MonoBehaviour
 		Returns true if its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
 	*/
 
-	public bool CheckMiss(double noteBeat)
+	public bool CheckMiss(double receivedBeat)
 	{
 		CalculateWindows();
 
 		double currentBeat = clock.beatsElapsed;
+		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
 		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
@@ -295,9 +247,9 @@ public class Judgment : MonoBehaviour
 		double baseNoteValue = accScoreBase / totalNotes;
 
 		double valueMarvelous = baseNoteValue;
-		double valuePerfect = baseNoteValue * 0.99;//- 50;
-		double valueGreat = baseNoteValue * 0.66;
-		double valueGood = baseNoteValue * 0.33;
+		double valuePerfect = baseNoteValue - 50;
+		double valueGreat = baseNoteValue * 0.7;
+		double valueGood = baseNoteValue * 0.3;
 
 		switch (rate)
 		{
@@ -327,7 +279,7 @@ public class Judgment : MonoBehaviour
 		const double comboScoreBase = 300000.0;
 		const double totalNotes = 164.0;
 
-		double comboBonus = comboScoreBase * (1.0 / (totalNotes - 10.0));
+		double comboBonus = comboScoreBase * (1.0 / (totalNotes - 1.0));
 
 		if (combo > 10)
 		{
@@ -368,10 +320,10 @@ public class Judgment : MonoBehaviour
 
 		statsText.text =
 			score.ToString() + " Score\n\n"
-			+ notesMarvelous.ToString() + " Superb\n"
-			+ notesPerfect.ToString() + " Atomic\n"
-			+ notesGreat.ToString() + " Bravo\n"
-			+ notesGood.ToString() + " Close\n"
+			+ notesMarvelous.ToString() + " Marvelous\n"
+			+ notesPerfect.ToString() + " Excellent\n"
+			+ notesGreat.ToString() + " Great\n"
+			+ notesGood.ToString() + " Good\n"
 			+ notesMiss.ToString() + " Miss\n\n"
 			+ notesEarly.ToString() + " Early\n"
 			+ notesLate.ToString() + " Late\n\n"
