@@ -7,9 +7,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CordChrisis.Shared.Models
 {
-    public class UserLogin
+    public class Login
     {
         public string Email { get; set; }
         public SecureString Password { get; set; }
+        public SecureString Password { get; set; }
+
+
     }
 }
