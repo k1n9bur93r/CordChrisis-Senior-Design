@@ -13,7 +13,7 @@ namespace CordChrisis.Server.Controllers
     {
         [HttpPost]
         [Route("post")]
-        public Boolean GetLogin([FromBody] Login postData)
+        public bool GetLogin([FromBody] Login postData)
         {
 
 

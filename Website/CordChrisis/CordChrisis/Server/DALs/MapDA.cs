@@ -22,14 +22,38 @@ namespace CordChrisis.DAOs
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                data = context.Map.Where(a => a.ID == mapID).FirstOrDefault();
+                data = context.Map.Where(a => a.ID.ToString() == mapID).FirstOrDefault();
             }
             return data;
         }
 
         public List<Map> ReadMany(Search search)
         {
-            throw new NotImplementedException();
+            List<Map> data = new List<Map>();
+            using (var context = new ApplicationDBContext())
+            {
+               
+                context.Database.EnsureCreated();
+                if (search.Ratings == 0)
+                {
+                    data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Difficulty == search.Difficulty) &&(n.PublicVisible==true)).OrderBy(n => n.Rating).ToList();
+                }
+                else {
+                    data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Rating >= (decimal)search.Ratings) && (n.Difficulty == search.Difficulty) && (n.PublicVisible == true)).OrderBy(n => n.Rating).ToList();
+                }
+            }
+            return data;
+        }
+
+        public List<Map> PopularSearch(Search search)
+        {
+            List<Map> data = new List<Map>();
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                
+            }
+            return data;
         }
 
         public void Update(Map map)

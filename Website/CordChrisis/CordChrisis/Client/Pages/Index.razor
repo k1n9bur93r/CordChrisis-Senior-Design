@@ -1,8 +1,27 @@
 ﻿@page "/"
 
 @*<Alert/>*@
-<h1>Hello, world!</h1>
+    <div class=" container rounded mt-4 p-1 bg-light">
+        <div class="jumbotron">
+            <h1 class="display-3">Chord Crisis</h1>
+            <p class="lead">
+                This is flavor text describing why exactly this game is so good. It has features, like connecting to online APIS, making your own maps, and sharing them too!
+            </p>
+            <hr class="my-2">
+            <div>
+                <p>Find the right Map for you, or make one yourself!</p>
+                <div>
+                    <button class="btn btn-primary btn-lg" href="searchpage"> Search</button>
+                    <button class="btn btn-secondary btn-lg" href=""> Map Maker</button>
+                </div>
+            </div>
+        </div>
+         <div>
+            <p class="lead"> What People are playing</p>
+             <div class="bg-secondary rounded">
+            <MapSearchResults/>
+                </div>
+         </div>
+        
+    </div>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />

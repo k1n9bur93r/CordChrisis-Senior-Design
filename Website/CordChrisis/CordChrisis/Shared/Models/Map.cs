@@ -9,10 +9,11 @@ namespace CordChrisis.Shared.Models
     public class Map
     {
         [Key]
-        public string ID { get; set; }
+        [Required]
+        public Guid ID { get; set; }
 
         [MaxLength(100)]
-        public string GroupID { get; set; }
+        public Guid GroupID { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -31,17 +32,19 @@ namespace CordChrisis.Shared.Models
         [MaxLength(1)]
         public int ApiType { get; set; }
         [Required]
-        public byte[] Thumbnail { get; set; }
+        public Guid ThumbnailPK { get; set; }
         [Required]
         [MaxLength(1)]
         public int Difficulty { get; set; }
         [Required]
         [MaxLength(10)]
-        public double Rating { get; set; }
+        public decimal Rating { get; set; }
+        [MaxLength(10)]
+        public double MapRating => (double)Rating;
         [Required]
         public int Plays { get; set; }
         [Required]
-        DateTime CreatedDate { get; set; }
+        public  DateTime CreatedDate { get; set; }
         [Required]
         [MaxLength(1)]
         public bool PublicVisible { get; set; }

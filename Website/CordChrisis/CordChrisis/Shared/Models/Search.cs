@@ -14,6 +14,6 @@ namespace CordChrisis.Shared.Models
         public int Difficulty { get; set; }
         public double Ratings { get; set; }
         public int Plays { get; set; }
-        DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
+using CordChrisis.DAOs;
 using CordChrisis.Shared.Models;
 
 namespace CordChrisis.BOs
@@ -15,7 +16,8 @@ namespace CordChrisis.BOs
     {
 		try
 		{
-			throw new NotImplementedException();
+				MapDA mapSearch = new MapDA();
+				return mapSearch.ReadMany(search);
 		}
 		catch (Exception ex)
 		{

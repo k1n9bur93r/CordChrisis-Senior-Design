@@ -7,7 +7,7 @@
 
 <h3>Login!</h3>
 
-<form>
+
     <div class="input-group mb-2 mr-sm-2">
         <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
         <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
@@ -15,7 +15,7 @@
     <div>
 
     </div>
-</form>
+
 <div>
     <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
     @if (success == false)
@@ -33,35 +33,41 @@
 
     string email { get; set; }
     string password { get; set; }
-    Boolean success { get; set; }
+    bool success = false;
 
     public async Task<Boolean> SubmitLoginQuery()
     {
-        if (email == String.Empty)
+        success = false;
+        if (email != String.Empty)
         {
             //alert email field is empty
+
+
+            if (password != String.Empty)
+            {
+                //alert password is empty
+
+
+                SecureString newPass = new SecureString();
+                for (int i = 0; i < password.Length; i++)
+                    newPass.AppendChar(password[i]);
+
+
+
+                Login loginObject = new Login
+                {
+                    Email = email,
+                    Password = newPass
+                };
+                Console.WriteLine("FUCK THIS BOY");
+                // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
+                success = await Http.PostJsonAsync<bool>("userlogin/post", loginObject);
+            }
         }
-        else if (password == String.Empty)
-        {
-            //alert password is empty
-        }
-
-        SecureString newPass = new SecureString();
-        for (int i = 0; i < password.Length; i++)
-            newPass.AppendChar(password[i]);
-
-
-
-        Login loginObject = new Login
-        {
-            Email = email,
-            Password = newPass
-        };
-
-
-        success = await Http.PostJsonAsync<Boolean>(@"login/post", loginObject);
+        Console.WriteLine(success);
         return success;
+    }
+
 
     }
 
-}
