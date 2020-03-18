@@ -44,7 +44,7 @@ public class InputController : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Action() //Update()
+    public void Update()
     {
         t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
         t3.text = "Tempo: " + metronome.tempo.ToString();

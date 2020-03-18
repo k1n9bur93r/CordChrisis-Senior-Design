@@ -63,23 +63,20 @@ public class Metronome : MonoBehaviour
 		Determine amount of seconds per beat and beats per second.
 	*/
 	
-	void Start()
+	void Awake()
 	{
 		beatsElapsed = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 		pastSchedule = false;
 		tempoIndex = 0;
-
-		GetSongData();
-		UpdateRates();
 	}
 
 	/*
 		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
-	public void Action() //Update()
+	public void Update()
 	{
 		//UpdateTime();
 		UpdateTimeAnywhere(); // DEBUG ONLY
@@ -143,6 +140,9 @@ public class Metronome : MonoBehaviour
 
 	public void StartSongAnywhere()
 	{
+		GetSongData();
+		UpdateRates();
+
 		GetComponent<AudioSource>().Play();
 	}
 
@@ -153,7 +153,12 @@ public class Metronome : MonoBehaviour
 
 	public void UpdateTimeAnywhere()
 	{
-		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		if (Input.GetKey(KeyCode.Z))
+		{
+			StartSongAnywhere();
+		}
+
+		else if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
 			if (!pastSchedule)
 			{

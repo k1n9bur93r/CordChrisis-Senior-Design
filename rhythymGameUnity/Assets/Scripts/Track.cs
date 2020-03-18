@@ -32,7 +32,6 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
-    //public GameObject clockGO;
 
     public string track_file;
     public JsonTrack json;
@@ -43,6 +42,7 @@ public class Track : MonoBehaviour
         // reads a json file and returns the parsed object as JsonTrack object
         string json_string = Resources.Load<TextAsset>(filename).ToString();
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);
+
         return json;
     }
 
@@ -76,17 +76,22 @@ public class Track : MonoBehaviour
         return track;
     }
 
-    void Start()
+    void Awake()
     {
+        // Read JSON file
         Debug.Log("[Track] Reading...");
-
-        // read json track file
         json = readJsonFile(track_file);
+
+        // Validate JSON file
+        Debug.Log("[Track] Validating...");
         json = validateInput(json);
 
-        Debug.Log("[Track] Spawning...");
+        Debug.Log("[Track] Ready!");
+    }
 
-        // place notes in the game field
+    void Start()
+    {
+        // Spawn the notes
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
@@ -94,7 +99,5 @@ public class Track : MonoBehaviour
             
             noteSpawner.spawnNote(note - 1, beat);
         }
-
-        Debug.Log("[Track] Ready!");
     }
 }

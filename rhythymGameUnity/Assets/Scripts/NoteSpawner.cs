@@ -91,7 +91,7 @@ public class NoteSpawner : MonoBehaviour
         curNote.GetComponent<NoteMovement>().beat = beat;
     }
 
-    public void Action() //FixedUpdate()
+    public void FixedUpdate()
     {
         //set location of all notes according to beatsElapsed
         for (int x=0;x<4;x++)
