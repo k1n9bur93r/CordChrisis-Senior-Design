@@ -194,6 +194,7 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
+		Check if tempo has changed.
 		Calculate tick rates based on tempo.
 	*/
 

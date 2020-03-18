@@ -65,6 +65,14 @@ public class Track : MonoBehaviour
             track.note_gesture = new int [length];
         }
 
+        // ---
+
+        if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
+        {
+            Debug.Log("tempo changes: " + track.notes.Length + " | tempo beats: " + track.beats.Length);
+            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");           
+        }
+
         return track;
     }
 

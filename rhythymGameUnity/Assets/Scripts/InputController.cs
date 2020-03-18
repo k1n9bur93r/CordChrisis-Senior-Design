@@ -18,7 +18,7 @@ public class InputController : MonoBehaviour
      *      
      */
 
-    private const int MAX_KEYS = 4; // Will need to increase to 5 once gestures are implemented?
+    private const int MAX_KEYS = 4;
 
     // input types
     public KeyCode keyPressed;
@@ -59,6 +59,8 @@ public class InputController : MonoBehaviour
             }
         }
 
+        // An equivalent function for swipe notes goes here
+
         // Process tap notes
 
         SetBeatOnKeyPress();
@@ -82,6 +84,8 @@ public class InputController : MonoBehaviour
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
         }
+
+        // An equivalent function for swipe notes goes here
 
         // Animate the buttons (could also be basis for hold note detection?)
 
