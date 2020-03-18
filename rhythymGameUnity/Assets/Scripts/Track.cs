@@ -15,7 +15,7 @@ public class JsonTrack
     // required
     public double[] beats;
     public int[] notes;
-    public double tempo;
+    //public double tempo;
 
     // optional
     public double[] note_lengths;

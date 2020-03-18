@@ -194,7 +194,7 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
-		tempo = meta.json.tempo;
+		tempo = meta.json.tempo_change_amount[0]; //meta.json.tempo;
 		startOffset = meta.json.offset;
 	}
 
