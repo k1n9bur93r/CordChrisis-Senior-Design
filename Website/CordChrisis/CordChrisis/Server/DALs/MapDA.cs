@@ -35,7 +35,7 @@ namespace CordChrisis.DAOs
                
                 context.Database.EnsureCreated();
                 if (search.Ratings == 0)
-                {
+                {   
                     data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Difficulty == search.Difficulty) &&(n.PublicVisible==true)).OrderBy(n => n.Rating).ToList();
                 }
                 else {
@@ -45,13 +45,13 @@ namespace CordChrisis.DAOs
             return data;
         }
 
-        public List<Map> PopularSearch(Search search)
+        public List<Map> PopularSearch()
         {
             List<Map> data = new List<Map>();
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                
+                data = context.Map.Where(n => n.CreatedDate <= DateTime.Now && (n.CreatedDate > DateTime.Now.AddDays(-7)) && (n.Rating > (decimal)3.0)).OrderBy(n => n.Rating).ToList();
             }
             return data;
         }

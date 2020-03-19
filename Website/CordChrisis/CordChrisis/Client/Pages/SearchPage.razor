@@ -2,7 +2,7 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @inject HttpClient Http
-    <div class="container-fluid justify-content-center pt-lg-5">
+    <div class="container pt-lg-5">
         <h1>Search Page</h1>
         
         <div class="m-1 bg-light rounded p-2" >
@@ -55,7 +55,7 @@
             </form>
             <button id="SubmitSearchQuery" class="btn btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
         </div>
-        <div>
+        <div class="">
             @if (ReturnedMaps == null)
             {
                 <div class="rounded bg-light mt-4">
@@ -70,8 +70,8 @@
                     }
                     else
                     {
-                        <div class="d-flex justify-content-center">
-                            <h1 class="text-muted lead">Results </h1>
+                        <div class="d-flex justify-content-center pt-2 ">
+                            <h1 class="text-muted lead"> No Results </h1>
                         </div>
                     }
                 </div>

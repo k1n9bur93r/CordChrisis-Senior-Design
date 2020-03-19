@@ -9,5 +9,6 @@ namespace CordChrisis.BOs.Interfaces
     interface ISearchBO
     {
         List<Map> GetMapSearch(Search search);
+        List<Map> GetPopularMaps();
     }
 }

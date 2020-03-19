@@ -18,8 +18,16 @@ namespace CordChrisis.Server.Controllers
         {
             SearchBO search = new SearchBO();
             return search.GetMapSearch(postData);
-            //return new List<Map> { new Map { Name = "YOU thought you could get away with it huh?", Rating = 4.0, Difficulty = 3 } };
         }
+
+        [HttpGet]
+        [Route("getpopular")]
+        public List<Map> PopularMaps()
+        {
+            SearchBO search = new SearchBO();
+            return search.GetPopularMaps();
+        }
+
         //public IActionResult GetDefaultSearchList()
         //{
         //    return View();

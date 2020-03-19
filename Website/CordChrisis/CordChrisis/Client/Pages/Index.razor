@@ -1,4 +1,6 @@
 ﻿@page "/"
+@inject HttpClient Http;
+@using CordChrisis.Shared.Models
 
 @*<Alert/>*@
     <div class=" container rounded mt-4 p-1 bg-light">
@@ -17,11 +19,21 @@
             </div>
         </div>
          <div>
-            <p class="lead"> What People are playing</p>
-             <div class="bg-secondary rounded">
-            <MapSearchResults/>
+            <p class=" h2"> What People are playing</p>
+             <div class="bg-secondary rounded p-2 ">
+            <MapSearchResults PopularMaps=getPopularMaps()/>
                 </div>
          </div>
         
     </div>
 
+@code{
+    List<Map> popularMaps { get; set; }
+    public async Task<List<Map>> getPopularMaps()
+    { 
+        
+       return await Http.GetJsonAsync<List<Map>>(@"searchpage/getpopular");
+        
+
+    }
+}

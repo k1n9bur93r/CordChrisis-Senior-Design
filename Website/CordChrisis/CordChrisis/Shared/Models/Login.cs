@@ -11,7 +11,8 @@ namespace CordChrisis.Shared.Models
     {
         public string Email { get; set; }
         public SecureString Password { get; set; }
-
+        
+        
 
     }
 }

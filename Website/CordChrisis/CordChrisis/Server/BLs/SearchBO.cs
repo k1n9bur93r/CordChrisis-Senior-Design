@@ -25,5 +25,21 @@ namespace CordChrisis.BOs
 			throw;
 		}
 	}
-    }
+
+		public List<Map> GetPopularMaps()
+		{
+			try
+			{
+				MapDA mapSearch = new MapDA();
+				return mapSearch.PopularSearch();
+			}
+			catch (Exception ex)
+			{
+				Trace.TraceError("Error: " + ex.Message + "Unable to get Map search results");
+				throw;
+			}
+		}
+	}
 }
+
+
