@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Direction { None, Up, Down, Left, Right };
+
 public class InputController : MonoBehaviour
 {
     /*  This class handles player input of keyboard and/or touch presses.
@@ -14,141 +16,90 @@ public class InputController : MonoBehaviour
      *  GetBeatOnKeyPress()
      *      - Returns a double indicating the beat at which the player pressed  
      *      
-     *  GetHitGrade()
-     *      - Returns an int indicating the resultant grade player got on her hit
      */
 
-    // used to indicate key presses
-    private Renderer r;
-    private Color pressedColor;
-    private Color btnColor;
+    private const int MAX_KEYS = 4;
 
     // input types
     public KeyCode keyPressed;
-    public bool mouseClick;
 
     // needed classes
     public NoteSpawner noteSpawner;
     public Judgment judge;
     public Metronome metronome;
     public NoteController noteController;
+    public GameObject[] button;
 
     private double beatPressed;
-    private double nextBeat;
-    private static int hitGrade;
-    private int queueNum;
-    private bool[] notesOnNextBeat;
 
     // Text for testing
     public Text t1;
     public Text t2;
     public Text t3;
-    //public Text t4;
 
     // Start is called before the first frame update
     void Start()
     {
-        r = GetComponent<Renderer>();
-        btnColor = r.material.color;
-        pressedColor = new Color(btnColor.r + 0.2f, btnColor.g + 0.2f, btnColor.b + 0.2f);
-
-        mouseClick = false;
-
-        if (name == "Btn1") queueNum = 0;
-        else if (name == "Btn2") queueNum = 1;
-        else if (name == "Btn3") queueNum = 2;
-        else if (name == "Btn4") queueNum = 3;
-        else queueNum = -1;
-
-        nextBeat = 0;
-        notesOnNextBeat = new bool[4];
+        // ...
     }
 
     // Update is called once per frame
-    public void Action() //Update()
+    public void Update()
     {
-        // look at the top of each queue for the next beat        
-        double temp = double.MaxValue;
-        for (int i = 0; i < 4; i++)
-        {
-            if (noteSpawner.notes[i].Count > 0)
-            {
-                if (noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat < temp)
-                {
-                    temp = noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat;
-                }
-            }
-        }
-        nextBeat = temp;
-        t3.text = "NextBeatToPress: " + nextBeat.ToString();
-
-        // mark all notes on nextBeat
-        for (int i = 0; i < 4; i++)
-        {
-            if (noteSpawner.notes[i].Count > 0)
-            {
-                if (noteSpawner.notes[i][0].GetComponent<NoteMovement>().beat == nextBeat)
-                    notesOnNextBeat[i] = true;
-                else
-                    notesOnNextBeat[i] = false;
-            }
-        }
+        t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
+        t3.text = "Tempo: " + metronome.tempo.ToString();
 
         // Check if the notes at this beat should be deleted and marked as missed
-        if (notesOnNextBeat[queueNum])
+        
+        for (int i = 0; i < MAX_KEYS; i++)
         {
-            if (judge.CheckMiss(nextBeat))
+            if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
             {
-                noteController.RemoveTopNote(queueNum);
-                SetHitGrade(0); 
+                noteController.RemoveTopNote(i);
             }
         }
 
-        if (IsKeyDown())
+        // An equivalent function for swipe notes goes here
+
+        // Process tap notes
+
+        SetBeatOnKeyPress();
+
+        bool[] pressedKeys = { false, false, false, false };
+
+        if (Input.GetKeyDown(KeyCode.A)) { pressedKeys[0] = true; button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        if (Input.GetKeyDown(KeyCode.S)) { pressedKeys[1] = true; button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        if (Input.GetKeyDown(KeyCode.D)) { pressedKeys[2] = true; button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        if (Input.GetKeyDown(KeyCode.F)) { pressedKeys[3] = true; button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+
+        for (int i = 0; i < MAX_KEYS; i++)
         {
-            SetPressedBtnColor();
-            SetBeatOnKeyPress();
-
-            // the beat that the player pressed on
-            t2.text = "BeatOnKeyPress: " + beatPressed.ToString();
-
-            /*
-            // check if it's the right queue before grading the attempt
-            if (notesOnNextBeat[queueNum])
+            if (pressedKeys[i] == true)
             {
-                if (judge.CheckHit(nextBeat))
+                if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    // player hit within valid window, delete top note from queue
-                    noteController.RemoveTopNote(queueNum);
+                    noteController.RemoveTopNote(i);
                 }
 
-                //SetHitGrade(hitResult);
-            }
-            */
-
-            // Check if the note at the top of this lane's queue can be judged
-            if ((noteSpawner.notes[queueNum].Count != 0) && (judge.CheckHit(noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().beat)))
-            {
-                noteController.RemoveTopNote(queueNum);
+                t2.text = "Beat on press: " + beatPressed.ToString();
             }
         }
 
-        if (IsKeyUp())
-        {
-            SetDefaultBtnColor();
-        }
+        // An equivalent function for swipe notes goes here
 
-        //t4.text = "HitResult: " + GetHitGrade().ToString();
-    }
+        // Animate the buttons (could also be basis for hold note detection?)
 
-    public int GetHitGrade()
-    {
-        return hitGrade;
-    }
+        if (Input.GetKey(KeyCode.A)) { button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        else { button[0].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
 
-    private void SetHitGrade(int q)
-    {
-        hitGrade = q;
+        if (Input.GetKey(KeyCode.S)) { button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        else { button[1].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
+
+        if (Input.GetKey(KeyCode.D)) { button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        else { button[2].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
+
+        if (Input.GetKey(KeyCode.F)) { button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        else { button[3].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
     }
 
     public double GetBeatOnKeyPress()
@@ -160,39 +111,4 @@ public class InputController : MonoBehaviour
     {
         beatPressed = metronome.beatsElapsed;
     }
-
-    private bool IsKeyDown()
-    {
-        return Input.GetKeyDown(keyPressed);
-    }
-
-    private bool IsKeyUp()
-    {
-        return Input.GetKeyUp(keyPressed);
-    }
-
-    // using MouseDown functions in lieu of touch inputs for now
-    private void OnMouseDown()
-    {
-        mouseClick = true;
-        SetPressedBtnColor();
-    }
-
-    private void OnMouseUp()
-    {
-        mouseClick = false;
-        SetDefaultBtnColor();
-    }
-
-    private void SetPressedBtnColor()
-    {
-        t1.text = "Key: " + keyPressed.ToString();
-        r.material.color = pressedColor;
-    }
-
-    private void SetDefaultBtnColor()
-    {
-        r.material.color = btnColor;
-    }
-
 }

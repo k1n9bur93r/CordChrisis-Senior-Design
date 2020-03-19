@@ -94,20 +94,7 @@ public class NoteSpawner : MonoBehaviour
         curNote.GetComponent<NoteMovement>().beat = beat;
     }
 
-    public void spawnGesture(int gestureNum, double beat)
-    {
-        GameObject curGesture =
-            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
-        
-        notes[gestureNum].Add(curGesture.gameObject);
-
-        curGesture.GetComponent<NoteMovement>().speedMod = speedMod;
-        curGesture.transform.parent = transform;
-        curGesture.GetComponent<NoteMovement>().metronome = metronome;
-        curGesture.GetComponent<NoteMovement>().beat = beat;
-    }
-
-    public void Action() //FixedUpdate()
+    public void Update()
     {
         //set location of all notes according to beatsElapsed
         for (int x=0;x<4;x++)

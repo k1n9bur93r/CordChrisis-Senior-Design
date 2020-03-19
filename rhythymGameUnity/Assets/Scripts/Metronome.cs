@@ -26,9 +26,9 @@ using UnityEngine.UI;
 		- double globalOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
 
-	TO DO:
-		- Arbitrary seeking/playback
-		- See if anything can be done about sound latency
+	ISSUES:
+		- Latency
+		- Stutter: https://forum.unity.com/threads/heavy-audio-stutter-in-5-4-but-not-5-3.436664/
 */
 
 public class Metronome : MonoBehaviour
@@ -38,6 +38,10 @@ public class Metronome : MonoBehaviour
 	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 
 	public Track meta;
+
+	// -DEBUG VARS-
+	public double startBeat;
+	private double startTime;
 
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
@@ -52,28 +56,58 @@ public class Metronome : MonoBehaviour
 	private double timeElapsedLast;
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
 	private double overtime;
+	private int tempoIndex;
 
 	/*
 		Initialize timekeepers.	
 		Determine amount of seconds per beat and beats per second.
 	*/
 	
-	void Start()
+	void Awake()
 	{
 		beatsElapsed = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 		pastSchedule = false;
-
-		GetSongData();
-		UpdateRates();
+		tempoIndex = 0;
 	}
 
 	/*
 		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
-	public void Action() //Update()
+	public void Update()
+	{
+		//UpdateTime();
+		UpdateTimeAnywhere(); // DEBUG ONLY
+		UpdateRates();
+	}
+
+	/*
+		Initialize song start point.
+		Play music after a brief delay.
+
+		Sounds in Unity do not play immediately when Play() is called (audio latency).
+		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
+
+		ISSUES:
+		- Unpredictable start times means there's still a slight amount of random, uncontrolled latency (enough to mess up timing)
+	*/
+
+	public void StartSong()
+	{
+		songStart = AudioSettings.dspTime; //- startOffset;
+		timeElapsedLast = AudioSettings.dspTime - songStart;
+
+		UpdateRates();
+		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+	}
+
+	/*
+		Update timers.
+	*/
+
+	public void UpdateTime()
 	{
 		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
 		{
@@ -88,8 +122,8 @@ public class Metronome : MonoBehaviour
 				{
 					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
 					pastSchedule = true;
-				}
-				
+				}				
+
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
 				beatsElapsed += timeElapsedDelta / secPerBeat;
 			}
@@ -97,26 +131,61 @@ public class Metronome : MonoBehaviour
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
 			timeElapsedLast = timeElapsed;
 		}
-
-		UpdateRates();
 	}
 
 	/*
-		Initialize song start point.
-		Play music after a brief delay.
-
-		Sounds in Unity do not play immediately when Play() is called (audio latency).
-		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
-
-		ISSUES:
-		- Unpredictable start times means there's still a slight random offset
+		-DEBUG FUNCTION-
+		Start music at an arbitrary point.
 	*/
 
-	public void StartSong()
+	public void StartSongAnywhere()
 	{
-		songStart = AudioSettings.dspTime; //- startOffset;
-		timeElapsedLast = AudioSettings.dspTime - songStart;
-		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+		GetSongData();
+		UpdateRates();
+
+		GetComponent<AudioSource>().Play();
+	}
+
+	/*
+		-DEBUG FUNCTION-
+		Update the timer based on the arbitrary start point.
+	*/
+
+	public void UpdateTimeAnywhere()
+	{
+		if (Input.GetKey(KeyCode.Z))
+		{
+			StartSongAnywhere();
+		}
+
+		else if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		{
+			if (!pastSchedule)
+			{
+				UpdateRates();
+				GetSongData();
+
+				startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
+				//beatsElapsed = startBeat;
+
+				//Debug.Log("[Metronome] startTime: " + startTime);
+
+				songStart = AudioSettings.dspTime + startTime;
+				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+				GetComponent<AudioSource>().time = (float)startTime;
+				beatsElapsed = startBeat;
+				pastSchedule = true;
+			}
+
+			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
+			timeElapsed = AudioSettings.dspTime - songStart + startTime;
+
+			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
+			beatsElapsed += timeElapsedDelta / secPerBeat;
+
+			timeElapsedDelta = timeElapsed - timeElapsedLast;
+			timeElapsedLast = timeElapsed;
+		}
 	}
 
 	/*
@@ -125,16 +194,23 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
-		tempo = meta.json.tempo;
+		tempo = meta.json.tempo_change_amount[0]; //meta.json.tempo;
 		startOffset = meta.json.offset;
 	}
 
 	/*
+		Check if tempo has changed.
 		Calculate tick rates based on tempo.
 	*/
 
 	private void UpdateRates()
 	{
+		if ((tempoIndex < meta.json.tempo_change_beat.Length) && (beatsElapsed >= meta.json.tempo_change_beat[tempoIndex]))
+		{
+			tempo = meta.json.tempo_change_amount[tempoIndex];
+			tempoIndex++;
+		}
+
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
 	}

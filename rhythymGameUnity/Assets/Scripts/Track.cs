@@ -15,12 +15,14 @@ public class JsonTrack
     // required
     public double[] beats;
     public int[] notes;
-    public double tempo;
+    //public double tempo;
 
     // optional
     public double[] note_lengths;
     public int[] note_gesture;
     public double offset;
+    public double[] tempo_change_amount;
+    public double[] tempo_change_beat;
 
     #pragma warning restore 0649
 }
@@ -30,6 +32,7 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
+    
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
@@ -39,6 +42,7 @@ public class Track : MonoBehaviour
         // reads a json file and returns the parsed object as JsonTrack object
         string json_string = Resources.Load<TextAsset>(filename).ToString();
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);
+
         return json;
     }
 
@@ -61,20 +65,33 @@ public class Track : MonoBehaviour
             track.note_gesture = new int [length];
         }
 
+        // ---
+
+        if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
+        {
+            Debug.Log("tempo changes: " + track.notes.Length + " | tempo beats: " + track.beats.Length);
+            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");           
+        }
+
         return track;
+    }
+
+    void Awake()
+    {
+        // Read JSON file
+        Debug.Log("[Track] Reading...");
+        json = readJsonFile(track_file);
+
+        // Validate JSON file
+        Debug.Log("[Track] Validating...");
+        json = validateInput(json);
+
+        Debug.Log("[Track] Ready!");
     }
 
     void Start()
     {
-        Debug.Log("[Track] Reading...");
-
-        // read json track file
-        json = readJsonFile(track_file);
-        json = validateInput(json);
-
-        Debug.Log("[Track] Spawning...");
-
-        // place notes in the game field
+        // Spawn the notes
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
@@ -82,7 +99,5 @@ public class Track : MonoBehaviour
             
             noteSpawner.spawnNote(note - 1, beat);
         }
-
-        Debug.Log("[Track] Ready!");
     }
 }

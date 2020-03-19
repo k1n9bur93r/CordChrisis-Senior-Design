@@ -197,18 +197,26 @@ public class Judgment : MonoBehaviour
 
 	/*
 		Check if the note at the top of the queue has gone unpressed for too long.
-		Returns true if its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
+		Returns true if either...
+			- its beat exceeds the current threshold of the "Miss" window (which is actually just the area beyond the late "Good" window).
+			- the beat of the note after the top note is overlapping the receptor.
 	*/
 
-	public bool CheckMiss(double receivedBeat)
+	public bool CheckMiss(double nearBeat, double farBeat)
 	{
 		CalculateWindows();
 
 		double currentBeat = clock.beatsElapsed;
-		double noteBeat = receivedBeat;
-		double diff = currentBeat - noteBeat;
+		double diff = currentBeat - nearBeat;
 
-		 // If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
+		// If the note after the next one is overlapping the receptor, immediately miss
+		if (currentBeat >= farBeat)
+		{
+			//Debug.Log("[Judgment] Jack compensated");
+			return true;
+		}
+
+		// If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
 		if (diff > beatsGood)
 		{
 			// Pass to some Scoreboard function later

@@ -35,6 +35,7 @@
 		1, 2, 3, 4,
 		1, 2, 3, 4
 	],
-	"tempo": 162,
+	"tempo_change_amount": [120.0],
+    "tempo_change_beat": [0.0],
 	"offset": 0.028
 }
