@@ -98,7 +98,7 @@ public class Judgment : MonoBehaviour
 	{
 		CalculateWindows();
 
-		double currentBeat = clock.beatsElapsed; //clock.beatsElapsedOld;
+		double currentBeat = clock.beatsElapsed;
 		double noteBeat = receivedBeat;
 		double diff = currentBeat - noteBeat;
 
@@ -168,6 +168,49 @@ public class Judgment : MonoBehaviour
 		}
 
 		// It should not be possible to hit beyond the late "Good" window, because the note should be deleted from the queue by now
+	}
+
+	/*
+		Hold judgment function
+	*/
+
+	public void CheckHold()
+	{
+		// ...
+	}
+
+	/*
+		Swipe judgment function
+	*/
+
+	public bool CheckSwipe(double receivedBeat)
+	{
+		CalculateWindows();
+
+		double currentBeat = clock.beatsElapsed;
+		double noteBeat = receivedBeat;
+		double diff = currentBeat - noteBeat;
+
+		// ---
+
+		// If the swipe is caught in ANY valid timing window, automatically rate it a "Marvelous"
+		if (diff >= -beatsGood)
+		{
+			ratingText.text = "Marvelous!!!";
+			leanText.text = "";
+			notesMarvelous++;
+			combo++;
+			CalculateScore(Ratings.Marvelous);
+			//CheckLean(diff); // DEBUG ONLY
+
+			return true;
+		}
+
+		// The player tried to hit a note before it passed the early "Good" window
+		else
+		{
+			return false;
+		}
 	}
 
 	/*
