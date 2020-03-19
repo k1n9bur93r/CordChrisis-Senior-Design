@@ -44,10 +44,10 @@ public class NoteSpawner : MonoBehaviour
         noteTravelTime = startDistance / speedMod;
         print("The first notes should play in " + noteTravelTime + " seconds");
     }
-
     
     // Update is called once per frame
     // Code for debugging purposes
+    /*
     void Update()
     {
         //bpm = metronome.tempo; //getting tempo from metronome
@@ -68,6 +68,7 @@ public class NoteSpawner : MonoBehaviour
             spawnGesture(3, 12);
         }
     }
+    */
     
 
     private float beatToDistance(double beat)

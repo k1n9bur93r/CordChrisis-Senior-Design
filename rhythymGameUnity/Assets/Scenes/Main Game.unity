@@ -585,7 +585,7 @@ PrefabInstance:
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
@@ -595,7 +595,7 @@ PrefabInstance:
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
@@ -615,7 +615,7 @@ PrefabInstance:
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7183790007645019929, guid: 7c4d358c1630897459966030809b1d66,
         type: 3}
@@ -721,7 +721,7 @@ PrefabInstance:
     - target: {fileID: 9188857543302376158, guid: 071824e82f75869448cf1a41ea47e290,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9188857543302376158, guid: 071824e82f75869448cf1a41ea47e290,
         type: 3}
@@ -845,7 +845,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
@@ -855,7 +855,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
@@ -875,12 +875,17 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: 588133ffccc9a7a4fac487b367fef106,
         type: 3}
@@ -913,7 +918,7 @@ GameObject:
   - component: {fileID: 621184327}
   - component: {fileID: 621184326}
   m_Layer: 5
-  m_Name: KeyText
+  m_Name: CurrentBeatText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -966,10 +971,10 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Key: '
+  m_Text: 'Current beat:'
 --- !u!222 &621184327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1270,7 +1275,7 @@ PrefabInstance:
     - target: {fileID: 2911440114274137063, guid: b19e41a87e83c5449bf73a2a04acb7a0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2911440114274137063, guid: b19e41a87e83c5449bf73a2a04acb7a0,
         type: 3}
@@ -1398,7 +1403,7 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Tempo:'
@@ -1811,7 +1816,7 @@ PrefabInstance:
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
@@ -1821,7 +1826,7 @@ PrefabInstance:
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
@@ -1841,7 +1846,7 @@ PrefabInstance:
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
@@ -1890,7 +1895,7 @@ GameObject:
   - component: {fileID: 1916113840}
   - component: {fileID: 1916113839}
   m_Layer: 5
-  m_Name: BeatText
+  m_Name: BeatOnKeyPressText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1943,10 +1948,10 @@ MonoBehaviour:
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'BeatOnKeyPress: '
+  m_Text: 'Beat on press:'
 --- !u!222 &1916113840
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1966,7 +1971,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: f1807cd308b04504188aa27ae6cd0192, type: 3}
+      objectReference: {fileID: 8300000, guid: 1afc4209595311a46af4af34446c065a, type: 3}
     - target: {fileID: 5573155426960535793, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_Name
@@ -2015,7 +2020,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535794, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5573155426960535794, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
@@ -2050,7 +2055,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -2267,7 +2272,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
@@ -2277,7 +2282,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
@@ -2297,7 +2302,7 @@ PrefabInstance:
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5385148469038368952, guid: ad5dc15a75b8ca24fac9db3a88511dfd,
         type: 3}
@@ -2404,7 +2409,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/lucky_star_s [Hard]
+      value: Charts/Milky Way
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
