@@ -49,6 +49,7 @@ MonoBehaviour:
   - {fileID: 5413346476364400722, guid: b8a98fde082d037e0b907ba4ac925993, type: 3}
   - {fileID: 1641759161765388839, guid: 47ca139b280d85b53a6245f6cdfcec32, type: 3}
   - {fileID: 2032099371568691849, guid: 345b2ec621b5fba85ab13afd9d5edc1d, type: 3}
+  gestureObjects: []
   noteXoffsets:
   - -1
   - -0.33
@@ -61,6 +62,7 @@ MonoBehaviour:
   metronome: {fileID: 0}
   transparentStart: 0
   transparentEnd: 0
+  holdNoteObject: {fileID: 0}
 --- !u!1001 &3447156842976343093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,6 +157,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 765386518086902650, guid: bea1b4d207d96fb58928eaaa01e0b2b9, type: 3}
+    - {fileID: 4893842961262414352, guid: bea1b4d207d96fb58928eaaa01e0b2b9, type: 3}
+    - {fileID: 8058298198077360841, guid: bea1b4d207d96fb58928eaaa01e0b2b9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bea1b4d207d96fb58928eaaa01e0b2b9, type: 3}
 --- !u!4 &2686942643419092659 stripped
 Transform:

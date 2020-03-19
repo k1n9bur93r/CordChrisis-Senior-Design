@@ -26,18 +26,19 @@ public class NoteSpawner : MonoBehaviour
     //creating the queues for notes
     public List<GameObject>[] notes = new List<GameObject>[4];
     public List<GameObject>[] gestures = new List<GameObject>[4];
-
     //values for transparency 
     //(notes phase in from background as if coming from fog)
     public float transparentStart;
     public float transparentEnd;
+    public GameObject holdNoteObject;
 
     void Start()
     {
-           for (int i=0;i<4;i++)
-            {
-                notes[i] = new List<GameObject>();
-            }
+        for (int i=0;i<4;i++)
+        {
+            gestures[i] = new List<GameObject>();
+            notes[i] = new List<GameObject>();
+        }
 
         bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
@@ -67,14 +68,31 @@ public class NoteSpawner : MonoBehaviour
         curNote.transform.parent = transform;
         curNote.GetComponent<NoteMovement>().metronome = metronome;
         curNote.GetComponent<NoteMovement>().beat = beat;
+        curNote.GetComponent<NoteMovement>().length = length;
+
+        if (length > 0)
+        {
+            GameObject endHold =
+                Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+    
+            endHold.transform.parent = transform;
+            //since it moves relative to first: beat = oldbeat+length
+            endHold.GetComponent<NoteMovement>().beat = length;
+
+            curNote.GetComponent<HoldNoteLine>().secondNote = endHold;
+        }
+
     }
 
     public void spawnGesture(int gestureNum, double beat)
     {
-        GameObject curGesture =
+        GameObject curGesture = 
             Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
         
-        notes[gestureNum].Add(curGesture.gameObject);
+        print(curGesture);
+
+
+        gestures[gestureNum].Add(curGesture.gameObject);
 
         curGesture.GetComponent<NoteMovement>().speedMod = speedMod;
         curGesture.transform.parent = transform;
@@ -113,28 +131,87 @@ public class NoteSpawner : MonoBehaviour
                     curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
                 }
                 notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
+            
+                if (notes[x][y].GetComponent<NoteMovement>().length>0)
+                {
+                    //then move end correctly
+                    GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
+                    double addedLength = notes[x][y].GetComponent<NoteMovement>().length;
+                    beatDistance = (float)(curBeat+addedLength-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+                    end.transform.position = new Vector3 
+                    (
+                        end.transform.position.x,
+                        end.transform.position.y,
+                        (float)( noteReciever.transform.position.z + beatDistance )
+                    );
+
+                    if (curNoteColor.a == 1f)
+                    {
+                        //then show
+                        notes[x][y].GetComponent<LineRenderer>().startWidth=.2f;
+                        notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
+                    }
+                    else
+                    {
+                        //then show
+                        notes[x][y].GetComponent<LineRenderer>().startWidth=0f;
+                        notes[x][y].GetComponent<LineRenderer>().endWidth=0f;
+                    }
+                }
+            }
+        }
+
+        //set location of all gestures according to beatsElapsed
+        for (int x=0;x<4;x++)
+        {
+            for (int y=0;y<gestures[x].Count;y++)
+            {
+                double curBeat = gestures[x][y].GetComponent<NoteMovement>().beat;
+                float beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+                gestures[x][y].transform.position = new Vector3 
+                    (
+                        gestures[x][y].transform.position.x,
+                        gestures[x][y].transform.position.y,
+                        (float)( noteReciever.transform.position.z + beatDistance )
+                    );
+                
+                var curNoteColor = gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
+                //set transparency of note
+                if (beatDistance < transparentEnd)
+                {
+                    curNoteColor.a = 1f;
+                }
+                else if (beatDistance > transparentStart)
+                {
+                    curNoteColor.a = 0f;
+                }
+                else
+                {
+                    curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
+                }
+                gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
             }
         }
 
         // DEBUG - Spawn gesture notes via key press
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("1"))
         {
-            spawnGesture(0, 12);
+            spawnGesture(0, 85);
         }
 
-        if (Input.GetKeyDown("w"))
+        if (Input.GetKeyDown("2"))
         {
-            spawnGesture(1, 12);
+            spawnNote(1, 85,4);
         }
 
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("3"))
         {
-            spawnGesture(2, 12);
+            spawnNote(2, 85,4);
         }
 
-        if (Input.GetKeyDown("r"))
+        if (Input.GetKeyDown("4"))
         {
-            spawnGesture(3, 12);
+            spawnNote(3, 85,4);
         }
     }
 }
