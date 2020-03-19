@@ -180,4 +180,13 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+
+    .itm-skew {
+        -webkit-transform: skewX(20deg); 
+        transform: skewX(-20deg);
+    }
+    .itm-skew-text {
+        -webkit-transform: skewX(-20deg); 
+        transform: skewX(20deg);
+    }
 }
