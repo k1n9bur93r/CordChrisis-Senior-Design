@@ -153,7 +153,7 @@ public class Metronome : MonoBehaviour
 
 	public void UpdateTimeAnywhere()
 	{
-		if (Input.GetKey(KeyCode.Z))
+		if (Input.GetKey(KeyCode.P))
 		{
 			StartSongAnywhere();
 		}

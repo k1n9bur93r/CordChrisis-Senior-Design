@@ -43,33 +43,7 @@ public class NoteSpawner : MonoBehaviour
         noteReciever = transform.Find("noteReceiver").transform;
         noteTravelTime = startDistance / speedMod;
         print("The first notes should play in " + noteTravelTime + " seconds");
-    }
-    
-    // Update is called once per frame
-    // Code for debugging purposes
-    /*
-    void Update()
-    {
-        //bpm = metronome.tempo; //getting tempo from metronome
-        if (Input.GetKeyDown("q"))
-        {
-            spawnGesture(0, 12);
-        }
-        if (Input.GetKeyDown("w"))
-        {
-            spawnGesture(1, 12);
-        }
-        if (Input.GetKeyDown("e"))
-        {
-            spawnGesture(2, 12);
-        }
-        if (Input.GetKeyDown("r"))
-        {
-            spawnGesture(3, 12);
-        }
-    }
-    */
-    
+    }    
 
     private float beatToDistance(double beat)
     {
@@ -93,6 +67,19 @@ public class NoteSpawner : MonoBehaviour
         curNote.transform.parent = transform;
         curNote.GetComponent<NoteMovement>().metronome = metronome;
         curNote.GetComponent<NoteMovement>().beat = beat;
+    }
+
+    public void spawnGesture(int gestureNum, double beat)
+    {
+        GameObject curGesture =
+            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+        
+        notes[gestureNum].Add(curGesture.gameObject);
+
+        curGesture.GetComponent<NoteMovement>().speedMod = speedMod;
+        curGesture.transform.parent = transform;
+        curGesture.GetComponent<NoteMovement>().metronome = metronome;
+        curGesture.GetComponent<NoteMovement>().beat = beat;
     }
 
     public void Update()
@@ -127,11 +114,27 @@ public class NoteSpawner : MonoBehaviour
                 }
                 notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
             }
-
-            
         }
 
+        // DEBUG - Spawn gesture notes via key press
+        if (Input.GetKeyDown("q"))
+        {
+            spawnGesture(0, 12);
+        }
 
+        if (Input.GetKeyDown("w"))
+        {
+            spawnGesture(1, 12);
+        }
+
+        if (Input.GetKeyDown("e"))
+        {
+            spawnGesture(2, 12);
+        }
+
+        if (Input.GetKeyDown("r"))
+        {
+            spawnGesture(3, 12);
+        }
     }
-
 }
