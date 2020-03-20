@@ -5,68 +5,65 @@
 @using System.Security;
 @inject HttpClient Http
 
-<h3>Login!</h3>
+
+<div class="container rounded mt-4 p-1 bg-light">
+    <div class="jumbotron">
+        <h2>Login!</h2>
 
 
-    <div class="input-group mb-2 mr-sm-2">
-        <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
-        <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
+        <div class="input-group mb-2 mr-sm-2">
+            <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
+            <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
+        </div>
+        <div>
+
+        </div>
+
+        <div>
+            <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
+            <button id="CreateAccount" class="btn btn-primary" href ="CreateUser"> Submit</button>
+        </div>
     </div>
-    <div>
-
-    </div>
-
-<div>
-    <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
-    @if (success == false)
-    {
-        <p>ITS FALSE BOOY</p>
-    }
-    else
-    {
-        <p>Its TRUE</p>
-    }
 </div>
 
+    @code {
 
-@code {
+        string email { get; set; }
+        string password { get; set; }
+        bool success = false;
 
-    string email { get; set; }
-    string password { get; set; }
-    bool success = false;
-
-    public async Task<Boolean> SubmitLoginQuery()
-    {
-        success = false;
-        if (email != String.Empty)
+        public async Task<Boolean> SubmitLoginQuery()
         {
-            //alert email field is empty
-
-
-            if (password != String.Empty)
+            success = false;
+            if (email != String.Empty)
             {
-                //alert password is empty
+                //alert email field is empty
 
 
-                SecureString newPass = new SecureString();
-                for (int i = 0; i < password.Length; i++)
-                    newPass.AppendChar(password[i]);
-
-
-
-                Login loginObject = new Login
+                if (password != String.Empty)
                 {
-                    Email = email,
-                    Password = newPass
-                };
-                Console.WriteLine("FUCK THIS BOY");
-                // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
-                success = await Http.PostJsonAsync<bool>("userlogin/post", loginObject);
+                    //alert password is empty
+
+
+                    SecureString newPass = new SecureString();
+                    for (int i = 0; i < password.Length; i++)
+                        newPass.AppendChar(password[i]);
+
+
+
+                    Login loginObject = new Login
+                    {
+                        Email = email,
+                        Password = newPass
+                    };
+                    Console.WriteLine("FUCK THIS BOY");
+                    // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
+                    success = await Http.PostJsonAsync<bool>("userlogin/post", loginObject);
+                }
             }
+            Console.WriteLine(success);
+            return success;
         }
-        Console.WriteLine(success);
-        return success;
-    }
 
 
     }
