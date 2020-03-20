@@ -45,52 +45,49 @@ public class InputController : MonoBehaviour
     {
         t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
         t3.text = "Tempo: " + metronome.tempo.ToString();
+        SetBeatOnKeyPress();
 
-        // Check if the notes at this beat should be deleted and marked as missed
-        
         for (int i = 0; i < MAX_KEYS; i++)
         {
+            // Check if the notes at this beat should be deleted and marked as missed        
             if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
             {
                 noteController.RemoveTopNote(i);
             }
-        }
 
-        // An equivalent function for swipe notes goes here
+            // An equivalent CheckMiss function for swipe notes goes here
 
-        // Process tap notes
-
-        SetBeatOnKeyPress();
-
-        bool[] pressedKeys = { false, false, false, false };
-
-        for (int i = 0; i < MAX_KEYS; i++)
-        {
-            pressedKeys[i] = Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().keyPressed) ? true : false;
-        }
-
-        for (int i = 0; i < MAX_KEYS; i++)
-        {
-            if (pressedKeys[i])
+            if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                if (judge.CheckHit(noteController.GetFirstBeat(i)))
+                // Process notes length 0
+                if (noteController.GetNoteLength(i) == 0)
                 {
-                    noteController.RemoveTopNote(i);
+                    if (judge.CheckHit(noteController.GetFirstBeat(i)))
+                    {
+                        noteController.RemoveTopNote(i);
+                    }
                 }
+
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
 
             // Animate the buttons (could also be basis for hold note detection?)
-            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().keyPressed))
+            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
+            {
+                // Process notes length > 0; checking here because hold notes require button holds
+                if (noteController.GetNoteLength(i) > 0)
+                {
+                    // judge.CheckHold()
+                }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
+            }
             else
+            {
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
+            }
+
+            // An equivalent CheckHit function for swipe notes goes here
         }
-
-
-        // An equivalent function for swipe notes goes here
-
-
     }
 
     public double GetBeatOnKeyPress()

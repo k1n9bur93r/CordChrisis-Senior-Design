@@ -106,4 +106,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09d18ce6bb927844a2c0e5fbb7d8941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyPressed: 115
+  btnKey: 115

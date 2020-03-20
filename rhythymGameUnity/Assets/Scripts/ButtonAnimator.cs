@@ -8,7 +8,7 @@ public class ButtonAnimator : MonoBehaviour
 	private Renderer r;
 	private Color pressedColor;
 	private Color btnColor;
-    public KeyCode keyPressed;
+    public KeyCode btnKey;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,6 @@ public class ButtonAnimator : MonoBehaviour
 
 	public void SetPressedBtnColor()
 	{
-		//t1.text = "Key: " + keyPressed.ToString();
 		r.material.color = pressedColor;
 	}
 
