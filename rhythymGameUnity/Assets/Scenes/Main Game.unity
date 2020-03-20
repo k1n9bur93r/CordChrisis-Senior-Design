@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 92931094}
   - component: {fileID: 92931093}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: GestureRecognizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2057,7 +2057,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -2183,6 +2183,7 @@ MonoBehaviour:
   - {fileID: 2101520191}
   - {fileID: 390739439}
   - {fileID: 1294929301}
+  gestureRecognizer: {fileID: 92931093}
   t1: {fileID: 621184326}
   t2: {fileID: 1916113839}
   t3: {fileID: 1281229436}

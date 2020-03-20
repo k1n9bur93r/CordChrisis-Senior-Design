@@ -51,6 +51,41 @@ public class NoteController : MonoBehaviour
         }
     }
 
+    public double GetFirstGesture(int queueNum)
+    {
+        if (noteSpawner.gestures[queueNum].Count > 0)
+        {
+            return noteSpawner.gestures[queueNum][0].GetComponent<NoteMovement>().beat;
+        }
+
+        else
+        {
+            return double.MaxValue; // Find some other way to deal with this
+        }
+    }
+
+    public double GetSecondGesture(int queueNum)
+    {
+        if (noteSpawner.gestures[queueNum].Count > 1)
+        {
+            return noteSpawner.gestures[queueNum][1].GetComponent<NoteMovement>().beat;
+        }
+
+        else
+        {
+            return double.MaxValue; // Find some other way to deal with this
+        }
+    }
+
+    public void RemoveTopGesture(int queueNum)
+    {
+        if (noteSpawner.gestures[queueNum].Count > 0)
+        {
+            noteSpawner.gestures[queueNum][0].SetActive(false);
+            noteSpawner.gestures[queueNum].RemoveAt(0);
+        }
+    }
+
     // deprecated
     private bool NoteIsOutOfRange(int queueNum)
     {

@@ -19,6 +19,7 @@ public class InputController : MonoBehaviour
      */
 
     private const int MAX_KEYS = 4;
+    private const int MAX_GESTURES = 4;
 
     // input types
     public KeyCode keyPressed;
@@ -29,6 +30,7 @@ public class InputController : MonoBehaviour
     public Metronome metronome;
     public NoteController noteController;
     public GameObject[] button;
+    public GestureRecognizer gestureRecognizer;
 
     private double beatPressed;
 
@@ -60,6 +62,12 @@ public class InputController : MonoBehaviour
         }
 
         // An equivalent function for swipe notes goes here
+        for (int i = 0; i < MAX_GESTURES; i++) {
+            if (judge.CheckMiss(noteController.GetFirstGesture(i), noteController.GetSecondGesture(i)))
+            {
+                noteController.RemoveTopGesture(i);
+            }
+        }
 
         // Process tap notes
 
@@ -86,6 +94,29 @@ public class InputController : MonoBehaviour
         }
 
         // An equivalent function for swipe notes goes here
+        void processGesture(int gesture) {
+            if (judge.CheckSwipe(noteController.GetFirstGesture(gesture))) {
+                noteController.RemoveTopGesture(gesture);
+            }
+        }
+
+        string swipe = gestureRecognizer.IsSwipe();
+        switch (swipe) {
+            case "up":
+                processGesture(0);
+                break;
+            case "right":
+                processGesture(1);
+                break;
+            case "down":
+                processGesture(2);
+                break;
+            case "left":
+                processGesture(3);
+                break;
+            default:
+                break;
+        }
 
         // Animate the buttons (could also be basis for hold note detection?)
 
