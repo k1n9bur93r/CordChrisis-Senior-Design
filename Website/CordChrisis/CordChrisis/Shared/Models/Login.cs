@@ -9,10 +9,17 @@ namespace CordChrisis.Shared.Models
 {
     public class Login
     {
+        
+        [Required]
         public string Email { get; set; }
-        public SecureString Password { get; set; }
-        
-        
+
+        [Key]
+        [Required]
+        public string Password { get; set; }
+
+    
+        [Required]
+        public Guid ID { get; set;}
 
     }
 }
