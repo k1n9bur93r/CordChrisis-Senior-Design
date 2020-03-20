@@ -60,7 +60,6 @@ public class Metronome : MonoBehaviour
 
 	/*
 		Initialize timekeepers.	
-		Determine amount of seconds per beat and beats per second.
 	*/
 	
 	void Awake()
@@ -177,7 +176,7 @@ public class Metronome : MonoBehaviour
 				pastSchedule = true;
 			}
 
-			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
+			// Increment the timer by calculating DSP delta time instead of directly setting it to accomodate for tempo changes
 			timeElapsed = AudioSettings.dspTime - songStart + startTime;
 
 			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly

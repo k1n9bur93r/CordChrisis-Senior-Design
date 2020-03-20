@@ -5,69 +5,115 @@
 @using System.Security;
 @inject HttpClient Http
 
-<h3>Login!</h3>
+
+<div class="container rounded mt-4 p-1 bg-light">
+    <div class="jumbotron">
+        <h2>Login!</h2>
 
 
-    <div class="input-group mb-2 mr-sm-2">
-        <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
-        <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
+        <div class="input-group mb-2 mr-sm-2">
+            <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
+            <input id="PassWordInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Password" @bind="password" />
+        </div>
+
+        <div class="">
+            @if (success==false)
+            {
+               @if (isEmail == false)
+                {
+                   <div>
+                       <p>Email Field Cant be Blank</p>
+                   </div>
+               }
+               else if (isPassword == false)
+               {
+                   <div>
+                       <p>Password Field Cant be Blank</p>
+                   </div>
+               }
+
+            }
+        </div>
+
+
+
+
+        <div>
+            <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
+            <button id="CreateAccount" class="btn btn-primary" oncliick="window.location.href = './CreateUser'">CreateUser</button>
+        </div>
+
+        <div class="">
+            @if (loadingData)
+            {
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-grow" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+
     </div>
-    <div>
-
-    </div>
-
-<div>
-    <button id="SubmitloginQuery" class="btn btn-primary" @onclick="SubmitLoginQuery"> Submit</button>
-    @if (success == false)
-    {
-        <p>ITS FALSE BOOY</p>
-    }
-    else
-    {
-        <p>Its TRUE</p>
-    }
 </div>
-
 
 @code {
 
     string email { get; set; }
     string password { get; set; }
+    string checkData = String.Empty;
     bool success = false;
+    bool loadingData = false;
+    bool isEmail = true;
+    bool isPassword = true;
 
     public async Task<Boolean> SubmitLoginQuery()
     {
-        success = false;
-        if (email != String.Empty)
+
+        if (email == String.Empty)
         {
+            success = false;
+            isEmail = false;
+     
+
+            return isEmail;
             //alert email field is empty
-
-
-            if (password != String.Empty)
-            {
-                //alert password is empty
-
-
-                SecureString newPass = new SecureString();
-                for (int i = 0; i < password.Length; i++)
-                    newPass.AppendChar(password[i]);
-
-
-
-                Login loginObject = new Login
-                {
-                    Email = email,
-                    Password = newPass
-                };
-                Console.WriteLine("FUCK THIS BOY");
-                // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
-                success = await Http.PostJsonAsync<bool>("userlogin/post", loginObject);
-            }
         }
-        Console.WriteLine(success);
+
+        if (password == String.Empty)
+        {
+            success = false;
+            isPassword = false;
+            return success;
+            //alert password is empty
+        }
+
+        Login loginObject = new Login
+        {
+            Email = email,
+            Password = password
+        };
+
+        loadingData = true;
+        // Console.WriteLine("FUCK THIS BOY");
+        // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
+        Console.WriteLine( checkData = await Http.PostJsonAsync<string>("userlogin/post", loginObject));
+
+        Console.WriteLine(checkData);
+        if (checkData == String.Empty)
+        {
+            success = false;
+        }
+        else
+            success = true;
+
+        loadingData = false;
+
+
         return success;
     }
 
 
-    }
+}
 
