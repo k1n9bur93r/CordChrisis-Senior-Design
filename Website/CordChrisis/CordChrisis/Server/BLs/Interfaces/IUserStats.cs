@@ -10,7 +10,7 @@ namespace CordChrisis.BOs.Interfaces
     public interface IUserStats
     {
         //Not too sure what we need to return here just yet...
-        bool LogInUser(Login login);
+        string LogInUser(Login login);
 
         int GetSalt(SecureString password);
         SecureString GetHash(SecureString password);

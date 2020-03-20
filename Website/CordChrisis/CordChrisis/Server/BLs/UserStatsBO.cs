@@ -6,15 +6,21 @@ using System.Security;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
 using CordChrisis.Shared.Models;
+using DB;
+using CordChrisis.DAOs;
 
 namespace CordChrisis.BOs
 {
     public class UserStatsBO : IUserStats
     {
-        public bool LogInUser(Login login) {
+        public string LogInUser(Login login) {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("were in the BO");
+                UserLoginDA loginDb = new UserLoginDA();
+             
+                return loginDb.LoginUser(login);
+
             }
             catch (Exception ex)
             {
