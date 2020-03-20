@@ -87,7 +87,7 @@ public class NoteSpawner : MonoBehaviour
     public void spawnGesture(int gestureNum, double beat)
     {
         GameObject curGesture = 
-            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(90, 0, 0));
         
         print(curGesture);
 
@@ -116,8 +116,9 @@ public class NoteSpawner : MonoBehaviour
                         (float)( noteReciever.transform.position.z + beatDistance )
                     );
                 
+                //new meshes break these. TODO: fix these
                 var curNoteColor = notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
-                //set transparency of note
+                // set transparency of note
                 if (beatDistance < transparentEnd)
                 {
                     curNoteColor.a = 1f;
@@ -175,21 +176,22 @@ public class NoteSpawner : MonoBehaviour
                         (float)( noteReciever.transform.position.z + beatDistance )
                     );
                 
-                var curNoteColor = gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
+                // var curNoteColor = gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
                 //set transparency of note
-                if (beatDistance < transparentEnd)
-                {
-                    curNoteColor.a = 1f;
-                }
-                else if (beatDistance > transparentStart)
-                {
-                    curNoteColor.a = 0f;
-                }
-                else
-                {
-                    curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
-                }
-                gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
+                //new meshes break these too :^( must fix
+                // if (beatDistance < transparentEnd)
+                // {
+                //     curNoteColor.a = 1f;
+                // }
+                // else if (beatDistance > transparentStart)
+                // {
+                //     curNoteColor.a = 0f;
+                // }
+                // else
+                // {
+                //     curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
+                // }
+                // gestures[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
             }
         }
 
