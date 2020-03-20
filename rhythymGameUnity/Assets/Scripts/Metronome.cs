@@ -42,10 +42,12 @@ public class Metronome : MonoBehaviour
 	// -DEBUG VARS-
 	public double startBeat;
 	private double startTime;
+	// -DEBUG VARS END-
 
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
+	public double beatsElapsedDelta;
 	public double startOffset; // Chart-determined chart/song offset
 	public double globalOffset; // User-determined chart/song offset
 
@@ -65,6 +67,7 @@ public class Metronome : MonoBehaviour
 	void Awake()
 	{
 		beatsElapsed = 0.0;
+		beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
 		pastSchedule = false;
@@ -124,7 +127,7 @@ public class Metronome : MonoBehaviour
 				}				
 
 				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-				beatsElapsed += timeElapsedDelta / secPerBeat;
+				beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
 			}
 
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
@@ -180,7 +183,7 @@ public class Metronome : MonoBehaviour
 			timeElapsed = AudioSettings.dspTime - songStart + startTime;
 
 			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-			beatsElapsed += timeElapsedDelta / secPerBeat;
+			beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
 
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
 			timeElapsedLast = timeElapsed;
@@ -212,5 +215,6 @@ public class Metronome : MonoBehaviour
 
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
+		beatsElapsedDelta = timeElapsedDelta / secPerBeat;
 	}
 }

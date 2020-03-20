@@ -8,11 +8,11 @@ using UnityEngine.UI;
 	> Judgment class
 
 	The timing aspect of the hit detection system.
-	Compares the time of the user's input versus the time of the note in question
+	Compares the time of the user's input versus the time of the note in question.
 
 	Important public methods:
 		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
-		- bool CheckMiss(): For use by InputController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
+		- bool CheckMiss(): For use by InputController. Recieves the beats of the next two notes from the note queue. Returns whether or not the note has been missed completely.
 
 	KNOWN ISSUES:
 		- 32nd notes at 300+ BPM have spotty miss detection
@@ -56,7 +56,7 @@ public class Judgment : MonoBehaviour
 
 	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
-	void Start()
+	void Awake()
 	{
 		//CalculateWindows();
 		ratingText.text = "";
@@ -73,7 +73,7 @@ public class Judgment : MonoBehaviour
 		score = 0;
 	}
 
-	void Update() // Update() won't actually be used, thus not converted to Action()
+	void Update()
 	{
 		//CalculateWindows();
 		//PrintWindows();
@@ -174,12 +174,34 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Hold judgment function
+		Hold "judgment" functions
 	*/
 
-	public void CheckHold()
+	public double ReduceHold(double beatsLeft)
 	{
-		// ...
+		// TO DO: Compensate for early/lateness!
+		
+		return beatsLeft -= clock.beatsElapsedDelta;
+	}
+
+	public void HoldSuccess()
+	{
+		// send stuff to scoreboard
+		ratingText.text = "O.K.";
+		leanText.text = "";
+		notesMarvelous++;
+		combo++;
+		CalculateScore(Ratings.Marvelous);
+	}
+
+	public void HoldFailure()
+	{
+		// send stuff to scoreboard
+		ratingText.text = "N.G.";
+		comboText.text = "";
+		leanText.text = "";
+		notesMiss++;
+		combo = 0;
 	}
 
 	/*
@@ -228,16 +250,10 @@ public class Judgment : MonoBehaviour
 			notesEarly++;
 		}
 
-		else if (diff > 0.0)
+		else if (diff > 0.0) // This too
 		{
 			leanText.text = "LATE";
-			notesLate++; // This too
-		}
-
-		// DEBUG ONLY
-		else if (diff == 0.0)
-		{
-			leanText.text = "JUST";
+			notesLate++;
 		}
 	}
 
