@@ -206,7 +206,7 @@ public class Judgment : MonoBehaviour
 			return true;
 		}
 
-		// The player tried to hit a note before it passed the early "Good" window
+		// The player tried to swipe before it passed the early "Good" window
 		else
 		{
 			return false;
