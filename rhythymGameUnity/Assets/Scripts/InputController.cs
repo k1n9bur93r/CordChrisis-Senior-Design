@@ -20,9 +20,6 @@ public class InputController : MonoBehaviour
 
     private const int MAX_KEYS = 4;
 
-    // input types
-    public KeyCode keyPressed;
-
     // needed classes
     public NoteSpawner noteSpawner;
     public Judgment judge;
@@ -67,39 +64,33 @@ public class InputController : MonoBehaviour
 
         bool[] pressedKeys = { false, false, false, false };
 
-        if (Input.GetKeyDown(KeyCode.A)) { pressedKeys[0] = true; button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.S)) { pressedKeys[1] = true; button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.D)) { pressedKeys[2] = true; button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.F)) { pressedKeys[3] = true; button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
+        for (int i = 0; i < MAX_KEYS; i++)
+        {
+            pressedKeys[i] = Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().keyPressed) ? true : false;
+        }
 
         for (int i = 0; i < MAX_KEYS; i++)
         {
-            if (pressedKeys[i] == true)
+            if (pressedKeys[i])
             {
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
                     noteController.RemoveTopNote(i);
                 }
-
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
+
+            // Animate the buttons (could also be basis for hold note detection?)
+            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().keyPressed))
+                button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
+            else
+                button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
         }
+
 
         // An equivalent function for swipe notes goes here
 
-        // Animate the buttons (could also be basis for hold note detection?)
 
-        if (Input.GetKey(KeyCode.A)) { button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[0].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.S)) { button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[1].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.D)) { button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[2].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.F)) { button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[3].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
     }
 
     public double GetBeatOnKeyPress()
