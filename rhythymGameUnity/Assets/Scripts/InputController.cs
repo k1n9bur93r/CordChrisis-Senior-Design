@@ -87,7 +87,6 @@ public class InputController : MonoBehaviour
                 }
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
-        }
 
             // Animate the buttons (could also be basis for hold note detection?)
             if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().keyPressed))
