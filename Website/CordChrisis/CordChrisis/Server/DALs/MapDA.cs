@@ -34,12 +34,12 @@ namespace CordChrisis.DAOs
             {
                
                 context.Database.EnsureCreated();
-                if (search.Ratings == 0)
+                if (String.IsNullOrWhiteSpace(search.Name))
                 {   
-                    data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Difficulty == search.Difficulty) &&(n.PublicVisible==true)).OrderBy(n => n.Rating).ToList();
+                    data = context.Map.Where(n => n.Rating >=(decimal)search.Ratings && (n.Difficulty == search.Difficulty) &&(n.PublicVisible==true)).OrderByDescending(n => n.Rating).ToList();
                 }
-                else {
-                    data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Rating >= (decimal)search.Ratings) && (n.Difficulty == search.Difficulty) && (n.PublicVisible == true)).OrderBy(n => n.Rating).ToList();
+                else if(search.Name!=String.Empty) {
+                    data = context.Map.Where(n => n.Name.Contains(search.Name) && (n.Rating >= (decimal)search.Ratings) && (n.Difficulty == search.Difficulty) && (n.PublicVisible == true)).OrderByDescending(n => n.Rating).ToList();
                 }
             }
             return data;

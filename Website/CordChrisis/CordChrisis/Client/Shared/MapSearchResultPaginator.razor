@@ -1,0 +1,144 @@
+﻿@using CordChrisis.Shared.Models
+
+    <div>
+       @if (CurrentCards.Count()!=0)
+       {
+            <MapSearchResults ReturnedMaps=CurrentCards/>
+       }
+       else
+       {
+           if (TotalCards.Count() > DisplayResults) {
+           <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,DisplayResults))/>
+           }
+           else {
+            <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,TotalCards.Count()))/>
+           }
+       }
+    <div class="container-fluid text-center pl-4 pr-4 pb-1">
+        <ul class="pagination pagination-sm ">
+            @if (currentPaginationSet - DisplayResults >= 0)
+            {
+                <li class="page-item w-50 itm-skew" @onclick="revertResults">
+                    <a class="page-link" tabindex="-1" aria-label="Previous">
+                        <span aria-hidden="true" ><div class="itm-skew-text">Previous</div></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled w-50 itm-skew">
+                    <a class="page-link" tabindex="-1" aria-label="Previous">
+                        <span aria-hidden="true" ><div class="itm-skew-text">Previous</div></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            }
+            @*@for (paginationBtnCount = 1; paginationBtnCount <= (TotalCards.Count() / DisplayResults); paginationBtnCount++)
+            {
+                if ((paginationBtnCount * DisplayResults >= currentPaginationSet && paginationBtnCount * DisplayResults< currentPaginationSet + DisplayResults)||firstClick &&paginationBtnCount==1)
+                {
+                    <li class="page-item text-primary">
+                        <a class="page-link">@paginationBtnCount</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">@paginationBtnCount</a>
+                    </li>
+                }
+
+            }
+            @if (TotalCards.Count() % DisplayResults != 0)
+            {
+                if (paginationBtnCount * DisplayResults >= currentPaginationSet && paginationBtnCount * DisplayResults < currentPaginationSet + DisplayResults)
+                {
+                    <li class="page-item text-primary ">
+                        <a class="page-link">@paginationBtnCount</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">@paginationBtnCount</a>
+                    </li>
+                }
+            }*@
+            @if (currentPaginationSet < TotalCards.Count())
+            {
+                <li class="page-item w-50 itm-skew" @onclick="advanceResults">
+                    <a class="page-link" aria-label="Next">
+                        <span aria-hidden="true" ><div class="itm-skew-text">Next</div></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled w-50 itm-skew">
+                    <a class="page-link" aria-label="Next">
+                        <span aria-hidden="true" > <div class="itm-skew-text">Next</div></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+        </ul>
+        </div>
+    </div>
+
+@code {
+
+    [Parameter]
+    public List<Map> TotalCards { get; set; }
+    List<Map> CurrentCards = new List<Map>();
+    [Parameter]
+    public int DisplayResults { get; set; }
+    int FlexableAdjust;
+    int currentPaginationSet =0;
+    bool endOfList = false;
+    bool firstClick = true;
+    int paginationBtnCount = 0;
+
+    void advanceResults() {
+        if (firstClick)
+        {
+            if (currentPaginationSet + DisplayResults > TotalCards.Count())
+                return;
+            currentPaginationSet += DisplayResults;
+            firstClick = false;
+        }
+        FlexableAdjust = DisplayResults;
+        if (currentPaginationSet + DisplayResults > TotalCards.Count())
+        {
+            FlexableAdjust = DisplayResults-((currentPaginationSet + DisplayResults) - TotalCards.Count());
+            endOfList = true;
+        }
+        Console.WriteLine("TOTAL RESULTS: "+TotalCards.Count()+" CURRENT DISPLAYED SET From "+currentPaginationSet+" To "+(currentPaginationSet+FlexableAdjust));
+
+        CurrentCards = TotalCards.GetRange(currentPaginationSet,FlexableAdjust);
+        currentPaginationSet += FlexableAdjust;
+        StateHasChanged();
+
+    }
+    void revertResults()
+    {
+
+
+        if (currentPaginationSet - DisplayResults < 0)
+            return;
+        if (endOfList)
+        {
+            currentPaginationSet -= (FlexableAdjust + DisplayResults);
+            endOfList = false;
+        }
+        else
+        {
+
+            currentPaginationSet -= DisplayResults;
+        }
+        Console.WriteLine("TOTAL RESULTS: "+TotalCards.Count()+" CURRENT DISPLAYED SET From "+(currentPaginationSet)+" To "+(currentPaginationSet+DisplayResults));
+        CurrentCards= TotalCards.GetRange(currentPaginationSet, DisplayResults);
+        StateHasChanged();
+    }
+}

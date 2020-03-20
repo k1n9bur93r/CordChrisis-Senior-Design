@@ -1,6 +1,7 @@
 ﻿@page "/searchpage"
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
+@using System.Diagnostics
 @inject HttpClient Http
     <div class="container pt-lg-5">
         <h1>Search Page</h1>
@@ -9,7 +10,7 @@
             <form class="form-inline  mb-2">
                 <div class="form-group w-100">
                     <div class="input-group ">
-                        <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="MapName">
+                        <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="InputtedMapName ">
                         <label class="sr-only">Difficulty </label>
                     </div>
                     <div class="input-group " >
@@ -61,7 +62,8 @@
                 <div class="rounded bg-light mt-4">
 
                     @if (loadingData)
-                    {
+                    { 
+                    <p class="h1 text-muted"> Loading...</p>
                         <div class="d-flex justify-content-center">
                             <div class="spinner-grow" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -70,25 +72,65 @@
                     }
                     else
                     {
-                        <div class="d-flex justify-content-center pt-2 ">
-                            <h1 class="text-muted lead"> No Results </h1>
+                <div class="d-flex justify-content-center p-4 ">
+                    <div class="card border-primary bg-light ">
+                        <div class="card-header ">
+
+                            <span class="badge badge-pill badge-light text-muted"> ... </span>
+                            <span class="badge badge-pill badge-light text-muted"> .. </span>
+                            <span class="badge badge-pill badge-light text-muted"> . </span>
                         </div>
+                        <div class="card-body">
+                            <p class="h5 text-muted h4"> No Search Results 😔 </p>
+                            
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-light">.....</small>
+                        </div>
+                    </div>
+                </div>
                     }
                 </div>
             }
             else
             {
                 <div class="rounded bg-light mt-4">
-                    @if (ReturnedMaps!=null)
+                    
+                    <div class=" p-2 mb-4 border-bottom-0 rounded bg-secondary ">
+                        <div>
+                            <span class=" text-light badge badge-info"> Map Name: @DisplayMap</span>
+                            <span class=" text-light badge badge-info"> Selected Difficulty: @DisplayDifficulty</span>
+                            <span class=" text-light badge badge-info"> Selected Rating: @DisplayRating</span>
+                        </div>
+                        <div>
+                    <span class="display-4"> Found @ReturnedMaps.Count() Maps</span>
+                    <span class="h5 text-dark "> in @watch.ElapsedMilliseconds ms</span>
+                        </div>
+                    </div>
+                    @if (ReturnedMaps.Count!=0)
                     {
                         Console.WriteLine(ReturnedMaps.Count + " This is how many items were returned.");
-                        <MapSearchResults ReturnedMaps=ReturnedMaps />
+                        <MapSearchResultPaginator TotalCards=ReturnedMaps DisplayResults=6/>
                     }
                     else
                     {
-                        <div class="d-flex justify-content-center">
-                            <h1>No Maps Found!</h1>
+                <div class="d-flex justify-content-center p-4 ">
+                    <div class="card border-primary bg-light ">
+                        <div class="card-header ">
+
+                            <span class="badge badge-pill badge-light text-muted"> ... </span>
+                            <span class="badge badge-pill badge-light text-muted"> .. </span>
+                            <span class="badge badge-pill badge-light text-muted"> . </span>
                         </div>
+                        <div class="card-body">
+                            <p class="h5 text-muted h4"> No Search Results 😔 </p>
+
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-light">.....</small>
+                        </div>
+                    </div>
+                </div>
                     }
                 </div>
             }
@@ -101,10 +143,16 @@
     string SelectedDifficulty { get; set; }
     int IntDifficulty { get; set; }
     int? SelectedRating { get; set; }
-    string MapName { get; set; }
+    string InputtedMapName { get; set; }
     bool loadingData = false;
     //string hasError=" ";
     List<Map> ReturnedMaps;
+    Stopwatch watch;
+    //Display Data
+    string DisplayMap;
+    int DisplayRating;
+    string DisplayDifficulty;
+
 
     void UpdateDifficultyEasy() { SelectedDifficulty = "Easy"; IntDifficulty = 1; }
     void UpdateDifficultyMedium() { SelectedDifficulty = "Medium"; IntDifficulty = 2; }
@@ -118,23 +166,32 @@
 
     public async Task<List<Map>> SubmitSearchQuery()
     {
+        watch = new Stopwatch();
+
         ReturnedMaps = null;
         //Validate
-        if (MapName == String.Empty)
-        {
-            //call alert box
+        if (IntDifficulty == 0) {
+            IntDifficulty = 2;
+            SelectedDifficulty = "Medium";
+        }
+        if (SelectedRating == 0||SelectedRating==null) {
+            SelectedRating = 4;
         }
         Search UserSearch = new Search
         {
-            Name = MapName,
-            Ratings = SelectedRating != null ? (double)SelectedRating : 0.0,
+            Name = InputtedMapName,
+            Ratings =(double)SelectedRating,
             Difficulty = IntDifficulty
         };
         loadingData = true;
+        watch.Start();
         ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
         loadingData = false;
+        watch.Stop();
+        DisplayDifficulty = SelectedDifficulty;
+        DisplayMap = String.IsNullOrWhiteSpace(InputtedMapName)!=true?InputtedMapName:"N/A";
+        DisplayRating = (int)SelectedRating;
         return ReturnedMaps;
     }
-
 
 }
