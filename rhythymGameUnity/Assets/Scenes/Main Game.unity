@@ -1795,6 +1795,11 @@ PrefabInstance:
       propertyPath: t4
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: -6306476366043379627, guid: 42dd97046928c2740a95e69038001050,
+        type: 3}
+      propertyPath: keyPressed
+      value: 97
+      objectReference: {fileID: 0}
     - target: {fileID: 8481453430583766340, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
       propertyPath: m_Name
@@ -2173,7 +2178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyPressed: 0
   noteSpawner: {fileID: 789386881}
   judge: {fileID: 401751258}
   metronome: {fileID: 251699263}

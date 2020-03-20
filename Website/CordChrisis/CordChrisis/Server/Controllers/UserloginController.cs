@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CordChrisis.Shared.Models;
+using CordChrisis.BOs;
 
 namespace CordChrisis.Server.Controllers
 {
@@ -13,15 +14,12 @@ namespace CordChrisis.Server.Controllers
     {
         [HttpPost]
         [Route("post")]
-        public bool GetLogin([FromBody] Login postData)
+        public string GetLogin([FromBody] Login postData)
         {
 
+            UserStatsBO log = new UserStatsBO();
 
-            Console.WriteLine("are we gettting here?");
-            Console.WriteLine("\n\n\n\n\n\n\n");
-
-
-            return true;
+            return log.LogInUser(postData);
         }
         //public IActionResult GetDefaultSearchList()
         //{
