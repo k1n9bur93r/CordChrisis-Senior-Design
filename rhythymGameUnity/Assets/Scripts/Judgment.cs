@@ -13,6 +13,9 @@ using UnityEngine.UI;
 	Important public methods:
 		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
 		- bool CheckMiss(): For use by InputController. Recieves the beat of an unpressed note from the top of the queue. Returns whether or not the note has been missed completely.
+
+	KNOWN ISSUES:
+		- 32nd notes at 300+ BPM have spotty miss detection
 */
 
 public class Judgment : MonoBehaviour
@@ -256,6 +259,12 @@ public class Judgment : MonoBehaviour
 		if (currentBeat >= farBeat)
 		{
 			//Debug.Log("[Judgment] Jack compensated");
+			ratingText.text = "Miss...";
+			comboText.text = "";
+			leanText.text = "";
+			notesMiss++;
+			combo = 0;
+			
 			return true;
 		}
 
