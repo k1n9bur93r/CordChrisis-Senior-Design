@@ -1815,6 +1815,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Btn1
       objectReference: {fileID: 0}
+    - target: {fileID: 8481453430583766361, guid: 42dd97046928c2740a95e69038001050,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b45b244c53d19474591f90e3008bf2c8, type: 2}
     - target: {fileID: 8481453430583766363, guid: 42dd97046928c2740a95e69038001050,
         type: 3}
       propertyPath: m_LocalPosition.x

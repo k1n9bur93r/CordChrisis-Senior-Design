@@ -60,7 +60,7 @@ public class NoteSpawner : MonoBehaviour
     public void spawnNote(int noteNum, double beat, double length=0)
     {
         GameObject curNote =
-            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
         
         notes[noteNum].Add(curNote.gameObject);
 
