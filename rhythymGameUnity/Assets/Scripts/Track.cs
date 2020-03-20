@@ -95,9 +95,16 @@ public class Track : MonoBehaviour
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
-            string gesture = intToGesture[json.note_gesture[i]];
-            
-            noteSpawner.spawnNote(note - 1, beat);
+            int gesture = json.note_gesture[i];
+            // string gesture = intToGesture[json.note_gesture[i]];
+
+            if (gesture == 0) {
+                // normal note
+                noteSpawner.spawnNote(note - 1, beat);
+            } else {
+                // gesture note
+                noteSpawner.spawnGesture(gesture - 1, beat);
+            }
         }
     }
 }

@@ -19,9 +19,7 @@ public class InputController : MonoBehaviour
      */
 
     private const int MAX_KEYS = 4;
-
-    // input types
-    public KeyCode keyPressed;
+    private const int MAX_GESTURES = 4;
 
     // needed classes
     public NoteSpawner noteSpawner;
@@ -29,6 +27,7 @@ public class InputController : MonoBehaviour
     public Metronome metronome;
     public NoteController noteController;
     public GameObject[] button;
+    public GestureRecognizer gestureRecognizer;
 
     private double beatPressed;
 
@@ -48,58 +47,77 @@ public class InputController : MonoBehaviour
     {
         t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
         t3.text = "Tempo: " + metronome.tempo.ToString();
+        SetBeatOnKeyPress();
 
-        // Check if the notes at this beat should be deleted and marked as missed
-        
+        // An equivalent function for swipe notes goes here
+        for (int i = 0; i < MAX_GESTURES; i++) {
+            if (judge.CheckMiss(noteController.GetFirstGesture(i), noteController.GetSecondGesture(i)))
+            {
+                noteController.RemoveTopGesture(i);
+            }
+        }
+
         for (int i = 0; i < MAX_KEYS; i++)
         {
+            // Check if the notes at this beat should be deleted and marked as missed
             if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
             {
                 noteController.RemoveTopNote(i);
             }
+
+
+            if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
+            {
+                // Process notes length = 0 
+                if (noteController.GetNoteLength(i) == 0)
+                {
+                    if (judge.CheckHit(noteController.GetFirstBeat(i)))
+                    {
+                        noteController.RemoveTopNote(i);
+                    }
+                }
+                t2.text = "Beat on press: " + beatPressed.ToString();
+            }
+
+            // Animate the buttons (could also be basis for hold note detection?)
+            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
+            {
+                // Process notes length > 0; checking here because hold notes require button holds
+                if (noteController.GetNoteLength(i) > 0)
+                {
+                    // judge.CheckHold();
+                }
+                button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
+            }
+            else
+                button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
         }
 
         // An equivalent function for swipe notes goes here
-
-        // Process tap notes
-
-        SetBeatOnKeyPress();
-
-        bool[] pressedKeys = { false, false, false, false };
-
-        if (Input.GetKeyDown(KeyCode.A)) { pressedKeys[0] = true; button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.S)) { pressedKeys[1] = true; button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.D)) { pressedKeys[2] = true; button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        if (Input.GetKeyDown(KeyCode.F)) { pressedKeys[3] = true; button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-
-        for (int i = 0; i < MAX_KEYS; i++)
-        {
-            if (pressedKeys[i] == true)
-            {
-                if (judge.CheckHit(noteController.GetFirstBeat(i)))
-                {
-                    noteController.RemoveTopNote(i);
-                }
-
-                t2.text = "Beat on press: " + beatPressed.ToString();
+        void processGesture(int gesture) {
+            if (judge.CheckSwipe(noteController.GetFirstGesture(gesture))) {
+                noteController.RemoveTopGesture(gesture);
             }
         }
 
-        // An equivalent function for swipe notes goes here
+        string swipe = gestureRecognizer.IsSwipe();
+        switch (swipe) {
+            case "up":
+                processGesture(0);
+                break;
+            case "right":
+                processGesture(1);
+                break;
+            case "down":
+                processGesture(2);
+                break;
+            case "left":
+                processGesture(3);
+                break;
+            default:
+                break;
+        }
 
-        // Animate the buttons (could also be basis for hold note detection?)
-
-        if (Input.GetKey(KeyCode.A)) { button[0].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[0].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.S)) { button[1].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[1].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.D)) { button[2].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[2].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
-
-        if (Input.GetKey(KeyCode.F)) { button[3].GetComponent<ButtonAnimator>().SetPressedBtnColor(); }
-        else { button[3].GetComponent<ButtonAnimator>().SetDefaultBtnColor(); }
     }
 
     public double GetBeatOnKeyPress()

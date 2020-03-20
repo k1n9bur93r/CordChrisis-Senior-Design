@@ -14,6 +14,7 @@ namespace DB
         public DbSet<UserStats> UserStats { get; set; }
         public DbSet<Map> Map { get; set; }
         public DbSet<UserMapStats> UserMapStats { get; set; }
+        public DbSet<Login> UserLogin { get; set; }
         #endregion
 
         public ApplicationDBContext()

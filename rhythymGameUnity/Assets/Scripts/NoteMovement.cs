@@ -8,6 +8,7 @@ public class NoteMovement : MonoBehaviour
     public float speedMod;
     public Metronome metronome;
     public double beat;
+    public double length;
     // Start is called before the first frame update
     void Start()
     {
