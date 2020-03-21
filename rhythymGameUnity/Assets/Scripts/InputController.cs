@@ -35,14 +35,13 @@ public class InputController : MonoBehaviour
     public Text t1;
     public Text t2;
     public Text t3;
+    public Text t4;
 
-    // Start is called before the first frame update
     void Start()
     {
         // ...
     }
 
-    // Update is called once per frame
     public void Update()
     {
         t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
@@ -56,20 +55,26 @@ public class InputController : MonoBehaviour
                 noteController.RemoveTopGesture(i);
             }
         }
-
+        
         for (int i = 0; i < MAX_KEYS; i++)
         {
+            double noteLength;
+
             // Check if the notes at this beat should be deleted and marked as missed
             if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
             {
                 noteController.RemoveTopNote(i);
+                noteLength = 0;
+            }
+            else
+            {
+                noteLength = noteController.GetNoteLength(i);
             }
 
-
+            // Process notes length = 0
             if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                // Process notes length = 0 
-                if (noteController.GetNoteLength(i) == 0)
+                if (noteLength == 0)
                 {
                     if (judge.CheckHit(noteController.GetFirstBeat(i)))
                     {
@@ -79,18 +84,35 @@ public class InputController : MonoBehaviour
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
 
-            // Animate the buttons (could also be basis for hold note detection?)
+            // Process notes length > 0
             if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                // Process notes length > 0; checking here because hold notes require button holds
-                if (noteController.GetNoteLength(i) > 0)
+                if (noteLength > 0)
                 {
-                    // judge.CheckHold();
+                    noteLength -= judge.ReduceHold(noteLength);
+                    t4.text = "Current note length: " + noteLength.ToString();
+                    if (noteLength <= 0)
+                    {                        
+                        judge.HoldSuccess();
+
+                        // delete the hold note at the end of its length
+                        noteController.RemoveTopNote(i);
+                    }
                 }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
             }
             else
+            {
+                if (noteLength > 0)
+                {
+                    noteLength = 0;
+                    judge.HoldFailure();
+
+                    // delete the hold note
+                    noteController.RemoveTopNote(i);
+                }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
+            }
         }
 
         // An equivalent function for swipe notes goes here
