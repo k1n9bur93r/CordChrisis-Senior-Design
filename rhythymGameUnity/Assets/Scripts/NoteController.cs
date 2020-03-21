@@ -47,7 +47,13 @@ public class NoteController : MonoBehaviour
             return noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().length;
         else
             return -1.0;
-}
+    }
+
+    public void SetNoteLength(int queueNum, double length)
+    {
+        if (noteSpawner.notes[queueNum].Count > 0)
+            noteSpawner.notes[queueNum][0].GetComponent<NoteMovement>().length = length;
+    }
 
     public void RemoveTopNote(int queueNum)
     {
