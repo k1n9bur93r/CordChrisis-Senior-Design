@@ -96,11 +96,12 @@ public class Track : MonoBehaviour
             int note = json.notes[i];
             double beat = json.beats[i];
             int gesture = json.note_gesture[i];
+            double length = json.note_lengths[i];
             // string gesture = intToGesture[json.note_gesture[i]];
 
             if (gesture == 0) {
                 // normal note
-                noteSpawner.spawnNote(note - 1, beat);
+                noteSpawner.spawnNote(note - 1, beat, length);
             } else {
                 // gesture note
                 noteSpawner.spawnGesture(gesture - 1, beat);
