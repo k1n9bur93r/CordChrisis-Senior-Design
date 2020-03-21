@@ -64,6 +64,15 @@ public class NoteController : MonoBehaviour
         }
     }
 
+    public void RemoveTopNote(int queueNum, double length)
+    {
+        if (noteSpawner.notes[queueNum].Count > 0)
+        {
+            noteSpawner.notes[queueNum][(int)length].SetActive(false);
+            noteSpawner.notes[queueNum].RemoveAt((int)length);
+        }
+    }
+
     public double GetFirstGesture(int queueNum)
     {
         if (noteSpawner.gestures[queueNum].Count > 0)
