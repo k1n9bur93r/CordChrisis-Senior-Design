@@ -2077,7 +2077,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -2436,7 +2436,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/Journey (Part 2)
+      value: Charts/hold_test
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
