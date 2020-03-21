@@ -12,8 +12,8 @@ public class HoldNoteLine : MonoBehaviour
     {
         firstNote = gameObject;
         line = gameObject.GetComponent<LineRenderer>();
-        line.startWidth = .0f;
-        line.endWidth = .0f;
+        line.startWidth = 0f;
+        line.endWidth = 0f;
         line.positionCount = 2;
     }
 

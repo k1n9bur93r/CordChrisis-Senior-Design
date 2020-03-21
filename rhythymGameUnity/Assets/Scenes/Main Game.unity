@@ -1206,25 +1206,25 @@ PrefabInstance:
         type: 3}
       propertyPath: gestureObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 242083137293929784, guid: bb5c07ad8aa2f237b825717f677c18a7,
+      objectReference: {fileID: 5885463680574226733, guid: 068797dd952e6544d86aee388d3b6246,
         type: 3}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: gestureObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 8646553621430682628, guid: eb08531f1fd7cd3b386c7195fcdef530,
+      objectReference: {fileID: 3473454625513459490, guid: b24721d1db10b40489e6c1a5eb4f3843,
         type: 3}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: gestureObjects.Array.data[2]
       value: 
-      objectReference: {fileID: 1971825264462359688, guid: 91697f66e612897c2b9448dc694c1a42,
+      objectReference: {fileID: 7565236861163597742, guid: 0ccdb78cb76972041962eda57d71bcc9,
         type: 3}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: gestureObjects.Array.data[3]
       value: 
-      objectReference: {fileID: 7029464937348956926, guid: 949f72edd9f7aac3a8d69824e4276f10,
+      objectReference: {fileID: 1872580242280041795, guid: 5d988f144e3c78e478f915809d4632b2,
         type: 3}
     m_RemovedComponents:
     - {fileID: 4612268101121818364, guid: 206241700027747e58ab9410e343c31c, type: 3}
@@ -2155,7 +2155,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -2515,7 +2515,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/Journey (Part 2)
+      value: Charts/gesture_test
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}

@@ -73,12 +73,13 @@ public class NoteSpawner : MonoBehaviour
         if (length > 0)
         {
             GameObject endHold =
-                Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), transform.rotation);
+                Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
     
             endHold.transform.parent = transform;
             //since it moves relative to first: beat = oldbeat+length
-            endHold.GetComponent<NoteMovement>().beat = length;
-
+            endHold.GetComponent<NoteMovement>().beat = length+beat;
+            curNote.GetComponent<NoteMovement>().speedMod = speedMod;
+            curNote.GetComponent<NoteMovement>().metronome = metronome;
             curNote.GetComponent<HoldNoteLine>().secondNote = endHold;
         }
 
@@ -118,46 +119,21 @@ public class NoteSpawner : MonoBehaviour
                 
                 //new meshes break these. TODO: fix these
                 var curNoteColor = notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
-                // set transparency of note
-                if (beatDistance < transparentEnd)
-                {
-                    curNoteColor.a = 1f;
-                }
-                else if (beatDistance > transparentStart)
-                {
-                    curNoteColor.a = 0f;
-                }
-                else
-                {
-                    curNoteColor.a = 1f-((beatDistance-transparentEnd)/(transparentStart-transparentEnd));
-                }
-                notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color = curNoteColor;
             
                 if (notes[x][y].GetComponent<NoteMovement>().length>0)
                 {
+                    notes[x][y].GetComponent<LineRenderer>().startWidth=.2f;
+                    notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
                     //then move end correctly
                     GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
-                    double addedLength = notes[x][y].GetComponent<NoteMovement>().length;
-                    beatDistance = (float)(curBeat+addedLength-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+                    curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
+                    beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
                     end.transform.position = new Vector3 
                     (
                         end.transform.position.x,
                         end.transform.position.y,
                         (float)( noteReciever.transform.position.z + beatDistance )
                     );
-
-                    if (curNoteColor.a == 1f)
-                    {
-                        //then show
-                        notes[x][y].GetComponent<LineRenderer>().startWidth=.2f;
-                        notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
-                    }
-                    else
-                    {
-                        //then show
-                        notes[x][y].GetComponent<LineRenderer>().startWidth=0f;
-                        notes[x][y].GetComponent<LineRenderer>().endWidth=0f;
-                    }
                 }
             }
         }
