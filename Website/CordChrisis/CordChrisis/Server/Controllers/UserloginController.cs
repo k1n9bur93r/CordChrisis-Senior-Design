@@ -14,7 +14,7 @@ namespace CordChrisis.Server.Controllers
     {
         [HttpPost]
         [Route("post")]
-        public string GetLogin([FromBody] Login postData)
+        public Login GetLogin([FromBody] Login postData)
         {
 
             UserStatsBO log = new UserStatsBO();

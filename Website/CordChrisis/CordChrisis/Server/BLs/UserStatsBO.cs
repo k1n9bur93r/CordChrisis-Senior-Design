@@ -13,7 +13,7 @@ namespace CordChrisis.BOs
 {
     public class UserStatsBO : IUserStats
     {
-        public string LogInUser(Login login) {
+        public Login LogInUser(Login login) {
             try
             {
                 Console.WriteLine("were in the BO");

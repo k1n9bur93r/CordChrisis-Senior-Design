@@ -10,7 +10,7 @@ namespace CordChrisis.DAOs
 {
     public class UserLoginDA
     {
-        public string LoginUser(Login log)
+        public Login LoginUser(Login log)
         {
             Login data = new Login();
             Login UserLogin = new Login();
@@ -20,14 +20,17 @@ namespace CordChrisis.DAOs
                 UserLogin = context.UserLogin.Where(n => n.Email == log.Email && n.Password == log.Password).FirstOrDefault();
             }
 
-            
 
-            if(UserLogin == null)
+
+            if (UserLogin == null)
             {
-                return null; 
+                return null;
             }
             else
-                return UserLogin.ID.ToString(); 
+            {
+                UserLogin.Password = String.Empty;
+                return UserLogin;
+            }
         }
 
     }

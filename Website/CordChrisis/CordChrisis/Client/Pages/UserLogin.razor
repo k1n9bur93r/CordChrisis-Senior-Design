@@ -67,27 +67,28 @@
     bool loadingData = false;
     bool isEmail = true;
     bool isPassword = true;
+    Login returnData;
 
-    public async Task<Boolean> SubmitLoginQuery()
+    public async Task<string> SubmitLoginQuery()
     {
 
-        if (email == String.Empty)
-        {
-            success = false;
-            isEmail = false;
-     
+        //if (email == String.Empty)
+        //{
+        //    success = false;
+        //    isEmail = false;
 
-            return isEmail;
-            //alert email field is empty
-        }
 
-        if (password == String.Empty)
-        {
-            success = false;
-            isPassword = false;
-            return success;
-            //alert password is empty
-        }
+        //    return isEmail;
+        //    //alert email field is empty
+        //}
+
+        //if (password == String.Empty)
+        //{
+        //    success = false;
+        //    isPassword = false;
+        //    return success;
+        //    //alert password is empty
+        //}
 
         Login loginObject = new Login
         {
@@ -97,10 +98,10 @@
 
         loadingData = true;
         // Console.WriteLine("FUCK THIS BOY");
+        returnData = await Http.PostJsonAsync<Login>("userlogin/post", loginObject);
         // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
-        Console.WriteLine( checkData = await Http.PostJsonAsync<string>("userlogin/post", loginObject));
 
-        Console.WriteLine(checkData);
+        Console.WriteLine(returnData.ID.ToString());
         if (checkData == String.Empty)
         {
             success = false;
@@ -111,7 +112,7 @@
         loadingData = false;
 
 
-        return success;
+        return checkData;
     }
 
 
