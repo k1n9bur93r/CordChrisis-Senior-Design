@@ -30,12 +30,18 @@ public class InputController : MonoBehaviour
     public GestureRecognizer gestureRecognizer;
 
     private double beatPressed;
+    private double[] lengthRemain;
 
     // Text for testing
     public Text t1;
     public Text t2;
     public Text t3;
     public Text t4;
+
+    void Awake()
+    {
+        lengthRemain = new double[] { 0.0, 0.0, 0.0, 0.0 };
+    }
 
     void Start()
     {
@@ -65,6 +71,8 @@ public class InputController : MonoBehaviour
             {
                 noteController.RemoveTopNote(i);
                 noteLength = 0;
+                noteController.SetNoteLength(i, noteLength); // !
+                lengthRemain[i] = 0.0;
             }
 
             else
@@ -72,47 +80,42 @@ public class InputController : MonoBehaviour
                 noteLength = noteController.GetNoteLength(i);
             }
 
-            // Process notes length = 0
+            // Process taps regardless of length
             if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                if (noteLength == 0)
+                if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    if (judge.CheckHit(noteController.GetFirstBeat(i)))
-                    {
-                        noteController.RemoveTopNote(i);
-                    }
+                    noteController.RemoveTopNote(i);
+                    lengthRemain[i] = noteLength;
                 }
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
 
-            // Process notes length > 0
+            // Process taps length > 0
             if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                if (noteLength > 0)
+                if (lengthRemain[i] > 0.0)
                 {
-                    noteLength -= judge.ReduceHold(noteLength);
-                    noteController.SetNoteLength(i, noteLength); // !
-                    t4.text = "Current note length: " + noteLength.ToString();
-                    if (noteLength <= 0)
+                    lengthRemain[i] = judge.ReduceHold(lengthRemain[i]);
+                    noteController.SetNoteLength(i, lengthRemain[i]); // !
+
+                    t4.text = "Current note length: " + lengthRemain[i].ToString();
+
+                    if (lengthRemain[i] <= 0.0)
                     {                        
                         judge.HoldSuccess();
-
-                        // delete the hold note at the end of its length
-                        //noteController.RemoveTopNote(i); // ~!
                     }
                 }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
             }
+
             else
             {
-                if (noteLength > 0)
+                if (lengthRemain[i] > 0.0)
                 {
-                    noteLength = 0;
-                    noteController.SetNoteLength(i, noteLength); // !
+                    lengthRemain[i] = 0.0;
+                    noteController.SetNoteLength(i, lengthRemain[i]); // !
                     judge.HoldFailure();
-
-                    // delete the hold note
-                    //noteController.RemoveTopNote(i); // ~!
                 }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
             }

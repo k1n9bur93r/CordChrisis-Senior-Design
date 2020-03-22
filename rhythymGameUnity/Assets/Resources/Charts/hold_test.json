@@ -2,7 +2,7 @@
     "title": "HOLD TEST",
     "artist": "n/a",
     "genre": "n/a",
-    "tempo_change_amount": [120.0],
+    "tempo_change_amount": [150.0],
     "tempo_change_beat": [0.0],
     "offset": 0.0,
     "beats": [2.0, 4.0, 6.0, 8.0],
