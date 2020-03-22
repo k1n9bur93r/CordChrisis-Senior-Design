@@ -66,6 +66,7 @@ public class InputController : MonoBehaviour
                 noteController.RemoveTopNote(i);
                 noteLength = 0;
             }
+
             else
             {
                 noteLength = noteController.GetNoteLength(i);
@@ -90,13 +91,14 @@ public class InputController : MonoBehaviour
                 if (noteLength > 0)
                 {
                     noteLength -= judge.ReduceHold(noteLength);
+                    noteController.SetNoteLength(i, noteLength); // !
                     t4.text = "Current note length: " + noteLength.ToString();
                     if (noteLength <= 0)
                     {                        
                         judge.HoldSuccess();
 
                         // delete the hold note at the end of its length
-                        noteController.RemoveTopNote(i);
+                        //noteController.RemoveTopNote(i); // ~!
                     }
                 }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
@@ -106,10 +108,11 @@ public class InputController : MonoBehaviour
                 if (noteLength > 0)
                 {
                     noteLength = 0;
+                    noteController.SetNoteLength(i, noteLength); // !
                     judge.HoldFailure();
 
                     // delete the hold note
-                    noteController.RemoveTopNote(i);
+                    //noteController.RemoveTopNote(i); // ~!
                 }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
             }
