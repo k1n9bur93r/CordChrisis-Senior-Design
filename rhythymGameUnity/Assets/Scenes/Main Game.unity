@@ -2385,6 +2385,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2686942643419092659, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064049, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: m_Name
@@ -2488,22 +2493,22 @@ PrefabInstance:
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: noteXoffsets.Array.data[0]
-      value: -1.75
+      value: -3.75
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: noteXoffsets.Array.data[1]
-      value: -0.6
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: noteXoffsets.Array.data[2]
-      value: 0.5
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: noteXoffsets.Array.data[3]
-      value: 1.5
+      value: 3.75
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
@@ -2529,6 +2534,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1872580242280041795, guid: 5d988f144e3c78e478f915809d4632b2,
         type: 3}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: yOffset
+      value: -4.75
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4612268101121818364, guid: 206241700027747e58ab9410e343c31c, type: 3}
     - {fileID: 7799300915055230501, guid: 206241700027747e58ab9410e343c31c, type: 3}
@@ -10851,7 +10861,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/hold_test
+      value: Charts/gesture_test
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
