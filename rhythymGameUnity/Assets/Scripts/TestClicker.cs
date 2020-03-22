@@ -67,19 +67,19 @@ public class TestClicker : MonoBehaviour
                             break;
 
                         case "Cube5":
-                            sb.UpdateScoreHold(1, expected_time, end_time - start_time);
+                            sb.UpdateScore(1, expected_time, end_time - start_time);
                             break;
 
                         case "Cube6":
-                            sb.UpdateScoreHold(2, expected_time, end_time - start_time);
+                            sb.UpdateScore(2, expected_time, end_time - start_time);
                             break;
 
                         case "Cube7":
-                            sb.UpdateScoreHold(3, expected_time, end_time - start_time);
+                            sb.UpdateScore(3, expected_time, end_time - start_time);
                             break;
 
                         case "Cube8":
-                            sb.UpdateScoreHold(4, expected_time, end_time - start_time);
+                            sb.UpdateScore(4, expected_time, end_time - start_time);
                             break;
 
 
