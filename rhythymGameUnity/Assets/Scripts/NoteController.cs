@@ -63,7 +63,8 @@ public class NoteController : MonoBehaviour
             noteSpawner.notes[queueNum].RemoveAt(0);            
         }
     }
-
+    
+    /*
     public void RemoveTopNote(int queueNum, double length)
     {
         if (noteSpawner.notes[queueNum].Count > 0)
@@ -72,6 +73,7 @@ public class NoteController : MonoBehaviour
             noteSpawner.notes[queueNum].RemoveAt((int)length);
         }
     }
+    */
 
     public double GetFirstGesture(int queueNum)
     {
