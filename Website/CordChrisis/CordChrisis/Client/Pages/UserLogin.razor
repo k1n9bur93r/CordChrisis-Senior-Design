@@ -4,7 +4,7 @@
 @using CordChrisis.Shared.Models
 @using System.Security;
 @inject HttpClient Http
-
+@inject NavigationManager NavigationManager
 
 <div class="container rounded mt-4 p-1 bg-light">
     <div class="jumbotron">
@@ -17,22 +17,36 @@
         </div>
 
         <div class="">
-            @if (success==false)
+            @if (success == false)
             {
-               @if (isEmail == false)
+                @if (isEmail == false && isPassword == false)
                 {
-                   <div>
-                       <p>Email Field Cant be Blank</p>
-                   </div>
-               }
-               else if (isPassword == false)
-               {
-                   <div>
-                       <p>Password Field Cant be Blank</p>
-                   </div>
-               }
+                    <div>
+                        <p>Email and Password Fields are blank</p>
+                    </div>
+                }
+                else if (isPassword == false)
+                {
+                    <div>
+                        <p>Password Field Cant be Blank</p>
+                    </div>
+                }
+                else if (isEmail == false)
+                {
+                    <div>
+                        <p>Email Field Cant be Blank</p>
+                    </div>
+                }
+                else if(islogin == false)
+                {
+                    <div>
+                        <p>Oh no! You Dumb Bitch, Your Email or Password was Incorrect</p>
+                    </div>
+
+                }
 
             }
+
         </div>
 
 
@@ -62,57 +76,97 @@
 
     string email { get; set; }
     string password { get; set; }
-    string checkData = String.Empty;
     bool success = false;
     bool loadingData = false;
     bool isEmail = true;
+    Login checkData = new Login();
     bool isPassword = true;
-    Login returnData;
+    bool islogin = true;
 
-    public async Task<string> SubmitLoginQuery()
+    public async Task<bool> SubmitLoginQuery()
     {
 
-        //if (email == String.Empty)
-        //{
-        //    success = false;
-        //    isEmail = false;
+        Console.WriteLine("THISISEMAIL");
+
+        Console.WriteLine(email);
+
+        if (email == null && password == null)
+        {
+
+            Console.WriteLine(" there both empty!");
+            success = false;
+            isEmail = false;
+            isPassword = false;
+            return success;
+
+        }
 
 
-        //    return isEmail;
-        //    //alert email field is empty
-        //}
+        if (email == String.Empty && password == String.Empty)
+        {
 
-        //if (password == String.Empty)
-        //{
-        //    success = false;
-        //    isPassword = false;
-        //    return success;
-        //    //alert password is empty
-        //}
+            Console.WriteLine(" there both empty!");
+            success = false;
+            isEmail = false;
+            isPassword = false;
+            return success;
+
+        }
+
+        if (email ==null || email == String.Empty)
+        {
+
+
+            Console.WriteLine(" Email is empty!");
+            success = false;
+            isEmail = false;
+            isPassword = true;
+            return success;
+        }
+
+
+        if (password == null || password == String.Empty)
+        {
+
+            Console.WriteLine("password is empty!");
+            success = false;
+            isPassword = false;
+            isEmail = true;
+            return success;
+        }
+
+
 
         Login loginObject = new Login
         {
             Email = email,
             Password = password
         };
+        Console.WriteLine(email);
 
         loadingData = true;
-        // Console.WriteLine("FUCK THIS BOY");
-        returnData = await Http.PostJsonAsync<Login>("userlogin/post", loginObject);
         // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
-
-        Console.WriteLine(returnData.ID.ToString());
-        if (checkData == String.Empty)
-        {
-            success = false;
-        }
-        else
-            success = true;
-
+        checkData = await Http.PostJsonAsync<Login>("userlogin/post", loginObject);
+        // checkData = await Http.GetJsonAsync<string>("userlogin/get");
+        Console.WriteLine(checkData.ID);
         loadingData = false;
 
+        if (checkData.Email == "X")
+        {
+            islogin = false;
+            isEmail = true;
+            isPassword = true;
+            success = false;
+            return success;
+        }
+        else
+        {
 
-        return checkData;
+            NavigationManager.NavigateTo("/");
+            success = true;
+            return success;
+        }
+
     }
 
 
