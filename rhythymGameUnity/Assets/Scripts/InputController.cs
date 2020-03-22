@@ -67,11 +67,11 @@ public class InputController : MonoBehaviour
             double noteLength;
 
             // Check if the notes at this beat should be deleted and marked as missed
-            if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
+            if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))// && (lengthRemain[i] <= 0))
             {
                 noteController.RemoveTopNote(i);
                 noteLength = 0;
-                noteController.SetNoteLength(i, noteLength); // !
+                //noteController.SetNoteLength(i, noteLength); // !
                 lengthRemain[i] = 0.0;
             }
 
@@ -80,14 +80,19 @@ public class InputController : MonoBehaviour
                 noteLength = noteController.GetNoteLength(i);
             }
 
-            // Process taps regardless of length
+            // Process taps
             if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    noteController.RemoveTopNote(i);
+                    //if (noteLength == 0)
+                    {
+                        noteController.RemoveTopNote(i);
+                    }
+
                     lengthRemain[i] = noteLength;
                 }
+
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
 
@@ -97,12 +102,13 @@ public class InputController : MonoBehaviour
                 if (lengthRemain[i] > 0.0)
                 {
                     lengthRemain[i] = judge.ReduceHold(lengthRemain[i]);
-                    noteController.SetNoteLength(i, lengthRemain[i]); // !
+                    //noteController.SetNoteLength(i, lengthRemain[i]); // !
 
                     t4.text = "Current note length: " + lengthRemain[i].ToString();
 
                     if (lengthRemain[i] <= 0.0)
                     {                        
+                        noteController.RemoveTopNote(i);
                         judge.HoldSuccess();
                     }
                 }
@@ -114,7 +120,8 @@ public class InputController : MonoBehaviour
                 if (lengthRemain[i] > 0.0)
                 {
                     lengthRemain[i] = 0.0;
-                    noteController.SetNoteLength(i, lengthRemain[i]); // !
+                    noteController.RemoveTopNote(i);
+                    //noteController.SetNoteLength(i, lengthRemain[i]); // !
                     judge.HoldFailure();
                 }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
