@@ -177,10 +177,17 @@ public class Judgment : MonoBehaviour
 		Hold "judgment" functions
 	*/
 
-	public double ReduceHold(double beatsLeft)
+	public double ReduceHoldInitial(double beatsLeft, double initialBeat)
 	{
-		// TO DO: Compensate for early/lateness!
+		double currentBeat = clock.beatsElapsed;
+		double noteBeat = initialBeat;
+		double diff = currentBeat - noteBeat;
 
+		return beatsLeft - diff;
+	}
+
+	public double ReduceHoldDuring(double beatsLeft)
+	{
 		return beatsLeft - clock.beatsElapsedDelta;
 	}
 

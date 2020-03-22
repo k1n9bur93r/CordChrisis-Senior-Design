@@ -85,12 +85,15 @@ public class InputController : MonoBehaviour
             {
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    //if (noteLength == 0)
+                    lengthRemain[i] = noteLength;
+
+                    // Change note length to compensate for timing
+                    if (noteLength > 0)
                     {
-                        noteController.RemoveTopNote(i);
+                        lengthRemain[i] = judge.ReduceHoldInitial(lengthRemain[i], noteController.GetFirstBeat(i));
                     }
 
-                    lengthRemain[i] = noteLength;
+                    noteController.RemoveTopNote(i);
                 }
 
                 t2.text = "Beat on press: " + beatPressed.ToString();
@@ -101,7 +104,7 @@ public class InputController : MonoBehaviour
             {
                 if (lengthRemain[i] > 0.0)
                 {
-                    lengthRemain[i] = judge.ReduceHold(lengthRemain[i]);
+                    lengthRemain[i] = judge.ReduceHoldDuring(lengthRemain[i]);
                     //noteController.SetNoteLength(i, lengthRemain[i]); // !
 
                     t4.text = "Current note length: " + lengthRemain[i].ToString();
