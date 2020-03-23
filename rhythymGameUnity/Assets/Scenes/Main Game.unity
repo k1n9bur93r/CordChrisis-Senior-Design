@@ -1312,6 +1312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: 7183790007645019934, guid: 7c4d358c1630897459966030809b1d66, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7c4d358c1630897459966030809b1d66, type: 3}
 --- !u!4 &398790600 stripped
 Transform:
@@ -1670,6 +1671,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2fd853f6bb7ced14c8afe4139d85e65e, type: 2}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: 5385148469038368953, guid: 588133ffccc9a7a4fac487b367fef106, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 588133ffccc9a7a4fac487b367fef106, type: 3}
 --- !u!4 &545186394 stripped
 Transform:
@@ -2488,7 +2490,7 @@ PrefabInstance:
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: speedMod
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
@@ -9829,6 +9831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: 8481453430583766360, guid: 42dd97046928c2740a95e69038001050, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 42dd97046928c2740a95e69038001050, type: 3}
 --- !u!4 &1698737279 stripped
 Transform:
@@ -15044,7 +15047,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 8
+      value: 76
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97a7bc46d938afe4a87b2d0695ce78ae, type: 3}
@@ -15297,7 +15300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2074364256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15471,6 +15474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
+    - {fileID: 5385148469038368953, guid: ad5dc15a75b8ca24fac9db3a88511dfd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ad5dc15a75b8ca24fac9db3a88511dfd, type: 3}
 --- !u!4 &2075265775 stripped
 Transform:
@@ -15647,7 +15651,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/gesture_test
+      value: Charts/Journey (Part 2)
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}

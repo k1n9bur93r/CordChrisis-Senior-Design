@@ -111,7 +111,7 @@ public class InputController : MonoBehaviour
 
                     if (lengthRemain[i] <= 0.0)
                     {                        
-                        noteController.RemoveTopNote(i);
+                        //noteController.RemoveTopNote(i);
                         judge.HoldSuccess();
                     }
                 }
@@ -123,7 +123,7 @@ public class InputController : MonoBehaviour
                 if (lengthRemain[i] > 0.0)
                 {
                     lengthRemain[i] = 0.0;
-                    noteController.RemoveTopNote(i);
+                    //noteController.RemoveTopNote(i);
                     //noteController.SetNoteLength(i, lengthRemain[i]); // !
                     judge.HoldFailure();
                 }
