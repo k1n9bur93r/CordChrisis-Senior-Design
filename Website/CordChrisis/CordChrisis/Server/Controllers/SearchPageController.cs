@@ -25,7 +25,8 @@ namespace CordChrisis.Server.Controllers
         public List<Map> PopularMaps()
         {
             SearchBO search = new SearchBO();
-            return search.GetPopularMaps();
+            List<Map> returnData= search.GetPopularMaps();
+            return returnData;
         }
 
         //public IActionResult GetDefaultSearchList()

@@ -1,106 +1,115 @@
 ﻿@using CordChrisis.Shared.Models
 
-    <div>
-       @if (CurrentCards.Count()!=0)
-       {
-            <MapSearchResults ReturnedMaps=CurrentCards/>
-       }
-       else
-       {
-           if (TotalCards.Count() > DisplayResults) {
-           <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,DisplayResults))/>
-           }
-           else {
-            <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,TotalCards.Count()))/>
-           }
-       }
-    <div class="container-fluid text-center pl-4 pr-4 pb-1">
-        <ul class="pagination pagination-sm ">
-            @if (currentPaginationSet - DisplayResults >= 0)
-            {
-                <li class="page-item w-50 itm-skew" @onclick="revertResults">
-                    <a class="page-link" tabindex="-1" aria-label="Previous">
-                        <span aria-hidden="true" ><div class="itm-skew-text">Previous</div></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled w-50 itm-skew">
-                    <a class="page-link" tabindex="-1" aria-label="Previous">
-                        <span aria-hidden="true" ><div class="itm-skew-text">Previous</div></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-            }
-            @*@for (paginationBtnCount = 1; paginationBtnCount <= (TotalCards.Count() / DisplayResults); paginationBtnCount++)
-            {
-                if ((paginationBtnCount * DisplayResults >= currentPaginationSet && paginationBtnCount * DisplayResults< currentPaginationSet + DisplayResults)||firstClick &&paginationBtnCount==1)
-                {
-                    <li class="page-item text-primary">
-                        <a class="page-link">@paginationBtnCount</a>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item disabled">
-                        <a class="page-link">@paginationBtnCount</a>
-                    </li>
-                }
+@if (FetchPopular != null && TotalCards == null)
+{
+    if (!FetchPopular.IsCompleted)
+    {
+        Console.WriteLine("I was hit here");
+        <div class="d-flex justify-content-center">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div style="display:none">
+            @waitForPopular();
+        </div>
+    }
 
-            }
-            @if (TotalCards.Count() % DisplayResults != 0)
+
+}
+else if (TotalCards != null && TotalCards.Count != 0)
+{
+    <div>
+        @if (CurrentCards.Count() != 0)
+        {
+            <MapSearchResults ReturnedMaps=CurrentCards />
+        }
+        else
+        {
+            if (TotalCards.Count() > DisplayResults)
             {
-                if (paginationBtnCount * DisplayResults >= currentPaginationSet && paginationBtnCount * DisplayResults < currentPaginationSet + DisplayResults)
+                <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,DisplayResults)) />
+            }
+            else
+            {
+                <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,TotalCards.Count())) />
+            }
+        }
+        <div class="container-fluid text-center pl-4 pr-4 pb-1">
+            <ul class="pagination pagination-sm ">
+                @if (currentPaginationSet - DisplayResults >= 0)
                 {
-                    <li class="page-item text-primary ">
-                        <a class="page-link">@paginationBtnCount</a>
+                    <li class="page-item w-50 itm-skew" @onclick="revertResults">
+                        <a class="page-link" tabindex="-1" aria-label="Previous">
+                            <span aria-hidden="true"><div class="itm-skew-text">Previous</div></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 }
                 else
                 {
-                    <li class="page-item disabled">
-                        <a class="page-link">@paginationBtnCount</a>
+                    <li class="page-item disabled w-50 itm-skew">
+                        <a class="page-link" tabindex="-1" aria-label="Previous">
+                            <span aria-hidden="true"><div class="itm-skew-text">Previous</div></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
                     </li>
                 }
-            }*@
-            @if (currentPaginationSet < TotalCards.Count())
-            {
-                <li class="page-item w-50 itm-skew" @onclick="advanceResults">
-                    <a class="page-link" aria-label="Next">
-                        <span aria-hidden="true" ><div class="itm-skew-text">Next</div></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled w-50 itm-skew">
-                    <a class="page-link" aria-label="Next">
-                        <span aria-hidden="true" > <div class="itm-skew-text">Next</div></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            }
-        </ul>
+                @if (currentPaginationSet < TotalCards.Count())
+                {
+                    <li class="page-item w-50 itm-skew" @onclick="advanceResults">
+                        <a class="page-link" aria-label="Next">
+                            <span aria-hidden="true"><div class="itm-skew-text">Next</div></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled w-50 itm-skew">
+                        <a class="page-link" aria-label="Next">
+                            <span aria-hidden="true"> <div class="itm-skew-text">Next</div></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 
+ }
+ else
+ {
+  Console.WriteLine("Yes! We have no bananas! ");
+ <div class="alert alert-info" role="alert">
+  Unable to find new popular maps!
+ </div>
+    }
 @code {
 
     [Parameter]
     public List<Map> TotalCards { get; set; }
-    List<Map> CurrentCards = new List<Map>();
+
+    [Parameter]
+    public Task<List<Map>> FetchPopular { get; set; }
+
     [Parameter]
     public int DisplayResults { get; set; }
+
+    List<Map> CurrentCards = new List<Map>();
+
     int FlexableAdjust;
-    int currentPaginationSet =0;
+
+    int currentPaginationSet = 0;
+
     bool endOfList = false;
+
     bool firstClick = true;
+
     int paginationBtnCount = 0;
 
-    void advanceResults() {
+    void advanceResults()
+    {
         if (firstClick)
         {
             if (currentPaginationSet + DisplayResults > TotalCards.Count())
@@ -111,16 +120,17 @@
         FlexableAdjust = DisplayResults;
         if (currentPaginationSet + DisplayResults > TotalCards.Count())
         {
-            FlexableAdjust = DisplayResults-((currentPaginationSet + DisplayResults) - TotalCards.Count());
+            FlexableAdjust = DisplayResults - ((currentPaginationSet + DisplayResults) - TotalCards.Count());
             endOfList = true;
         }
-        Console.WriteLine("TOTAL RESULTS: "+TotalCards.Count()+" CURRENT DISPLAYED SET From "+currentPaginationSet+" To "+(currentPaginationSet+FlexableAdjust));
+        Console.WriteLine("TOTAL RESULTS: " + TotalCards.Count() + " CURRENT DISPLAYED SET From " + currentPaginationSet + " To " + (currentPaginationSet + FlexableAdjust));
 
-        CurrentCards = TotalCards.GetRange(currentPaginationSet,FlexableAdjust);
+        CurrentCards = TotalCards.GetRange(currentPaginationSet, FlexableAdjust);
         currentPaginationSet += FlexableAdjust;
         StateHasChanged();
 
     }
+
     void revertResults()
     {
 
@@ -137,8 +147,16 @@
 
             currentPaginationSet -= DisplayResults;
         }
-        Console.WriteLine("TOTAL RESULTS: "+TotalCards.Count()+" CURRENT DISPLAYED SET From "+(currentPaginationSet)+" To "+(currentPaginationSet+DisplayResults));
-        CurrentCards= TotalCards.GetRange(currentPaginationSet, DisplayResults);
+        Console.WriteLine("TOTAL RESULTS: " + TotalCards.Count() + " CURRENT DISPLAYED SET From " + (currentPaginationSet) + " To " + (currentPaginationSet + DisplayResults));
+        CurrentCards = TotalCards.GetRange(currentPaginationSet, DisplayResults);
         StateHasChanged();
+    }
+
+    async Task<List<Map>> waitForPopular()
+    {
+        Console.WriteLine("IM HERE");
+        TotalCards = await FetchPopular;
+        StateHasChanged();
+        return TotalCards;
     }
 }
