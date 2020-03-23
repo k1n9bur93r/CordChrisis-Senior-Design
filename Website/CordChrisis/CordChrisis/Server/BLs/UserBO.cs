@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
+using CordChrisis.DAOs;
 using CordChrisis.Shared.Models;
 
 namespace CordChrisis.BOs
@@ -14,7 +15,8 @@ namespace CordChrisis.BOs
         {
 			try
 			{
-				throw new NotImplementedException();
+				UserStatsDA user = new UserStatsDA();
+				return user.ReadSingle(userID);
 			}
 			catch (Exception ex)
 			{

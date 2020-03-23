@@ -17,9 +17,9 @@ namespace CordChrisis.Shared.Models
         [MaxLength(10)]
         public int MaxCombo { get; set; }
         [MaxLength(100)]
-        public long TotalScore { get; set; }
+        public int TotalScore { get; set; }
         [MaxLength(100)]
-        public int MostPlayedMap { get; set; }
+        public string MostPlayedMap { get; set; }
         [MaxLength(10)]
         public int MapsCreated { get; set; }
         [MaxLength(10)]
