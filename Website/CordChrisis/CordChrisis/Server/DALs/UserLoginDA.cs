@@ -20,17 +20,17 @@ namespace CordChrisis.DAOs
                 UserLogin = context.UserLogin.Where(n => n.Email == log.Email && n.Password == log.Password).FirstOrDefault();
             }
 
-
-
-            if (UserLogin == null)
+            if(UserLogin == null)
             {
-                return null;
+                 Login badUserLogin = new Login();
+                badUserLogin.Email = "X";
+                return badUserLogin; 
+
             }
-            else
-            {
-                UserLogin.Password = String.Empty;
-                return UserLogin;
-            }
+            
+            UserLogin.Password = String.Empty;
+            return UserLogin;
+            
         }
 
     }

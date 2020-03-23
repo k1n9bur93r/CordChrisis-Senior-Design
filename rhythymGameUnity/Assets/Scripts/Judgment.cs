@@ -29,7 +29,7 @@ public class Judgment : MonoBehaviour
 	public Text comboText;
 	public Text statsText;
 	
-	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss, notesHoldOK, notesHoldNG;
 	private int notesEarly, notesLate;
 	private int combo, comboMax;
 	private int score;
@@ -177,19 +177,26 @@ public class Judgment : MonoBehaviour
 		Hold "judgment" functions
 	*/
 
-	public double ReduceHold(double beatsLeft)
+	public double ReduceHoldInitial(double beatsLeft, double initialBeat)
 	{
-		// TO DO: Compensate for early/lateness!
-		
-		return beatsLeft -= clock.beatsElapsedDelta;
+		double currentBeat = clock.beatsElapsed;
+		double noteBeat = initialBeat;
+		double diff = currentBeat - noteBeat;
+
+		return beatsLeft - diff;
+	}
+
+	public double ReduceHoldDuring(double beatsLeft)
+	{
+		return beatsLeft - clock.beatsElapsedDelta;
 	}
 
 	public void HoldSuccess()
 	{
 		// send stuff to scoreboard
-		ratingText.text = "O.K.";
-		leanText.text = "";
-		notesMarvelous++;
+		ratingText.text = "Marvelous!!!";
+		leanText.text = "HELD";
+		notesHoldOK++;
 		combo++;
 		CalculateScore(Ratings.Marvelous);
 	}
@@ -197,10 +204,10 @@ public class Judgment : MonoBehaviour
 	public void HoldFailure()
 	{
 		// send stuff to scoreboard
-		ratingText.text = "N.G.";
+		ratingText.text = "Miss...";
 		comboText.text = "";
-		leanText.text = "";
-		notesMiss++;
+		leanText.text = "LOST";
+		notesHoldNG++;
 		combo = 0;
 	}
 
@@ -401,6 +408,8 @@ public class Judgment : MonoBehaviour
 			+ notesGreat.ToString() + " Great\n"
 			+ notesGood.ToString() + " Good\n"
 			+ notesMiss.ToString() + " Miss\n\n"
+			+ notesHoldOK.ToString() + " Held\n"
+			+ notesHoldNG.ToString() + " Lost\n\n"
 			+ notesEarly.ToString() + " Early\n"
 			+ notesLate.ToString() + " Late\n\n"
 			+ comboMax.ToString() + " Max Combo";

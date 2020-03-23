@@ -30,12 +30,18 @@ public class InputController : MonoBehaviour
     public GestureRecognizer gestureRecognizer;
 
     private double beatPressed;
+    private double[] lengthRemain;
 
     // Text for testing
     public Text t1;
     public Text t2;
     public Text t3;
     public Text t4;
+
+    void Awake()
+    {
+        lengthRemain = new double[] { 0.0, 0.0, 0.0, 0.0 };
+    }
 
     void Start()
     {
@@ -61,55 +67,65 @@ public class InputController : MonoBehaviour
             double noteLength;
 
             // Check if the notes at this beat should be deleted and marked as missed
-            if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))
+            if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))// && (lengthRemain[i] <= 0))
             {
                 noteController.RemoveTopNote(i);
                 noteLength = 0;
+                //noteController.SetNoteLength(i, noteLength); // !
+                lengthRemain[i] = 0.0;
             }
+
             else
             {
                 noteLength = noteController.GetNoteLength(i);
             }
 
-            // Process notes length = 0
+            // Process taps
             if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                if (noteLength == 0)
+                if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
-                    if (judge.CheckHit(noteController.GetFirstBeat(i)))
+                    lengthRemain[i] = noteLength;
+
+                    // Change note length to compensate for timing
+                    if (noteLength > 0)
                     {
-                        noteController.RemoveTopNote(i);
+                        lengthRemain[i] = judge.ReduceHoldInitial(lengthRemain[i], noteController.GetFirstBeat(i));
                     }
+
+                    noteController.RemoveTopNote(i);
                 }
+
                 t2.text = "Beat on press: " + beatPressed.ToString();
             }
 
-            // Process notes length > 0
+            // Process taps length > 0
             if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
             {
-                if (noteLength > 0)
+                if (lengthRemain[i] > 0.0)
                 {
-                    noteLength -= judge.ReduceHold(noteLength);
-                    t4.text = "Current note length: " + noteLength.ToString();
-                    if (noteLength <= 0)
-                    {                        
-                        judge.HoldSuccess();
+                    lengthRemain[i] = judge.ReduceHoldDuring(lengthRemain[i]);
+                    //noteController.SetNoteLength(i, lengthRemain[i]); // !
 
-                        // delete the hold note at the end of its length
+                    t4.text = "Current note length: " + lengthRemain[i].ToString();
+
+                    if (lengthRemain[i] <= 0.0)
+                    {                        
                         noteController.RemoveTopNote(i);
+                        judge.HoldSuccess();
                     }
                 }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
             }
+
             else
             {
-                if (noteLength > 0)
+                if (lengthRemain[i] > 0.0)
                 {
-                    noteLength = 0;
-                    judge.HoldFailure();
-
-                    // delete the hold note
+                    lengthRemain[i] = 0.0;
                     noteController.RemoveTopNote(i);
+                    //noteController.SetNoteLength(i, lengthRemain[i]); // !
+                    judge.HoldFailure();
                 }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
             }
