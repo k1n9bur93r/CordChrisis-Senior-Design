@@ -1,70 +1,93 @@
 ﻿@page "/"
 @inject HttpClient Http;
 @using CordChrisis.Shared.Models
-
+@using CordChrisis.Client.Services
+@inject Blazored.SessionStorage.ISessionStorageService Storage;
 @*<Alert/>*@
-    <div class=" container rounded mt-4 p-1 bg-light">
-        <div class="jumbotron">
-            <h1 class="display-3">Chord Crisis</h1>
-            <p class="lead">
-                This is flavor text describing why exactly this game is so good. It has features, like connecting to online APIS, making your own maps, and sharing them too!
-            </p>
-            <hr class="my-2">
-            <div class="">
-                <p>Find the right Map for you, or make one yourself!</p>
-                <div>
-                    <NavLink  href="searchpage">
-                        <button class="btn btn-primary btn-lg itm-skew" href=""> <div class="itm-skew-text">Search</div></button>
-                    </NavLink>
-                    <button class="btn btn-secondary btn-lg itm-skew" href=""> <div class="itm-skew-text">Map Maker</div></button>
-                </div>
+
+
+<div class=" container rounded mt-4 p-1 bg-light">
+    <div class="jumbotron">
+        <h1 class="display-3">Chord Crisis</h1>
+        <p class="lead">
+            This is flavor text describing why exactly this game is so good. It has features, like connecting to online APIS, making your own maps, and sharing them too!
+        </p>
+        <hr class="my-2">
+        <div class="">
+            <p>Find the right Map for you, or make one yourself!</p>
+            <div>
+                <NavLink href="searchpage">
+                    <button class="btn btn-primary btn-lg itm-skew" href=""> <div class="itm-skew-text">Search</div></button>
+                </NavLink>
+                <button class="btn btn-secondary btn-lg itm-skew" href=""> <div class="itm-skew-text">Map Maker</div></button>
             </div>
         </div>
-
-        <div id="DemoImages" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#DemoImages" data-slide-to="0" class="active"></li>
-                <li data-target="#DemoImages" data-slide-to="1"></li>
-                <li data-target="#DemoImages" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="/css/images/slide1.jpg" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="/css/images/slide2.jpg" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="/css/images/slide3.jpg" alt="Third slide">
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#DemoImages" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#DemoImages" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-        
-
-         <div>
-            <p class=" h2"> What People are playing</p>
-             <div class="bg-secondary rounded p-4 ">
-            <MapSearchResults PopularMaps=getPopularMaps()/>
-                </div>
-         </div>
-        
     </div>
 
-@code{
-    List<Map> popularMaps { get; set; }
-    public async Task<List<Map>> getPopularMaps()
-    { 
-        
-       return await Http.GetJsonAsync<List<Map>>(@"searchpage/getpopular");
-        
+    <div id="DemoImages" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#DemoImages" data-slide-to="0" class="active"></li>
+            <li data-target="#DemoImages" data-slide-to="1"></li>
+            <li data-target="#DemoImages" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="/css/images/slide1.jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="/css/images/slide2.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="/css/images/slide3.jpg" alt="Third slide">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#DemoImages" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#DemoImages" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 
+
+    <div>
+        <p class=" h2"> What People are playing</p>
+        <div class="bg-secondary rounded p-4 ">
+            @*<MapSearchResults PopularMaps=getPopularMaps() />*@
+        </div>
+    </div>
+
+</div>
+
+@code{
+        string SessionID = String.Empty;
+        string GetSession = String.Empty;
+        List<Map> popularMaps { get; set; }
+    //public async Task<List<Map>> getPopularMaps()
+    //{
+
+        //    //return await Http.GetJsonAsync<List<Map>>(@"searchpage/getpopular");
+        //    return await new Task<List<Map>>();
+
+        //}
+
+    async Task SaveLogOnToSession()
+    {
+        await Storage.SetItemAsync("LoggedIn", SessionID);
     }
+
+    async Task GetCurrentLogOnSession()
+    {
+        GetSession = await Storage.GetItemAsync<string>("LoggedIn");
+    }
+    //protected override void OnInitialized()
+    //{
+    //    if (firstRender)
+    //    { 
+
+    //    }
+
+    //}
 }

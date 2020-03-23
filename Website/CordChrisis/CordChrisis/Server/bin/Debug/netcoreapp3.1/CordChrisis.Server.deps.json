@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "CordChrisis.Server/1.0.0": {
         "dependencies": {
+          "Blazored.SessionStorage": "1.0.11",
           "CordChrisis.Client": "1.0.0",
           "CordChrisis.Shared": "1.0.0",
           "Microsoft.AspNetCore.Components.WebAssembly.Server": "3.2.0-preview2.20160.5",
@@ -292,6 +293,21 @@
         },
         "compile": {
           "CordChrisis.Server.dll": {}
+        }
+      },
+      "Blazored.SessionStorage/1.0.11": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "3.1.2",
+          "Microsoft.AspNetCore.Components.Web": "3.1.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Blazored.SessionStorage.dll": {
+            "assemblyVersion": "1.0.11.0",
+            "fileVersion": "1.0.11.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Blazored.SessionStorage.dll": {}
         }
       },
       "MessagePack/1.7.3.4": {
@@ -2417,6 +2433,7 @@
       },
       "CordChrisis.Client/1.0.0": {
         "dependencies": {
+          "Blazored.SessionStorage": "1.0.11",
           "CordChrisis.Shared": "1.0.0",
           "Microsoft.AspNetCore.Blazor.HttpClient": "3.2.0-preview2.20160.5",
           "Microsoft.AspNetCore.Components.WebAssembly": "3.2.0-preview2.20160.5"
@@ -2430,6 +2447,7 @@
       },
       "CordChrisis.Shared/1.0.0": {
         "dependencies": {
+          "Blazored.SessionStorage": "1.0.11",
           "System.ComponentModel.Annotations": "4.7.0"
         },
         "runtime": {
@@ -3976,6 +3994,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Blazored.SessionStorage/1.0.11": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qy2Erz2TtzHEYKRnnucLLzJA2Lt6myF3hZ5MAMUbLolE4ukKTJx1+OtxMrT70UA9PKtPThxtsGs2G4I11igi1w==",
+      "path": "blazored.sessionstorage/1.0.11",
+      "hashPath": "blazored.sessionstorage.1.0.11.nupkg.sha512"
     },
     "MessagePack/1.7.3.4": {
       "type": "package",

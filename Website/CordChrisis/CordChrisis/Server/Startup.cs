@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CordChrisis.Server.Hubs;
 using System.Linq;
+using Blazored.SessionStorage;
 
 namespace CordChrisis.Server
 {
@@ -25,15 +26,11 @@ namespace CordChrisis.Server
         {
 
             services.AddControllersWithViews();
+            services.AddBlazoredSessionStorage();
+            //services.AddScoped<Blazored.SessionStorage.ISessionStorageService>();
+
+            //services.AddScoped<CordChrisis.Client.Services.SessionStorage>();
             // services.AddSignalR();
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials());
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,7 +3,10 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @using System.Security;
+
 @inject HttpClient Http
+@inject Blazored.SessionStorage.ISessionStorageService Storage
+
 
 
 <div class="container rounded mt-4 p-1 bg-light">
@@ -17,20 +20,20 @@
         </div>
 
         <div class="">
-            @if (success==false)
+            @if (success == false)
             {
-               @if (isEmail == false)
+                @if (isEmail == false)
                 {
-                   <div>
-                       <p>Email Field Cant be Blank</p>
-                   </div>
-               }
-               else if (isPassword == false)
-               {
-                   <div>
-                       <p>Password Field Cant be Blank</p>
-                   </div>
-               }
+                    <div>
+                        <p>Email Field Cant be Blank</p>
+                    </div>
+                }
+                else if (isPassword == false)
+                {
+                    <div>
+                        <p>Password Field Cant be Blank</p>
+                    </div>
+                }
 
             }
         </div>
@@ -68,6 +71,7 @@
     bool isEmail = true;
     bool isPassword = true;
     Login returnData;
+    string CurrentSession = String.Empty;
 
     public async Task<string> SubmitLoginQuery()
     {
@@ -102,12 +106,15 @@
         // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
 
         Console.WriteLine(returnData.ID.ToString());
-        if (checkData == String.Empty)
+        if (returnData.ID.ToString() == String.Empty)
         {
             success = false;
         }
         else
+        {
+            await SaveLogOnToSession(returnData.ID.ToString());
             success = true;
+        }
 
         loadingData = false;
 
@@ -115,6 +122,16 @@
         return checkData;
     }
 
+
+    async Task SaveLogOnToSession(string UserID)
+    {
+        await Storage.SetItemAsync("LoggedIn", UserID);
+    }
+
+    async Task GetCurrentLogOnSession()
+    {
+        CurrentSession = await Storage.GetItemAsync<string>("LoggedIn");
+    }
 
 }
 

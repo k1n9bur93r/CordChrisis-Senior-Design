@@ -3,17 +3,16 @@
 @using CordChrisis.Shared.Models
 @using System.Diagnostics
 @inject HttpClient Http
+@inject Blazored.SessionStorage.ISessionStorageService Storage;
     <div class="container pt-lg-5">
-        <h1>Search Page</h1>
-        
-        <div class="m-1 bg-light rounded p-2" >
+        <div class="m-1 bg-light rounded p-2">
             <form class="form-inline  mb-2">
                 <div class="form-group w-100">
                     <div class="input-group ">
                         <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="InputtedMapName ">
                         <label class="sr-only">Difficulty </label>
                     </div>
-                    <div class="input-group " >
+                    <div class="input-group ">
                         <div class="input-group-prepend">
 
                             <div class="dropdown">
@@ -62,8 +61,8 @@
                 <div class="rounded bg-light mt-4">
 
                     @if (loadingData)
-                    { 
-                    <p class="h1 text-muted"> Loading...</p>
+                    {
+                        <p class="h1 text-muted"> Loading...</p>
                         <div class="d-flex justify-content-center">
                             <div class="spinner-grow" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -72,30 +71,30 @@
                     }
                     else
                     {
-                <div class="d-flex justify-content-center p-4 ">
-                    <div class="card border-primary bg-light ">
-                        <div class="card-header ">
+                        <div class="d-flex justify-content-center p-4 ">
+                            <div class="card border-primary bg-light ">
+                                <div class="card-header ">
 
-                            <span class="badge badge-pill badge-light text-muted"> ... </span>
-                            <span class="badge badge-pill badge-light text-muted"> .. </span>
-                            <span class="badge badge-pill badge-light text-muted"> . </span>
+                                    <span class="badge badge-pill badge-light text-muted"> ... </span>
+                                    <span class="badge badge-pill badge-light text-muted"> .. </span>
+                                    <span class="badge badge-pill badge-light text-muted"> . </span>
+                                </div>
+                                <div class="card-body">
+                                    <p class="h5 text-muted h4"> No Search Results 😔 </p>
+
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-light">.....</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p class="h5 text-muted h4"> No Search Results 😔 </p>
-                            
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-light">.....</small>
-                        </div>
-                    </div>
-                </div>
                     }
                 </div>
             }
             else
             {
                 <div class="rounded bg-light mt-4">
-                    
+
                     <div class=" p-2 mb-4 border-bottom-0 rounded bg-secondary ">
                         <div>
                             <span class=" text-light badge badge-info"> Map Name: @DisplayMap</span>
@@ -103,34 +102,34 @@
                             <span class=" text-light badge badge-info"> Selected Rating: @DisplayRating</span>
                         </div>
                         <div>
-                    <span class="display-4"> Found @ReturnedMaps.Count() Maps</span>
-                    <span class="h5 text-dark "> in @watch.ElapsedMilliseconds ms</span>
+                            <span class="display-4"> Found @ReturnedMaps.Count() Maps</span>
+                            <span class="h5 text-dark "> in @watch.ElapsedMilliseconds ms</span>
                         </div>
                     </div>
-                    @if (ReturnedMaps.Count!=0)
+                    @if (ReturnedMaps.Count != 0)
                     {
                         Console.WriteLine(ReturnedMaps.Count + " This is how many items were returned.");
-                        <MapSearchResultPaginator TotalCards=ReturnedMaps DisplayResults=6/>
+                        <MapSearchResultPaginator TotalCards=ReturnedMaps DisplayResults=6 />
                     }
                     else
                     {
-                <div class="d-flex justify-content-center p-4 ">
-                    <div class="card border-primary bg-light ">
-                        <div class="card-header ">
+                        <div class="d-flex justify-content-center p-4 ">
+                            <div class="card border-primary bg-light ">
+                                <div class="card-header ">
 
-                            <span class="badge badge-pill badge-light text-muted"> ... </span>
-                            <span class="badge badge-pill badge-light text-muted"> .. </span>
-                            <span class="badge badge-pill badge-light text-muted"> . </span>
-                        </div>
-                        <div class="card-body">
-                            <p class="h5 text-muted h4"> No Search Results 😔 </p>
+                                    <span class="badge badge-pill badge-light text-muted"> ... </span>
+                                    <span class="badge badge-pill badge-light text-muted"> .. </span>
+                                    <span class="badge badge-pill badge-light text-muted"> . </span>
+                                </div>
+                                <div class="card-body">
+                                    <p class="h5 text-muted h4"> No Search Results 😔 </p>
 
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-light">.....</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <small class="text-light">.....</small>
-                        </div>
-                    </div>
-                </div>
                     }
                 </div>
             }
@@ -152,7 +151,8 @@
     string DisplayMap;
     int DisplayRating;
     string DisplayDifficulty;
-
+    string GetSession = String.Empty;
+    string SessionID = String.Empty;
 
     void UpdateDifficultyEasy() { SelectedDifficulty = "Easy"; IntDifficulty = 1; }
     void UpdateDifficultyMedium() { SelectedDifficulty = "Medium"; IntDifficulty = 2; }
@@ -193,5 +193,9 @@
         DisplayRating = (int)SelectedRating;
         return ReturnedMaps;
     }
+
+
+
+
 
 }
