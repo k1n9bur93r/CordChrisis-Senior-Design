@@ -127,13 +127,15 @@ public class NoteSpawner : MonoBehaviour
                     notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
                     //then move end correctly
                     GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
                     beatDistance = (float)(curBeat-metronome.beatsElapsed+notes[x][y].GetComponent<NoteMovement>().length) * speedMod * NOTE_PADDING;
+                    /*
 =======
                     curBeat = end.GetComponent<NoteMovement>().beat;
                     beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
 >>>>>>> BackgroundImplementation
+*/
                     end.transform.position = new Vector3 
                     (
                         end.transform.position.x,
