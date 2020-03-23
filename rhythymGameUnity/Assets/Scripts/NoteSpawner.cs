@@ -76,6 +76,7 @@ public class NoteSpawner : MonoBehaviour
                 Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
     
             endHold.transform.parent = transform;
+            print(length);
             //since it moves relative to first: beat = oldbeat+length
             endHold.GetComponent<NoteMovement>().beat = length+beat;
             curNote.GetComponent<NoteMovement>().speedMod = speedMod;
@@ -126,8 +127,13 @@ public class NoteSpawner : MonoBehaviour
                     notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
                     //then move end correctly
                     GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
+<<<<<<< HEAD
                     curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
                     beatDistance = (float)(curBeat-metronome.beatsElapsed+notes[x][y].GetComponent<NoteMovement>().length) * speedMod * NOTE_PADDING;
+=======
+                    curBeat = end.GetComponent<NoteMovement>().beat;
+                    beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+>>>>>>> BackgroundImplementation
                     end.transform.position = new Vector3 
                     (
                         end.transform.position.x,
