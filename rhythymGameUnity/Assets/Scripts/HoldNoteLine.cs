@@ -24,6 +24,11 @@ public class HoldNoteLine : MonoBehaviour
         {
             line.SetPosition(0, firstNote.transform.position);
             line.SetPosition(1, secondNote.transform.position);
+
+            if (!secondNote.activeSelf)
+            {
+                line.SetPosition(1, new Vector3(line.GetPosition(1).x,line.GetPosition(1).y,1));
+            }
         }
     }
 }
