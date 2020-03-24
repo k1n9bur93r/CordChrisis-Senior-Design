@@ -31,6 +31,7 @@ public class NoteSpawner : MonoBehaviour
     public float transparentStart;
     public float transparentEnd;
     public GameObject holdNoteObject;
+    public List<GameObject> holds;
 
     void Start()
     {
@@ -82,6 +83,11 @@ public class NoteSpawner : MonoBehaviour
             curNote.GetComponent<NoteMovement>().speedMod = speedMod;
             curNote.GetComponent<NoteMovement>().metronome = metronome;
             curNote.GetComponent<HoldNoteLine>().secondNote = endHold;
+            endHold.GetComponent<HoldNoteLine>().secondNote = curNote;
+            endHold.GetComponent<LineRenderer>().startWidth=.2f;
+            endHold.GetComponent<LineRenderer>().endWidth=.2f;
+            
+            holds.Add(endHold);
         }
 
     }
@@ -121,28 +127,44 @@ public class NoteSpawner : MonoBehaviour
                 //new meshes break these. TODO: fix these
                 var curNoteColor = notes[x][y].gameObject.GetComponent<MeshRenderer>().material.color;
             
-                if (notes[x][y].GetComponent<NoteMovement>().length>0)
-                {
-                    notes[x][y].GetComponent<LineRenderer>().startWidth=.2f;
-                    notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
-                    //then move end correctly
-                    GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
-//<<<<<<< HEAD
-                    curBeat = notes[x][y].GetComponent<NoteMovement>().beat;
-                    beatDistance = (float)(curBeat-metronome.beatsElapsed+notes[x][y].GetComponent<NoteMovement>().length) * speedMod * NOTE_PADDING;
-                    /*
-=======
-                    curBeat = end.GetComponent<NoteMovement>().beat;
-                    beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
->>>>>>> BackgroundImplementation
-*/
-                    end.transform.position = new Vector3 
-                    (
-                        end.transform.position.x,
-                        end.transform.position.y,
-                        (float)( noteReciever.transform.position.z + beatDistance )
-                    );
-                }
+                // if (notes[x][y].GetComponent<NoteMovement>().length>0)
+                // {
+                //     notes[x][y].GetComponent<LineRenderer>().startWidth=.2f;
+                //     notes[x][y].GetComponent<LineRenderer>().endWidth=.2f;
+                //     //then move end correctly
+                //     GameObject end = notes[x][y].GetComponent<HoldNoteLine>().secondNote;
+
+                //     curBeat = end.GetComponent<NoteMovement>().beat;
+                //     beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+
+                //     end.transform.position = new Vector3 
+                //     (
+                //         end.transform.position.x,
+                //         end.transform.position.y,
+                //         (float)( noteReciever.transform.position.z + beatDistance )
+                //     );
+                // }
+            }
+        }
+
+        //move holds independently
+        for (int x=holds.Count-1; x>=0; x--)
+        {
+            double curBeat = holds[x].GetComponent<NoteMovement>().beat;
+            float beatDistance = (float)(curBeat-metronome.beatsElapsed) * speedMod * NOTE_PADDING;
+            holds[x].transform.position = new Vector3 
+                (
+                    holds[x].transform.position.x,
+                    holds[x].transform.position.y,
+                    (float)( noteReciever.transform.position.z + beatDistance )
+                );
+            holds[x].GetComponent<LineRenderer>().startWidth=.2f;
+            holds[x].GetComponent<LineRenderer>().endWidth=.2f;
+
+            if (holds[x].transform.position.z < noteReciever.transform.position.z)
+            {
+                holds[x].SetActive(false);
+                holds.RemoveAt(x);
             }
         }
 
