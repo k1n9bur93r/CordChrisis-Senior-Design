@@ -15,11 +15,9 @@ public class JsonTrack
     // required
     public double[] beats;
     public int[] notes;
-    //public double tempo;
 
     // optional
     public double[] note_lengths;
-    public int[] note_gesture;
     public double offset;
     public double[] tempo_change_amount;
     public double[] tempo_change_beat;
@@ -61,10 +59,6 @@ public class Track : MonoBehaviour
             track.note_lengths = new double [length];
         }
 
-        if (track.note_gesture is null) {
-            track.note_gesture = new int [length];
-        }
-
         // ---
 
         if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
@@ -95,16 +89,16 @@ public class Track : MonoBehaviour
         for (int i = 0; i < json.notes.Length; i++) {
             int note = json.notes[i];
             double beat = json.beats[i];
-            int gesture = json.note_gesture[i];
             double length = json.note_lengths[i];
-            // string gesture = intToGesture[json.note_gesture[i]];
 
-            if (gesture == 0) {
+            if (1 <= note && note <= 4) {
                 // normal note
                 noteSpawner.spawnNote(note - 1, beat, length);
-            } else {
+            } else if (5 <= note && note <= 8) {
                 // gesture note
-                noteSpawner.spawnGesture(gesture - 1, beat);
+                noteSpawner.spawnGesture(note - 5, beat);
+            } else {
+                Debug.Log("[Track] Invalid note found: " + note);
             }
         }
     }
