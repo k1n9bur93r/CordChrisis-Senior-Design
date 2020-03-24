@@ -1,48 +1,31 @@
 ﻿@using CordChrisis.Shared.Models
 @inject HttpClient Http;
+@inject NavigationManager NavigationManager
 
 
-@*@if (PopularMaps != null && ReturnedMaps==null)
-{
-    if (!PopularMaps.IsCompleted)
+
+<div class="card-columns">
+    @foreach (Map item in ReturnedMaps)
     {
-        Console.WriteLine("I was hit here");
-        <div class="d-flex justify-content-center">
-            <div class="spinner-grow" role="status">
-                <span class="sr-only">Loading...</span>
+        <div class="card ">
+            <div class="card-header">
+
+                <span class="badge badge-pill badge-primary"> Plays: @item.Plays </span>
+                <span class="badge badge-pill badge-secondary"> Rating: @item.MapRating </span>
+                <span class="badge badge-pill badge-dark"> Difficulty: @convertDifficulty(item.Difficulty)</span>
             </div>
-        </div>
-        <div style="display:none">
-            @waitForPopular();
+            <div class="card-body">
+                <p class="card-title h3">@item.Name</p>
+                <p class="card-title h5 text-secondary"> Created By: @item.Author</p>              
+                    <button class="btn btn-outline-primary btn-block itm-skew" @onclick="(()=>NavigateToGame(item.ID.ToString()))"> <div class="itm-skew-text">Play!</div></button>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Created: @item.CreatedDate.ToString("MM/dd/yyyy")</small>
+            </div>
         </div>
     }
-    
+</div>
 
-}
-else if (ReturnedMaps != null && ReturnedMaps.Count != 0)
-{*@
-    <div class="card-columns">
-        @foreach (Map item in ReturnedMaps)
-        {
-            <div class="card ">
-                <div class="card-header">
-
-                    <span class="badge badge-pill badge-primary"> Plays: @item.Plays </span>
-                    <span class="badge badge-pill badge-secondary"> Rating: @item.MapRating </span>
-                    <span class="badge badge-pill badge-dark"> Difficulty: @convertDifficulty(item.Difficulty)</span>
-                </div>
-                <div class="card-body">
-                    <p class="card-title h3">@item.Name</p>
-                    <p class="card-title h5 text-secondary"> Created By: @item.Author</p>
-                    <button class="btn btn-outline-primary btn-block itm-skew"> <div class="itm-skew-text">Play!</div></button>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Created: @item.CreatedDate.ToString("MM/dd/yyyy")</small>
-                </div>
-            </div>
-        }
-    </div>
-      
 @code {
     [Parameter]
     public List<Map> ReturnedMaps { get; set; }
@@ -63,6 +46,10 @@ else if (ReturnedMaps != null && ReturnedMaps.Count != 0)
                 return "Ultra";
         }
         return "N/A";
+    }
+    void NavigateToGame(string ID)
+    {
+        NavigationManager.NavigateTo("/game/1/"+ID);
     }
 
 }

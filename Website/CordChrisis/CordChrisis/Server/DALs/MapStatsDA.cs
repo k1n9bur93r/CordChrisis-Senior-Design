@@ -15,6 +15,7 @@ namespace CordChrisis.DAOs
             {
                 context.Database.EnsureCreated();
                 context.Add(userMapStat);
+                context.SaveChanges();
             }
         }
         public UserMapStats ReadSingle(string mapID, string userID)
@@ -23,7 +24,7 @@ namespace CordChrisis.DAOs
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                data = context.UserMapStats.Where(a=>(a.UserID == userID)&&(a.MapID==mapID)).FirstOrDefault();
+                data = context.MapStats.Where(a=>(a.UserID == userID)&&(a.MapID==mapID)).FirstOrDefault();
             }
             return data;
         }
@@ -35,7 +36,7 @@ namespace CordChrisis.DAOs
             {
                 context.Database.EnsureCreated();
 
-                data = context.UserMapStats.Where(a => a.UserID == userID).ToList();
+                data = context.MapStats.Where(a => a.UserID == userID).ToList();
             }
             return data;
         }
@@ -47,7 +48,7 @@ namespace CordChrisis.DAOs
             {
                 context.Database.EnsureCreated();
 
-                data = context.UserMapStats.Where(a => a.MapID == mapID).ToList();
+                data = context.MapStats.Where(a => a.MapID == mapID).ToList();
             }
             return data;
         }
@@ -56,10 +57,15 @@ namespace CordChrisis.DAOs
         {
             using (var context = new ApplicationDBContext())
             {
-                var row = context.UserMapStats.Where(a =>( a.UserID == userMapStats.UserID)&&(a.MapID==userMapStats.MapID)).FirstOrDefault();
+                var row = context.MapStats.Where(a =>( a.UserID == userMapStats.UserID)&&(a.MapID==userMapStats.MapID)).FirstOrDefault();
                 if (row == null) return;
-                row = userMapStats;
-                context.UserMapStats.Update(row);
+                row.Plays += row.Plays;
+                row.Rating = userMapStats.Rating;
+                row.LetterScore = userMapStats.LetterScore;
+                row.MaxCombo = userMapStats.MaxCombo > row.MaxCombo ? userMapStats.MaxCombo : row.MaxCombo; //are we setting the higest over all or the higest for this particualr thing? 
+                row.Score = userMapStats.Score > row.Score ? userMapStats.Score : row.Score; //are we setting the higest over all or the higest for this particualr thing? 
+
+                context.MapStats.Update(row);
                 context.SaveChanges();
             }
         }
