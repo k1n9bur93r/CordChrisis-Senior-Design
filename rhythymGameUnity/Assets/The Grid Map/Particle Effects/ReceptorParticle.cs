@@ -21,7 +21,7 @@ public class ReceptorParticle : MonoBehaviour
         }
         if (splash)
         {
-            particleLauncher.Emit(1);
+            particleLauncher.Emit(5);
             splash = false;
         }
     }

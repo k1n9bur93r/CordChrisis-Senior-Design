@@ -1170,7 +1170,6 @@ Transform:
   - {fileID: 1924451145}
   - {fileID: 489452540}
   - {fileID: 1204465682}
-  - {fileID: 1440533507}
   m_Father: {fileID: 223852311}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3766,8 +3765,23 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 386050865}
+    m_TransformParent: {fileID: 2074364257}
     m_Modifications:
+    - target: {fileID: 5767115152939404759, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115152939404759, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115152939404759, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5767115153764501398, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.r
@@ -3778,6 +3792,51 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key1.g
       value: 0.28235295
       objectReference: {fileID: 0}
+    - target: {fileID: 5767115153764501398, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153764501398, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153764501398, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153805824829, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153805824829, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153805824829, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153912341263, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153912341263, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5767115153912341263, guid: eba35860f74bb7d47b0253bd615575bc,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5767115153915680849, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: m_Name
@@ -3786,17 +3845,17 @@ PrefabInstance:
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.125
+      value: -3.125
       objectReference: {fileID: 0}
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9
+      value: 3.5000002
       objectReference: {fileID: 0}
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
@@ -3821,7 +3880,7 @@ PrefabInstance:
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5767115153915680862, guid: eba35860f74bb7d47b0253bd615575bc,
         type: 3}
@@ -15428,6 +15487,7 @@ Transform:
   - {fileID: 398790600}
   - {fileID: 545186394}
   - {fileID: 2075265775}
+  - {fileID: 1440533507}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
