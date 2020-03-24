@@ -77,7 +77,7 @@ public class NoteSpawner : MonoBehaviour
                 Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
     
             endHold.transform.parent = transform;
-            print(length);
+            //print(length);
             //since it moves relative to first: beat = oldbeat+length
             endHold.GetComponent<NoteMovement>().beat = length+beat;
             curNote.GetComponent<NoteMovement>().speedMod = speedMod;
@@ -202,24 +202,24 @@ public class NoteSpawner : MonoBehaviour
         }
 
         // DEBUG - Spawn gesture notes via key press
-        if (Input.GetKeyDown("1"))
-        {
-            spawnGesture(0, 85);
-        }
+        // if (Input.GetKeyDown("1"))
+        // {
+        //     spawnGesture(0, 85);
+        // }
 
-        if (Input.GetKeyDown("2"))
-        {
-            spawnNote(1, 85,4);
-        }
+        // if (Input.GetKeyDown("2"))
+        // {
+        //     spawnNote(1, 85,4);
+        // }
 
-        if (Input.GetKeyDown("3"))
-        {
-            spawnNote(2, 85,4);
-        }
+        // if (Input.GetKeyDown("3"))
+        // {
+        //     spawnNote(2, 85,4);
+        // }
 
-        if (Input.GetKeyDown("4"))
-        {
-            spawnNote(3, 85,4);
-        }
+        // if (Input.GetKeyDown("4"))
+        // {
+        //     spawnNote(3, 85,4);
+        // }
     }
 }
