@@ -18,6 +18,7 @@ public class NoteSpawner : MonoBehaviour
     private float noteTravelTime;
     //what y position the notes should be spawned at
     public float yOffset;
+    // public GameObject noteReceiverObject;
     private Transform noteReciever;
     // Start is called before the first frame update
     public double bpm; // this will need to be a reference to the metronomes bpm
@@ -32,7 +33,7 @@ public class NoteSpawner : MonoBehaviour
     public float transparentEnd;
     public GameObject holdNoteObject;
 
-    void Start()
+    void Awake()
     {
         for (int i=0;i<4;i++)
         {
@@ -42,6 +43,7 @@ public class NoteSpawner : MonoBehaviour
 
         bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
+        // noteReciever = noteReceiverObject.transform;
         noteTravelTime = startDistance / speedMod;
         print("The first notes should play in " + noteTravelTime + " seconds");
     }    
