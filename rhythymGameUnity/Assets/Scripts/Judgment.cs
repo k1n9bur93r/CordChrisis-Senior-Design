@@ -11,11 +11,16 @@ using UnityEngine.UI;
 	Compares the time of the user's input versus the time of the note in question.
 
 	Important public methods:
-		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
-		- bool CheckMiss(): For use by InputController. Recieves the beats of the next two notes from the note queue. Returns whether or not the note has been missed completely.
+		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the tap/hold queue when a key is pressed. Returns whether or not the note was hit in a timing window. Sends information to scoreboard.
+		- bool CheckMiss(): For use by InputController. Recieves the beats of the next two notes from either note queue. Returns whether or not the note has been missed completely. Sends information to scoreboard.
+		- bool CheckSwipe(): For use by InputController. Receives the beat of swiped note from the top of the swipe queue when a swipe occurs. Returns whether or not the note was hit. Sends information to scoreboard.
+		- double ReduceHoldInitial(): For use by InputController. Adjusts the required amount of time for a hold to be held dependent on timing. Returns a new required hold time.
+		- double ReduceHoldDuring(): For use by InputController. Decrements the time left for a hold note to be held. Returns a new required hold time.
+		- bool HoldSuccess(): For use by InputController. Sends information to scoreboard.
+		- bool HoldFailure(): For use by InputController. Sends information to scoreboard.
 
 	KNOWN ISSUES:
-		- 32nd notes at 300+ BPM have spotty miss detection
+		- 32nd notes at 300+ BPM have spotty miss detection.
 */
 
 public class Judgment : MonoBehaviour
