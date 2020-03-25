@@ -13,20 +13,15 @@ namespace CordChrisis.Shared.Models
         [Required]
         [MaxLength(2048)]
         public string MapID { get; set; }
-        [Required]
-        [MaxLength(1)]
-        public char LetterScore { get; set; }
-        [Required]
-        [MaxLength(5)]
+
+        public string LetterScore { get; set; }
+
         public int MaxCombo { get; set; }
-        [Required]
-        [MaxLength(10)]
+
         public int Score { get; set; }
-        [Required]
-        [MaxLength(2)]
-        public double Rating { get; set; }
-        [Required]
-        [MaxLength(10)]
+
+        public decimal Rating { get; set; }
+
         public int Plays { get; set; }
     }
 }

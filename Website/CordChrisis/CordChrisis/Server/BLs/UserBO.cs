@@ -42,7 +42,8 @@ namespace CordChrisis.BOs
 		{
 			try
 			{
-				throw new NotImplementedException();
+				MapStatsDA mapStatsDA = new MapStatsDA();
+				return mapStatsDA.ReadSingle(mapID,userID);
 			}
 			catch (Exception ex)
 			{
@@ -55,7 +56,16 @@ namespace CordChrisis.BOs
 
 			try
 			{
-				throw new NotImplementedException();
+				MapStatsDA mapStatsDA = new MapStatsDA();
+				if (mapStatsDA.ReadSingle(uMapStats.MapID,uMapStats.UserID) == null)
+				{
+					mapStatsDA.Create(uMapStats);
+				}
+				else 
+				{
+					mapStatsDA.Update(uMapStats);
+				}
+
 			}
 			catch (Exception ex)
 			{

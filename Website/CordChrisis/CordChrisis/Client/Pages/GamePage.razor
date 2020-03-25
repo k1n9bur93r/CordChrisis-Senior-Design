@@ -1,0 +1,65 @@
+﻿@page "/game/{GameMode:int}/{MapID}"
+@page "/game/{GameMode:int}/"
+@using CordChrisis.Shared.Models
+
+@inject Blazored.SessionStorage.ISessionStorageService Storage;
+@inject HttpClient Http;
+
+<button @onclick="SaveUserMapStats"> Played the Game, store data for it please!</button>
+
+
+@code {
+    [Parameter]
+    public int GameMode { get; set; }
+    [Parameter]
+    public string MapID { get; set; }
+    Map GameMap { get; set; }
+    string LoggedInUserID = string.Empty;
+    UserMapStats userStats= new UserMapStats();
+    bool hasStats = false;
+
+    protected async override void OnInitialized()
+    {
+        LoggedInUserID = await GetCurrentLogOnSession();
+        if (LoggedInUserID != null)
+        {
+            userStats.MapID = MapID;
+            userStats.UserID = LoggedInUserID;
+            userStats = await Http.PostJsonAsync<UserMapStats>(@"usermapstats/get", userStats);
+            if (userStats.Plays != 0) hasStats = true;
+            base.OnInitialized();
+        }
+    }
+
+    async Task<string> GetCurrentLogOnSession()
+    {
+        return await Storage.GetItemAsync<string>("LoggedIn");
+    }
+
+    async Task SaveUserMapStats()
+    {
+        if (!hasStats)
+        {
+            Console.WriteLine(MapID);
+            Random rnd = new Random();
+            userStats = new UserMapStats
+            {
+                UserID = LoggedInUserID,
+                MapID = MapID,
+                MaxCombo = rnd.Next(5, 150),
+                Score = rnd.Next(100000, 1000000),
+                Plays = rnd.Next(1, 500),
+                Rating = (decimal)rnd.Next(1, 5),
+                LetterScore = "Z"
+            };
+        }
+        else
+        {
+            userStats.Plays += 1;
+        }
+
+        await Http.PostJsonAsync(@"usermapstats/post", userStats);
+
+    }
+
+}

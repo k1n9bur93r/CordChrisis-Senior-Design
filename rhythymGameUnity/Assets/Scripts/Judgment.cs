@@ -21,7 +21,7 @@ using UnityEngine.UI;
 public class Judgment : MonoBehaviour
 {
 	public Metronome clock;
-	//public Scoreboard stats;
+	public Scoreboard stats;
 
 	// Placeholders until Scoreboard/something else implements UI!
 	public Text ratingText;
@@ -115,7 +115,8 @@ public class Judgment : MonoBehaviour
 				ratingText.text = "Marvelous!!!";
 				leanText.text = "";
 				notesMarvelous++;
-				combo++;
+				combo++; 
+				stats.UpdateScore(4, 0.0, 0.0);//ADDEDKJ
 				CalculateScore(Ratings.Marvelous);
 				//CheckLean(diff); // DEBUG ONLY
 
@@ -130,6 +131,7 @@ public class Judgment : MonoBehaviour
 					ratingText.text = "Excellent!!";
 					notesPerfect++; 
 					combo++;
+					stats.UpdateScore(3, 0.0, 0.0); //ADDEDKJ
 					CalculateScore(Ratings.Perfect);
 				}
 
@@ -138,6 +140,7 @@ public class Judgment : MonoBehaviour
 					ratingText.text = "Great!";
 					notesGreat++;
 					combo++;
+					stats.UpdateScore(2, 0.0, 0.0); //ADDEDKJ
 					CalculateScore(Ratings.Great);
 				}
 				
@@ -147,6 +150,7 @@ public class Judgment : MonoBehaviour
 					comboText.text = "";
 					ratingText.text = "Good";
 					notesGood++;
+					stats.UpdateScore(1, 0.0, 0.0); //ADDEDKJ
 					CalculateScore(Ratings.Good);
 				}
 				
@@ -281,6 +285,8 @@ public class Judgment : MonoBehaviour
 		// If the note after the next one is overlapping the receptor, immediately miss
 		if (currentBeat >= farBeat)
 		{
+
+			stats.UpdateScore(0, 0.0, 0.0); //ADDEDKJ
 			//Debug.Log("[Judgment] Jack compensated");
 			ratingText.text = "Miss...";
 			comboText.text = "";
@@ -294,6 +300,8 @@ public class Judgment : MonoBehaviour
 		// If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
 		if (diff > beatsGood)
 		{
+
+			stats.UpdateScore(0, 0.0, 0.0); //ADDEDKJ
 			// Pass to some Scoreboard function later
 			//stats.UpdateScoreTap(Ratings.Miss);
 			ratingText.text = "Miss...";
