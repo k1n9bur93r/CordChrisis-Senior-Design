@@ -50,7 +50,7 @@ public class InputController : MonoBehaviour
 
     public void Update()
     {
-        t1.text = "Current beat: " + metronome.beatsElapsed.ToString();
+        t1.text = "Beat: " + metronome.beatsElapsed.ToString();
         t3.text = "Tempo: " + metronome.tempo.ToString();
         SetBeatOnKeyPress();
 
