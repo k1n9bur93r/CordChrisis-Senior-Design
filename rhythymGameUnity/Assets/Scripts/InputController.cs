@@ -69,6 +69,13 @@ public class InputController : MonoBehaviour
             // Check if the notes at this beat should be deleted and marked as missed
             if (judge.CheckMiss(noteController.GetFirstBeat(i), noteController.GetSecondBeat(i)))// && (lengthRemain[i] <= 0))
             {
+                //check if it was the beginning of hold note
+                if (noteSpawner.notes[i][0].GetComponent<HoldNoteLine>().secondNote != null)
+                {
+                    //if so, then delete the end of the hold note as well
+                    noteSpawner.notes[i][0].GetComponent<HoldNoteLine>().secondNote.SetActive(false);
+                    noteSpawner.notes[i].Remove(noteSpawner.notes[i][0].GetComponent<HoldNoteLine>().secondNote);
+                }
                 noteController.RemoveTopNote(i);
                 noteLength = 0;
                 //noteController.SetNoteLength(i, noteLength); // !
@@ -126,6 +133,9 @@ public class InputController : MonoBehaviour
                     //noteController.RemoveTopNote(i);
                     //noteController.SetNoteLength(i, lengthRemain[i]); // !
                     judge.HoldFailure();
+                    //if hold failed then remove visual corresponding hold
+                    noteSpawner.holds[0].SetActive(false);
+                    noteSpawner.holds.RemoveAt(0);
                 }
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
             }
