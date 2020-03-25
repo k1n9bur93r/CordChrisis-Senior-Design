@@ -96,6 +96,7 @@ public class InputController : MonoBehaviour
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
                     lengthRemain[i] = noteLength;
+                    // Trigger the splash
                     splashFlag[i] = true;
                     // Change note length to compensate for timing
                     if (noteLength > 0)
@@ -114,6 +115,8 @@ public class InputController : MonoBehaviour
             {
                 if (lengthRemain[i] > 0.0)
                 {
+                    // Trigger the splash
+                    splashFlag[i] = true;
                     lengthRemain[i] = judge.ReduceHoldDuring(lengthRemain[i]);
                     //noteController.SetNoteLength(i, lengthRemain[i]); // !
 
@@ -144,6 +147,9 @@ public class InputController : MonoBehaviour
         // An equivalent function for swipe notes goes here
         void processGesture(int gesture) {
             if (judge.CheckSwipe(noteController.GetFirstGesture(gesture))) {
+                // All receptors splash
+                for (int i = 0; i < MAX_KEYS; i++)
+                    splashFlag[i] = true;
                 noteController.RemoveTopGesture(gesture);
             }
         }
