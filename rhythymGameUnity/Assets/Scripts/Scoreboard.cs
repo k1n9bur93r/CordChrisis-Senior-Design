@@ -43,10 +43,10 @@ public class Scoreboard : MonoBehaviour
         pointValue = new int[5] { 0, 1, 2, 3, 4 };
         rating = new string[5] { "MISS", "BAD", "GOOD", "EXCELLENT", "MARVELOUS" };
         ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
-        scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
-        streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
-        multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
-        ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
+        //scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
+        //streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
+        //multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
+        //ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
     }
 
     // Update is called once per frame
