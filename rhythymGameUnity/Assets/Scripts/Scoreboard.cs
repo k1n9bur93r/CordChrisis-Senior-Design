@@ -69,6 +69,7 @@ public class Scoreboard : MonoBehaviour
         {
             missCount++;
             combo = 0;
+            textUpdate(acc);
         }
         else
         {
