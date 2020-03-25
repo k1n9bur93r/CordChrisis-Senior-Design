@@ -38,6 +38,13 @@ public class InputController : MonoBehaviour
     public Text t3;
     public Text t4;
 
+    // Splash flag
+    private bool[] splashFlag = new bool[4];
+
+    public int SplashDensity = 15;
+    // Array of receptor splash
+    public ParticleSystem[] receptorSplash = new ParticleSystem[4];
+
     void Awake()
     {
         lengthRemain = new double[] { 0.0, 0.0, 0.0, 0.0 };
@@ -45,6 +52,9 @@ public class InputController : MonoBehaviour
 
     void Start()
     {
+        // Set all splash flag falses
+        for (int i = 0; i < MAX_KEYS; i++)
+            splashFlag[i] = true;
         // ...
     }
 
@@ -86,7 +96,7 @@ public class InputController : MonoBehaviour
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
                     lengthRemain[i] = noteLength;
-
+                    splashFlag[i] = true;
                     // Change note length to compensate for timing
                     if (noteLength > 0)
                     {
@@ -154,6 +164,23 @@ public class InputController : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        // Trigger the splash effects
+        for(int i = 0; i < MAX_KEYS; i++)
+        {
+            if(splashFlag[i])
+            {
+                receptorSplash[i].Emit(SplashDensity);
+                splashFlag[i] = false;
+            }
+            /*
+            // Debugging purpose to see if the particle are emitting
+            if (splashFlag[i])
+            {
+                receptorSplash[i].Emit(15);
+            }
+            */
         }
 
     }
