@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+public enum Leanings { None, Early, Late };
+
 
 // Public Function to use
 //  public void UpdateScore(int acc, double te, double th)
@@ -14,118 +17,176 @@ using TMPro;
 
 public class Scoreboard : MonoBehaviour
 {
+	private const double ACC_SCORE_MAX = 900000;
+	private const double COMBO_SCORE_MAX = 100000;
+	private const int maxNotesTemp = 200; // Placeholder until max notes can be determined!
 
-    // UI Text Variables
-    public TextMeshPro scoreText;
-    public TextMeshPro streakText;
-    public TextMeshPro multText;
-    public TextMeshPro ratingText;
+	// UI Text Variables
+	public TextMeshPro scoreText;
+	public TextMeshPro streakText;
+	public TextMeshPro multText;
+	public TextMeshPro ratingText;
+	public TextMeshPro leanText;
+	private Animator ratingAnim;
 
-    // Score points / rating
-    public int[] pointValue;
-    public string[] rating;
-    
+	// Score points / rating
+	public int[] pointValue;
+	public string[] rating;	
 
-    // Statistics for scoring
-    public int globalScore = 0;
+	// Statistics for scoring
+	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesEarly, notesLate;
+	private int combo, comboMax;
+	private double score; // Cast this to an int when displaying it
 
-    public int accuracy = 0;
-    public int noteCount = 0;
-    public int hitCount = 0;
-    public int combo = 0;
-    public int missCount = 0;
+	//private double baseAccValue;
+	//private double baseComboValue;
 
-    private Animator ratingAnim;
+	void Awake()
+	{
+		notesMarvelous = 0;
+		notesPerfect = 0;
+		notesGreat = 0;
+		notesGood = 0;
+		notesMiss = 0;
+		combo = 0;
+		comboMax = 0;
+		score = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        pointValue = new int[5] { 0, 1, 2, 3, 4 };
-        rating = new string[5] { "MISS", "BAD", "GOOD", "EXCELLENT", "MARVELOUS" };
-        ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
-        //scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
-        //streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
-        //multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
-        //ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
-    }
+		ratingText.text = "";
+		leanText.text = "";
+		streakText.text = "";
 
-    // Update is called once per frame
-    /*
-    public void //Update()
-    {
-        // ...
-    }
-    */
+		/*
+		baseAccValue = ACC_SCORE_MAX / (double)maxNotesTemp;
+		baseComboValue = COMBO_SCORE_MAX * (1.0 / ((double)maxNotesTemp - 1.0));
+		*/
 
+		//Debug.Log("acc:" + baseAccValue);
+		//Debug.Log("com:" + baseComboValue);
+	}
 
-    // UpdateScore is to score notes that are held
-    // -int acc = acurracy rating (0-4)
-    // -float te = time expected
-    // -float th = time held
-    public void UpdateScore(int acc, double te, double th)
-    {
+	void Start()
+	{
+		//pointValue = new int[5] { 0, 1, 2, 3, 4 };
+		rating = new string[5] { "Miss", "Good", "Great!", "Excellent!!", "Marvelous!!!" };
+		ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
+		//scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
+		//streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
+		//multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
+		//ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
 
-        if (acc == 0)
-        {
-            missCount++;
-            combo = 0;
-            textUpdate(acc);
-        }
-        else
-        {
-            combo++;
-            if (th >= te)
-            {
-                globalScore += ((combo / 10 + 1) * pointValue[acc] * 100) + Mathf.RoundToInt((float)te) * 10;
-            }
-            else
-            {
-                globalScore += ((combo / 10 + 1) * pointValue[acc] * 100) + Mathf.RoundToInt((float)th) * 10;
-            }
-            textUpdate(acc);
-        }
-    }
+	}
 
-    // UpdateScoreTap is used for scoring the single tap notes 
-    // - int acc = accuracy rating (0-4)
-    public void UpdateScoreTap(int acc)
-    {
+	// Update is called once per frame
+	public void Update()
+	{
+		DrawScore();
+	}
 
-        if (acc == 0)
-        {
-            missCount++;
-            combo = 0;
-        }
-        else
-        {
-            hitCount++;
+	private void DrawScore()
+	{		
+		scoreText.text = ((int)score).ToString();
 
-            if (acc > 1)
-            {
-                combo++;
-                globalScore += (combo / 10 + 1) * pointValue[acc] * 100;
-            }
-            else
-            {
-                combo = 0;
-                globalScore += pointValue[acc] * 100;
-            }
+		// ---
 
-        }
-        textUpdate(acc);
-    }
+		if (combo > 0)
+		{
+			streakText.text = combo.ToString() + "\nCombo";
+		}
 
+		else
+		{
+			streakText.text = "";
+		}
+	}
 
+	public void UpdateScore(Ratings rate, Leanings lean)
+	{
+		double baseAccValue = ACC_SCORE_MAX / (double)maxNotesTemp;
+		double baseComboValue = COMBO_SCORE_MAX * (1.0 / ((double)maxNotesTemp - 1.0));
 
-    // textUpdate updates the actual scoreboard
-    // - int acc - accuracy rating
-    // - Private function should be called by this class
-    private void textUpdate(int acc)
-    {
-        ratingText.text = rating[acc];
-        scoreText.text = "Score: " + globalScore.ToString();
-        streakText.text = "Streak: " + combo.ToString();
-        multText.text = "Mult: x" + (combo / 10 + 1).ToString();
+		// Accuracy
+		switch (rate)
+		{
+			case Ratings.Marvelous:
+				ratingText.text = "Marvelous!!!";
+				score += baseAccValue;
+				notesMarvelous++;
+				combo++;
+				break;
 
-    }
+			case Ratings.Perfect:
+				ratingText.text = "Perfect!!";
+				score += baseAccValue - 10.0;
+				notesPerfect++;
+				combo++;
+				break;
+
+			case Ratings.Great:
+				ratingText.text = "Great!";
+				score += baseAccValue * 0.7;
+				notesGreat++;
+				combo++;
+				break;
+		
+			case Ratings.Good:
+				ratingText.text = "Good";
+				score += baseAccValue * 0.3;
+				notesGood++;
+				combo = 0;
+				break;
+
+			case Ratings.Miss:
+				ratingText.text = "Miss...";
+				notesMiss++;
+				combo = 0;
+				break;
+
+			default:
+				Debug.Log("[Scoreboard] UpdateScore() accuracy fell through!");
+				break;
+		}
+
+		// Combo
+		if (combo > 10)
+		{
+			score += baseComboValue;
+		}
+
+		// Early/Late
+		switch (lean)
+		{
+			case Leanings.Early:
+				leanText.text = "EARLY";
+				notesEarly++;
+				break;
+
+			case Leanings.Late:
+				leanText.text = "LATE";
+				notesLate++;
+				break;
+
+			case Leanings.None:
+				leanText.text = "";
+				break;
+
+			default:
+				Debug.Log("[Scoreboard] UpdateScore() accuracy fell through!");
+				break;
+		}
+	}
+
+	// textUpdate updates the actual scoreboard
+	// - int acc - accuracy rating
+	// - Private function should be called by this class
+	private void textUpdate(int acc)
+	{
+		/*
+		ratingText.text = rating[acc];
+		scoreText.text = "Score: " + globalScore.ToString();
+		streakText.text = "Streak: " + combo.ToString();
+		multText.text = "Mult: x" + (combo / 10 + 1).ToString();
+		*/
+	}
 }

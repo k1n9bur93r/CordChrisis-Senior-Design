@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 // THIS IS A TEST FILE TO DEMONSTRATE THE 'Scoreboard' CLASS AND SHOULD NOT BE USED IN FINAL PRODUCTION
 
-
 public class TestClicker : MonoBehaviour
 {
+    /*
     public Scoreboard sb;
     public double expected_time;
     private float start_time;
@@ -45,7 +45,7 @@ public class TestClicker : MonoBehaviour
 
                     end_time = Time.time;
                     Debug.Log("Held For: " + (end_time - expected_time) + "s");
-                    /*MY CALLS*/
+                    //MY CALLS
 
                     string hitName = hit.transform.gameObject.name;
                     switch (hitName)
@@ -93,7 +93,7 @@ public class TestClicker : MonoBehaviour
             {
                 sb.UpdateScoreTap(0);
             }
-            /*END MC */
+            //END MC
         }
         // END CC
     }
@@ -101,5 +101,5 @@ public class TestClicker : MonoBehaviour
 
 
 
-
+*/
 }

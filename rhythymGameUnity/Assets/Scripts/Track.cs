@@ -13,6 +13,8 @@ public class JsonTrack
     #pragma warning disable 0649
 
     // required
+    public string title;
+    public string artist;
     public double[] beats;
     public int[] notes;
 
