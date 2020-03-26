@@ -35,14 +35,19 @@ public class Scoreboard : MonoBehaviour
     public int combo = 0;
     public int missCount = 0;
 
-    private Animator ratingAnim;
+    public Animator ratingAnim;
+    public Material changeY;
+    public Material changeG;
+    public Material changeB;
+    public Material changeR;
+    public Material changeP;
 
     // Start is called before the first frame update
     void Start()
     {
         pointValue = new int[5] { 0, 1, 2, 3, 4 };
         rating = new string[5] { "MISS", "BAD", "GOOD", "EXCELLENT", "MARVELOUS" };
-        ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
+        //ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
         //scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
         //streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
         //multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
@@ -122,10 +127,33 @@ public class Scoreboard : MonoBehaviour
     // - Private function should be called by this class
     private void textUpdate(int acc)
     {
-        ratingText.text = rating[acc];
-        scoreText.text = "Score: " + globalScore.ToString();
-        streakText.text = "Streak: " + combo.ToString();
-        multText.text = "Mult: x" + (combo / 10 + 1).ToString();
 
+        ratingAnim.ForceStateNormalizedTime(0.0f);
+
+        switch (acc) {
+
+            case 4:
+                ratingText.fontMaterial = changeY;
+                break;
+            case 3:
+                ratingText.fontMaterial = changeG;
+                break;
+            case 2:
+                ratingText.fontMaterial = changeB;
+                break;
+            case 1:
+                ratingText.fontMaterial = changeP;
+                break;
+            case 0:
+                ratingText.fontMaterial = changeR;
+                break;
+        }
+
+        ratingText.text = rating[acc];
+        scoreText.text = "Score: \n" + globalScore.ToString();
+        streakText.text = "Streak: \n" + combo.ToString();
+        multText.text = "Mult: x" + (combo / 10 + 1).ToString();
+    
     }
+
 }

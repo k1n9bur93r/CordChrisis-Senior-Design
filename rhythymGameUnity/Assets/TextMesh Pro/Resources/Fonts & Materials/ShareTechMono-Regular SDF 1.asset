@@ -93,8 +93,8 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 0.18198241, g: 0, b: 0.5754717, a: 1}
-    - _GlowColor: {r: 0.35978103, g: 0.9795651, b: 0.990566, a: 0.5}
+    - _FaceColor: {r: 0.17545652, g: 0.049127813, b: 0.4528302, a: 1}
+    - _GlowColor: {r: 0, g: 0.85069823, b: 1, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0.24857599, g: 0.46461138, b: 0.9245283, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: ShareTechMono-Regular SDF
+  m_Name: ShareTechMono-Regular SDF 1
   m_EditorClassIdentifier: 
   hashCode: 911641234
   material: {fileID: -6344017524690832694}
