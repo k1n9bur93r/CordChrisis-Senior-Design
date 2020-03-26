@@ -10046,8 +10046,6 @@ GameObject:
   - component: {fileID: 1694962389}
   - component: {fileID: 1694962388}
   - component: {fileID: 1694962387}
-  - component: {fileID: 1694962386}
-  - component: {fileID: 1694962385}
   m_Layer: 0
   m_Name: MyCanvas
   m_TagString: Untagged
@@ -10055,44 +10053,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1694962385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694962384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 536b42bb3b4e2654db5e93f1b5292eb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreText: {fileID: 1246795674}
-  streakText: {fileID: 1999332638}
-  multText: {fileID: 1299964848}
-  ratingText: {fileID: 1837621056}
-  pointValue: 
-  rating: []
-  globalScore: 0
-  accuracy: 0
-  noteCount: 0
-  hitCount: 0
-  combo: 0
-  missCount: 0
---- !u!114 &1694962386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694962384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256daa1f0663197439fbade0c8b32410, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sb: {fileID: 0}
-  expected_time: 0
 --- !u!114 &1694962387
 MonoBehaviour:
   m_ObjectHideFlags: 0
