@@ -7,19 +7,15 @@ using TMPro;
 public enum Ratings { Miss, Good, Great, Perfect, Marvelous };
 public enum Leanings { None, Early, Late };
 
-
-// Public Function to use
-//  public void UpdateScore(int acc, double te, double th)
-//  This function can handle scoring for hold or tap notes
-//  <tap => UpdateScore(x,0,0);>
-//
-
+/*
+	[documentation here]
+*/
 
 public class Scoreboard : MonoBehaviour
 {
 	private const double ACC_SCORE_MAX = 900000;
 	private const double COMBO_SCORE_MAX = 100000;
-	//private const int maxNotesTemp = 178; // Placeholder until max notes can be determined!
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT", "PERFECT" };
 
 	// Other classes
 	public Track meta;
@@ -30,17 +26,17 @@ public class Scoreboard : MonoBehaviour
 	public TextMeshPro multText;
 	public TextMeshPro ratingText;
 	public TextMeshPro leanText;
-	private Animator ratingAnim;
 
-	// Score points / rating
-	//public int[] pointValue;
-	public string[] rating;	
+	public Animator ratingAnim;
+	public Material[] ratingColors;
+
+	private int scoreDisplayed;
 
 	// Statistics for scoring
 	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
 	private int notesEarly, notesLate;
 	private int combo, negativeCombo, comboMax;
-	private double score; // Cast this to an int when displaying it
+	private double score;
 
 	//private double baseAccValue;
 	//private double baseComboValue;
@@ -56,6 +52,7 @@ public class Scoreboard : MonoBehaviour
 		negativeCombo = 0;
 		comboMax = 0;
 		score = 0;
+		scoreDisplayed = 0;
 
 		ratingText.text = "";
 		leanText.text = "";
@@ -73,8 +70,8 @@ public class Scoreboard : MonoBehaviour
 	void Start()
 	{
 		//pointValue = new int[5] { 0, 1, 2, 3, 4 };
-		rating = new string[5] { "Miss", "Good", "Great!", "Excellent!!", "Marvelous!!!" };
-		ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
+		//rating = new string[5] { "Miss", "Good", "Great!", "Excellent!!", "Marvelous!!!" };
+		//ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
 		//scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
 		//streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
 		//multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
@@ -89,23 +86,9 @@ public class Scoreboard : MonoBehaviour
 	}
 
 	private void DrawScore()
-	{		
-		scoreText.text = ((int)score).ToString("000,000");
-
-		// ---
-
-		// DEBUG
-		//streakText.text = negativeCombo.ToString() + " Combo";
-
-		if (combo > 0)
-		{
-			streakText.text = combo.ToString() + " Combo";
-		}
-
-		else
-		{
-			streakText.text = "";
-		}
+	{
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 20.0f * Time.deltaTime);
+		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
 	public void UpdateScore(Ratings rate, Leanings lean)
@@ -113,39 +96,37 @@ public class Scoreboard : MonoBehaviour
 		double baseAccValue = ACC_SCORE_MAX / (double)meta.noteTotal;
 		double baseComboValue = COMBO_SCORE_MAX / (double)meta.noteTotal; //COMBO_SCORE_MAX * (1.0 / ((double)meta.noteTotal - 1.0));
 
-		// Accuracy
+		AnimateRating(rate);
+		AnimateCombo();
+
+		// Accuracy scoring
 		switch (rate)
 		{
 			case Ratings.Marvelous:
-				ratingText.text = "Marvelous!!!";
 				score += baseAccValue;
 				notesMarvelous++;
 				combo++;
 				break;
 
 			case Ratings.Perfect:
-				ratingText.text = "Perfect!!";
-				score += baseAccValue - 10.0;
+				score += baseAccValue * 0.99;
 				notesPerfect++;
 				combo++;
 				break;
 
 			case Ratings.Great:
-				ratingText.text = "Great!";
-				score += baseAccValue * 0.7;
+				score += baseAccValue * 0.66;
 				notesGreat++;
 				combo++;
 				break;
 		
 			case Ratings.Good:
-				ratingText.text = "Good";
-				score += baseAccValue * 0.3;
+				score += baseAccValue * 0.33;
 				notesGood++;
 				combo = 0;
 				break;
 
 			case Ratings.Miss:
-				ratingText.text = "Miss...";
 				notesMiss++;
 				combo = 0;
 				break;
@@ -155,15 +136,7 @@ public class Scoreboard : MonoBehaviour
 				break;
 		}
 
-		/*
-		// Combo
-		if (combo > 10)
-		{
-			score += baseComboValue;
-		}
-		*/
-
-		// Negative combo
+		// Negative combo scoring
 		SetNegativeCombo(rate);
 		
 		if (negativeCombo >= 0)
@@ -215,16 +188,43 @@ public class Scoreboard : MonoBehaviour
 		}
 	}
 
-	// textUpdate updates the actual scoreboard
-	// - int acc - accuracy rating
-	// - Private function should be called by this class
-	private void textUpdate(int acc)
+	private void AnimateRating(Ratings rate)
 	{
-		/*
-		ratingText.text = rating[acc];
-		scoreText.text = "Score: " + globalScore.ToString();
-		streakText.text = "Streak: " + combo.ToString();
-		multText.text = "Mult: x" + (combo / 10 + 1).ToString();
-		*/
+		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
+
+		if (rate == Ratings.Marvelous)
+		{
+			// rainbow texture
+		}
+
+		else
+		{
+			// no texture
+		}
+
+		ratingText.text = RATING_NAMES[(int)rate];
+		ratingText.fontMaterial = ratingColors[(int)rate];
+	}
+
+	private void AnimateCombo()
+	{
+		// DEBUG
+		//streakText.text = negativeCombo.ToString() + " Combo";
+
+		if (combo > 0)
+		{
+			if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[6]; }
+			else if ((notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
+			else if ((notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
+			else if (notesMiss == 0) { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; }
+			else { streakText.fontMaterial = ratingColors[5]; }
+
+			streakText.text = combo.ToString();
+		}
+
+		else
+		{
+			streakText.text = "";
+		}
 	}
 }

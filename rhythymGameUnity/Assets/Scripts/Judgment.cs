@@ -269,36 +269,4 @@ public class Judgment : MonoBehaviour
 
 		Debug.Log(judgmentWindows);
 	}
-
-	/*
-		Debug function to display play statistics.
-	*/
-
-	/*
-	private void DrawStats()
-	{
-		if (combo > 0)
-		{
-			comboText.text = combo.ToString();
-		}
-
-		if (comboMax < combo)
-		{
-			comboMax = combo;
-		}
-
-		statsText.text =
-			score.ToString() + " Score\n\n"
-			+ notesMarvelous.ToString() + " Marvelous\n"
-			+ notesPerfect.ToString() + " Excellent\n"
-			+ notesGreat.ToString() + " Great\n"
-			+ notesGood.ToString() + " Good\n"
-			+ notesMiss.ToString() + " Miss\n\n"
-			+ notesHoldOK.ToString() + " Held\n"
-			+ notesHoldNG.ToString() + " Lost\n\n"
-			+ notesEarly.ToString() + " Early\n"
-			+ notesLate.ToString() + " Late\n\n"
-			+ comboMax.ToString() + " Max Combo";
-	}
-	*/
 }
