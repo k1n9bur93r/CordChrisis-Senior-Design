@@ -12,13 +12,15 @@ public class JsonTrack
 
     #pragma warning disable 0649
 
-    // required
+    // Song metadata
+    public string title;
+    public string artist;
+
+    // Chart pieces
+    public double offset;
     public double[] beats;
     public int[] notes;
-
-    // optional
     public double[] note_lengths;
-    public double offset;
     public double[] tempo_change_amount;
     public double[] tempo_change_beat;
 
@@ -31,10 +33,14 @@ public class Track : MonoBehaviour
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
     
+    // Track vars
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
     public string[] intToGesture = new string[] {"", "l", "r", "u", "d"};
+
+    // Derived chart statistics
+    public int noteTotal;
 
     JsonTrack readJsonFile(string filename) {
         // reads a json file and returns the parsed object as JsonTrack object
@@ -70,6 +76,21 @@ public class Track : MonoBehaviour
         return track;
     }
 
+    private int CalculateNoteTotal()
+    {
+        int temp = json.notes.Length;
+
+        for (int i = 0; i < json.notes.Length; i++)
+        {
+            if (json.note_lengths[i] > 0)
+            {
+                temp++;
+            }
+        }
+
+        return temp;
+    }
+
     void Awake()
     {
         // Read JSON file
@@ -101,5 +122,8 @@ public class Track : MonoBehaviour
                 Debug.Log("[Track] Invalid note found: " + note);
             }
         }
+
+        // Calculate chart statistics
+        noteTotal = CalculateNoteTotal();
     }
 }
