@@ -2296,7 +2296,7 @@ PrefabInstance:
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
       propertyPath: speedMod
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
         type: 3}
@@ -3460,7 +3460,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_firstOverflowCharacterIndex: -1
@@ -3582,7 +3582,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 25.49997, y: -40.389984}
-  m_SizeDelta: {x: 19.631226, y: -45.880066}
+  m_SizeDelta: {x: 50, y: -45.880066}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &1281229434
 GameObject:
@@ -4091,7 +4091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1394694701
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9889,6 +9889,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d62199cabc3d8124da9727a86f841501, type: 2}
   - {fileID: 2100000, guid: ba4d042a6024fc04bb44d8e2ea226912, type: 2}
   - {fileID: 2100000, guid: c7556be9a7327044f9f24d4be1f6c386, type: 2}
+  - {fileID: 2100000, guid: 82bf63a3a297fe04192a7cbc41668c15, type: 2}
 --- !u!114 &1694962387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10445,8 +10446,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 350
-  m_fontSizeBase: 350
+  m_fontSize: 400
+  m_fontSizeBase: 400
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10619,7 +10620,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1916113838
 RectTransform:
   m_ObjectHideFlags: 0

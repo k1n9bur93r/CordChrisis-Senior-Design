@@ -13,8 +13,9 @@ public enum Leanings { None, Early, Late };
 
 public class Scoreboard : MonoBehaviour
 {
-	private const double ACC_SCORE_MAX = 900000;
-	private const double COMBO_SCORE_MAX = 100000;
+	//private const double ACC_SCORE_MAX = 800000;
+	//private const double COMBO_SCORE_MAX = 200000;
+	private const double MAX_SCORE = 1000000.0;
 	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT", "PERFECT" };
 
 	// Other classes
@@ -38,8 +39,8 @@ public class Scoreboard : MonoBehaviour
 	private int combo, negativeCombo, comboMax;
 	private double score;
 
-	//private double baseAccValue;
-	//private double baseComboValue;
+	double baseNoteValue;
+	double[] ratingValues;
 
 	void Awake()
 	{
@@ -57,26 +58,19 @@ public class Scoreboard : MonoBehaviour
 		ratingText.text = "";
 		leanText.text = "";
 		streakText.text = "";
-
-		/*
-		baseAccValue = ACC_SCORE_MAX / (double)maxNotesTemp;
-		baseComboValue = COMBO_SCORE_MAX * (1.0 / ((double)maxNotesTemp - 1.0));
-		*/
-
-		//Debug.Log("acc:" + baseAccValue);
-		//Debug.Log("com:" + baseComboValue);
 	}
 
 	void Start()
 	{
-		//pointValue = new int[5] { 0, 1, 2, 3, 4 };
-		//rating = new string[5] { "Miss", "Good", "Great!", "Excellent!!", "Marvelous!!!" };
-		//ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
-		//scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
-		//streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
-		//multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
-		//ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
+		baseNoteValue = MAX_SCORE / (double)meta.noteTotal;
 
+		ratingValues = new double[5] {
+			0, // Miss
+			baseNoteValue * 0.3, // Good
+			baseNoteValue * 0.7, // Great
+			baseNoteValue - 10.0, // Perfect
+			baseNoteValue  // Marvelous
+		};
 	}
 
 	// Update is called once per frame
@@ -85,49 +79,49 @@ public class Scoreboard : MonoBehaviour
 		DrawScore();
 	}
 
+	/*
+	private double LerpDouble(double a, double b, double time)
+	{
+		return a + (b - a) * time;
+	}
+	*/
+
 	private void DrawScore()
 	{
-		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 20.0f * Time.deltaTime);
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime); //(int)LerpDouble(scoreDisplayed, score, 16.0f * Time.deltaTime);
+		/*
+		float scoreVelocity = 0.0f;
+		scoreDisplayed = (int)Mathf.SmoothDamp((float)scoreDisplayed, (float)score, ref scoreVelocity, 0.05f);
+		*/
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
 	public void UpdateScore(Ratings rate, Leanings lean)
 	{
-		double baseAccValue = ACC_SCORE_MAX / (double)meta.noteTotal;
-		double baseComboValue = COMBO_SCORE_MAX / (double)meta.noteTotal; //COMBO_SCORE_MAX * (1.0 / ((double)meta.noteTotal - 1.0));
-
-		AnimateRating(rate);
-		AnimateCombo();
-
 		// Accuracy scoring
 		switch (rate)
 		{
 			case Ratings.Marvelous:
-				score += baseAccValue;
 				notesMarvelous++;
 				combo++;
 				break;
 
 			case Ratings.Perfect:
-				score += baseAccValue * 0.99;
 				notesPerfect++;
 				combo++;
 				break;
 
 			case Ratings.Great:
-				score += baseAccValue * 0.66;
 				notesGreat++;
 				combo++;
 				break;
 		
 			case Ratings.Good:
-				score += baseAccValue * 0.33;
 				notesGood++;
 				combo = 0;
 				break;
 
 			case Ratings.Miss:
-				notesMiss++;
 				combo = 0;
 				break;
 
@@ -136,12 +130,22 @@ public class Scoreboard : MonoBehaviour
 				break;
 		}
 
+		AnimateRating(rate);
+
 		// Negative combo scoring
 		SetNegativeCombo(rate);
+		AnimateCombo();
+
+		// Calculate score
 		
-		if (negativeCombo >= 0)
+		if (negativeCombo < 0)
 		{
-			score += baseComboValue;
+			score += ratingValues[(int)rate] * 0.9;
+		}
+
+		else
+		{
+			score += ratingValues[(int)rate];
 		}
 
 		// Early/Late
@@ -174,11 +178,18 @@ public class Scoreboard : MonoBehaviour
 			negativeCombo++;
 		}
 
+		/*
+		else if (rate == Ratings.Good)
+		{
+			// Nothing happens
+		}
+		*/
+
 		else
 		{
-			if (negativeCombo >= 0)
+			if (negativeCombo > 0)
 			{
-				negativeCombo = -1;
+				negativeCombo = 0;
 			}
 
 			else
@@ -192,16 +203,6 @@ public class Scoreboard : MonoBehaviour
 	{
 		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
 
-		if (rate == Ratings.Marvelous)
-		{
-			// rainbow texture
-		}
-
-		else
-		{
-			// no texture
-		}
-
 		ratingText.text = RATING_NAMES[(int)rate];
 		ratingText.fontMaterial = ratingColors[(int)rate];
 	}
@@ -213,10 +214,19 @@ public class Scoreboard : MonoBehaviour
 
 		if (combo > 0)
 		{
+			/*
 			if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[6]; }
 			else if ((notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
 			else if ((notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
 			else if (notesMiss == 0) { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; }
+			else { streakText.fontMaterial = ratingColors[5]; }
+			*/
+
+			if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
+			else if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[6]; }
+			else if ((notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
+			else if ((notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
+			//else if (notesMiss == 0) { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; }
 			else { streakText.fontMaterial = ratingColors[5]; }
 
 			streakText.text = combo.ToString();
