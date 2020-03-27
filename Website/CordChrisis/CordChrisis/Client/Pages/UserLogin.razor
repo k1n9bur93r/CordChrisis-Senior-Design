@@ -146,9 +146,7 @@
         Console.WriteLine(email);
 
         loadingData = true;
-        // ReturnedMaps = await Http.PostJsonAsync<List<Map>>(@"searchpage/post", UserSearch);
         checkData = await Http.PostJsonAsync<Login>("userlogin/post", loginObject);
-        // checkData = await Http.GetJsonAsync<string>("userlogin/get");
         Console.WriteLine(checkData.ID);
         loadingData = false;
 

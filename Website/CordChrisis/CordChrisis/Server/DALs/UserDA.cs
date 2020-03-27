@@ -9,12 +9,14 @@ namespace CordChrisis.DAOs
 {
     public class UserDA
     {
-        public void Create(User user)
+        public void Create(User newuser)
         {
+           
             using (var context = new ApplicationDBContext()) 
             {
                 context.Database.EnsureCreated();
-                context.Add(user);
+                context.Users.Add(newuser);
+                context.SaveChanges(); 
             }
         }
         public User ReadSingle(string userID)

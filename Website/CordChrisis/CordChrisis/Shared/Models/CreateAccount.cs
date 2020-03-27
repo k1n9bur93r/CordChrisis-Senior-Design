@@ -39,12 +39,7 @@ namespace CordChrisis.Shared.Models
             get;
             set;
         }
-        [Required(ErrorMessage = "Please provide full name", AllowEmptyStrings = false)]
-        public string FullName
-        {
-            get;
-            set;
-        }
+   
 
     }
 }
