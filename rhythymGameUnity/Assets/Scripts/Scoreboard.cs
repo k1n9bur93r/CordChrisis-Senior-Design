@@ -122,6 +122,7 @@ public class Scoreboard : MonoBehaviour
 				break;
 
 			case Ratings.Miss:
+				notesMiss++;
 				combo = 0;
 				break;
 
@@ -189,7 +190,7 @@ public class Scoreboard : MonoBehaviour
 		{
 			if (negativeCombo > 0)
 			{
-				negativeCombo = 0;
+				negativeCombo = -1;
 			}
 
 			else
@@ -214,20 +215,18 @@ public class Scoreboard : MonoBehaviour
 
 		if (combo > 0)
 		{
-			/*
-			if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[6]; }
-			else if ((notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
-			else if ((notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
-			else if (notesMiss == 0) { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; }
-			else { streakText.fontMaterial = ratingColors[5]; }
-			*/
+			if ((notesGood > 0) || (notesMiss > 0))
+			{
+				if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
+				else { streakText.fontMaterial = ratingColors[5]; }
+			}
 
-			if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
-			else if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[6]; }
-			else if ((notesGreat == 0) && (notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
-			else if ((notesGood == 0) && (notesMiss == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
-			//else if (notesMiss == 0) { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; }
-			else { streakText.fontMaterial = ratingColors[5]; }
+			else
+			{
+				if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[6]; }
+				else if ((notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
+				else { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
+			}
 
 			streakText.text = combo.ToString();
 		}
