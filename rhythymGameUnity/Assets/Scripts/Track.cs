@@ -32,7 +32,7 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
-    
+
     // Track vars
     public string track_file;
     public JsonTrack json;
@@ -70,7 +70,7 @@ public class Track : MonoBehaviour
         if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
         {
             Debug.Log("tempo changes: " + track.notes.Length + " | tempo beats: " + track.beats.Length);
-            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");           
+            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");
         }
 
         return track;
