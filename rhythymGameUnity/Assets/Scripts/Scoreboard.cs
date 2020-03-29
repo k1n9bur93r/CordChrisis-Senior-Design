@@ -190,7 +190,7 @@ public class Scoreboard : MonoBehaviour
 		{
 			if (negativeCombo > 0)
 			{
-				negativeCombo = -1;
+				negativeCombo = 0;
 			}
 
 			else
@@ -217,8 +217,12 @@ public class Scoreboard : MonoBehaviour
 		{
 			if ((notesGood > 0) || (notesMiss > 0))
 			{
+				/*
 				if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
 				else { streakText.fontMaterial = ratingColors[5]; }
+				*/
+
+				streakText.fontMaterial = ratingColors[5];
 			}
 
 			else

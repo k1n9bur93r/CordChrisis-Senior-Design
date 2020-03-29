@@ -36,6 +36,7 @@ public class Metronome : MonoBehaviour
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
 	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double SIXTYFOUR_NOTE = 0.03125;
 
 	public Track meta;
 
@@ -143,7 +144,40 @@ public class Metronome : MonoBehaviour
 	public void StartSongAnywhere()
 	{
 		GetSongData();
-		UpdateRates();
+		//UpdateRates();
+
+		// Step through every tempo change and increment the correct amount of time!
+		//double[] secPerBeatAny = new double[meta.json.tempo_change_beat.Length];
+
+		/*
+		for (int i = 0; i < meta.json.tempo_change_beat.Length; i++)
+		{
+			secPerBeatAny[i] = SEC_PER_MIN / meta.json.tempo_change_amount[i] / 32.0;
+		}
+		*/
+
+		double anyBeat = 0.0;
+		startTime = 0.0;
+
+		for (double i = 0.0; i < startBeat; i += SIXTYFOUR_NOTE)
+		{
+			if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
+			{
+				tempo = meta.json.tempo_change_amount[tempoIndex];
+				tempoIndex++;
+			}
+
+			secPerBeat = SEC_PER_MIN / tempo / 32.0;
+			anyBeat += secPerBeat;
+
+			//Debug.Log("i: " + i + " | tempoIndex: " + tempoIndex);
+		}
+
+		//tempo = meta.json.tempo_change_beat[tempoIndex - 1];
+
+		startTime = anyBeat;
+
+		//Debug.Log(startTime);
 
 		GetComponent<AudioSource>().Play();
 	}
@@ -164,13 +198,8 @@ public class Metronome : MonoBehaviour
 		{
 			if (!pastSchedule)
 			{
-				UpdateRates();
-				GetSongData();
-
-				startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
-				//beatsElapsed = startBeat;
-
-				//Debug.Log("[Metronome] startTime: " + startTime);
+				//startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
+				startTime += startOffset + globalOffset;
 
 				songStart = AudioSettings.dspTime + startTime;
 				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
