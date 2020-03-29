@@ -137,24 +137,14 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
-		-DEBUG FUNCTION-
 		Start music at an arbitrary point.
 	*/
 
 	public void StartSongAnywhere()
 	{
 		GetSongData();
-		//UpdateRates();
-
+		
 		// Step through every tempo change and increment the correct amount of time!
-		//double[] secPerBeatAny = new double[meta.json.tempo_change_beat.Length];
-
-		/*
-		for (int i = 0; i < meta.json.tempo_change_beat.Length; i++)
-		{
-			secPerBeatAny[i] = SEC_PER_MIN / meta.json.tempo_change_amount[i] / 32.0;
-		}
-		*/
 
 		double anyBeat = 0.0;
 		startTime = 0.0;
@@ -169,21 +159,14 @@ public class Metronome : MonoBehaviour
 
 			secPerBeat = SEC_PER_MIN / tempo / 32.0;
 			anyBeat += secPerBeat;
-
-			//Debug.Log("i: " + i + " | tempoIndex: " + tempoIndex);
 		}
 
-		//tempo = meta.json.tempo_change_beat[tempoIndex - 1];
-
 		startTime = anyBeat;
-
-		//Debug.Log(startTime);
-
+		
 		GetComponent<AudioSource>().Play();
 	}
 
 	/*
-		-DEBUG FUNCTION-
 		Update the timer based on the arbitrary start point.
 	*/
 
@@ -225,7 +208,7 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
-		tempo = meta.json.tempo_change_amount[0]; //meta.json.tempo;
+		tempo = meta.json.tempo_change_amount[0];
 		startOffset = meta.json.offset;
 	}
 
