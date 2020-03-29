@@ -65,6 +65,11 @@ public class Track : MonoBehaviour
             track.note_lengths = new double [length];
         }
 
+        if (track.notes.Length != track.note_lengths.Length) {
+            Debug.Log("notes: " + track.notes.Length + " | note_lengths: " + track.note_lengths.Length);
+            throw new System.ArrayTypeMismatchException("Invalid Json file, notes and note_lengths length don't match.");
+        }
+
         // ---
 
         if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
