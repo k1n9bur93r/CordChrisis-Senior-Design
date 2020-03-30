@@ -39,6 +39,7 @@ public class Metronome : MonoBehaviour
 	private const double SIXTYFOUR_NOTE = 0.03125;
 
 	public Track meta;
+	public YoutubePlayer player;
 
 	// -DEBUG VARS-
 	public double startBeat;

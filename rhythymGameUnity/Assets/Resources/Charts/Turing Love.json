@@ -1,0 +1,18 @@
+{
+	"title": "Turing Love",
+	"artist": "Nanawo Akari feat. Sou",
+	"genre": "Happy Hardcore",
+	"tempo_change_amount": [162.0],
+    "tempo_change_beat": [0.0],
+	"offset": 0.098875,
+	"difficulty": "SCIENCE!!!",
+	"beats": [
+		4.0, 5.0, 6.0, 7.0
+	],
+	"notes": [
+		1, 2, 3, 4		
+	],
+	"note_lengths": [
+		0.0, 0.0, 0.0, 0.0
+	]
+}
