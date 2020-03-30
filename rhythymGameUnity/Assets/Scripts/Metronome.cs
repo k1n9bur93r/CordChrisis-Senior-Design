@@ -39,12 +39,12 @@ public class Metronome : MonoBehaviour
 	private const double SIXTYFOUR_NOTE = 0.03125;
 
 	public Track meta;
-	public YoutubePlayer player;
+	public YoutubeSimplified player;
 
-	// -DEBUG VARS-
+	private bool playbackStarted;
+	private bool playbackPaused;
 	public double startBeat;
-	private double startTime;
-	// -DEBUG VARS END-
+	private double startTime; // Whole number passed to Youtube
 
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
@@ -72,6 +72,9 @@ public class Metronome : MonoBehaviour
 		beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
+
+		playbackStarted = false;
+		playbackPaused = true;
 		pastSchedule = false;
 		tempoIndex = 0;
 	}
@@ -82,8 +85,8 @@ public class Metronome : MonoBehaviour
 
 	public void Update()
 	{
-		//UpdateTime();
-		UpdateTimeAnywhere(); // DEBUG ONLY
+		//UpdateTime(); // Get rid of this?
+		UpdateTimeAnywhere();
 		UpdateRates();
 	}
 
@@ -146,10 +149,12 @@ public class Metronome : MonoBehaviour
 		GetSongData();
 		
 		// Step through every tempo change and increment the correct amount of time!
+		// startTime MUST be an int by the time it is passed due to how Youtube handles linking to song times!
 
 		double anyBeat = 0.0;
 		startTime = 0.0;
 
+		// Move forward
 		for (double i = 0.0; i < startBeat; i += SIXTYFOUR_NOTE)
 		{
 			if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
@@ -160,43 +165,97 @@ public class Metronome : MonoBehaviour
 
 			secPerBeat = SEC_PER_MIN / tempo / 32.0;
 			anyBeat += secPerBeat;
+
+			beatsElapsed = i;
 		}
 
 		startTime = anyBeat;
-		
-		GetComponent<AudioSource>().Play();
+
+		// Move backward if the startTime is not a whole number due to Youtube only accepting timestamps in whole increments
+		if ((startTime - (int)startTime) >= 0.01)
+		{
+			for (double i = beatsElapsed; i > 0.0; i -= SIXTYFOUR_NOTE)
+			{
+				Debug.Log("tempoIndex: " + tempoIndex);
+
+				if ((tempoIndex > 0) && (tempoIndex < meta.json.tempo_change_beat.Length) && (i < meta.json.tempo_change_beat[tempoIndex]))
+				{
+					tempo = meta.json.tempo_change_amount[tempoIndex];
+					tempoIndex--;
+				}
+
+				secPerBeat = SEC_PER_MIN / tempo / 32.0;
+				anyBeat -= secPerBeat;
+				
+				startTime = anyBeat;
+
+				//Debug.Log("startTime: " + startTime);
+
+				if ((startTime - (int)startTime) < 0.01)
+				{
+					beatsElapsed = i; // NO
+					startTime = (int)startTime;
+					break;
+				}
+			}
+		}
+
+		// startTime is now rounded down
+
+		player.player.startFromSecondTime = (int)startTime;
+		player.Play();
 	}
 
 	/*
 		Update the timer based on the arbitrary start point.
 	*/
 
+	public void PlaybackStarted()
+	{
+		playbackStarted = true;
+	}
+
+	public void PlaybackPaused()
+	{
+		playbackPaused = true;
+	}
+
+	public void PlaybackResumed()
+	{
+		playbackPaused = false;
+	}
+
 	public void UpdateTimeAnywhere()
 	{
-		if (Input.GetKey(KeyCode.P) && !GetComponent<AudioSource>().isPlaying)
+		if (Input.GetKey(KeyCode.P) && !playbackStarted)
 		{
 			StartSongAnywhere();
 		}
 
-		else if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		if (playbackStarted && !playbackPaused) // Video has started and already warped
 		{
+			//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
+
 			if (!pastSchedule)
 			{
-				//startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
-				startTime += startOffset + globalOffset;
-
-				songStart = AudioSettings.dspTime + startTime;
+				songStart = AudioSettings.dspTime;
 				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
-				GetComponent<AudioSource>().time = (float)startTime;
-				beatsElapsed = startBeat;
+
 				pastSchedule = true;
 			}
 
-			// Increment the timer by calculating DSP delta time instead of directly setting it to accomodate for tempo changes
 			timeElapsed = AudioSettings.dspTime - songStart + startTime;
+			//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
 
-			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-			beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
+			if (timeElapsed >= (startOffset + globalOffset + startTime))
+			{
+				beatsElapsed += beatsElapsedDelta;
+			}
+
+			else
+			{
+				Debug.Log("Not yet");
+			}
 
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
 			timeElapsedLast = timeElapsed;

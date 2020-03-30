@@ -141,7 +141,7 @@ public class Scoreboard : MonoBehaviour
 		
 		if (negativeCombo < 0)
 		{
-			score += ratingValues[(int)rate] * 0.9;
+			score += ratingValues[(int)rate] * 0.8;
 		}
 
 		else

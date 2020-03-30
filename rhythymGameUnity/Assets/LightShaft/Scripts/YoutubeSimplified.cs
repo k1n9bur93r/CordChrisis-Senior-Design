@@ -5,7 +5,7 @@ using UnityEngine.Video;
 
 public class YoutubeSimplified : MonoBehaviour
 {
-	private YoutubePlayer player;
+	public YoutubePlayer player;
 
 	public string url;
 	public bool autoPlay = true;
@@ -21,7 +21,7 @@ public class YoutubeSimplified : MonoBehaviour
 
 	private void Start()
 	{
-		Play();
+		//Play();
 	}
 
 	public void Play()
@@ -30,8 +30,17 @@ public class YoutubeSimplified : MonoBehaviour
 		{
 			videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
 		}
+		
 		player.autoPlayOnStart = autoPlay;
 		player.videoQuality = YoutubePlayer.YoutubeVideoQuality.STANDARD;
+
 		player.Play(url);
+		
+		/*
+		if (autoPlay)
+		{
+			player.Play(url);
+		}
+		*/
 	}
 }

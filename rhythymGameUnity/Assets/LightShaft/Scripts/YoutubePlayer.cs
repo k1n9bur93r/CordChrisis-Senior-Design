@@ -70,7 +70,7 @@ public class YoutubePlayer : MonoBehaviour
     [Tooltip("Start playing the video from a desired time")]
     public bool startFromSecond = false;
     [DrawIf("startFromSecond", true)]
-    public int startFromSecondTime = 0;
+    public int startFromSecondTime;
 
     [Space]
     [Tooltip("Play the video when the script initialize")]
@@ -139,7 +139,8 @@ public class YoutubePlayer : MonoBehaviour
     public UnityEvent OnVideoPaused;
     [Tooltip("When the video finish")]
     public UnityEvent OnVideoFinished;
-
+    [Tooltip("When done buffering")]
+    public UnityEvent OnVideoResume;
     
 
     [Space]
@@ -474,11 +475,15 @@ public class YoutubePlayer : MonoBehaviour
             {
                 ShowLoading();
                 Debug.Log("Buffering");
+
+                OnVideoPaused.Invoke(); // !
             }
             else//not buffering
             {
                 HideLoading();
                 //Debug.Log("Not buffering");
+
+                OnVideoResume.Invoke(); // !
             }
             lastTimePlayed = videoPlayer.time;
         }
@@ -697,12 +702,16 @@ public class YoutubePlayer : MonoBehaviour
     {
         if (loadingContent != null)
             loadingContent.SetActive(true);
+
+        OnVideoPaused.Invoke(); // !
     }
 
     private void HideLoading()
     {
         if (loadingContent != null)
             loadingContent.SetActive(false);
+
+        OnVideoResume.Invoke(); // !
     }
 
     //Call to the system to load & Play youtube video.
