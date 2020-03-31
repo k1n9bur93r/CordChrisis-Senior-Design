@@ -44,13 +44,9 @@ public class Metronome : MonoBehaviour
 	public Text timer;
 
 	private bool playbackStarted;
-	private bool playbackPaused;
-	//private bool playbackBuffering;
-	//private bool playbackSeekDone;
 
 	public double startBeat;
-	private double startTime; // Whole number passed to Youtube
-	private double startBeatFinal;
+	private double startTime;
 
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
@@ -80,9 +76,6 @@ public class Metronome : MonoBehaviour
 		timeElapsedDelta = 0.0;
 
 		playbackStarted = false;
-		playbackPaused = false;
-		//playbackBuffering = false;
-		//playbackSeekDone = false;
 		pastSchedule = false;
 		tempoIndex = 0;
 	}
@@ -157,9 +150,8 @@ public class Metronome : MonoBehaviour
 		GetSongData();
 		
 		// Step through every tempo change and increment the correct amount of time!
-		// startTime MUST be an int by the time it is passed due to how Youtube handles linking to song times!
 
-		double anyBeat = 0.0;
+		double anyTime = 0.0;
 		startTime = 0.0;
 
 		// Move forward
@@ -172,50 +164,14 @@ public class Metronome : MonoBehaviour
 			}
 
 			secPerBeat = SEC_PER_MIN / tempo / 32.0;
-			anyBeat += secPerBeat;
+			anyTime += secPerBeat;
 
 			beatsElapsed = i;
 		}
 
-		startTime = anyBeat;
+		startTime = anyTime;
 
-		// Move backward if the startTime is not a whole number due to Youtube only accepting timestamps in whole increments
-		/*
-		if ((startTime - (int)startTime) >= 0.01)
-		{
-			for (double i = beatsElapsed; i > 0.0; i -= SIXTYFOUR_NOTE)
-			{
-				//Debug.Log("tempoIndex: " + tempoIndex);
-
-				if ((tempoIndex > 0) && (tempoIndex < meta.json.tempo_change_beat.Length) && (i < meta.json.tempo_change_beat[tempoIndex]))
-				{
-					tempo = meta.json.tempo_change_amount[tempoIndex];
-					tempoIndex--;
-				}
-
-				secPerBeat = SEC_PER_MIN / tempo / 32.0;
-				anyBeat -= secPerBeat;
-				
-				startTime = anyBeat;
-
-				//Debug.Log("startTime: " + startTime);
-
-				if ((startTime - (int)startTime) < 0.01)
-				{
-					beatsElapsed = i;
-					startTime = (int)startTime;
-					break;
-				}
-			}
-		}
-
-		// startTime is now rounded down
-		*/
-
-		startBeatFinal = beatsElapsed;
-		//player.player.startFromSecondTime = (int)startTime;
 		player.Play();
-		//player.player.Seek(startTime);
 	}
 
 	/*
@@ -225,45 +181,14 @@ public class Metronome : MonoBehaviour
 	public void PlaybackStarted()
 	{
 		playbackStarted = true;
-		//playbackPaused = false;
 	}
-
-	public void PlaybackPaused()
-	{
-		/*
-		if (!playbackPaused)
-		{
-			playbackPaused = true;
-		}
-
-		else
-		{
-			playbackPaused = false;
-		}
-		*/
-
-		playbackPaused = true;
-	}
-
-	/*
-	public void PlaybackBufferingYes()
-	{
-		playbackBuffering = true;
-	}
-
-	public void PlaybackBufferingNo()
-	{
-		playbackBuffering = false;
-	}
-
-	public void PlaybackSeekDone()
-	{
-		playbackSeekDone = true;
-	}
-	*/
 
 	public void UpdateTimeAnywhere()
 	{
+		timer.text = 
+			"DSP time: " + timeElapsed.ToString() + "\n"
+			+ "Video time: " + player.player.videoPlayer.time.ToString();
+
 		if (!playbackStarted)
 		{
 			if (Input.GetKey(KeyCode.P))
@@ -276,29 +201,35 @@ public class Metronome : MonoBehaviour
 		{
 			if (!pastSchedule)
 			{
-				player.player.Seek(startTime);
-				
-				if (playbackPaused)//(playbackSeekDone)
+				if (startBeat == 0.0)
 				{
-					player.player.PlayPause();
+					player.player.Seek(startTime);
+				}
 
-					songStart = AudioSettings.dspTime;
+				else
+				{
+					player.player.Seek(startTime + startOffset);
+				}
+				
+				player.player.Pause();
+
+				if ((startBeat == 0.0) || (player.player.videoPlayer.time != 0))
+				{
+					player.player.Play();
+					songStart = AudioSettings.dspTime + startTime;
 					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
 
 					pastSchedule = true;
-					playbackPaused = false;
 				}
 			}
 
 			else
 			{
 				timeElapsed = AudioSettings.dspTime - songStart + startTime;
-				timer.text = "Time: " + timeElapsed.ToString();
-				//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
 
-				if (startTime > startOffset)
+				if (startBeat == 0.0)
 				{
-					if ((timeElapsed >= (globalOffset + startTime)))
+					if ((timeElapsed >= (globalOffset + startOffset)))
 					{
 						beatsElapsed += beatsElapsedDelta;
 					}
@@ -306,7 +237,7 @@ public class Metronome : MonoBehaviour
 
 				else
 				{
-					if ((timeElapsed >= (globalOffset + (startOffset - startTime))))
+					if (timeElapsed >= globalOffset)
 					{
 						beatsElapsed += beatsElapsedDelta;
 					}
@@ -350,6 +281,7 @@ public class Metronome : MonoBehaviour
 		YOUTUBE PLAYER CALLBACK TESTERS
 	*/
 
+	/*
 	public void a1()
 	{
 		Debug.Log("When the url's are loaded");
@@ -374,4 +306,5 @@ public class Metronome : MonoBehaviour
 	{
 		Debug.Log("When the video finish");
 	}
+	*/
 }

@@ -1830,7 +1830,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Beat: '
+  m_Text: Beat
 --- !u!222 &621184327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1950,7 +1950,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15.25, y: -322.34}
+  m_AnchoredPosition: {x: 15.25, y: -308.83}
   m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &712912387
@@ -1984,7 +1984,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Time:'
+  m_Text: Timers
 --- !u!222 &712912388
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3139,17 +3139,17 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnYoutubeUrlAreReady.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoStarted.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoPaused.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -3169,17 +3169,17 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoReadyToStart.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoFinished.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: SeekDone.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -3269,7 +3269,7 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoPaused.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlaybackPaused
+      value: a4
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -3370,11 +3370,6 @@ PrefabInstance:
         type: 3}
       propertyPath: OnVideoStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
-        type: 3}
-      propertyPath: OnVideoStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -3480,6 +3475,11 @@ PrefabInstance:
         type: 3}
       propertyPath: SeekDone.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
+        type: 3}
+      propertyPath: OnVideoStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114654752377565014, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -4166,7 +4166,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tempo:'
+  m_Text: Tempo
 --- !u!222 &1281229437
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16164,7 +16164,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: globalOffset
-      value: 0.11
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
@@ -16179,7 +16179,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
@@ -17215,7 +17215,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/Milky Way
+      value: Charts/Turing Love
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
