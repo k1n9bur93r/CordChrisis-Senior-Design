@@ -31,7 +31,7 @@ else
                     <img class="rounded-circle border border-light border-4" src="/css/images/pfp2.jpg">
                 </div>
                 <div class=" rounded bg-secondary col-10 text-center mx-auto">
-                    <span class=" h1"> K1n9Bur93r's Account Page  </span>
+                    <span class=" h1"> DOOM's Account Page  </span>
                     <span class="text-muted">@ID</span>
                 </div>
             </div>
@@ -72,7 +72,7 @@ else
     public Task<string> UserID { get; set; }
     string ID = "Temp";
     bool hasID = false;
-    public UserStats stats = new UserStats();
+    UserStats stats = new UserStats();
 
     protected async override void OnInitialized()
     {
@@ -94,15 +94,6 @@ else
         else
         {
             StateHasChanged();
-        }
-
-        //Storage Handlers
-
-
-
-        async Task<string> GetCurrentLogOnSession()
-        {
-            return await Storage.GetItemAsync<string>("LoggedIn");
         }
 
     }
