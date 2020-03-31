@@ -45,7 +45,8 @@ public class Metronome : MonoBehaviour
 
 	private bool playbackStarted;
 	private bool playbackPaused;
-	private bool playbackBuffering;
+	//private bool playbackBuffering;
+	//private bool playbackSeekDone;
 
 	public double startBeat;
 	private double startTime; // Whole number passed to Youtube
@@ -80,7 +81,8 @@ public class Metronome : MonoBehaviour
 
 		playbackStarted = false;
 		playbackPaused = false;
-		playbackBuffering = false;
+		//playbackBuffering = false;
+		//playbackSeekDone = false;
 		pastSchedule = false;
 		tempoIndex = 0;
 	}
@@ -161,7 +163,7 @@ public class Metronome : MonoBehaviour
 		startTime = 0.0;
 
 		// Move forward
-		for (double i = 0.0; i < startBeat; i += SIXTYFOUR_NOTE)
+		for (double i = 0.0; i <= startBeat; i += SIXTYFOUR_NOTE)
 		{
 			if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
 			{
@@ -178,6 +180,7 @@ public class Metronome : MonoBehaviour
 		startTime = anyBeat;
 
 		// Move backward if the startTime is not a whole number due to Youtube only accepting timestamps in whole increments
+		/*
 		if ((startTime - (int)startTime) >= 0.01)
 		{
 			for (double i = beatsElapsed; i > 0.0; i -= SIXTYFOUR_NOTE)
@@ -207,10 +210,12 @@ public class Metronome : MonoBehaviour
 		}
 
 		// startTime is now rounded down
+		*/
 
 		startBeatFinal = beatsElapsed;
-		player.player.startFromSecondTime = (int)startTime;
+		//player.player.startFromSecondTime = (int)startTime;
 		player.Play();
+		//player.player.Seek(startTime);
 	}
 
 	/*
@@ -220,11 +225,12 @@ public class Metronome : MonoBehaviour
 	public void PlaybackStarted()
 	{
 		playbackStarted = true;
-		playbackPaused = false;
+		//playbackPaused = false;
 	}
 
 	public void PlaybackPaused()
 	{
+		/*
 		if (!playbackPaused)
 		{
 			playbackPaused = true;
@@ -234,8 +240,12 @@ public class Metronome : MonoBehaviour
 		{
 			playbackPaused = false;
 		}
+		*/
+
+		playbackPaused = true;
 	}
 
+	/*
 	public void PlaybackBufferingYes()
 	{
 		playbackBuffering = true;
@@ -245,6 +255,12 @@ public class Metronome : MonoBehaviour
 	{
 		playbackBuffering = false;
 	}
+
+	public void PlaybackSeekDone()
+	{
+		playbackSeekDone = true;
+	}
+	*/
 
 	public void UpdateTimeAnywhere()
 	{
@@ -258,38 +274,47 @@ public class Metronome : MonoBehaviour
 
 		else
 		{
-			//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
-
 			if (!pastSchedule)
 			{
-				songStart = AudioSettings.dspTime;
-				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
-
-				pastSchedule = true;
-			}
-
-			timeElapsed = AudioSettings.dspTime - songStart + startTime;
-			timer.text = "Time: " + timeElapsed.ToString();
-			//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
-
-			if (startTime > startOffset)
-			{
-				if ((timeElapsed >= (globalOffset + startTime)) && (!playbackPaused && !playbackBuffering))
+				player.player.Seek(startTime);
+				
+				if (playbackPaused)//(playbackSeekDone)
 				{
-					beatsElapsed += beatsElapsedDelta;
+					player.player.PlayPause();
+
+					songStart = AudioSettings.dspTime;
+					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+
+					pastSchedule = true;
+					playbackPaused = false;
 				}
 			}
 
 			else
 			{
-				if ((timeElapsed >= (globalOffset + (startOffset - startTime))) && (!playbackPaused && !playbackBuffering))
-				{
-					beatsElapsed += beatsElapsedDelta;
-				}
-			}
+				timeElapsed = AudioSettings.dspTime - songStart + startTime;
+				timer.text = "Time: " + timeElapsed.ToString();
+				//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
 
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
+				if (startTime > startOffset)
+				{
+					if ((timeElapsed >= (globalOffset + startTime)))
+					{
+						beatsElapsed += beatsElapsedDelta;
+					}
+				}
+
+				else
+				{
+					if ((timeElapsed >= (globalOffset + (startOffset - startTime))))
+					{
+						beatsElapsed += beatsElapsedDelta;
+					}
+				}
+
+				timeElapsedDelta = timeElapsed - timeElapsedLast;
+				timeElapsedLast = timeElapsed;
+			}
 		}
 	}
 
@@ -319,5 +344,34 @@ public class Metronome : MonoBehaviour
 		secPerBeat = SEC_PER_MIN / tempo;
 		beatsPerSec = tempo / SEC_PER_MIN;
 		beatsElapsedDelta = timeElapsedDelta / secPerBeat;
+	}
+
+	/*
+		YOUTUBE PLAYER CALLBACK TESTERS
+	*/
+
+	public void a1()
+	{
+		Debug.Log("When the url's are loaded");
+	}
+
+	public void a2()
+	{
+		Debug.Log("When the videos are ready to play");
+	}
+
+	public void a3()
+	{
+		Debug.Log("When the video start playing");
+	}
+
+	public void a4()
+	{
+		Debug.Log("When the video pause");
+	}
+
+	public void a5()
+	{
+		Debug.Log("When the video finish");
 	}
 }

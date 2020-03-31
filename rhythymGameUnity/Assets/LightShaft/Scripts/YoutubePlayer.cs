@@ -143,7 +143,9 @@ public class YoutubePlayer : MonoBehaviour
     [Tooltip("When buffering")]
     public UnityEvent OnBufferYes;
     [Tooltip("When not buffering")]
-    public UnityEvent OnBufferNo;    
+    public UnityEvent OnBufferNo;
+    [Tooltip("When seeking done")]
+    public UnityEvent SeekDone;
 
     [Space]
     [Header("The unity video players")]
@@ -211,7 +213,7 @@ public class YoutubePlayer : MonoBehaviour
     private string lastTryVideoId;
 
     private float lastStartedTime;
-    private bool youtubeUrlReady = false;
+    public bool youtubeUrlReady = false;
 
     #endregion
 
@@ -1725,7 +1727,7 @@ public class YoutubePlayer : MonoBehaviour
 
     bool seekUsingLowQuality = false;
 
-    public void Seek(float time)
+    public void Seek(double time)
     {
         waitAudioSeek = true;
         Pause();
@@ -1860,6 +1862,7 @@ public class YoutubePlayer : MonoBehaviour
             if (videoSeekDone && videoAudioSeekDone)
             {
                 isSyncing = false;
+                SeekDone.Invoke(); // !
                 StartCoroutine(SeekFinished());
             }
         }
@@ -1881,6 +1884,7 @@ public class YoutubePlayer : MonoBehaviour
             if (videoSeekDone && videoAudioSeekDone)
             {
                 isSyncing = false;
+                SeekDone.Invoke(); // !
                 StartCoroutine(SeekFinished());
             }
         }
