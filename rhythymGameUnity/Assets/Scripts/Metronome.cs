@@ -41,8 +41,12 @@ public class Metronome : MonoBehaviour
 	public Track meta;
 	public YoutubeSimplified player;
 
+	public Text timer;
+
 	private bool playbackStarted;
 	private bool playbackPaused;
+	private bool playbackBuffering;
+
 	public double startBeat;
 	private double startTime; // Whole number passed to Youtube
 	private double startBeatFinal;
@@ -75,7 +79,8 @@ public class Metronome : MonoBehaviour
 		timeElapsedDelta = 0.0;
 
 		playbackStarted = false;
-		playbackPaused = true;
+		playbackPaused = false;
+		playbackBuffering = false;
 		pastSchedule = false;
 		tempoIndex = 0;
 	}
@@ -220,16 +225,25 @@ public class Metronome : MonoBehaviour
 
 	public void PlaybackPaused()
 	{
-		playbackStarted = false;
-		playbackPaused = true;
+		if (!playbackPaused)
+		{
+			playbackPaused = true;
+		}
 
-		beatsElapsed = startBeatFinal;
+		else
+		{
+			playbackPaused = false;
+		}
 	}
 
-	public void PlaybackResumed()
+	public void PlaybackBufferingYes()
 	{
-		playbackStarted = true;
-		playbackPaused = false;
+		playbackBuffering = true;
+	}
+
+	public void PlaybackBufferingNo()
+	{
+		playbackBuffering = false;
 	}
 
 	public void UpdateTimeAnywhere()
@@ -244,30 +258,27 @@ public class Metronome : MonoBehaviour
 
 		else
 		{
-			//if (playbackStarted && !playbackPaused) // Video has started and already warped
-			if (player.player.videoPlayer.GetComponent<AudioSource>().isPlaying)
+			//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
+
+			if (!pastSchedule)
 			{
-				//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
+				songStart = AudioSettings.dspTime;
+				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
 
-				if (!pastSchedule)
-				{
-					songStart = AudioSettings.dspTime;
-					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
-
-					pastSchedule = true;
-				}
-
-				timeElapsed = AudioSettings.dspTime - songStart + startTime;
-				//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
-
-				if ((timeElapsed >= (startOffset + globalOffset + startTime)) && !playbackPaused)
-				{
-					beatsElapsed += beatsElapsedDelta;
-				}
-
-				timeElapsedDelta = timeElapsed - timeElapsedLast;
-				timeElapsedLast = timeElapsed;
+				pastSchedule = true;
 			}
+
+			timeElapsed = AudioSettings.dspTime - songStart + startTime;
+			timer.text = "Time: " + timeElapsed.ToString();
+			//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
+
+			if ((timeElapsed >= (startOffset + globalOffset + startTime)) && (!playbackPaused && !playbackBuffering))
+			{
+				beatsElapsed += beatsElapsedDelta;
+			}
+
+			timeElapsedDelta = timeElapsed - timeElapsedLast;
+			timeElapsedLast = timeElapsed;
 		}
 	}
 

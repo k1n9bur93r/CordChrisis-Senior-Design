@@ -139,9 +139,11 @@ public class YoutubePlayer : MonoBehaviour
     public UnityEvent OnVideoPaused;
     [Tooltip("When the video finish")]
     public UnityEvent OnVideoFinished;
-    [Tooltip("When done buffering")]
-    public UnityEvent OnVideoResume;
     
+    [Tooltip("When buffering")]
+    public UnityEvent OnBufferYes;
+    [Tooltip("When not buffering")]
+    public UnityEvent OnBufferNo;    
 
     [Space]
     [Header("The unity video players")]
@@ -475,15 +477,11 @@ public class YoutubePlayer : MonoBehaviour
             {
                 ShowLoading();
                 Debug.Log("Buffering");
-
-                OnVideoPaused.Invoke(); // !
             }
             else//not buffering
             {
                 HideLoading();
                 //Debug.Log("Not buffering");
-
-                OnVideoResume.Invoke(); // !
             }
             lastTimePlayed = videoPlayer.time;
         }
@@ -703,7 +701,7 @@ public class YoutubePlayer : MonoBehaviour
         if (loadingContent != null)
             loadingContent.SetActive(true);
 
-        OnVideoPaused.Invoke(); // !
+        OnBufferYes.Invoke(); // !
     }
 
     private void HideLoading()
@@ -711,7 +709,7 @@ public class YoutubePlayer : MonoBehaviour
         if (loadingContent != null)
             loadingContent.SetActive(false);
 
-        OnVideoResume.Invoke(); // !
+        OnBufferNo.Invoke(); // !
     }
 
     //Call to the system to load & Play youtube video.
