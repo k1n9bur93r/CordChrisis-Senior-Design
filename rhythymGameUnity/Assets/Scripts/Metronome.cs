@@ -131,7 +131,7 @@ public class Metronome : MonoBehaviour
 
 	private void CheckRestart()
 	{
-		if (((startBeat != 0) && (videoTime == 0)) || ((startBeat == 0) && (videoTime == 0) && ((timeElapsed - videoTime) >= 0.1)))
+		if (((startBeat != 0) && (videoTime == 0)) || ((startBeat == 0) && (videoTime == 0) && ((timeElapsed - videoTime) >= 0.5)))
 		{
 			player.player.Pause();
 			player.player.Seek(0.0);
