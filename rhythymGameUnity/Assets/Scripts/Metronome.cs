@@ -45,6 +45,7 @@ public class Metronome : MonoBehaviour
 	private bool playbackPaused;
 	public double startBeat;
 	private double startTime; // Whole number passed to Youtube
+	private double startBeatFinal;
 
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
@@ -176,7 +177,7 @@ public class Metronome : MonoBehaviour
 		{
 			for (double i = beatsElapsed; i > 0.0; i -= SIXTYFOUR_NOTE)
 			{
-				Debug.Log("tempoIndex: " + tempoIndex);
+				//Debug.Log("tempoIndex: " + tempoIndex);
 
 				if ((tempoIndex > 0) && (tempoIndex < meta.json.tempo_change_beat.Length) && (i < meta.json.tempo_change_beat[tempoIndex]))
 				{
@@ -193,7 +194,7 @@ public class Metronome : MonoBehaviour
 
 				if ((startTime - (int)startTime) < 0.01)
 				{
-					beatsElapsed = i; // NO
+					beatsElapsed = i;
 					startTime = (int)startTime;
 					break;
 				}
@@ -202,6 +203,7 @@ public class Metronome : MonoBehaviour
 
 		// startTime is now rounded down
 
+		startBeatFinal = beatsElapsed;
 		player.player.startFromSecondTime = (int)startTime;
 		player.Play();
 	}
@@ -213,52 +215,59 @@ public class Metronome : MonoBehaviour
 	public void PlaybackStarted()
 	{
 		playbackStarted = true;
+		playbackPaused = false;
 	}
 
 	public void PlaybackPaused()
 	{
+		playbackStarted = false;
 		playbackPaused = true;
+
+		beatsElapsed = startBeatFinal;
 	}
 
 	public void PlaybackResumed()
 	{
+		playbackStarted = true;
 		playbackPaused = false;
 	}
 
 	public void UpdateTimeAnywhere()
 	{
-		if (Input.GetKey(KeyCode.P) && !playbackStarted)
+		if (!playbackStarted)
 		{
-			StartSongAnywhere();
+			if (Input.GetKey(KeyCode.P))
+			{
+				StartSongAnywhere();
+			}
 		}
 
-		if (playbackStarted && !playbackPaused) // Video has started and already warped
+		else
 		{
-			//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
-
-			if (!pastSchedule)
+			//if (playbackStarted && !playbackPaused) // Video has started and already warped
+			if (player.player.videoPlayer.GetComponent<AudioSource>().isPlaying)
 			{
-				songStart = AudioSettings.dspTime;
-				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+				//Debug.Log("time: " + timeElapsed + " | schedule: " + (startOffset + globalOffset + startTime));
 
-				pastSchedule = true;
+				if (!pastSchedule)
+				{
+					songStart = AudioSettings.dspTime;
+					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+
+					pastSchedule = true;
+				}
+
+				timeElapsed = AudioSettings.dspTime - songStart + startTime;
+				//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
+
+				if ((timeElapsed >= (startOffset + globalOffset + startTime)) && !playbackPaused)
+				{
+					beatsElapsed += beatsElapsedDelta;
+				}
+
+				timeElapsedDelta = timeElapsed - timeElapsedLast;
+				timeElapsedLast = timeElapsed;
 			}
-
-			timeElapsed = AudioSettings.dspTime - songStart + startTime;
-			//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
-
-			if (timeElapsed >= (startOffset + globalOffset + startTime))
-			{
-				beatsElapsed += beatsElapsedDelta;
-			}
-
-			else
-			{
-				Debug.Log("Not yet");
-			}
-
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
 		}
 	}
 
