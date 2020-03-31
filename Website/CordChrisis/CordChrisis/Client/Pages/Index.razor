@@ -3,6 +3,7 @@
 @using CordChrisis.Shared.Models
 @using CordChrisis.Client.Services
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
+@inject IJSRuntime js
 @*<Alert/>*@
 
 
@@ -65,13 +66,36 @@
     string SessionID = String.Empty;
     string GetSession = String.Empty;
     List<Map> popularMaps { get; set; }
+
     public async Task<List<Map>> getPopularMaps()
     {
 
         return await Http.GetJsonAsync<List<Map>>(@"searchpage/getpopular");
 
     }
+    protected override async void OnInitialized()
+    {
+        //await SaveGameActivationToSession();
 
+               Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        bool isRunning = await checkGameRunning;
+
+        if (isRunning)
+        {
+            await this.js.InvokeVoidAsync("quit");
+            await Storage.SetItemAsync("GameRunning",false);
+            base.OnInitialized();
+        }
+        Console.WriteLine(isRunning);
+        base.OnInitialized();
+        base.OnInitialized();
+
+    }
+
+    async Task SaveGameActivationToSession()
+    {
+        await Storage.SetItemAsync("GameRunning", false);
+    }
     async Task SaveLogOnToSession()
     {
         await Storage.SetItemAsync("LoggedIn", SessionID);

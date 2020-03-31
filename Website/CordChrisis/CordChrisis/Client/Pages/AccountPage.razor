@@ -3,6 +3,8 @@
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService Storage
+@inject IJSRuntime js;
+
 
 @if (!UserID.IsCompleted)
 {
@@ -72,12 +74,25 @@ else
     public Task<string> UserID { get; set; }
     string ID = "Temp";
     bool hasID = false;
+    Task<bool> checkGameRunning { get; set; }
     UserStats stats = new UserStats();
 
     protected async override void OnInitialized()
     {
-        base.OnInitialized();
+        checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
         UserID = Storage.GetItemAsync<string>("LoggedIn");
+        bool isRunning = await checkGameRunning;
+
+        if (isRunning)
+        {
+            await this.js.InvokeVoidAsync("quit");
+            await Storage.SetItemAsync("GameRunning",false);
+            base.OnInitialized();
+        }
+        Console.WriteLine(isRunning);
+        base.OnInitialized();
+
+
     }
 
 
@@ -97,5 +112,4 @@ else
         }
 
     }
-
 }

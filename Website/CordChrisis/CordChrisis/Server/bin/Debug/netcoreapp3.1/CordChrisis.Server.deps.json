@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "CordChrisis.Server/1.0.0": {
         "dependencies": {
+          "Blazor.Extensions.Canvas": "1.1.0-preview1",
           "Blazored.SessionStorage": "1.0.11",
           "CordChrisis.Client": "1.0.0",
           "CordChrisis.Shared": "1.0.0",
@@ -293,6 +294,25 @@
         },
         "compile": {
           "CordChrisis.Server.dll": {}
+        }
+      },
+      "Blazor.Extensions.Canvas/1.1.0-preview1": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "3.1.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Blazor.Extensions.Canvas.JS.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          },
+          "lib/netstandard2.0/Blazor.Extensions.Canvas.dll": {
+            "assemblyVersion": "0.1.0.0",
+            "fileVersion": "0.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Blazor.Extensions.Canvas.JS.dll": {},
+          "lib/netstandard2.0/Blazor.Extensions.Canvas.dll": {}
         }
       },
       "Blazored.SessionStorage/1.0.11": {
@@ -2433,6 +2453,7 @@
       },
       "CordChrisis.Client/1.0.0": {
         "dependencies": {
+          "Blazor.Extensions.Canvas": "1.1.0-preview1",
           "Blazored.SessionStorage": "1.0.11",
           "CordChrisis.Shared": "1.0.0",
           "Microsoft.AspNetCore.Blazor.HttpClient": "3.2.0-preview2.20160.5",
@@ -2447,6 +2468,7 @@
       },
       "CordChrisis.Shared/1.0.0": {
         "dependencies": {
+          "Blazor.Extensions.Canvas": "1.1.0-preview1",
           "Blazored.SessionStorage": "1.0.11",
           "System.ComponentModel.Annotations": "4.7.0"
         },
@@ -3994,6 +4016,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Blazor.Extensions.Canvas/1.1.0-preview1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Jvin5a1ISpDkjhsPwVsI26zlRqMVutuxmMUkBBI9y9hNtnJjaA0qlDjIg7eD1CDjB69n4VV99LYOHLHU469OCQ==",
+      "path": "blazor.extensions.canvas/1.1.0-preview1",
+      "hashPath": "blazor.extensions.canvas.1.1.0-preview1.nupkg.sha512"
     },
     "Blazored.SessionStorage/1.0.11": {
       "type": "package",

@@ -4,6 +4,7 @@
 @using System.Diagnostics
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
+@inject IJSRuntime js
     <div class="container pt-lg-5">
         <div class="m-1 bg-light rounded p-2">
             <form class="form-inline  mb-2">
@@ -161,6 +162,24 @@
     void UpdateRating3() => SelectedRating = 3;
     void UpdateRating4() => SelectedRating = 4;
     void UpdateRating5() => SelectedRating = 5;
+
+
+    protected async override void OnInitialized()
+    {
+       Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        bool isRunning = await checkGameRunning;
+
+        if (isRunning)
+        {
+            await this.js.InvokeVoidAsync("quit");
+            await Storage.SetItemAsync("GameRunning",false);
+            base.OnInitialized();
+        }
+        Console.WriteLine(isRunning);
+        base.OnInitialized();
+
+
+    }
 
     public async Task<List<Map>> SubmitSearchQuery()
     {

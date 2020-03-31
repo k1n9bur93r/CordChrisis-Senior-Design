@@ -2,11 +2,24 @@
 @page "/game/{GameMode:int}/"
 @using CordChrisis.Shared.Models
 
+@inject IJSRuntime js;
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 @inject HttpClient Http;
-<div class="container rounded mt-4 p-1 bg-light">
-<button @onclick="SaveUserMapStats" class="btn btn-block btn-primary"> Played the Game, store data for it please!</button>
-</div>
+
+
+
+
+    <div class="container rounded mt-4 p-1 bg-light">
+        <div class="webgl-content">
+            <div id="unityContainer" style="width: 600px; height: 600px"></div>
+            <div class="">
+                <div class="webgl-logo"></div>
+                <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+                <div class="title">CordChrisis</div>
+            </div>
+        </div>
+        <button @onclick="SaveUserMapStats" class="btn btn-block btn-primary"> Played the Game, store data for it please!</button>
+    </div>
 
 @code {
     [Parameter]
@@ -15,8 +28,19 @@
     public string MapID { get; set; }
     Map GameMap { get; set; }
     string LoggedInUserID = string.Empty;
-    UserMapStats userStats= new UserMapStats();
+    UserMapStats userStats = new UserMapStats();
     bool hasStats = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if(firstRender)
+        {
+            await this.js.InvokeVoidAsync("start");
+            await Storage.SetItemAsync("GameRunning",false);
+            await SaveGameActivationToSession();
+        }
+    }
 
     protected async override void OnInitialized()
     {
@@ -29,6 +53,11 @@
             if (userStats.Plays != 0) hasStats = true;
             base.OnInitialized();
         }
+    }
+
+    async Task SaveGameActivationToSession()
+    {
+        await Storage.SetItemAsync("GameRunning", true);
     }
 
     async Task<string> GetCurrentLogOnSession()

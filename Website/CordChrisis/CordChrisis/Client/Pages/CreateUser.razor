@@ -4,6 +4,8 @@
 @using System.Security;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@inject IJSRuntime js
+@inject Blazored.SessionStorage.ISessionStorageService Storage
 
 <div class=" container rounded mt-4 p-1 bg-light">
     <div class="jumbotron">
@@ -94,6 +96,23 @@
     bool badpassword = false;
     bool badpsswordreapeat = false;
 
+
+    protected async override void OnInitialized()
+    {
+       Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        bool isRunning = await checkGameRunning;
+
+        if (isRunning)
+        {
+            await this.js.InvokeVoidAsync("quit");
+            await Storage.SetItemAsync("GameRunning",false);
+            base.OnInitialized();
+        }
+        Console.WriteLine(isRunning);
+        base.OnInitialized();
+
+
+    }
 
     public async Task<bool> addUser()
     {

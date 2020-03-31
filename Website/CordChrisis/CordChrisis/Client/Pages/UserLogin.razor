@@ -6,6 +6,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService Storage
+@inject IJSRuntime js
 
 <div class="container rounded mt-4 p-1 bg-light">
     <div class="jumbotron">
@@ -83,6 +84,24 @@
     Login checkData = new Login();
     bool isPassword = true;
     bool islogin = true;
+
+
+    protected async override void OnInitialized()
+    {
+       Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        bool isRunning = await checkGameRunning;
+
+        if (isRunning)
+        {
+            await this.js.InvokeVoidAsync("quit");
+            await Storage.SetItemAsync("GameRunning",false);
+            base.OnInitialized();
+        }
+        Console.WriteLine(isRunning);
+        base.OnInitialized();
+
+
+    }
 
     public async Task<bool> SubmitLoginQuery()
     {

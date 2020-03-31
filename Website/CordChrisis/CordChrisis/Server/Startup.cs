@@ -8,6 +8,10 @@ using Microsoft.Extensions.Hosting;
 using CordChrisis.Server.Hubs;
 using System.Linq;
 using Blazored.SessionStorage;
+using Blazor.Extensions.Canvas;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace CordChrisis.Server
 {
@@ -36,6 +40,14 @@ namespace CordChrisis.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".unityweb"] = "application/octet-stream";
+            //app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,7 +60,7 @@ namespace CordChrisis.Server
                 app.UseHsts();
             }
             //app.UseCors("CorsPolicy");
-
+            
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
