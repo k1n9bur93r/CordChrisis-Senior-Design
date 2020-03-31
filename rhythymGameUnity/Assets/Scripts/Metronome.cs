@@ -272,9 +272,20 @@ public class Metronome : MonoBehaviour
 			timer.text = "Time: " + timeElapsed.ToString();
 			//Debug.Log("dsp-SS+ST: " + AudioSettings.dspTime + " | " + songStart + " | " + startTime);
 
-			if ((timeElapsed >= (startOffset + globalOffset + startTime)) && (!playbackPaused && !playbackBuffering))
+			if (startTime > startOffset)
 			{
-				beatsElapsed += beatsElapsedDelta;
+				if ((timeElapsed >= (globalOffset + startTime)) && (!playbackPaused && !playbackBuffering))
+				{
+					beatsElapsed += beatsElapsedDelta;
+				}
+			}
+
+			else
+			{
+				if ((timeElapsed >= (globalOffset + (startOffset - startTime))) && (!playbackPaused && !playbackBuffering))
+				{
+					beatsElapsed += beatsElapsedDelta;
+				}
 			}
 
 			timeElapsedDelta = timeElapsed - timeElapsedLast;
