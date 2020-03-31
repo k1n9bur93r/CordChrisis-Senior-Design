@@ -3354,7 +3354,7 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
@@ -3479,6 +3479,11 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: OnVideoStarted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
+        type: 3}
+      propertyPath: videoQuality
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114654752377565014, guid: f49b1865d907dca4a807588585397534,

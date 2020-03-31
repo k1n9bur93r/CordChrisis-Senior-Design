@@ -48,6 +48,8 @@ public class Metronome : MonoBehaviour
 	public double startBeat;
 	private double startTime;
 
+	private double videoTime;
+
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
@@ -74,7 +76,7 @@ public class Metronome : MonoBehaviour
 		beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
-
+		
 		playbackStarted = false;
 		pastSchedule = false;
 		tempoIndex = 0;
@@ -86,59 +88,8 @@ public class Metronome : MonoBehaviour
 
 	public void Update()
 	{
-		//UpdateTime(); // Get rid of this?
 		UpdateTimeAnywhere();
 		UpdateRates();
-	}
-
-	/*
-		Initialize song start point.
-		Play music after a brief delay.
-
-		Sounds in Unity do not play immediately when Play() is called (audio latency).
-		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
-
-		ISSUES:
-		- Unpredictable start times means there's still a slight amount of random, uncontrolled latency (enough to mess up timing)
-	*/
-
-	public void StartSong()
-	{
-		songStart = AudioSettings.dspTime; //- startOffset;
-		timeElapsedLast = AudioSettings.dspTime - songStart;
-
-		UpdateRates();
-		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
-	}
-
-	/*
-		Update timers.
-	*/
-
-	public void UpdateTime()
-	{
-		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
-		{
-			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
-			timeElapsed = AudioSettings.dspTime - songStart - overtime;
-
-			// If the initial delays have not elapsed yet, do not increase beatsElapsed
-			if (timeElapsed >= (startOffset + globalOffset + BUFFER_DELAY))
-			{
-				// Once the timer passes the initial delay for the first time, force its value to equal the initial delay.
-				if (!pastSchedule)
-				{
-					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
-					pastSchedule = true;
-				}				
-
-				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-				beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
-			}
-
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
-		}
 	}
 
 	/*
@@ -175,6 +126,23 @@ public class Metronome : MonoBehaviour
 	}
 
 	/*
+		Check if the video restarted for any reason and recover by resetting everything.
+	*/
+
+	private void CheckRestart()
+	{
+		if (((startBeat != 0) && (videoTime == 0)) || ((startBeat == 0) && (videoTime == 0) && ((timeElapsed - videoTime) >= 0.1)))
+		{
+			player.player.Pause();
+			player.player.Seek(0.0);
+			beatsElapsed = startBeat;
+			pastSchedule = false;
+
+			Debug.Log("[Metronome] Video restarted!");
+		}
+	}
+
+	/*
 		Update the timer based on the arbitrary start point.
 	*/
 
@@ -185,9 +153,11 @@ public class Metronome : MonoBehaviour
 
 	public void UpdateTimeAnywhere()
 	{
+		videoTime = player.player.videoPlayer.time;
+
 		timer.text = 
 			"DSP time: " + timeElapsed.ToString() + "\n"
-			+ "Video time: " + player.player.videoPlayer.time.ToString();
+			+ "Video time: " + videoTime.ToString();
 
 		if (!playbackStarted)
 		{
@@ -201,20 +171,16 @@ public class Metronome : MonoBehaviour
 		{
 			if (!pastSchedule)
 			{
-				if (startBeat == 0.0)
-				{
-					player.player.Seek(startTime);
-				}
-
-				else
+				if (startBeat != 0)
 				{
 					player.player.Seek(startTime + startOffset);
 				}
 				
 				player.player.Pause();
 
-				if ((startBeat == 0.0) || (player.player.videoPlayer.time != 0))
+				if ((startBeat == 0.0) || (videoTime != 0))
 				{
+					// Need a check for if the video restarted if warping
 					player.player.Play();
 					songStart = AudioSettings.dspTime + startTime;
 					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
@@ -245,6 +211,8 @@ public class Metronome : MonoBehaviour
 
 				timeElapsedDelta = timeElapsed - timeElapsedLast;
 				timeElapsedLast = timeElapsed;
+
+				CheckRestart();
 			}
 		}
 	}
