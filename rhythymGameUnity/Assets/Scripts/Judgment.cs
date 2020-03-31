@@ -11,32 +11,35 @@ using UnityEngine.UI;
 	Compares the time of the user's input versus the time of the note in question.
 
 	Important public methods:
-		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the note queue when a key is pressed. Returns whether or not the note was hit in a timing window.
-		- bool CheckMiss(): For use by InputController. Recieves the beats of the next two notes from the note queue. Returns whether or not the note has been missed completely.
+		- bool CheckHit(): For use by InputController. Recieves the beat of a pressed note from the top of the tap/hold queue when a key is pressed. Returns whether or not the note was hit in a timing window. Sends information to scoreboard.
+		- bool CheckMiss(): For use by InputController. Recieves the beats of the next two notes from either note queue. Returns whether or not the note has been missed completely. Sends information to scoreboard.
+		- bool CheckSwipe(): For use by InputController. Receives the beat of swiped note from the top of the swipe queue when a swipe occurs. Returns whether or not the note was hit. Sends information to scoreboard.
+		- double ReduceHoldInitial(): For use by InputController. Adjusts the required amount of time for a hold to be held dependent on timing. Returns a new required hold time.
+		- double ReduceHoldDuring(): For use by InputController. Decrements the time left for a hold note to be held. Returns a new required hold time.
+		- bool HoldSuccess(): For use by InputController. Sends information to scoreboard.
+		- bool HoldFailure(): For use by InputController. Sends information to scoreboard.
 
 	KNOWN ISSUES:
-		- 32nd notes at 300+ BPM have spotty miss detection
+		- 32nd notes at 300+ BPM have spotty miss detection.
 */
 
 public class Judgment : MonoBehaviour
 {
 	public Metronome clock;
-	//public Scoreboard stats;
+	public Scoreboard stats;
 
 	// Placeholders until Scoreboard/something else implements UI!
 	public Text ratingText;
 	public Text leanText;
 	public Text comboText;
 	public Text statsText;
-	
-	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss, notesHoldOK, notesHoldNG;
-	private int notesEarly, notesLate;
-	private int combo, comboMax;
-	private int score;
+
 	// End of placeholders
 
+	/*
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
-	enum Leanings { Early, Late };
+	enum Leanings { None, Early, Late };
+	*/
 
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
@@ -62,22 +65,13 @@ public class Judgment : MonoBehaviour
 		ratingText.text = "";
 		leanText.text = "";
 		comboText.text = "";
-
-		notesMarvelous = 0;
-		notesPerfect = 0;
-		notesGreat = 0;
-		notesGood = 0;
-		notesMiss = 0;
-		combo = 0;
-		comboMax = 0;
-		score = 0;
 	}
 
 	void Update()
 	{
 		//CalculateWindows();
 		//PrintWindows();
-		DrawStats(); // DEBUG
+		//DrawStats(); // DEBUG
 	}
 
 	/*
@@ -112,53 +106,33 @@ public class Judgment : MonoBehaviour
 		{
 			if (Math.Abs(diff) <= beatsMarvelous)
 			{
-				ratingText.text = "Marvelous!!!";
-				leanText.text = "";
-				notesMarvelous++;
-				combo++;
-				CalculateScore(Ratings.Marvelous);
-				//CheckLean(diff); // DEBUG ONLY
-
+				stats.UpdateScore(Ratings.Marvelous, Leanings.None);
 				return true;
 			}
 
 			else
 			{
-				// Pass to some Scoreboard function later
 				if (Math.Abs(diff) <= beatsPerfect)
 				{
-					ratingText.text = "Excellent!!";
-					notesPerfect++; 
-					combo++;
-					CalculateScore(Ratings.Perfect);
+					stats.UpdateScore(Ratings.Perfect, CheckLean(diff));
 				}
 
 				else if (Math.Abs(diff) <= beatsGreat)
 				{
-					ratingText.text = "Great!";
-					notesGreat++;
-					combo++;
-					CalculateScore(Ratings.Great);
+					stats.UpdateScore(Ratings.Great, CheckLean(diff));
 				}
 				
 				else if (Math.Abs(diff) <= beatsGood)
 				{
-					combo = 0;
-					comboText.text = "";
-					ratingText.text = "Good";
-					notesGood++;
-					CalculateScore(Ratings.Good);
+					stats.UpdateScore(Ratings.Good, CheckLean(diff));
 				}
 				
 				else
 				{
 					Debug.Log("[Judgment] CheckHit() fell through!");
 					Debug.Log("[Judgment] currentBeat: " + currentBeat + " | noteBeat: " + noteBeat + " | diff: " + diff);
-
 					return false;
 				}
-
-				CheckLean(diff);
 
 				return true;
 			}
@@ -193,22 +167,12 @@ public class Judgment : MonoBehaviour
 
 	public void HoldSuccess()
 	{
-		// send stuff to scoreboard
-		ratingText.text = "Marvelous!!!";
-		leanText.text = "HELD";
-		notesHoldOK++;
-		combo++;
-		CalculateScore(Ratings.Marvelous);
+		stats.UpdateScore(Ratings.Marvelous, Leanings.None);
 	}
 
 	public void HoldFailure()
 	{
-		// send stuff to scoreboard
-		ratingText.text = "Miss...";
-		comboText.text = "";
-		leanText.text = "LOST";
-		notesHoldNG++;
-		combo = 0;
+		stats.UpdateScore(Ratings.Miss, Leanings.None);
 	}
 
 	/*
@@ -228,13 +192,7 @@ public class Judgment : MonoBehaviour
 		// If the swipe is caught in ANY valid timing window, automatically rate it a "Marvelous"
 		if (diff >= -beatsGood)
 		{
-			ratingText.text = "Marvelous!!!";
-			leanText.text = "";
-			notesMarvelous++;
-			combo++;
-			CalculateScore(Ratings.Marvelous);
-			//CheckLean(diff); // DEBUG ONLY
-
+			stats.UpdateScore(Ratings.Marvelous, Leanings.None);
 			return true;
 		}
 
@@ -242,25 +200,6 @@ public class Judgment : MonoBehaviour
 		else
 		{
 			return false;
-		}
-	}
-
-	/*
-		Check if the non-best input hit the early or late side of the timing window.
-	*/
-
-	private void CheckLean(double diff)
-	{
-		if (diff < 0.0)  // Pass to some Scoreboard function later
-		{ 
-			leanText.text = "EARLY";
-			notesEarly++;
-		}
-
-		else if (diff > 0.0) // This too
-		{
-			leanText.text = "LATE";
-			notesLate++;
 		}
 	}
 
@@ -281,27 +220,14 @@ public class Judgment : MonoBehaviour
 		// If the note after the next one is overlapping the receptor, immediately miss
 		if (currentBeat >= farBeat)
 		{
-			//Debug.Log("[Judgment] Jack compensated");
-			ratingText.text = "Miss...";
-			comboText.text = "";
-			leanText.text = "";
-			notesMiss++;
-			combo = 0;
-			
+			stats.UpdateScore(Ratings.Miss, Leanings.None);
 			return true;
 		}
 
 		// If the beat difference between now and the note's location exceeds the size of the late "Good" window, it's now too late to hit, delete from the queue
 		if (diff > beatsGood)
 		{
-			// Pass to some Scoreboard function later
-			//stats.UpdateScoreTap(Ratings.Miss);
-			ratingText.text = "Miss...";
-			comboText.text = "";
-			leanText.text = "";
-			notesMiss++;
-			combo = 0;
-
+			stats.UpdateScore(Ratings.Miss, Leanings.None);
 			return true;
 		}
 
@@ -313,60 +239,19 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Debug functions to test out a normalized combo scoring system.
+		Check if the non-best input hit the early or late side of the timing window.
 	*/
 
-	private void CalculateScore(Ratings rate)
+	private Leanings CheckLean(double diff)
 	{
-		//AccuracyScore(rate);
-		//ComboScore();
-	}
-
-	private void AccuracyScore(Ratings rate)
-	{
-		const double accScoreBase = 700000.0;
-		const double totalNotes = 164.0;
-
-		double baseNoteValue = accScoreBase / totalNotes;
-
-		double valueMarvelous = baseNoteValue;
-		double valuePerfect = baseNoteValue - 50;
-		double valueGreat = baseNoteValue * 0.7;
-		double valueGood = baseNoteValue * 0.3;
-
-		switch (rate)
-		{
-			case Ratings.Marvelous:
-				score += (int)valueMarvelous;
-				break;
-
-			case Ratings.Perfect:
-				score += (int)valuePerfect;
-				break;
-
-			case Ratings.Great:
-				score += (int)valueGreat;
-				break;
-
-			case Ratings.Good:
-				score += (int)valueGood;
-				break;
-
-			default:
-				break;
+		if (diff < 0.0)
+		{ 
+			return Leanings.Early;
 		}
-	}
 
-	private void ComboScore()
-	{
-		const double comboScoreBase = 300000.0;
-		const double totalNotes = 164.0;
-
-		double comboBonus = comboScoreBase * (1.0 / (totalNotes - 1.0));
-
-		if (combo > 10)
+		else //if (diff > 0.0)
 		{
-			score += (int)comboBonus;
+			return Leanings.Late;
 		}
 	}
 
@@ -383,35 +268,5 @@ public class Judgment : MonoBehaviour
 			+ "Good: +/- " + beatsGood + " beats (+/- " + FRAMES_GOOD + " sec)";
 
 		Debug.Log(judgmentWindows);
-	}
-
-	/*
-		Debug function to display play statistics.
-	*/
-
-	private void DrawStats()
-	{
-		if (combo > 0)
-		{
-			comboText.text = combo.ToString();
-		}
-
-		if (comboMax < combo)
-		{
-			comboMax = combo;
-		}
-
-		statsText.text =
-			score.ToString() + " Score\n\n"
-			+ notesMarvelous.ToString() + " Marvelous\n"
-			+ notesPerfect.ToString() + " Excellent\n"
-			+ notesGreat.ToString() + " Great\n"
-			+ notesGood.ToString() + " Good\n"
-			+ notesMiss.ToString() + " Miss\n\n"
-			+ notesHoldOK.ToString() + " Held\n"
-			+ notesHoldNG.ToString() + " Lost\n\n"
-			+ notesEarly.ToString() + " Early\n"
-			+ notesLate.ToString() + " Late\n\n"
-			+ comboMax.ToString() + " Max Combo";
 	}
 }

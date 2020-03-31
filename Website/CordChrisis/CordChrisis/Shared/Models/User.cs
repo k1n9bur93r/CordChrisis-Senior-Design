@@ -19,5 +19,8 @@ namespace CordChrisis.Shared.Models
         [Required]
         [MaxLength(1)]
         public bool IsDeleted { get; set; }
+
+
+
     }
 }

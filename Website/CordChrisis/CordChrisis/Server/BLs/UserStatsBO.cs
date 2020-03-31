@@ -29,6 +29,61 @@ namespace CordChrisis.BOs
             }
         }
 
+        public bool createUser(Login newUser)
+        {
+            try
+            {
+                UserDA creation = new UserDA();
+                UserLoginInputDA createUser = new UserLoginInputDA();
+                UserStatsDA newStats = new UserStatsDA();
+
+                Guid id = Guid.NewGuid();
+
+                newUser.ID = id;
+
+                UserStats US = new UserStats
+                {
+                    ID = id.ToString(),
+                    TotalMapsMade = 0,
+                    HighestScore = 0,
+                    MaxCombo = 0,
+                    TotalScore = 0,
+                    MostPlayedMap = "",
+                    MapsCreated = 0,
+                    TotalGamesPlayed = 0
+                };
+
+
+                User newU = new User
+                {
+                    ID = id.ToString(),
+                    UserName = newUser.Email,
+                    Rank = 0,
+                    IsDeleted = false
+                };
+
+
+                //User Table
+                creation.Create(newU);
+
+                //UserLogin table
+                createUser.Create(newUser);
+
+                //UserStats Table
+                newStats.Create(US);
+
+
+                return true; 
+
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error: ");
+                throw;
+            }
+
+        }
+
         public int GetSalt(SecureString password) {
             try
             {

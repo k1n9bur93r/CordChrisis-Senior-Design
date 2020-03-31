@@ -12,13 +12,15 @@ public class JsonTrack
 
     #pragma warning disable 0649
 
-    // required
+    // Song metadata
+    public string title;
+    public string artist;
+
+    // Chart pieces
+    public double offset;
     public double[] beats;
     public int[] notes;
-
-    // optional
     public double[] note_lengths;
-    public double offset;
     public double[] tempo_change_amount;
     public double[] tempo_change_beat;
 
@@ -30,11 +32,15 @@ public class Track : MonoBehaviour
     // This is the main class for this file
     // if you want to access members of JsonTrack such as json.notes
     // do so through 'Track.json'
-    
+
+    // Track vars
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
     public string[] intToGesture = new string[] {"", "l", "r", "u", "d"};
+
+    // Derived chart statistics
+    public int noteTotal;
 
     JsonTrack readJsonFile(string filename) {
         // reads a json file and returns the parsed object as JsonTrack object
@@ -59,15 +65,35 @@ public class Track : MonoBehaviour
             track.note_lengths = new double [length];
         }
 
+        if (track.notes.Length != track.note_lengths.Length) {
+            Debug.Log("notes: " + track.notes.Length + " | note_lengths: " + track.note_lengths.Length);
+            throw new System.ArrayTypeMismatchException("Invalid Json file, notes and note_lengths length don't match.");
+        }
+
         // ---
 
         if (track.tempo_change_amount.Length != track.tempo_change_beat.Length)
         {
             Debug.Log("tempo changes: " + track.notes.Length + " | tempo beats: " + track.beats.Length);
-            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");           
+            throw new System.ArrayTypeMismatchException("Invalid Json file, tempo arrays don't match.");
         }
 
         return track;
+    }
+
+    private int CalculateNoteTotal()
+    {
+        int temp = json.notes.Length;
+
+        for (int i = 0; i < json.notes.Length; i++)
+        {
+            if (json.note_lengths[i] > 0)
+            {
+                temp++;
+            }
+        }
+
+        return temp;
     }
 
     void Awake()
@@ -101,5 +127,8 @@ public class Track : MonoBehaviour
                 Debug.Log("[Track] Invalid note found: " + note);
             }
         }
+
+        // Calculate chart statistics
+        noteTotal = CalculateNoteTotal();
     }
 }

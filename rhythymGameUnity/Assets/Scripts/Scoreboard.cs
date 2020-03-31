@@ -4,127 +4,240 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+public enum Leanings { None, Early, Late };
 
-// Public Function to use
-//  public void UpdateScore(int acc, double te, double th)
-//  This function can handle scoring for hold or tap notes
-//  <tap => UpdateScore(x,0,0);>
-//
-
+/*
+	[documentation here]
+*/
 
 public class Scoreboard : MonoBehaviour
 {
+	//private const double ACC_SCORE_MAX = 800000;
+	//private const double COMBO_SCORE_MAX = 200000;
+	private const double MAX_SCORE = 1000000.0;
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT", "PERFECT" };
 
-    // UI Text Variables
-    public TextMeshPro scoreText;
-    public TextMeshPro streakText;
-    public TextMeshPro multText;
-    public TextMeshPro ratingText;
+	// Other classes
+	public Track meta;
 
-    // Score points / rating
-    public int[] pointValue;
-    public string[] rating;
-    
+	// UI Text Variables
+	public TextMeshPro scoreText;
+	public TextMeshPro streakText;
+	public TextMeshPro multText;
+	public TextMeshPro ratingText;
+	public TextMeshPro leanText;
 
-    // Statistics for scoring
-    public int globalScore = 0;
+	public Animator ratingAnim;
+	public Material[] ratingColors;
 
-    public int accuracy = 0;
-    public int noteCount = 0;
-    public int hitCount = 0;
-    public int combo = 0;
-    public int missCount = 0;
+	private int scoreDisplayed;
 
-    private Animator ratingAnim;
+	// Statistics for scoring
+	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesEarly, notesLate;
+	private int combo, negativeCombo, comboMax;
+	private double score;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        pointValue = new int[5] { 0, 1, 2, 3, 4 };
-        rating = new string[5] { "MISS", "BAD", "GOOD", "EXCELLENT", "MARVELOUS" };
-        ratingAnim = GameObject.Find("RatingText").GetComponent<Animator>();
-        scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshPro>();
-        streakText = GameObject.Find("StreakText").GetComponent<TextMeshPro>();
-        multText = GameObject.Find("MultText").GetComponent<TextMeshPro>();
-        ratingText = GameObject.Find("RatingText").GetComponent<TextMeshPro>();
-    }
+	double baseNoteValue;
+	double[] ratingValues;
 
-    // Update is called once per frame
-    /*
-    public void //Update()
-    {
-        // ...
-    }
-    */
+	void Awake()
+	{
+		notesMarvelous = 0;
+		notesPerfect = 0;
+		notesGreat = 0;
+		notesGood = 0;
+		notesMiss = 0;
+		combo = 0;
+		negativeCombo = 0;
+		comboMax = 0;
+		score = 0;
+		scoreDisplayed = 0;
 
+		ratingText.text = "";
+		leanText.text = "";
+		streakText.text = "";
+	}
 
-    // UpdateScore is to score notes that are held
-    // -int acc = acurracy rating (0-4)
-    // -float te = time expected
-    // -float th = time held
-    public void UpdateScore(int acc, double te, double th)
-    {
+	void Start()
+	{
+		baseNoteValue = MAX_SCORE / (double)meta.noteTotal;
 
-        if (acc == 0)
-        {
-            missCount++;
-            combo = 0;
-        }
-        else
-        {
-            combo++;
-            if (th >= te)
-            {
-                globalScore += ((combo / 10 + 1) * pointValue[acc] * 100) + Mathf.RoundToInt((float)te) * 10;
-            }
-            else
-            {
-                globalScore += ((combo / 10 + 1) * pointValue[acc] * 100) + Mathf.RoundToInt((float)th) * 10;
-            }
-            textUpdate(acc);
-        }
-    }
+		ratingValues = new double[5] {
+			0, // Miss
+			baseNoteValue * 0.3, // Good
+			baseNoteValue * 0.7, // Great
+			baseNoteValue - 10.0, // Perfect
+			baseNoteValue  // Marvelous
+		};
+	}
 
-    // UpdateScoreTap is used for scoring the single tap notes 
-    // - int acc = accuracy rating (0-4)
-    public void UpdateScoreTap(int acc)
-    {
+	// Update is called once per frame
+	public void Update()
+	{
+		DrawScore();
+	}
 
-        if (acc == 0)
-        {
-            missCount++;
-            combo = 0;
-        }
-        else
-        {
-            hitCount++;
+	/*
+	private double LerpDouble(double a, double b, double time)
+	{
+		return a + (b - a) * time;
+	}
+	*/
 
-            if (acc > 1)
-            {
-                combo++;
-                globalScore += (combo / 10 + 1) * pointValue[acc] * 100;
-            }
-            else
-            {
-                combo = 0;
-                globalScore += pointValue[acc] * 100;
-            }
+	private void DrawScore()
+	{
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime); //(int)LerpDouble(scoreDisplayed, score, 16.0f * Time.deltaTime);
+		/*
+		float scoreVelocity = 0.0f;
+		scoreDisplayed = (int)Mathf.SmoothDamp((float)scoreDisplayed, (float)score, ref scoreVelocity, 0.05f);
+		*/
+		scoreText.text = (scoreDisplayed).ToString("000,000");
+	}
 
-        }
-        textUpdate(acc);
-    }
+	public void UpdateScore(Ratings rate, Leanings lean)
+	{
+		// Accuracy scoring
+		switch (rate)
+		{
+			case Ratings.Marvelous:
+				notesMarvelous++;
+				combo++;
+				break;
 
+			case Ratings.Perfect:
+				notesPerfect++;
+				combo++;
+				break;
 
+			case Ratings.Great:
+				notesGreat++;
+				combo++;
+				break;
+		
+			case Ratings.Good:
+				notesGood++;
+				combo = 0;
+				break;
 
-    // textUpdate updates the actual scoreboard
-    // - int acc - accuracy rating
-    // - Private function should be called by this class
-    private void textUpdate(int acc)
-    {
-        ratingText.text = rating[acc];
-        scoreText.text = "Score: " + globalScore.ToString();
-        streakText.text = "Streak: " + combo.ToString();
-        multText.text = "Mult: x" + (combo / 10 + 1).ToString();
+			case Ratings.Miss:
+				notesMiss++;
+				combo = 0;
+				break;
 
-    }
+			default:
+				Debug.Log("[Scoreboard] UpdateScore() accuracy fell through!");
+				break;
+		}
+
+		AnimateRating(rate);
+
+		// Negative combo scoring
+		SetNegativeCombo(rate);
+		AnimateCombo();
+
+		// Calculate score
+		
+		if (negativeCombo < 0)
+		{
+			score += ratingValues[(int)rate] * 0.9;
+		}
+
+		else
+		{
+			score += ratingValues[(int)rate];
+		}
+
+		// Early/Late
+		switch (lean)
+		{
+			case Leanings.Early:
+				leanText.text = "EARLY";
+				notesEarly++;
+				break;
+
+			case Leanings.Late:
+				leanText.text = "LATE";
+				notesLate++;
+				break;
+
+			case Leanings.None:
+				leanText.text = "";
+				break;
+
+			default:
+				Debug.Log("[Scoreboard] UpdateScore() lean fell through!");
+				break;
+		}
+	}
+
+	private void SetNegativeCombo(Ratings rate)
+	{
+		if (rate >= Ratings.Great)
+		{
+			negativeCombo++;
+		}
+
+		/*
+		else if (rate == Ratings.Good)
+		{
+			// Nothing happens
+		}
+		*/
+
+		else
+		{
+			if (negativeCombo > 0)
+			{
+				negativeCombo = 0;
+			}
+
+			else
+			{
+				negativeCombo--;
+			}			
+		}
+	}
+
+	private void AnimateRating(Ratings rate)
+	{
+		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
+
+		ratingText.text = RATING_NAMES[(int)rate];
+		ratingText.fontMaterial = ratingColors[(int)rate];
+	}
+
+	private void AnimateCombo()
+	{
+		// DEBUG
+		//streakText.text = negativeCombo.ToString() + " Combo";
+
+		if (combo > 0)
+		{
+			if ((notesGood > 0) || (notesMiss > 0))
+			{
+				/*
+				if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
+				else { streakText.fontMaterial = ratingColors[5]; }
+				*/
+
+				streakText.fontMaterial = ratingColors[5];
+			}
+
+			else
+			{
+				if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[6]; }
+				else if ((notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
+				else { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
+			}
+
+			streakText.text = combo.ToString();
+		}
+
+		else
+		{
+			streakText.text = "";
+		}
+	}
 }
