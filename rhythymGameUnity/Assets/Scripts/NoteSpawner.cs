@@ -95,7 +95,7 @@ public class NoteSpawner : MonoBehaviour
     public void spawnGesture(int gestureNum, double beat)
     {
         GameObject curGesture = 
-            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(90, 0, 0));
+            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset + 2.0f, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 0));
         
         print(curGesture);
 

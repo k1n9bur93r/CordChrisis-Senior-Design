@@ -110,6 +110,7 @@ MonoBehaviour:
   speedMod: 0
   metronome: {fileID: 0}
   beat: 0
+  length: 0
 --- !u!1 &4875881352522160445
 GameObject:
   m_ObjectHideFlags: 0

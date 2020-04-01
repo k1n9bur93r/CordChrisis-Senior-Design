@@ -15,6 +15,7 @@ MonoBehaviour:
   speedMod: 0
   metronome: {fileID: 0}
   beat: 0
+  length: 0
 --- !u!1001 &7828362348843051148
 PrefabInstance:
   m_ObjectHideFlags: 0

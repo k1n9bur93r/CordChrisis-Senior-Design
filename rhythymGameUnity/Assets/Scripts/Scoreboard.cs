@@ -79,20 +79,10 @@ public class Scoreboard : MonoBehaviour
 		DrawScore();
 	}
 
-	/*
-	private double LerpDouble(double a, double b, double time)
-	{
-		return a + (b - a) * time;
-	}
-	*/
-
 	private void DrawScore()
 	{
-		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime); //(int)LerpDouble(scoreDisplayed, score, 16.0f * Time.deltaTime);
-		/*
-		float scoreVelocity = 0.0f;
-		scoreDisplayed = (int)Mathf.SmoothDamp((float)scoreDisplayed, (float)score, ref scoreVelocity, 0.05f);
-		*/
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
+		//scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 20000.0f * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
