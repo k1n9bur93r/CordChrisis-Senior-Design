@@ -36,7 +36,7 @@ public class Metronome : MonoBehaviour
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
 	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
-	private const double SIXTYFOUR_NOTE = 0.03125; // This is actually a 128th note?
+	private const double SIXTYFOUR_NOTE = 0.0625;
 
 	public Track meta;
 	public YoutubeSimplified player;
@@ -114,7 +114,7 @@ public class Metronome : MonoBehaviour
 				tempoIndex++;
 			}
 
-			secPerBeat = SEC_PER_MIN / tempo / 32.0;
+			secPerBeat = SEC_PER_MIN / tempo / 16.0;
 			anyTime += secPerBeat;
 
 			beatsElapsed = i;
