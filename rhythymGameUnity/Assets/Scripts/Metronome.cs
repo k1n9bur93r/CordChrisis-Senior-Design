@@ -153,6 +153,12 @@ public class Metronome : MonoBehaviour
 		playbackStarted = true;
 	}
 
+	public bool PlayButton()
+	{
+		return (Input.GetKey(KeyCode.P)
+			|| Input.GetMouseButtonDown(0));
+	}
+
 	public void UpdateTimeAnywhere()
 	{
 		videoTime = player.player.videoPlayer.time;
@@ -163,7 +169,7 @@ public class Metronome : MonoBehaviour
 
 		if (!playbackStarted)
 		{
-			if (Input.GetKey(KeyCode.P))
+			if (PlayButton())
 			{
 				StartSongAnywhere();
 			}
