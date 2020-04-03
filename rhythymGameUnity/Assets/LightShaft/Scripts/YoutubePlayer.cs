@@ -238,8 +238,10 @@ public class YoutubePlayer : MonoBehaviour
             if (videoQuality == YoutubeVideoQuality.STANDARD) //Disable the second video player to eco resource;
             {
                 videoPlayer.skipOnDrop = _skipOnDrop;
+                /*
                 if(audioPlayer != null)
                     audioPlayer.transform.gameObject.SetActive(false);
+                */
             }
 
             //Check if fullscreen Mode is active at start.
@@ -266,10 +268,10 @@ public class YoutubePlayer : MonoBehaviour
             if (videoFormat == VideoFormatType.WEBM)
             {
                 videoPlayer.skipOnDrop = _skipOnDrop;
-                audioPlayer.skipOnDrop = _skipOnDrop;
+                //audioPlayer.skipOnDrop = _skipOnDrop;
             }
 
-            audioPlayer.seekCompleted += AudioSeeked;
+            //audioPlayer.seekCompleted += AudioSeeked;
             videoPlayer.seekCompleted += VideoSeeked;
 
             //Experimental tests
@@ -397,8 +399,10 @@ public class YoutubePlayer : MonoBehaviour
         {
             if (videoPlayer.isPrepared)
             {
+                /*
                 if (audioPlayer != null)
                     audioPlayer.Pause();
+                */
 
                 videoPlayer.Pause();
             }
@@ -413,11 +417,13 @@ public class YoutubePlayer : MonoBehaviour
             {
                 if (videoPlayer.isPrepared)
                 {
+                    /*
                     if (audioPlayer != null)
                     {
                         if (!noAudioAtacched && (videoQuality != YoutubeVideoQuality.STANDARD))
                             audioPlayer.Play();
                     }
+                    */
                     videoPlayer.Play();
                 }
             }
@@ -458,7 +464,7 @@ public class YoutubePlayer : MonoBehaviour
             {
                 if (lastFrame == videoPlayer.frame)
                 {
-                    audioPlayer.Pause();
+                    //audioPlayer.Pause();
                     videoPlayer.Pause();
                     StartCoroutine(WaitSync());
                 }
@@ -509,15 +515,17 @@ public class YoutubePlayer : MonoBehaviour
                     totalVideoDuration = Mathf.RoundToInt(videoPlayer.frameCount / videoPlayer.frameRate);
                     if (!lowRes)
                     {
-                        audioDuration = Mathf.RoundToInt(audioPlayer.frameCount / audioPlayer.frameRate);
+                        //audioDuration = Mathf.RoundToInt(audioPlayer.frameCount / audioPlayer.frameRate);
+                        /*
                         if (audioDuration < totalVideoDuration && (audioPlayer.url != ""))
                         {
                             currentVideoDuration = Mathf.RoundToInt(audioPlayer.frame / audioPlayer.frameRate);
                         }
-                        else
-                        {
+                        */
+                        //else
+                        //{
                             currentVideoDuration = Mathf.RoundToInt(videoPlayer.frame / videoPlayer.frameRate);
-                        }
+                        //}
                     }
                     else
                     {
@@ -571,9 +579,9 @@ public class YoutubePlayer : MonoBehaviour
                     currentTimeString.text = FormatTime(Mathf.RoundToInt(currentVideoDuration));
                     if (!lowRes)
                     {
-                        if (audioDuration < totalVideoDuration && (audioPlayer.url != ""))
-                            totalTimeString.text = FormatTime(Mathf.RoundToInt(audioDuration));
-                        else
+                        //if (audioDuration < totalVideoDuration && (audioPlayer.url != ""))
+                        //    totalTimeString.text = FormatTime(Mathf.RoundToInt(audioDuration));
+                        //else
                             totalTimeString.text = FormatTime(Mathf.RoundToInt(totalVideoDuration));
                     }
                     else
@@ -623,6 +631,7 @@ public class YoutubePlayer : MonoBehaviour
 
             if (videoPlayer.isPrepared && !videoPlayer.isPlaying)
             {
+                /*
                 if(audioPlayer != null)
                 {
                     if (audioPlayer.isPrepared)
@@ -634,14 +643,15 @@ public class YoutubePlayer : MonoBehaviour
                         }
                     }
                 }
-                else
-                {
+                */
+                //else
+                //{
                     if (!videoStarted)
                     {
                         videoStarted = true;
                         VideoStarted(videoPlayer);
                     }
-                }
+                //}
 
             }
         }
@@ -663,6 +673,7 @@ public class YoutubePlayer : MonoBehaviour
             {
                 if (videoQuality != YoutubeVideoQuality.STANDARD)
                 {
+                    /*
                     if (audioPlayer.isPrepared)
                     {
                         if (!startedPlayingWebgl)
@@ -671,6 +682,7 @@ public class YoutubePlayer : MonoBehaviour
                             StartPlayingWebgl();
                         }
                     }
+                    */
                 }
                 else
                 {
@@ -693,8 +705,8 @@ public class YoutubePlayer : MonoBehaviour
         //videoPlayer.started += VideoStarted;
         videoPlayer.errorReceived += VideoErrorReceived;
         videoPlayer.loopPointReached += PlaybackDone;
-        if (videoQuality != YoutubeVideoQuality.STANDARD)
-            audioPlayer.errorReceived += VideoErrorReceived;
+        //if (videoQuality != YoutubeVideoQuality.STANDARD)
+            //audioPlayer.errorReceived += VideoErrorReceived;
     }
 
 
@@ -803,10 +815,10 @@ public class YoutubePlayer : MonoBehaviour
         isRetry = false;
         youtubeUrlReady = false;
 
-        audioPlayer.seekCompleted += AudioSeeked;
+        //audioPlayer.seekCompleted += AudioSeeked;
         videoPlayer.seekCompleted += VideoSeeked;
         videoPlayer.frameDropped += VideoPlayer_frameDropped;
-        audioPlayer.frameDropped += AudioPlayer_frameDropped;
+        //audioPlayer.frameDropped += AudioPlayer_frameDropped;
 
         notSeeking = false;
         waitAudioSeek = false;
@@ -1257,7 +1269,7 @@ public class YoutubePlayer : MonoBehaviour
         {
             if (!noAudioAtacched)
             {
-                audioPlayer.Pause();
+                //audioPlayer.Pause();
                 videoPlayer.Pause();
                 //audioPlayer.time = 1;
                 //videoPlayer.time = 0;
@@ -1266,7 +1278,7 @@ public class YoutubePlayer : MonoBehaviour
 
         if (videoQuality != YoutubeVideoQuality.STANDARD)
         {
-            audioPlayer.Play();
+            //audioPlayer.Play();
 
             videoPlayer.Play();
         }
@@ -1286,7 +1298,7 @@ public class YoutubePlayer : MonoBehaviour
             }
             else
             {
-                audioPlayer.time = startFromSecondTime;
+                //audioPlayer.time = startFromSecondTime;
             }
         }
 
@@ -1454,7 +1466,7 @@ public class YoutubePlayer : MonoBehaviour
             if (debug)
                 Debug.Log("Stopping video");
             if (videoPlayer.isPlaying) { videoPlayer.Stop(); }
-            if (audioPlayer.isPlaying) { audioPlayer.Stop(); }
+            //if (audioPlayer.isPlaying) { audioPlayer.Stop(); }
         }
     }
     #endregion
@@ -1498,12 +1510,14 @@ public class YoutubePlayer : MonoBehaviour
             videoPlayer.source = VideoSource.Url;
             videoPlayer.url = videoUrl;
             videoPlayer.Prepare();
+            /*
             if (videoQuality != YoutubeVideoQuality.STANDARD)
             {
                 audioPlayer.source = VideoSource.Url;
                 audioPlayer.url = audioUrl;
                 audioPlayer.Prepare();
             }
+            */
         }
         else
         {
@@ -1548,11 +1562,11 @@ public class YoutubePlayer : MonoBehaviour
                     {
                         videoPlayer.time = 0;
                         videoPlayer.frame = 0;
-                        audioPlayer.time = 0;
-                        audioPlayer.frame = 0;
+                        //audioPlayer.time = 0;
+                        //audioPlayer.frame = 0;
                         videoPlayer.Play();
-                        if (!noAudioAtacched)
-                            audioPlayer.Play();
+                        //if (!noAudioAtacched)
+                        //    audioPlayer.Play();
                     }
                     CancelInvoke("CheckIfIsSync");
                     OnVideoFinished.Invoke();
@@ -1615,8 +1629,8 @@ public class YoutubePlayer : MonoBehaviour
         else
         {
             videoPlayer.Play();
-            if (!noAudioAtacched)
-                audioPlayer.Play();
+            //if (!noAudioAtacched)
+            //    audioPlayer.Play();
         }
     }
 
@@ -1633,7 +1647,7 @@ public class YoutubePlayer : MonoBehaviour
         else
         {
             videoPlayer.Pause();
-            audioPlayer.Pause();
+            //audioPlayer.Pause();
         }
         OnVideoPaused.Invoke();
     }
@@ -1739,7 +1753,7 @@ public class YoutubePlayer : MonoBehaviour
         }
         else
         {
-            audioPlayer.time = time;
+            //audioPlayer.time = time;
         }
     }
 
@@ -1757,9 +1771,9 @@ public class YoutubePlayer : MonoBehaviour
 
     public void Volume()
     {
-        if (videoPlayer.audioOutputMode == VideoAudioOutputMode.Direct)
-            audioPlayer.SetDirectAudioVolume(0, volumeSlider.value);
-        else if (videoPlayer.audioOutputMode == VideoAudioOutputMode.AudioSource)
+        //if (videoPlayer.audioOutputMode == VideoAudioOutputMode.Direct)
+            //audioPlayer.SetDirectAudioVolume(0, volumeSlider.value);
+        if (videoPlayer.audioOutputMode == VideoAudioOutputMode.AudioSource)
             videoPlayer.GetComponent<AudioSource>().volume = volumeSlider.value;
         else
             videoPlayer.GetComponent<AudioSource>().volume = volumeSlider.value;
@@ -1772,12 +1786,12 @@ public class YoutubePlayer : MonoBehaviour
             if (playbackSpeed.value == 0)
             {
                 videoPlayer.playbackSpeed = 0.5f;
-                audioPlayer.playbackSpeed = 0.5f;
+                //audioPlayer.playbackSpeed = 0.5f;
             }
             else
             {
                 videoPlayer.playbackSpeed = playbackSpeed.value;
-                audioPlayer.playbackSpeed = playbackSpeed.value;
+                //audioPlayer.playbackSpeed = playbackSpeed.value;
             }
         }
     }
@@ -1841,14 +1855,14 @@ public class YoutubePlayer : MonoBehaviour
     {
         if (!playUsingInternalDevicePlayer)
         {
-            audioPlayer.seekCompleted -= AudioSeeked;
+            //audioPlayer.seekCompleted -= AudioSeeked;
             videoPlayer.seekCompleted -= VideoSeeked;
             videoPlayer.frameDropped -= VideoPlayer_frameDropped;
-            audioPlayer.frameDropped -= AudioPlayer_frameDropped;
+            //audioPlayer.frameDropped -= AudioPlayer_frameDropped;
 
             videoPlayer.Stop();
-            if (!lowRes && audioPlayer != null)
-                audioPlayer.Stop();
+            //if (!lowRes && audioPlayer != null)
+            //    audioPlayer.Stop();
         }
     }
 
@@ -1878,7 +1892,7 @@ public class YoutubePlayer : MonoBehaviour
     {
         Debug.Log("NAAN");
         videoAudioSeekDone = true;
-        audioPlayer.seekCompleted -= SeekVideoAudioDone;
+        //audioPlayer.seekCompleted -= SeekVideoAudioDone;
         if (!lowRes)
         {
             if (videoSeekDone && videoAudioSeekDone)
@@ -2977,8 +2991,8 @@ public class YoutubePlayer : MonoBehaviour
         notSeeking = false;
         var frame = videoPlayer.frameCount * pct;
         videoPlayer.Pause();
-        if (videoQuality != YoutubeVideoQuality.STANDARD)
-            audioPlayer.Pause();
+        //if (videoQuality != YoutubeVideoQuality.STANDARD)
+        //    audioPlayer.Pause();
         waitAudioSeek = true;
 
         if (videoQuality == YoutubeVideoQuality.STANDARD)
@@ -2988,14 +3002,14 @@ public class YoutubePlayer : MonoBehaviour
         }
         else
         {
-            audioPlayer.frame = (long)frame;
+            //audioPlayer.frame = (long)frame;
         }
     }
 
     IEnumerator VideoSeekCall()
     {
         yield return new WaitForSeconds(1f);
-        videoPlayer.time = audioPlayer.time;
+        //videoPlayer.time = audioPlayer.time;
     }
 
     private bool notSeeking = false;
