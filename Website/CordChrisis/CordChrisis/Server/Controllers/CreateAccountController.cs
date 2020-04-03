@@ -14,17 +14,15 @@ namespace CordChrisis.Server.DALs
     {
         [HttpPost]
         [Route("post")]
-        public Login CreateUserController([FromBody] Login data)
+        public bool CreateUserController([FromBody] Login data)
         {
 
-            Console.WriteLine("are we in the createaccoutn controller? ");
+           
             UserStatsBO user = new UserStatsBO();
-            user.createUser(data);
+            bool check = user.createUser(data);
 
-            Login succ = new Login();
-            succ.Email = "test";
-            succ.Password = "test";
-            return succ; 
+         
+            return check; 
         }
     }
 }

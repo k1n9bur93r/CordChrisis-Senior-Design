@@ -12,15 +12,15 @@ namespace CordChrisis.DAOs
     {
         public void Create(Login log)
         {
-          
-            
+
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                context.UserLogin.Add(log);
-                context.SaveChanges(); 
-            }
 
+                context.UserLogin.Add(log);
+                context.SaveChanges();
+
+            }
           
             
         }

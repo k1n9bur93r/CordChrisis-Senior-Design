@@ -14,9 +14,12 @@ namespace CordChrisis.DAOs
         {
             using (var context = new ApplicationDBContext())
             {
+             
                 context.Database.EnsureCreated();
+
                 context.Add(user);
-                context.SaveChanges(); 
+                context.SaveChanges();
+              
             }
         }
         public UserStats ReadSingle(string userID)

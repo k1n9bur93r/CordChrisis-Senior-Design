@@ -3,6 +3,7 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @using System.Security;
+@using System.Security.Cryptography;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService Storage
@@ -84,17 +85,18 @@
     Login checkData = new Login();
     bool isPassword = true;
     bool islogin = true;
-
+    byte[] salt;
+    byte[] bytes;
 
     protected async override void OnInitialized()
     {
-       Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
         bool isRunning = await checkGameRunning;
 
         if (isRunning)
         {
             await this.js.InvokeVoidAsync("quit");
-            await Storage.SetItemAsync("GameRunning",false);
+            await Storage.SetItemAsync("GameRunning", false);
             base.OnInitialized();
         }
         Console.WriteLine(isRunning);
@@ -155,12 +157,13 @@
             return success;
         }
 
+        string hashed = await GetHash(password);
 
 
         Login loginObject = new Login
         {
             Email = email,
-            Password = password
+            Password = hashed
         };
         Console.WriteLine(email);
 
@@ -186,10 +189,36 @@
         }
 
     }
-        async Task SaveLogOnToSession(string UserID)
+    async Task SaveLogOnToSession(string UserID)
     {
         await Storage.SetItemAsync("LoggedIn", UserID);
     }
+
+
+    public async Task<string> GetHash(string password)
+    {
+
+
+        salt = new byte[24];
+        RandomNumberGenerator RNG = RandomNumberGenerator.Create();
+        RNG.GetBytes(salt);
+
+        byte[] newPassword = System.Text.Encoding.ASCII.GetBytes(password);
+
+        byte[] salted = new byte[newPassword.Length + salt.Length];
+
+        using (SHA256 shaHash = SHA256.Create())
+        {
+            byte[] hashValue = shaHash.ComputeHash(salted);
+            string str = Convert.ToBase64String(hashValue);
+
+            return str;
+
+        };
+
+    }
+
+
 
 }
 

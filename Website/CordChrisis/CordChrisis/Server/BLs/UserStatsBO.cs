@@ -62,16 +62,21 @@ namespace CordChrisis.BOs
                     IsDeleted = false
                 };
 
+                bool check;
 
                 //User Table
-                creation.Create(newU);
+               check = creation.Create(newU);
+                if (check == false)
+                    return false; 
 
                 //UserLogin table
-                createUser.Create(newUser);
+              createUser.Create(newUser);
+          
+
 
                 //UserStats Table
-                newStats.Create(US);
-
+              newStats.Create(US);
+             
 
                 return true; 
 
