@@ -3189,7 +3189,7 @@ PrefabInstance:
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
       propertyPath: showThumbnailBeforeVideoLoad
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114643942583524530, guid: f49b1865d907dca4a807588585397534,
         type: 3}
