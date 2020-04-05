@@ -28,14 +28,6 @@ public class Judgment : MonoBehaviour
 	public Metronome clock;
 	public Scoreboard stats;
 
-	// Placeholders until Scoreboard/something else implements UI!
-	public Text ratingText;
-	public Text leanText;
-	public Text comboText;
-	public Text statsText;
-
-	// End of placeholders
-
 	/*
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
 	enum Leanings { None, Early, Late };
@@ -62,9 +54,6 @@ public class Judgment : MonoBehaviour
 	void Awake()
 	{
 		//CalculateWindows();
-		ratingText.text = "";
-		leanText.text = "";
-		comboText.text = "";
 	}
 
 	void Update()
@@ -239,7 +228,7 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Check if the non-best input hit the early or late side of the timing window.
+		Check if the non-Marvelous input hit the early or late side of the timing window.
 	*/
 
 	private Leanings CheckLean(double diff)

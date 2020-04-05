@@ -225,6 +225,11 @@ public class YoutubePlayer : MonoBehaviour
     private const string serverURI = "https://unity-dev-youtube.herokuapp.com/api/info?url=";
     private const string formatURI = "&format=best&flatten=true";
     private const string VIDEOURIFORWEBGLPLAYER = "https://youtubewebgl.herokuapp.com/download.php?mime=video/mp4&title=generatedvideo&token=";
+    /*
+    private const string serverURI = "https://chordcrisis.azurewebsites.net/";
+    private const string formatURI = "&format=best&flatten=true";
+    private const string VIDEOURIFORWEBGLPLAYER = "https://chordcrisis.azurewebsites.net/";
+    */
     /*END OF PRIVATE INFO*/
 
     #endregion
