@@ -16,27 +16,14 @@
                 <p class="font-weight-light">Please fill in this form to create an account.</p>
                 <hr>
 
-
-
                 <label for="email"><b>Email</b></label>
                 <input class="form-control" type="text" placeholder="Enter Email" name="email" @bind="email" required>
-
-
 
                 <label for="password"><b>Password</b></label>
                 <input class="form-control" type="password" placeholder="Enter Password" name="password" @bind="password" required>
 
-
-
-
-
-
-
                 <label for="pswrepeat"><b>Repeat Password</b></label>
                 <input class="form-control" type="password" placeholder="Repeat Password" name="pswrepeat" @bind="pswrepeat" required>
-
-
-
 
                     @if(check== false)
                     {
@@ -57,7 +44,6 @@
                         <p>@password</p>
                         <p>password</p>
                     }
-                </ul>
 
                         <p>One more fields were not filled out correctly</p>
                     }
@@ -67,11 +53,6 @@
                     <button id="addUser" class="btn btn-primary btn-block" @onclick="addUser"> Sign Up</button>
                 </div>
                 <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-
-                <div>
-                    <button id="addUser" class="btn btn-primary" @onclick="addUser"> Sign Up</button>
-                </div>
-
             </div>
         </form>
 
