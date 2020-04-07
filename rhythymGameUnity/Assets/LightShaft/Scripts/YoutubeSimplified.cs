@@ -6,7 +6,9 @@ using UnityEngine.Video;
 public class YoutubeSimplified : MonoBehaviour
 {
 	public YoutubePlayer player;
+	public Track meta;
 
+	[Header("Used by SiteHandler - LEAVE THIS BLANK")]
 	public string url;
 	public bool autoPlay = true;
 	public bool fullscreen = true;
@@ -21,7 +23,7 @@ public class YoutubeSimplified : MonoBehaviour
 
 	private void Start()
 	{
-		//Play();
+		url = meta.json.video;
 	}
 
 	public void Play()

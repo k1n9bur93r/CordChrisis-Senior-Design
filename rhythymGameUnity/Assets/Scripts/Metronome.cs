@@ -23,7 +23,7 @@ using UnityEngine.UI;
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
 		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
-		- double globalOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
+		- double userOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
 
 	ISSUES:
@@ -37,6 +37,7 @@ public class Metronome : MonoBehaviour
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
 	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 	private const double SIXTYFOUR_NOTE = 0.0625;
+	private const double BASE_OFFSET = 0.09; // Base visual delay
 
 	public Track meta;
 	public YoutubeSimplified player;
@@ -50,12 +51,13 @@ public class Metronome : MonoBehaviour
 
 	private double videoTime;
 
+	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
 	public double beatsElapsedDelta;
-	public double startOffset; // Chart-determined chart/song offset
-	public double globalOffset; // User-determined chart/song offset
+	public double startOffset; // Chart-determined visual delay
+	public double userOffset; // User-determined visual delay
 
 	private bool pastSchedule;
 	private double songStart; // DSP time reference point for beginning of playback
@@ -82,11 +84,16 @@ public class Metronome : MonoBehaviour
 		tempoIndex = 0;
 	}
 
+	void Start()
+	{
+		UpdateRates();
+	}
+
 	/*
 		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
-	public void Update()
+	void Update()
 	{
 		UpdateTimeAnywhere();
 		UpdateRates();
@@ -203,7 +210,7 @@ public class Metronome : MonoBehaviour
 
 				if (startBeat == 0.0)
 				{
-					if ((timeElapsed >= (globalOffset + startOffset)))
+					if ((timeElapsed >= (BASE_OFFSET + userOffset + startOffset)))
 					{
 						beatsElapsed += beatsElapsedDelta;
 					}
@@ -211,7 +218,7 @@ public class Metronome : MonoBehaviour
 
 				else
 				{
-					if (timeElapsed >= globalOffset)
+					if (timeElapsed >= (BASE_OFFSET + userOffset))
 					{
 						beatsElapsed += beatsElapsedDelta;
 					}

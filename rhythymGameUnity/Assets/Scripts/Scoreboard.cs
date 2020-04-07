@@ -81,8 +81,8 @@ public class Scoreboard : MonoBehaviour
 
 	private void DrawScore()
 	{
-		//scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
-		scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 5.0f * (float)baseNoteValue * Time.deltaTime);
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
+		//scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 4.0f * (float)baseNoteValue * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 

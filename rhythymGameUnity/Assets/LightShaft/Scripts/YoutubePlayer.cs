@@ -226,9 +226,9 @@ public class YoutubePlayer : MonoBehaviour
     private const string formatURI = "&format=best&flatten=true";
     private const string VIDEOURIFORWEBGLPLAYER = "https://youtubewebgl.herokuapp.com/download.php?mime=video/mp4&title=generatedvideo&token=";
     /*
-    private const string serverURI = "https://chordcrisis.azurewebsites.net/";
+    private const string serverURI = "https://chordcrisis.azurewebsites.net/"; // ?
     private const string formatURI = "&format=best&flatten=true";
-    private const string VIDEOURIFORWEBGLPLAYER = "https://chordcrisis.azurewebsites.net/";
+    private const string VIDEOURIFORWEBGLPLAYER = "https://chordcrisis.azurewebsites.net/"; // ?
     */
     /*END OF PRIVATE INFO*/
 
@@ -2104,7 +2104,9 @@ public class YoutubePlayer : MonoBehaviour
         Debug.Log(request.url);
         var requestData = JSON.Parse(request.text);
         var videos = requestData["videos"][0]["formats"];
+        //Debug.Log(videos); // !
         webGlResults.bestFormatWithAudioIncluded = requestData["videos"][0]["url"];
+        //Debug.Log(webGlResults.bestFormatWithAudioIncluded); // !
         logTest = "EEDone";
         for (int counter = 0; counter < videos.Count; counter++)
         {
@@ -2138,6 +2140,7 @@ public class YoutubePlayer : MonoBehaviour
             }
         }
         //quality selection will be implemented later for webgl, i recomend use the  webGlResults.bestFormatWithAudioIncluded
+        //Debug.Log(videoID); // !
         WebGlGetVideo(webGlResults.bestFormatWithAudioIncluded);
     }
 
@@ -2147,6 +2150,7 @@ public class YoutubePlayer : MonoBehaviour
     public void WebGlGetVideo(string url)
     {
         logTest = "Getting Url Player";
+        //Debug.Log(url); // !
         byte[] bytesToEncode = Encoding.UTF8.GetBytes(url);
         string encodedText = Convert.ToBase64String(bytesToEncode);
         videoUrl = VIDEOURIFORWEBGLPLAYER + "" + encodedText;

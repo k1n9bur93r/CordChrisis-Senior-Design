@@ -93,6 +93,7 @@
      <Compile Include="Assets\Scripts\NoteSpawner.cs" />
      <Compile Include="Assets\Scripts\Score.cs" />
      <Compile Include="Assets\Scripts\Scoreboard.cs" />
+     <Compile Include="Assets\Scripts\SiteHandler.cs" />
      <Compile Include="Assets\Scripts\TestClicker.cs" />
      <Compile Include="Assets\Scripts\Track.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />

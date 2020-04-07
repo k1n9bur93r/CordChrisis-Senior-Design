@@ -13,6 +13,7 @@ public class JsonTrack
     #pragma warning disable 0649
 
     // Song metadata
+    public string video;
     public string title;
     public string artist;
 
@@ -34,6 +35,7 @@ public class Track : MonoBehaviour
     // do so through 'Track.json'
 
     // Track vars
+    [Header("Used by SiteHandler - LEAVE THIS BLANK")]
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
@@ -113,6 +115,7 @@ public class Track : MonoBehaviour
     {
         // Spawn the notes
         for (int i = 0; i < json.notes.Length; i++) {
+            //Debug.Log(json.beats[i]); // !
             int note = json.notes[i];
             double beat = json.beats[i];
             double length = json.note_lengths[i];
