@@ -2,6 +2,7 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @using System.Security;
+@using System.Security.Cryptography;
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
@@ -37,6 +38,12 @@
 
 
 
+                    @if(check== false)
+                    {
+                        @if (alreadyCreated == true)
+                        {
+                            <p>Account with this email has already been created, please Login or use a different Email</p>
+                        }
                 @if (check == false)
                 {
                     @if (bademail == true)
@@ -50,18 +57,7 @@
                         <p>@password</p>
                         <p>password</p>
                     }
-                    else if (badpsswordreapeat == true)
-                    {
-                        <p>@pswrepeat</p>
-                        <p>pswordrepeat</p>
-                    }
-                    else if (noteq == true)
-                    {
-                        <p>@email</p>
-                        <p>Passwords are not equal</p>
-                    }
-                    else
-                    {
+                </ul>
 
                         <p>One more fields were not filled out correctly</p>
                     }
@@ -72,6 +68,9 @@
                 </div>
                 <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
+                <div>
+                    <button id="addUser" class="btn btn-primary" @onclick="addUser"> Sign Up</button>
+                </div>
 
             </div>
         </form>
@@ -89,23 +88,26 @@
     string email { get; set; }
     string password { get; set; }
     string pswrepeat { get; set; }
-    Login checkData = new Login();
+    bool checkData;
     bool check = true;
     bool noteq = false;
     bool bademail = false;
     bool badpassword = false;
     bool badpsswordreapeat = false;
-
+    bool alreadyCreated = false;
+    int length = 16;
+    byte [] salt;
+    byte[] bytes;
 
     protected async override void OnInitialized()
     {
-       Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
         bool isRunning = await checkGameRunning;
 
         if (isRunning)
         {
             await this.js.InvokeVoidAsync("quit");
-            await Storage.SetItemAsync("GameRunning",false);
+            await Storage.SetItemAsync("GameRunning", false);
             base.OnInitialized();
         }
         Console.WriteLine(isRunning);
@@ -147,24 +149,55 @@
             return check;
         }
 
+        String newPass = await GetHash(password);
+
         Login loginObject = new Login
         {
             Email = email,
-            Password = password
+            Password = newPass
         };
 
-        checkData = await Http.PostJsonAsync<Login>("createaccount/post", loginObject);
-        if (checkData.Email == "test")
+
+        checkData = await Http.PostJsonAsync<bool>("createaccount/post", loginObject);
+        if (checkData != false)
         {
             NavigationManager.NavigateTo("/");
-            return false; 
+            return false;
         }
         else
         {
             check = false;
-            return false;
+            alreadyCreated = true; 
+            return true;
         }
     }
+
+
+
+    public async Task<string> GetHash(string password)
+    {
+
+
+        salt = new byte[24];
+        RandomNumberGenerator RNG = RandomNumberGenerator.Create();
+        RNG.GetBytes(salt);
+
+        byte [] newPassword = System.Text.Encoding.ASCII.GetBytes(password);
+
+        byte[] salted = new byte[newPassword.Length + salt.Length];
+
+        using (SHA256 shaHash = SHA256.Create())
+        {
+            byte[] hashValue = shaHash.ComputeHash(salted);
+            string str = Convert.ToBase64String(hashValue);
+
+            return str;
+
+        };
+
+    }
+
+
 
 
 

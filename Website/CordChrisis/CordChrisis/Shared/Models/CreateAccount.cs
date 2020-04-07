@@ -33,7 +33,7 @@ namespace CordChrisis.Shared.Models
             get;
             set;
         }
-        [Compare("Password", ErrorMessage = "Confirm password dose not match.")]
+        [Compare("Password", ErrorMessage = "Confirm password does not match.")]
         public string ConfirmPassword
         {
             get;
