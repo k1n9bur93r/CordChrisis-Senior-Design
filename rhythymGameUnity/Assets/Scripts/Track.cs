@@ -13,7 +13,8 @@ public class JsonTrack
     #pragma warning disable 0649
 
     // Song metadata
-    public string video;
+    public AudioClip audio;
+    public string background;
     public string title;
     public string artist;
 

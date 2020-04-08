@@ -33,9 +33,6 @@ public class SiteHandler : MonoBehaviour
 	// InputController vars
 		// BINDINGS GO HERE
 
-	// YoutubePlayer vars
-	public YoutubePlayer youtubePlayer;
-
 	void InitTrack(string user)
 	{
 		track_file = user;

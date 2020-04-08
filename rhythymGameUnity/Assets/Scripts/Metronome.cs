@@ -40,7 +40,6 @@ public class Metronome : MonoBehaviour
 	private const double BASE_OFFSET = 0.09; // Base visual delay
 
 	public Track meta;
-	public YoutubeSimplified player;
 
 	public Text timer;
 
@@ -48,8 +47,6 @@ public class Metronome : MonoBehaviour
 
 	public double startBeat;
 	private double startTime;
-
-	private double videoTime;
 
 	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
 	public double tempo; // Song speed in beats per minute
@@ -128,57 +125,28 @@ public class Metronome : MonoBehaviour
 		}
 
 		startTime = anyTime;
-
-		player.Play();
-	}
-
-	/*
-		Check if the video restarted for any reason and recover by resetting everything.
-	*/
-
-	private void CheckRestart()
-	{
-		if (((startBeat != 0) && (videoTime == 0))
-			|| ((startBeat == 0) && (beatsElapsed > 0.0) && ((timeElapsed - videoTime) >= 0.2)))
-			//|| ((startBeat == 0) && (videoTime == 0) && ((timeElapsed - videoTime) >= 0.33)))
-		{
-			player.player.Pause();
-			player.player.Seek(0.0);
-			beatsElapsed = startBeat;
-			pastSchedule = false;
-
-			Debug.Log("[Metronome] Video restarted!");
-		}
 	}
 
 	/*
 		Update the timer based on the arbitrary start point.
 	*/
 
-	public void PlaybackStarted()
-	{
-		playbackStarted = true;
-	}
-
 	public bool PlayButton()
 	{
-		return (Input.GetKey(KeyCode.P)
-			|| Input.GetMouseButtonDown(0));
+		return (Input.GetKey(KeyCode.P));
+			//|| Input.GetMouseButtonDown(0));
 	}
 
 	public void UpdateTimeAnywhere()
 	{
-		videoTime = player.player.videoPlayer.time;
-
-		timer.text = 
-			"DSP time: " + timeElapsed.ToString() + "\n"
-			+ "Video time: " + videoTime.ToString();
+		timer.text = "DSP time: " + timeElapsed.ToString();
 
 		if (!playbackStarted)
 		{
 			if (PlayButton())
 			{
 				StartSongAnywhere();
+				playbackStarted = true;
 			}
 		}
 
@@ -186,22 +154,24 @@ public class Metronome : MonoBehaviour
 		{
 			if (!pastSchedule)
 			{
-				if (startBeat != 0)
+				if (startBeat == 0)
 				{
-					player.player.Seek(startTime + startOffset);
+					GetComponent<AudioSource>().time = 0.0f;					
 				}
-				
-				player.player.Pause();
 
-				if ((startBeat == 0.0) || (videoTime != 0))
+				else
 				{
-					// Need a check for if the video restarted if warping
-					player.player.Play();
-					songStart = AudioSettings.dspTime + startTime;
-					timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
-
-					pastSchedule = true;
+					GetComponent<AudioSource>().time = (float)(startTime + startOffset);
 				}
+
+				// ---
+
+				songStart = AudioSettings.dspTime + startTime;
+				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
+
+				pastSchedule = true;
+
+				GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
 			}
 
 			else
@@ -226,8 +196,6 @@ public class Metronome : MonoBehaviour
 
 				timeElapsedDelta = timeElapsed - timeElapsedLast;
 				timeElapsedLast = timeElapsed;
-
-				CheckRestart();
 			}
 		}
 	}
@@ -238,6 +206,7 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
+		GetComponent<AudioSource>().clip = meta.json.audio;
 		tempo = meta.json.tempo_change_amount[0];
 		startOffset = meta.json.offset;
 	}
@@ -259,35 +228,4 @@ public class Metronome : MonoBehaviour
 		beatsPerSec = tempo / SEC_PER_MIN;
 		beatsElapsedDelta = timeElapsedDelta / secPerBeat;
 	}
-
-	/*
-		YOUTUBE PLAYER CALLBACK TESTERS
-	*/
-
-	/*
-	public void a1()
-	{
-		Debug.Log("When the url's are loaded");
-	}
-
-	public void a2()
-	{
-		Debug.Log("When the videos are ready to play");
-	}
-
-	public void a3()
-	{
-		Debug.Log("When the video start playing");
-	}
-
-	public void a4()
-	{
-		Debug.Log("When the video pause");
-	}
-
-	public void a5()
-	{
-		Debug.Log("When the video finish");
-	}
-	*/
 }
