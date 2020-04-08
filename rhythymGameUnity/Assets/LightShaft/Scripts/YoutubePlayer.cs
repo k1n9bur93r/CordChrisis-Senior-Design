@@ -222,14 +222,15 @@ public class YoutubePlayer : MonoBehaviour
     private YoutubeResultIds newRequestResults;
 
     /*PRIVATE INFO DO NOT CHANGE THESE URLS OR VALUES, ONLY IF YOU WANT HOST YOUR OWN SERVER| TURORIALS IN THE PROJECT FILES*/
+    /*
     private const string serverURI = "https://unity-dev-youtube.herokuapp.com/api/info?url=";
     private const string formatURI = "&format=best&flatten=true";
     private const string VIDEOURIFORWEBGLPLAYER = "https://youtubewebgl.herokuapp.com/download.php?mime=video/mp4&title=generatedvideo&token=";
-    /*
-    private const string serverURI = "https://chordcrisis.azurewebsites.net/"; // ?
-    private const string formatURI = "&format=best&flatten=true";
-    private const string VIDEOURIFORWEBGLPLAYER = "https://chordcrisis.azurewebsites.net/"; // ?
     */
+
+    private const string serverURI = "https://unity-youtube-api.herokuapp.com/api/info?url=";
+    private const string formatURI = "&format=best&flatten=true";
+    private const string VIDEOURIFORWEBGLPLAYER = "https://youtubewebgl.herokuapp.com/download.php?mime=video/mp4&title=generatedvideo&token=";
     /*END OF PRIVATE INFO*/
 
     #endregion
@@ -2150,7 +2151,7 @@ public class YoutubePlayer : MonoBehaviour
     public void WebGlGetVideo(string url)
     {
         logTest = "Getting Url Player";
-        //Debug.Log(url); // !
+        //Debug.Log(url); // NULL HERE
         byte[] bytesToEncode = Encoding.UTF8.GetBytes(url);
         string encodedText = Convert.ToBase64String(bytesToEncode);
         videoUrl = VIDEOURIFORWEBGLPLAYER + "" + encodedText;

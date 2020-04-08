@@ -51,6 +51,8 @@ public class SiteHandler : MonoBehaviour
 		speedMod = user;
 	}
 
+	// Check if these ^^^^^ can be called during the Awake() loop
+
 	void Awake()
 	{
 		if (bypassWait)
