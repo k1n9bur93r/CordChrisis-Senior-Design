@@ -21,8 +21,6 @@
 # Visual Studio cache directory
 .vs/
 
-[Dd]ebug/
-
 # Gradle cache directory
 .gradle/
 
