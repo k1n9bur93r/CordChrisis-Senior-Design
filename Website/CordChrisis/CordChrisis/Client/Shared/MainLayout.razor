@@ -1,11 +1,21 @@
 ﻿@inherits LayoutComponentBase
+@inject Blazored.SessionStorage.ISessionStorageService Storage;
 
-<div class="">
-    <NavMenu />
-</div>
+
+@if (UserID == null)
+{
+    Console.WriteLine(UserID);
+    Console.WriteLine("Heyo1");
+        <NavMenu />  
+}
+else
+{
+     Console.WriteLine("Heyo2");
+   <NavLoggedIn />
+}
 
 <div class="main">
- 
+
     <div class="content pt-lg-5">
         @Body
     </div>
@@ -13,3 +23,31 @@
 <div class="">
     @*<FooterMenu />*@
 </div>
+
+@code
+{
+    String OldID;
+    String UserID;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine("HELP ME DAMMIT");
+        UserID = await Storage.GetItemAsync<string>("LoggedIn");
+        if (UserID != null)
+        {
+            Console.WriteLine("I'm logged in");
+            if (UserID != OldID)
+            {
+                OldID = UserID;
+                StateHasChanged();
+            }
+            // ShouldRender();
+        }
+    }
+    protected override bool ShouldRender()
+    {
+        return true;
+
+    }
+
+
+}
