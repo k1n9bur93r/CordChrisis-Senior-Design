@@ -23,11 +23,24 @@ namespace CordChrisis.Server
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .WithOrigins("https://youtubewebgl.herokuapp.com", "https://unity-dev-youtube.herokuapp.com");
+                });
+            });
 
             services.AddControllersWithViews();
             services.AddBlazoredSessionStorage();
@@ -44,6 +57,12 @@ namespace CordChrisis.Server
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".unityweb"] = "application/octet-stream";
             //app.UseStaticFiles();
+            app.UseCors(MyAllowSpecificOrigins);
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseStaticFiles(new StaticFileOptions
             {
                 ContentTypeProvider = provider
