@@ -3663,7 +3663,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -24.165, y: -20.524, z: 7.089}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 35.299957, y: -44.299988}
+  m_AnchoredPosition: {x: 35.299973, y: -44.299988}
   m_SizeDelta: {x: 50, y: -45.880066}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &1281229434
@@ -3969,7 +3969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -18.248001, y: 30.157001, z: -6.5540004}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 628.8, y: 127.100006}
+  m_AnchoredPosition: {x: 628.8, y: 127.10002}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1338066422
@@ -17096,6 +17096,16 @@ PrefabInstance:
         type: 3}
       propertyPath: userOffset
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
+        type: 3}
+      propertyPath: audioURL
+      value: https://chordcrisis.azurewebsites.net/GameElements/SHK_-_Milky_Way.mp3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
+        type: 3}
+      propertyPath: jsonURL
+      value: https://chordcrisis.azurewebsites.net/GameElements/SHK_-_Milkey_Way_LEGACY.json
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817597, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}

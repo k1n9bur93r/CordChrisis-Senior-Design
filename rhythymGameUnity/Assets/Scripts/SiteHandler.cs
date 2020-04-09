@@ -1,30 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /*
 	> SiteHandler class
 
-	Passes information to and from the game and site.
+	Recieves audio, chart, and user options from the site for use in the game.
 */
 
 public class SiteHandler : MonoBehaviour
 {
-	// Make these private at some point?
-
+	/*
 	[Header("Check this while testing, uncheck before building")]
 	public bool bypassWait = false;
 	[Space]
+	*/
 
-	private bool initDone = false;
+	bool siteArgsDone = false;
+	bool downloadersDone = false;
 
 	// Track vars
 	public Track track;
-	public string track_file;
+	public string jsonURL;
+	private bool trackDone = false;
 
 	// Metronome vars
 	public Metronome metronome;
+	public string audioURL;
 	public double userOffset;
+	private bool metronomeDone = false;
 
 	// NoteSpawner vars
 	public NoteSpawner noteSpawner;
@@ -33,51 +38,72 @@ public class SiteHandler : MonoBehaviour
 	// InputController vars
 		// BINDINGS GO HERE
 
-	void InitTrack(string user)
-	{
-		track_file = user;
-	}
-
-	void InitMetronome(float user)
-	{
-		userOffset = user;
-	}
-
-	void InitNoteSpawner(float user)
-	{
-		speedMod = user;
-	}
-
-	// Check if these ^^^^^ can be called during the Awake() loop
+	// Check if these ^^^^^ have been called during the Awake() loop
 
 	void Awake()
 	{
-		if (bypassWait)
-		{
-			initDone = true;
-		}
-
-		/*
-		while (!initDone)
-		{
-			// this won't work, need a co-routine or something to wait for this i guess
-		}
-		*/
-
-		Debug.Log("[SiteHandler] Intializing other objects...");
-
-		// Track
-		track.track_file = track_file;
-
-		// Metronome
+		// FIRST STEP: 
+		Debug.Log("[SiteHandler] Waiting for site to pass data (not really lol)...");
+		// Do this later
+		
+		// TEMP SETTERS
 		metronome.userOffset = userOffset;
-
-		// NoteSpawner
 		noteSpawner.speedMod = speedMod;
 
-		// InputController
-			// ...
+		siteArgsDone = true; // may or may not actually do anything
+
+		// SECOND STEP: Start downloader co-routines.
+		Debug.Log("[SiteHandler] Downloading...");
+
+		StartCoroutine(InitTrack()); // JSON downloader
+		StartCoroutine(InitMetronome()); // Audio downloader		
+		
+		/*
+		do
+		{
+			if (metronomeDone && trackDone)
+			{
+				downloadersDone = true; // this goes here?
+			}
+
+		} while (!downloadersDone);
+		*/
 
 		Debug.Log("[SiteHandler] Done!");
+	}
+
+	IEnumerator InitTrack()
+	{
+		UnityWebRequest www = UnityWebRequest.Get(jsonURL);
+
+		yield return www.SendWebRequest(); // Request and sit tight
+
+		if (www.isNetworkError || www.isHttpError)
+		{
+			Debug.Log("[SiteHandler] InitTrack(): " + www.error);
+		}
+
+		else
+		{
+			track.track_file = www.downloadHandler.text;
+			trackDone = true;
+		}
+	}
+
+	IEnumerator InitMetronome()
+	{
+		UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
+
+		yield return www.Send(); //SendWebRequest(); // 
+
+		if (www.isNetworkError || www.isHttpError)
+		{
+			Debug.Log("[SiteHandler] InitMetronome(): " + www.error);
+		}
+
+		else
+		{
+			metronome.GetComponent<AudioSource>().clip = DownloadHandlerAudioClip.GetContent(www);
+		}
 	}
 }

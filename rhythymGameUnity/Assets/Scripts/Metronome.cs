@@ -206,7 +206,6 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
-		GetComponent<AudioSource>().clip = meta.json.audio;
 		tempo = meta.json.tempo_change_amount[0];
 		startOffset = meta.json.offset;
 	}
