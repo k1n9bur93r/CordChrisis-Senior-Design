@@ -189,7 +189,7 @@ public class Metronome : MonoBehaviour
 
 	public void UpdateTimeAnywhere()
 	{
-		if (Input.GetKey(KeyCode.P) && !GetComponent<AudioSource>().isPlaying)
+		if ( (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Mouse0)) && !GetComponent<AudioSource>().isPlaying)
 		{
 			StartSongAnywhere();
 		}
