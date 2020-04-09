@@ -57,3 +57,7 @@ crashlytics-build.properties
 
 #
 .DS_Store
+
+# dynamic link libraries
+*.dll
+*.dll.gz
