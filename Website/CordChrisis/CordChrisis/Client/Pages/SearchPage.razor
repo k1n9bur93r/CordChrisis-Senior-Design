@@ -2,137 +2,143 @@
 @using CordChrisis.Shared
 @using CordChrisis.Shared.Models
 @using System.Diagnostics
+
 @inject HttpClient Http
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 @inject IJSRuntime js
-    <div class="container pt-lg-5">
 
-        <div class="m-1 bg-light rounded p-3">
+    <div class="container">
+        <div class="text-center">
+            <p class="display-1"> Search</p>
+        </div>
+        <div class=" bg-light rounded p-3">
             <form class="form-inline  mb-2">
                 <div class="form-group w-100">
 
-                        <input id="MapNameInput" type="text" class="form-control m-sm-1 " style="width:47%" placeholder="Map Title" @bind="InputtedMapName ">
+                    <input id="MapNameInput" type="text" class="form-control m-1 w-auto " placeholder="Map Title" @bind="InputtedMapName " /> @*style="width:47%">*@
 
-                    <div class="input-group m-sm-1" style="width:25%">
-                        <div class="input-group-prepend">
-                                <button class="btn btn-secondary dropdown-toggle"
-                                        type="button" id="MapDifficultyDrop" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Difficulty
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="MapDifficultyDrop">
-                                    <a class="dropdown-item" @onclick="UpdateDifficultyEasy">Easy</a>
-                                    <a class="dropdown-item" @onclick="UpdateDifficultyMedium">Medium</a>
-                                    <a class="dropdown-item" @onclick="UpdateDifficultyHard">Hard</a>
-                                    <a class="dropdown-item" @onclick="UpdateDifficultyUltra">Ultra</a>
-                                </div>
+                    <div class="input-group m-1 w-auto">
+                        @*style="width:25%">*@
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button" id="MapDifficultyDrop" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Difficulty
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="MapDifficultyDrop">
+                            <a class="dropdown-item" @onclick="UpdateDifficultyEasy">Easy</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyMedium">Medium</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyHard">Hard</a>
+                            <a class="dropdown-item" @onclick="UpdateDifficultyUltra">Ultra</a>
                         </div>
-                        <input id="MapRatingtext" type="text" class="form-control" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
                     </div>
-                    <div class="input-group m-sm-1 " style="width:25%">
-                        <div class="input-group-prepend">
-                                <button class="btn btn-secondary dropdown-toggle"
-                                        type="button" id="MapRatingDrop" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Rating
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="MapRatingDrop">
-                                    <a class="dropdown-item" @onclick="UpdateRating1">1</a>
-                                    <a class="dropdown-item" @onclick="UpdateRating2">2</a>
-                                    <a class="dropdown-item" @onclick="UpdateRating3">3</a>
-                                    <a class="dropdown-item" @onclick="UpdateRating4">4</a>
-                                    <a class="dropdown-item" @onclick="UpdateRating5">5</a>
-                                </div>
-                        </div>
-                        <input id="MapDifficultyText" type="text" class="form-control" placeholder="Rating" @bind="SelectedRating" disabled="true">
-                    </div>
+                    <input id="MapRatingtext" type="text" class="form-control" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
                 </div>
-            </form>
+                <div class="input-group m-1 w-auto ">
+                    @*style="width:25%">*@
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary dropdown-toggle"
+                                type="button" id="MapRatingDrop" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Rating
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="MapRatingDrop">
+                            <a class="dropdown-item" @onclick="UpdateRating1">1</a>
+                            <a class="dropdown-item" @onclick="UpdateRating2">2</a>
+                            <a class="dropdown-item" @onclick="UpdateRating3">3</a>
+                            <a class="dropdown-item" @onclick="UpdateRating4">4</a>
+                            <a class="dropdown-item" @onclick="UpdateRating5">5</a>
+                        </div>
+                    </div>
+                    <input id="MapDifficultyText" type="text" class="form-control" placeholder="Rating" @bind="SelectedRating" disabled="true">
+                </div>
+            </div>
+        </form>
 
 
-            <button id="SubmitSearchQuery" style="margin-left:0px!important" class="btn  btn-shadow btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
-        </div>
-        <div class="">
-            @if (ReturnedMaps == null)
-            {
-                <div class="rounded bg-light mt-4">
+        <button id="SubmitSearchQuery" style="margin-left:0px!important" class="btn  btn-shadow btn-warning btn-block" @onclick="SubmitSearchQuery"> Submit</button>
+    </div>
+    <div class="">
+        @if (ReturnedMaps == null)
+        {
+            <div class="rounded bg-light mt-4">
 
-                    @if (loadingData)
-                    {
-                        <p class="h1 text-muted"> Loading...</p>
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-grow" role="status">
-                                <span class="sr-only">Loading...</span>
+                @if (loadingData)
+                {
+                    <p class="h1 text-muted"> Loading...</p>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex justify-content-center p-4 ">
+                        <div class="card border-primary bg-light ">
+                            <div class="card-header ">
+
+                                <span class="badge badge-primary text-muted"> ... </span>
+                                <span class="badge badge-success text-muted"> .. </span>
+                                <span class="badge badge-warning text-muted"> . </span>
+                            </div>
+                            <div class="card-body">
+                                <p class="h5 text-muted h4"> No Search Results 😔 </p>
+
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-light">.....</small>
                             </div>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-center p-4 ">
-                            <div class="card border-primary bg-light ">
-                                <div class="card-header ">
-
-                                    <span class="badge badge-pill badge-light text-muted"> ... </span>
-                                    <span class="badge badge-pill badge-light text-muted"> .. </span>
-                                    <span class="badge badge-pill badge-light text-muted"> . </span>
-                                </div>
-                                <div class="card-body">
-                                    <p class="h5 text-muted h4"> No Search Results 😔 </p>
-
-                                </div>
-                                <div class="card-footer">
-                                    <small class="text-light">.....</small>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <div class="rounded bg-light mt-4 p-1">
-
-                    <div class=" p-2 mb-1 border-bottom-0 rounded bg-secondary ">
-                        <div>
-                            <span class=" text-light badge badge-info"> Map Name: @DisplayMap</span>
-                            <span class=" text-light badge badge-info"> Selected Difficulty: @DisplayDifficulty</span>
-                            <span class=" text-light badge badge-info"> Selected Rating: @DisplayRating</span>
-                        </div>
-                        <div>
-                            <span class="display-4"> Found @ReturnedMaps.Count() Maps</span>
-                            <span class="h5 text-dark "> in @watch.ElapsedMilliseconds ms</span>
-                        </div>
                     </div>
-                    @if (ReturnedMaps.Count != 0)
-                    {
-                        <div class="p-3">
+                }
+            </div>
+        }
+        else
+        {
+            <div class="rounded bg-light mt-4 p-1">
+
+                <div class="ml-3 mr-3 mt-3 p-1 border-bottom-0 rounded bg-secondary ">
+                    <div>
+                        <span class=" text-light badge badge-primary"> Map Name: @DisplayMap</span>
+                        <span class=" text-light badge badge-success"> Selected Rating: @DisplayRating</span>
+                        <span class=" text-light badge badge-warning"> Selected Difficulty: @DisplayDifficulty</span>
+                    </div>
+                    <div>
+                        <span class="display-4"> Found @ReturnedMaps.Count() Maps</span>
+                        <span class="h5 text-dark "> in @watch.ElapsedMilliseconds ms</span>
+                    </div>
+                </div>
+                @if (ReturnedMaps.Count != 0)
+                {
+                    <div class="pl-3 pr-3 pb-3">
                         Console.WriteLine(ReturnedMaps.Count + " This is how many items were returned.");
                         <MapSearchResultPaginator TotalCards=ReturnedMaps DisplayResults=6 />
-                            </div >
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-center p-3 ">
-                            <div class="card border-primary bg-light ">
-                                <div class="card-header ">
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex justify-content-center p-3 ">
+                        <div class="card border-primary bg-light ">
+                            <div class="card-header ">
 
-                                    <span class="badge badge-pill badge-light text-muted"> ... </span>
-                                    <span class="badge badge-pill badge-light text-muted"> .. </span>
-                                    <span class="badge badge-pill badge-light text-muted"> . </span>
-                                </div>
-                                <div class="card-body">
-                                    <p class="h5 text-muted h4"> No Search Results 😔 </p>
+                                <span class="badge badge-primary text-muted"> ... </span>
+                                <span class="badge badge-success text-muted"> .. </span>
+                                <span class="badge badge-warning text-muted"> . </span>
+                            </div>
+                            <div class="card-body">
+                                <p class="h5 text-muted h4"> No Search Results 😔 </p>
 
-                                </div>
-                                <div class="card-footer">
-                                    <small class="text-light">.....</small>
-                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-light">.....</small>
                             </div>
                         </div>
-                    }
-                </div>
-            }
-        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
 
     </div>
 
@@ -181,6 +187,7 @@
 
     public async Task<List<Map>> SubmitSearchQuery()
     {
+        
         watch = new Stopwatch();
 
         ReturnedMaps = null;

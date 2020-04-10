@@ -2,16 +2,17 @@
 
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm  bg-dark border-bottom box-shadow mb-3 fixed-top">
     <div class="container">
-        <a class="navbar-brand text-light" href="/">Chord Crisis</a>
+        <a class="navbar-brand text-light" href="/"><img  class="NeonY" style="height:58px"src="/css/images/ccglow.png"></a>
         <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="ToggleNavMenu">
             <ul class="navbar-nav flex-grow-1">
+
                 <li class="nav-item px-3  "> 
-                    <NavLink class="nav-link "  href="searchpage" >
-                       <a class=" NeonB h5">  Search </a>
+                    <NavLink class="nav-link NeonB h5"  href="searchpage" >
+                        Search
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
@@ -35,6 +36,7 @@
     bool collapseNavMenu = true;
 
     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
 
     void ToggleNavMenu()
     {
