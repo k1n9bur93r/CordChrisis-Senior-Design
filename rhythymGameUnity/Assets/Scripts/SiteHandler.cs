@@ -42,7 +42,7 @@ public class SiteHandler : MonoBehaviour
 
 	void Awake()
 	{
-		// FIRST STEP: 
+		// FIRST STEP: Recieve URLS and other small data from site.
 		Debug.Log("[SiteHandler] Waiting for site to pass data (not really lol)...");
 		// Do this later
 		

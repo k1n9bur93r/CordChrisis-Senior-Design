@@ -35,11 +35,17 @@ public class Judgment : MonoBehaviour
 
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
-	// Large-ish timing windows
-	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
-	private const double FRAMES_PERFECT = 45.0 / 1000.0;
-	private const double FRAMES_GREAT = 90.0 / 1000.0;
-	private const double FRAMES_GOOD = 180.0 / 1000.0;
+	// Larger timing windows
+	/*
+	private const double FRAMES_MARVELOUS = 25.0 / 1000.0; // Rainbow
+	private const double FRAMES_PERFECT = 50.0 / 1000.0; // Perfect
+	private const double FRAMES_GREAT = 100.0 / 1000.0; // Great
+	private const double FRAMES_GOOD = 200.0 / 1000.0; // Bad
+	*/
+	private const double FRAMES_MARVELOUS = 22.5 / 1000.0; // Rainbow
+	private const double FRAMES_PERFECT = 45.0 / 1000.0; // Perfect
+	private const double FRAMES_GREAT = 90.0 / 1000.0; // Great
+	private const double FRAMES_GOOD = 180.0 / 1000.0; // Good
 
 	/*
 	// Stricter windows for testing overtime

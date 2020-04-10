@@ -45,9 +45,9 @@ public class Track : MonoBehaviour
     // Derived chart statistics
     public int noteTotal;
 
-    JsonTrack readJsonFile(string filename) {
+    JsonTrack readJsonFile() {
         // reads a json file and returns the parsed object as JsonTrack object
-        string json_string = Resources.Load<TextAsset>(filename).ToString();
+        string json_string = track_file; //Resources.Load<TextAsset>(filename).ToString();
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);
 
         return json;
@@ -103,7 +103,7 @@ public class Track : MonoBehaviour
     {
         // Read JSON file
         Debug.Log("[Track] Reading...");
-        json = readJsonFile(track_file);
+        json = readJsonFile();
 
         // Validate JSON file
         Debug.Log("[Track] Validating...");
