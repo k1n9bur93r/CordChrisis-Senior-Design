@@ -38,6 +38,9 @@ namespace CordChrisis.BOs
 			}
 		}
 
+
+
+
 		public UserMapStats GetUserMapStats(string userID, string mapID)
 		{
 			try
@@ -70,6 +73,20 @@ namespace CordChrisis.BOs
 			catch (Exception ex)
 			{
 				Trace.TraceError("Error: " + ex.Message + "Unable to post UserMapStats for User : "+uMapStats.UserID +" Map: " + uMapStats.MapID);
+				throw;
+			}
+		}
+
+		public void AddUserImage(UserStats pfpuser)
+		{
+			try
+			{
+				UserStatsDA user = new UserStatsDA();
+				user.Update(pfpuser);
+			}
+			catch (Exception ex)
+			{
+				Trace.TraceError("Error: " + ex.Message + "Unable to Get ProfilePicture for User");
 				throw;
 			}
 		}

@@ -40,11 +40,22 @@ namespace CordChrisis.DAOs
             {
                 var row = context.UserStats.Where(a => a.ID == userStats.ID).FirstOrDefault();
                 if (row == null) return;
-                row = userStats;
+                row.UserImage = userStats.UserImage;
+                row.ID = userStats.ID;
+                row.TotalMapsMade = userStats.TotalMapsMade;
+                row.HighestScore = userStats.HighestScore;
+                row.MaxCombo = userStats.MaxCombo;
+                row.TotalScore = userStats.TotalScore;
+                row.MostPlayedMap = userStats.MostPlayedMap;
+                row.MapsCreated = userStats.MapsCreated;
+                row.TotalGamesPlayed = userStats.TotalGamesPlayed; 
+
+
                 context.UserStats.Update(row);
                 context.SaveChanges();
             }
         }
+
 
         public void Delete(string ID)
         {

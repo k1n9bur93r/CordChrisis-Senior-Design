@@ -21,6 +21,19 @@ namespace CordChrisis.Server.Controllers
             return returnData;
         }
 
+        [HttpPost]
+        [Route("picture")]
+        public UserStats AddNewPFP([FromBody]UserStats pic)
+        {
+
+            UserBO userStats = new UserBO();
+            userStats.AddUserImage(pic);
+
+
+            return null;
+
+        }
+
         //public IActionResult Index()
         //{
         //    return View();
