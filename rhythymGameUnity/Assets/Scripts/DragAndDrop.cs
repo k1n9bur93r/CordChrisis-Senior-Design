@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DragAndDrop : MonoBehaviour
 {
+    public GameObject original;
     private GameObject copy;
     private Vector3 mOffset;
     private float mouseZ;
@@ -33,8 +34,10 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseDown()
     {
-        copy = Instantiate(gameObject);
+        copy = Instantiate(original);
         copy.GetComponent<BoxCollider>().enabled = false;
+        copy.transform.parent = this.transform;
+        Debug.Log(copy.transform.parent.name);
 
         mouseZ = Camera.main.WorldToScreenPoint(copy.transform.position).z;
         //mouseY = Camera.main.WorldToScreenPoint(copy.transform.position).y;
