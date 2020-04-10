@@ -1,5 +1,6 @@
 ﻿@page "/account"
 @using CordChrisis.Shared.Models
+@using System.Drawing;  
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService Storage
@@ -31,6 +32,9 @@ else
             <div class="row">
                 <div class="rounded bg-secondary col-2 pl-1 ">
                     <img class="rounded-circle border border-light border-4" src="/css/images/pfp2.jpg">
+                <InputFile OnChange="HandleFile"/>
+                    <p>@status</p>
+
                 </div>
                 <div class=" rounded bg-secondary col-10 text-center mx-auto">
                     <span class=" h1"> DOOM's Account Page  </span>
@@ -112,4 +116,23 @@ else
         }
 
     }
+
+    string status;
+
+
+    async Task HandleFile(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            await Http.PostJsonAsync<UserStats>(@"userstats/post", file);
+
+            status = $"Finished Loading {file.Size} bytes from {file.Name}";
+        }
+
+
+    }
+
 }
