@@ -6,17 +6,15 @@
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 @inject IJSRuntime js
     <div class="container pt-lg-5">
-        <div class="m-1 bg-light rounded p-2">
+
+        <div class="m-1 bg-light rounded p-3">
             <form class="form-inline  mb-2">
                 <div class="form-group w-100">
-                    <div class="input-group ">
-                        <input id="MapNameInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Map Title" @bind="InputtedMapName ">
-                        <label class="sr-only">Difficulty </label>
-                    </div>
-                    <div class="input-group ">
-                        <div class="input-group-prepend">
 
-                            <div class="dropdown">
+                        <input id="MapNameInput" type="text" class="form-control m-sm-1 " style="width:47%" placeholder="Map Title" @bind="InputtedMapName ">
+
+                    <div class="input-group m-sm-1" style="width:25%">
+                        <div class="input-group-prepend">
                                 <button class="btn btn-secondary dropdown-toggle"
                                         type="button" id="MapDifficultyDrop" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
@@ -28,14 +26,11 @@
                                     <a class="dropdown-item" @onclick="UpdateDifficultyHard">Hard</a>
                                     <a class="dropdown-item" @onclick="UpdateDifficultyUltra">Ultra</a>
                                 </div>
-                            </div>
-
                         </div>
-                        <input id="MapRatingtext" type="text" class="form-control mb-2 mr-sm-2" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
+                        <input id="MapRatingtext" type="text" class="form-control" placeholder="Difficulty" @bind="SelectedDifficulty" disabled="true">
                     </div>
-                    <div class="input-group ">
+                    <div class="input-group m-sm-1 " style="width:25%">
                         <div class="input-group-prepend">
-                            <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle"
                                         type="button" id="MapRatingDrop" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
@@ -48,13 +43,14 @@
                                     <a class="dropdown-item" @onclick="UpdateRating4">4</a>
                                     <a class="dropdown-item" @onclick="UpdateRating5">5</a>
                                 </div>
-                            </div>
                         </div>
-                        <input id="MapDifficultyText" type="text" class="form-control mb-2 mr-sm-2" placeholder="Rating" @bind="SelectedRating" disabled="true">
+                        <input id="MapDifficultyText" type="text" class="form-control" placeholder="Rating" @bind="SelectedRating" disabled="true">
                     </div>
                 </div>
             </form>
-            <button id="SubmitSearchQuery" class="btn btn-primary btn-block itm-skew" @onclick="SubmitSearchQuery"><div class="itm-skew-text"> Submit</div></button>
+
+
+            <button id="SubmitSearchQuery" style="margin-left:0px!important" class="btn  btn-shadow btn-primary btn-block" @onclick="SubmitSearchQuery"> Submit</button>
         </div>
         <div class="">
             @if (ReturnedMaps == null)
@@ -94,9 +90,9 @@
             }
             else
             {
-                <div class="rounded bg-light mt-4">
+                <div class="rounded bg-light mt-4 p-1">
 
-                    <div class=" p-2 mb-4 border-bottom-0 rounded bg-secondary ">
+                    <div class=" p-2 mb-1 border-bottom-0 rounded bg-secondary ">
                         <div>
                             <span class=" text-light badge badge-info"> Map Name: @DisplayMap</span>
                             <span class=" text-light badge badge-info"> Selected Difficulty: @DisplayDifficulty</span>
@@ -109,12 +105,14 @@
                     </div>
                     @if (ReturnedMaps.Count != 0)
                     {
+                        <div class="p-3">
                         Console.WriteLine(ReturnedMaps.Count + " This is how many items were returned.");
                         <MapSearchResultPaginator TotalCards=ReturnedMaps DisplayResults=6 />
+                            </div >
                     }
                     else
                     {
-                        <div class="d-flex justify-content-center p-4 ">
+                        <div class="d-flex justify-content-center p-3 ">
                             <div class="card border-primary bg-light ">
                                 <div class="card-header ">
 

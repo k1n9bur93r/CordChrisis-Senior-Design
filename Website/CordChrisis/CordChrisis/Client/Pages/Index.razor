@@ -1,7 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http;
 @using CordChrisis.Shared.Models
-@using CordChrisis.Client.Services
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 @inject IJSRuntime js
 @*<Alert/>*@
@@ -58,7 +57,7 @@
 
     <div>
         <p class=" h2"> What People are playing</p>
-        <div class="bg-secondary rounded p-4 ">
+        <div class="bg-light rounded p-4 ">
             <MapSearchResultPaginator FetchPopular=getPopularMaps() DisplayResults=6 />
         </div>
     </div>

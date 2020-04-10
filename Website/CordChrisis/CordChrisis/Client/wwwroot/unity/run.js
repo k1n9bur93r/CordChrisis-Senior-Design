@@ -15,6 +15,11 @@ var settings =
          unityWebGL = UnityLoader.instantiate("unityContainer", "unity/Build/webgl thing.json", settings);
 }
 
+function FullScreen() {
+    unityWebGL.SetFullscreen(1);
+
+}
+
 function quit()
 {
     unityWebGL.Quit(function () { console.log("Ended Game Session."); });

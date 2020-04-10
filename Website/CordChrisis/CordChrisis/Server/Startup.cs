@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CordChrisis.Server.Hubs;
 using System.Linq;
 using Blazored.SessionStorage;
 using Blazor.Extensions.Canvas;
