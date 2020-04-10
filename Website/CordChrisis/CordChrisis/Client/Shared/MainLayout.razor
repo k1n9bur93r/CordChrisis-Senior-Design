@@ -1,28 +1,25 @@
 ﻿@inherits LayoutComponentBase
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 
-
 @if (UserID == null)
-{
-    Console.WriteLine(UserID);
-    Console.WriteLine("Heyo1");
-        <NavMenu />  
-}
-else
-{
-     Console.WriteLine("Heyo2");
-   <NavLoggedIn />
-}
+    {
+        Console.WriteLine(UserID);
 
-<div class="main">
+            <NavMenu />
+    }
+else
+    {
+       <NavLoggedIn />
+    }
+<div class="main BackgroundGrad" style="min-height:100vh;max-height:100%;">
 
     <div class="content pt-lg-5">
         @Body
     </div>
 </div>
-<div class="">
-    @*<FooterMenu />*@
-</div>
+    <footer class="footer" style="position:relative">
+    <NavFooter />
+        </footer>
 
 @code
 {
@@ -40,14 +37,9 @@ else
                 OldID = UserID;
                 StateHasChanged();
             }
-            // ShouldRender();
         }
     }
-    protected override bool ShouldRender()
-    {
-        return true;
 
-    }
 
 
 }

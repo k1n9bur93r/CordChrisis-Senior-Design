@@ -35,40 +35,40 @@ else if (TotalCards != null && TotalCards.Count != 0)
                 <MapSearchResults ReturnedMaps=(TotalCards.GetRange(0,TotalCards.Count())) />
             }
         }
-        <div class="container-fluid text-center pl-4 pr-4 pb-1">
+        <div class="container-fluid text-center  pb-1">
             <ul class="pagination pagination-sm ">
-                @if (currentPaginationSet - DisplayResults >= 0)
+                @if (currentPaginationSet - DisplayResults > 0)
                 {
-                    <li class="page-item w-50 itm-skew" @onclick="revertResults">
-                        <a class="page-link" tabindex="-1" aria-label="Previous">
-                            <span aria-hidden="true"><div class="itm-skew-text">Previous</div></span>
+                    <li class=" w-50 " @onclick="revertResults">
+                        <a class="btn btn-danger btn-shadow btn-block " tabindex="-1" aria-label="Previous">
+                            <span aria-hidden="true">Previous</span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
                 }
                 else
                 {
-                    <li class="page-item disabled w-50 itm-skew">
-                        <a class="page-link" tabindex="-1" aria-label="Previous">
-                            <span aria-hidden="true"><div class="itm-skew-text">Previous</div></span>
+                    <li class=" disabled w-50">
+                        <a class="btn btn-outline-dark btn-shadow btn-block " tabindex="-1" aria-label="Previous">
+                            <span aria-hidden="true">Previous</span>
                             <span class="sr-only">Previous</span>
                         </a>
                     </li>
                 }
                 @if (currentPaginationSet < TotalCards.Count())
                 {
-                    <li class="page-item w-50 itm-skew" @onclick="advanceResults">
-                        <a class="page-link" aria-label="Next">
-                            <span aria-hidden="true"><div class="itm-skew-text">Next</div></span>
+                    <li class=" w-50 " @onclick="advanceResults">
+                        <a class="btn btn-success btn-shadow btn-block" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
                             <span class="sr-only">Next</span>
                         </a>
                     </li>
                 }
                 else
                 {
-                    <li class="page-item disabled w-50 itm-skew">
-                        <a class="page-link" aria-label="Next">
-                            <span aria-hidden="true"> <div class="itm-skew-text">Next</div></span>
+                    <li class=" disabled w-50 ">
+                        <a class="btn btn-outline-dark btn-shadow btn-block" aria-label="Next">
+                            <span aria-hidden="true">Next</span>
                             <span class="sr-only">Next</span>
                         </a>
                     </li>
@@ -105,25 +105,31 @@ else if (TotalCards != null && TotalCards.Count != 0)
     bool endOfList = false;
 
     bool firstClick = true;
+    bool pressBack = false;
 
     void advanceResults()
     {
         if (firstClick)
         {
+
             if (currentPaginationSet + DisplayResults > TotalCards.Count())
                 return;
             currentPaginationSet += DisplayResults;
             firstClick = false;
         }
+
         FlexableAdjust = DisplayResults;
         if (currentPaginationSet + DisplayResults > TotalCards.Count())
         {
+
             FlexableAdjust = DisplayResults - ((currentPaginationSet + DisplayResults) - TotalCards.Count());
+
             endOfList = true;
         }
         Console.WriteLine("TOTAL RESULTS: " + TotalCards.Count() + " CURRENT DISPLAYED SET From " + currentPaginationSet + " To " + (currentPaginationSet + FlexableAdjust));
+    
 
-        CurrentCards = TotalCards.GetRange(currentPaginationSet, FlexableAdjust);
+    CurrentCards = TotalCards.GetRange(currentPaginationSet, FlexableAdjust);
         currentPaginationSet += FlexableAdjust;
         StateHasChanged();
 
@@ -146,7 +152,9 @@ else if (TotalCards != null && TotalCards.Count != 0)
             currentPaginationSet -= DisplayResults;
         }
         Console.WriteLine("TOTAL RESULTS: " + TotalCards.Count() + " CURRENT DISPLAYED SET From " + (currentPaginationSet) + " To " + (currentPaginationSet + DisplayResults));
+        Console.WriteLine("Current paginationset and flex adjust "+currentPaginationSet + " "+FlexableAdjust);
         CurrentCards = TotalCards.GetRange(currentPaginationSet, DisplayResults);
+
         StateHasChanged();
     }
 
