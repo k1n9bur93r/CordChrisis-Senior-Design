@@ -14,9 +14,13 @@ public class NoteCreator : MonoBehaviour
     private Color original;
     private Color hover;
     private float scalar;
+    private double beat;
+    private double length;
+    private int queueNum;
 
     // input info
     private bool clicked;
+    private bool isHeld;
     private float holdTime;
 
     void Start()
@@ -38,18 +42,20 @@ public class NoteCreator : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 // should have a max size for a hold note
-                scalar += 0.0001f;
+                scalar += 0.0005f;
                 holdTime += Time.deltaTime;
 
-                if (holdTime > 0.2f)
+                isHeld = holdTime > 0.25f ? true : false;
+                if (isHeld)
                 {
-                    holdLine.GetComponent<Transform>().transform.localPosition += new Vector3(0f, 0f, scalar / 2f);
+                    holdLine.SetActive(true);
+                    holdLine.GetComponent<Transform>().transform.localPosition += new Vector3(0f, 0f, scalar / 2.0f);
                     holdLine.GetComponent<Transform>().transform.localScale += new Vector3(0f, 0f, scalar);
+                    note.GetComponent<NoteCreator>().length += scalar;
                 }
 
-                note.GetComponent<MeshRenderer>().material.color = hover;
-                note.GetComponent<BoxCollider>().enabled = false;
-                Debug.Log(holdTime);
+                Debug.Log(note.GetComponent<NoteCreator>().length);
+                //Debug.Log(holdTime);
             }
         }
     }
@@ -59,7 +65,7 @@ public class NoteCreator : MonoBehaviour
     {
         clicked = false;
 
-        if (endNote == null && holdTime > 0.2f)
+        if (endNote == null && isHeld)
         {
             endNote = Instantiate(gameObject);
             endNote.GetComponent<Transform>().position =
@@ -69,6 +75,8 @@ public class NoteCreator : MonoBehaviour
 
             endNote.GetComponent<MeshRenderer>().material.color = hover;
             endNote.GetComponent<BoxCollider>().enabled = false;
+            endNote.GetComponent<NoteCreator>().beat = 0.0;
+            endNote.GetComponent<NoteCreator>().length = 0.0;
         }
         else
         {
@@ -78,7 +86,7 @@ public class NoteCreator : MonoBehaviour
         holdTime = 0;
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         clicked = true;
         if (note == null)
@@ -87,15 +95,30 @@ public class NoteCreator : MonoBehaviour
             note.GetComponent<Transform>().position += new Vector3(0f, 1f, 0f);
             note.GetComponent<MeshRenderer>().material.color = hover;
             note.GetComponent<BoxCollider>().enabled = false;
-            
+
+            // beat must be set based on current position in editor
+            note.GetComponent<NoteCreator>().beat = 0.0;
+
+            // tap notes length default to zero;
+            note.GetComponent<NoteCreator>().length = 0.0;
+
+            // queue number
+            note.GetComponent<NoteCreator>().queueNum = 0;
+
             holdLine = Instantiate(line);
             holdLine.GetComponent<Transform>().position = note.GetComponent<Transform>().position;
+            holdLine.SetActive(false);
         }
         else
         {
             Destroy(note);
             Destroy(holdLine);
         }
+    }
+
+    private void CreateNote(int qnum, double beat, double length)
+    {
+
     }
 
     private void OnMouseEnter()
