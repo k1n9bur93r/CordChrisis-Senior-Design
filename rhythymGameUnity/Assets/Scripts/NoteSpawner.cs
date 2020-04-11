@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class NoteSpawner : MonoBehaviour
 {
-    private const float NOTE_PADDING = 4.0f;
+    private const float NOTE_PADDING = 8.0f;
 
     //holds all 4 note prefabs so they may be spawned
     public List<GameObject> noteObjects;
     public List<GameObject> gestureObjects;
     public List<float> noteXoffsets;
-    //units of movement per second
+    // Note scroll speed multiplier
+    [Header("Used by SiteHandler - LEAVE THIS BLANK")]
     public float speedMod;
     //where the notes start from
-    public float startDistance;
+    //public float startDistance;
     //how long until the note hits the reciever - this gets computed from startDistance and speedMod
-    private float noteTravelTime;
+    //private float noteTravelTime;
     //what y position the notes should be spawned at
     public float yOffset;
     private Transform noteReciever;
@@ -43,10 +44,16 @@ public class NoteSpawner : MonoBehaviour
 
         bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
-        noteTravelTime = startDistance / speedMod;
-        print("The first notes should play in " + noteTravelTime + " seconds");
+        //noteTravelTime = startDistance / speedMod;
+        //print("The first notes should play in " + noteTravelTime + " seconds");
     }    
 
+    /*
+        ISSUE:
+        - Race condition! Metronome does not calculate this in time!!!
+    */
+    
+    /*
     private float beatToDistance(double beat)
     {
         double time, distance;
@@ -56,12 +63,16 @@ public class NoteSpawner : MonoBehaviour
         distance = (time * speedMod);
         return (float)distance;
     }
+    */
 
     //This function takes a note number from 0-3 and spawns it
     public void spawnNote(int noteNum, double beat, double length=0)
     {
         GameObject curNote =
-            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
+            Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + (float)beat), Quaternion.Euler(0, 0, 90));
+            //Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
+
+        //Debug.Log(noteReciever.position.z + " " + startDistance + " " + beatToDistance((float)beat));
         
         notes[noteNum].Add(curNote.gameObject);
 
@@ -74,7 +85,7 @@ public class NoteSpawner : MonoBehaviour
         if (length > 0)
         {
             GameObject endHold =
-                Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(0, 0, 90));
+                Instantiate(noteObjects[noteNum], new Vector3(noteXoffsets[noteNum], yOffset, noteReciever.position.z + noteReciever.position.z + (float)beat), Quaternion.Euler(0, 0, 90));
     
             endHold.transform.parent = transform;
             //print(length);
@@ -95,7 +106,7 @@ public class NoteSpawner : MonoBehaviour
     public void spawnGesture(int gestureNum, double beat)
     {
         GameObject curGesture = 
-            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset + 1.0f, noteReciever.position.z + startDistance + beatToDistance((float) (beat))), Quaternion.Euler(31.69f, 0, 0));
+            Instantiate(gestureObjects[gestureNum], new Vector3((noteXoffsets[1]+noteXoffsets[2])/2, yOffset + 2.0f, noteReciever.position.z + noteReciever.position.z + (float)beat), Quaternion.Euler(31.69f, 0, 0));
         
         print(curGesture);
 

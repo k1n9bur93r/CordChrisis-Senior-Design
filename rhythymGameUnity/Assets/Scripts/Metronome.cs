@@ -23,7 +23,7 @@ using UnityEngine.UI;
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
 		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
-		- double globalOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
+		- double userOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
 
 	ISSUES:
@@ -35,22 +35,27 @@ public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
-	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
-	private const double SIXTYFOUR_NOTE = 0.03125;
+	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double SIXTYFOUR_NOTE = 0.0625;
+	private const double BASE_OFFSET = 0.63; //0.09; // Base visual delay
+	// ^ ISSUE: Base offset increased by a huge amount after doing SiteHandler stuff!
 
 	public Track meta;
 
-	// -DEBUG VARS-
+	public Text timer;
+
+	private bool playbackStarted;
+
 	public double startBeat;
 	private double startTime;
-	// -DEBUG VARS END-
 
+	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
 	public double tempo; // Song speed in beats per minute
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
 	public double beatsElapsedDelta;
-	public double startOffset; // Chart-determined chart/song offset
-	public double globalOffset; // User-determined chart/song offset
+	public double startOffset; // Chart-determined visual delay
+	public double userOffset; // User-determined visual delay
 
 	private bool pastSchedule;
 	private double songStart; // DSP time reference point for beginning of playback
@@ -71,95 +76,42 @@ public class Metronome : MonoBehaviour
 		beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
+		
+		playbackStarted = false;
 		pastSchedule = false;
 		tempoIndex = 0;
+	}
+
+	void Start()
+	{
+		UpdateRates();
 	}
 
 	/*
 		Calculate what beat we're on using tempo and time elapsed, relative to when the song started playing according to the sound system.
 	*/
 
-	public void Update()
+	void Update()
 	{
-		//UpdateTime();
-		UpdateTimeAnywhere(); // DEBUG ONLY
+		UpdateTimeAnywhere();
 		UpdateRates();
 	}
 
 	/*
-		Initialize song start point.
-		Play music after a brief delay.
-
-		Sounds in Unity do not play immediately when Play() is called (audio latency).
-		The only(?) way to guarantee that they will play on time is to schedule them to play in the future via PlayScheduled().
-
-		ISSUES:
-		- Unpredictable start times means there's still a slight amount of random, uncontrolled latency (enough to mess up timing)
-	*/
-
-	public void StartSong()
-	{
-		songStart = AudioSettings.dspTime; //- startOffset;
-		timeElapsedLast = AudioSettings.dspTime - songStart;
-
-		UpdateRates();
-		GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
-	}
-
-	/*
-		Update timers.
-	*/
-
-	public void UpdateTime()
-	{
-		if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
-		{
-			// Increment the timer by calculating DSP delta time (rather than using Time.deltaTime) instead of directly setting it to accomodate for tempo changes
-			timeElapsed = AudioSettings.dspTime - songStart - overtime;
-
-			// If the initial delays have not elapsed yet, do not increase beatsElapsed
-			if (timeElapsed >= (startOffset + globalOffset + BUFFER_DELAY))
-			{
-				// Once the timer passes the initial delay for the first time, force its value to equal the initial delay.
-				if (!pastSchedule)
-				{
-					overtime = timeElapsed - (startOffset + globalOffset + BUFFER_DELAY);
-					pastSchedule = true;
-				}				
-
-				// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-				beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
-			}
-
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
-		}
-	}
-
-	/*
-		-DEBUG FUNCTION-
 		Start music at an arbitrary point.
 	*/
 
 	public void StartSongAnywhere()
 	{
 		GetSongData();
-		//UpdateRates();
-
+		
 		// Step through every tempo change and increment the correct amount of time!
-		//double[] secPerBeatAny = new double[meta.json.tempo_change_beat.Length];
 
-		/*
-		for (int i = 0; i < meta.json.tempo_change_beat.Length; i++)
-		{
-			secPerBeatAny[i] = SEC_PER_MIN / meta.json.tempo_change_amount[i] / 32.0;
-		}
-		*/
-
-		double anyBeat = 0.0;
+		double anyTime = 0.0;
 		startTime = 0.0;
 
-		for (double i = 0.0; i < startBeat; i += SIXTYFOUR_NOTE)
+		// Move forward
+		for (double i = 0.0; i <= startBeat; i += SIXTYFOUR_NOTE)
 		{
 			if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
 			{
@@ -167,55 +119,84 @@ public class Metronome : MonoBehaviour
 				tempoIndex++;
 			}
 
-			secPerBeat = SEC_PER_MIN / tempo / 32.0;
-			anyBeat += secPerBeat;
+			secPerBeat = SEC_PER_MIN / tempo / 16.0;
+			anyTime += secPerBeat;
 
-			//Debug.Log("i: " + i + " | tempoIndex: " + tempoIndex);
+			beatsElapsed = i;
 		}
 
-		//tempo = meta.json.tempo_change_beat[tempoIndex - 1];
-
-		startTime = anyBeat;
-
-		//Debug.Log(startTime);
-
-		GetComponent<AudioSource>().Play();
+		startTime = anyTime;
 	}
 
 	/*
-		-DEBUG FUNCTION-
 		Update the timer based on the arbitrary start point.
 	*/
 
+	public bool PlayButton()
+	{
+		return (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
+	}
+
 	public void UpdateTimeAnywhere()
 	{
-		if ( (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Mouse0)) && !GetComponent<AudioSource>().isPlaying)
+		timer.text = "DSP time: " + timeElapsed.ToString();
+
+		if (!playbackStarted)
 		{
-			StartSongAnywhere();
+			if (PlayButton())
+			{
+				StartSongAnywhere();
+				playbackStarted = true;
+			}
 		}
 
-		else if (GetComponent<AudioSource>().isPlaying) // This will return true once Play() or PlayScheduled()[!!!] is called, regardless if there's any sound playing
+		else
 		{
 			if (!pastSchedule)
 			{
-				//startTime = (startBeat * secPerBeat) + startOffset + globalOffset;
-				startTime += startOffset + globalOffset;
+				if (startBeat == 0)
+				{
+					GetComponent<AudioSource>().time = 0.0f;					
+				}
+
+				else
+				{
+					GetComponent<AudioSource>().time = (float)(startTime + startOffset);
+				}
+
+				// ---
 
 				songStart = AudioSettings.dspTime + startTime;
 				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
-				GetComponent<AudioSource>().time = (float)startTime;
-				beatsElapsed = startBeat;
+
 				pastSchedule = true;
+
+				GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
 			}
 
-			// Increment the timer by calculating DSP delta time instead of directly setting it to accomodate for tempo changes
-			timeElapsed = AudioSettings.dspTime - songStart + startTime;
+			else
+			{
+				timeElapsed = AudioSettings.dspTime - songStart + startTime;
 
-			// Calculate how much DSP time has passed since the last frame and update beat counter accordingly
-			beatsElapsed += beatsElapsedDelta; //timeElapsedDelta / secPerBeat;
+				if (startBeat == 0.0)
+				{
+					if ((timeElapsed >= (BASE_OFFSET + userOffset + startOffset)))
+					{
+						beatsElapsed += beatsElapsedDelta;
+					}
+				}
 
-			timeElapsedDelta = timeElapsed - timeElapsedLast;
-			timeElapsedLast = timeElapsed;
+				else
+				{
+					if (timeElapsed >= (BASE_OFFSET + userOffset))
+					{
+						beatsElapsed += beatsElapsedDelta;
+					}
+				}
+
+				timeElapsedDelta = timeElapsed - timeElapsedLast;
+				timeElapsedLast = timeElapsed;
+			}
 		}
 	}
 
@@ -225,7 +206,7 @@ public class Metronome : MonoBehaviour
 
 	private void GetSongData()
 	{
-		tempo = meta.json.tempo_change_amount[0]; //meta.json.tempo;
+		tempo = meta.json.tempo_change_amount[0];
 		startOffset = meta.json.offset;
 	}
 

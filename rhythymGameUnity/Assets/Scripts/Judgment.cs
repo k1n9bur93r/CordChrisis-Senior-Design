@@ -28,14 +28,6 @@ public class Judgment : MonoBehaviour
 	public Metronome clock;
 	public Scoreboard stats;
 
-	// Placeholders until Scoreboard/something else implements UI!
-	public Text ratingText;
-	public Text leanText;
-	public Text comboText;
-	public Text statsText;
-
-	// End of placeholders
-
 	/*
 	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
 	enum Leanings { None, Early, Late };
@@ -43,11 +35,24 @@ public class Judgment : MonoBehaviour
 
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
-	// Large-ish timing windows
-	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
-	private const double FRAMES_PERFECT = 45.0 / 1000.0;
-	private const double FRAMES_GREAT = 90.0 / 1000.0;
-	private const double FRAMES_GOOD = 180.0 / 1000.0;
+	/*
+	// Colossal timing windows
+	private const double FRAMES_RAINBOW = 2.0 / 60.0; // Rainbow
+	private const double FRAMES_PERFECT = 4.0 / 60.0; // Perfect
+	private const double FRAMES_GOOD = 6.0 / 60.0; // Good
+	*/
+	
+	// Larger timing windows
+	/*
+	private const double FRAMES_MARVELOUS = 25.0 / 1000.0; // Rainbow
+	private const double FRAMES_PERFECT = 50.0 / 1000.0; // Perfect
+	private const double FRAMES_GREAT = 100.0 / 1000.0; // Great
+	private const double FRAMES_GOOD = 200.0 / 1000.0; // Bad
+	*/
+	private const double FRAMES_MARVELOUS = 22.5 / 1000.0; // Rainbow
+	private const double FRAMES_PERFECT = 45.0 / 1000.0; // Perfect
+	private const double FRAMES_GREAT = 90.0 / 1000.0; // Great
+	private const double FRAMES_GOOD = 180.0 / 1000.0; // Good
 
 	/*
 	// Stricter windows for testing overtime
@@ -62,9 +67,6 @@ public class Judgment : MonoBehaviour
 	void Awake()
 	{
 		//CalculateWindows();
-		ratingText.text = "";
-		leanText.text = "";
-		comboText.text = "";
 	}
 
 	void Update()
@@ -239,7 +241,7 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Check if the non-best input hit the early or late side of the timing window.
+		Check if the non-Marvelous input hit the early or late side of the timing window.
 	*/
 
 	private Leanings CheckLean(double diff)

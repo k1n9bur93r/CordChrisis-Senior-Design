@@ -68,8 +68,8 @@ public class Scoreboard : MonoBehaviour
 			0, // Miss
 			baseNoteValue * 0.3, // Good
 			baseNoteValue * 0.7, // Great
-			baseNoteValue - 10.0, // Perfect
-			baseNoteValue  // Marvelous
+			baseNoteValue, // Perfect
+			baseNoteValue + 1.0  // Marvelous
 		};
 	}
 
@@ -79,20 +79,10 @@ public class Scoreboard : MonoBehaviour
 		DrawScore();
 	}
 
-	/*
-	private double LerpDouble(double a, double b, double time)
-	{
-		return a + (b - a) * time;
-	}
-	*/
-
 	private void DrawScore()
 	{
-		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime); //(int)LerpDouble(scoreDisplayed, score, 16.0f * Time.deltaTime);
-		/*
-		float scoreVelocity = 0.0f;
-		scoreDisplayed = (int)Mathf.SmoothDamp((float)scoreDisplayed, (float)score, ref scoreVelocity, 0.05f);
-		*/
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
+		//scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 4.0f * (float)baseNoteValue * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
@@ -134,20 +124,24 @@ public class Scoreboard : MonoBehaviour
 		AnimateRating(rate);
 
 		// Negative combo scoring
-		SetNegativeCombo(rate);
+		//SetNegativeCombo(rate);
 		AnimateCombo();
 
 		// Calculate score
 		
+		/*
 		if (negativeCombo < 0)
 		{
-			score += ratingValues[(int)rate] * 0.9;
+			score += ratingValues[(int)rate] * 0.8;
 		}
 
 		else
 		{
 			score += ratingValues[(int)rate];
 		}
+		*/
+
+		score += ratingValues[(int)rate];
 
 		// Early/Late
 		switch (lean)
@@ -202,7 +196,7 @@ public class Scoreboard : MonoBehaviour
 
 	private void AnimateRating(Ratings rate)
 	{
-		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
+		ratingAnim.ForceStateNormalizedTime(0.0f);
 
 		ratingText.text = RATING_NAMES[(int)rate];
 		ratingText.fontMaterial = ratingColors[(int)rate];
@@ -213,7 +207,7 @@ public class Scoreboard : MonoBehaviour
 		// DEBUG
 		//streakText.text = negativeCombo.ToString() + " Combo";
 
-		if (combo > 0)
+		if (combo >= 3)
 		{
 			if ((notesGood > 0) || (notesMiss > 0))
 			{
