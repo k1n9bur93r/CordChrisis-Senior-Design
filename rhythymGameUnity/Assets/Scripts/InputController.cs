@@ -22,6 +22,7 @@ public class InputController : MonoBehaviour
     private const int MAX_GESTURES = 4;
 
     // needed classes
+    public TouchInputController touchInput;
     public NoteSpawner noteSpawner;
     public Judgment judge;
     public Metronome metronome;
@@ -63,6 +64,7 @@ public class InputController : MonoBehaviour
         t1.text = "Beat: " + metronome.beatsElapsed.ToString();
         t3.text = "Tempo: " + metronome.tempo.ToString();
         SetBeatOnKeyPress();
+        touchInput.checkTouch();
 
         // An equivalent function for swipe notes goes here
         for (int i = 0; i < MAX_GESTURES; i++) {
@@ -98,7 +100,7 @@ public class InputController : MonoBehaviour
             }
 
             // Process taps
-            if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey))
+            if (Input.GetKeyDown(button[i].GetComponent<ButtonAnimator>().btnKey) || touchInput.touched[i])
             {
                 if (judge.CheckHit(noteController.GetFirstBeat(i)))
                 {
@@ -115,10 +117,11 @@ public class InputController : MonoBehaviour
                 }
 
                 t2.text = "Beat on press: " + beatPressed.ToString();
+                touchInput.touched[i] = false;
             }
 
             // Process taps length > 0
-            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey))
+            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey) || touchInput.held[i])
             {
                 if (lengthRemain[i] > 0.0)
                 {
@@ -136,6 +139,7 @@ public class InputController : MonoBehaviour
                     }
                 }
                 button[i].GetComponent<ButtonAnimator>().SetPressedBtnColor();
+                touchInput.held[i] = false;
             }
 
             else

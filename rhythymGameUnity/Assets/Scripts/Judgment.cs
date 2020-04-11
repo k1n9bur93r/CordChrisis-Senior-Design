@@ -28,43 +28,18 @@ public class Judgment : MonoBehaviour
 	public Metronome clock;
 	public Scoreboard stats;
 
-	// Placeholders until Scoreboard/something else implements UI!
-	public Text ratingText;
-	public Text leanText;
-	public Text comboText;
-	public Text statsText;
-
-	// End of placeholders
-
-	/*
-	enum Ratings { Miss, Good, Great, Perfect, Marvelous };
-	enum Leanings { None, Early, Late };
-	*/
-
 	//private const double ONE_FRAME = 1.0 / 60.0; // 0.0167
 
-	// Large-ish timing windows
-	private const double FRAMES_MARVELOUS = 22.5 / 1000.0;
-	private const double FRAMES_PERFECT = 45.0 / 1000.0;
-	private const double FRAMES_GREAT = 90.0 / 1000.0;
-	private const double FRAMES_GOOD = 180.0 / 1000.0;
-
-	/*
-	// Stricter windows for testing overtime
-	private const double FRAMES_MARVELOUS = 1.0 / 60.0;
-	private const double FRAMES_PERFECT = 2.0 / 60.0;
-	private const double FRAMES_GREAT = 4.0 / 60.0;
-	private const double FRAMES_GOOD = 8.0 / 60.0;
-	*/
+	// Colossal timing windows
+	private const double FRAMES_MARVELOUS = 2.0 / 60.0; // Rainbow Perfect
+	private const double FRAMES_PERFECT = 4.0 / 60.0; // Perfect
+	private const double FRAMES_GOOD = 8.0 / 60.0; // Good
 
 	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
 	void Awake()
 	{
 		//CalculateWindows();
-		ratingText.text = "";
-		leanText.text = "";
-		comboText.text = "";
 	}
 
 	void Update()
@@ -82,7 +57,6 @@ public class Judgment : MonoBehaviour
 	{
 		beatsMarvelous = clock.beatsPerSec * FRAMES_MARVELOUS;
 		beatsPerfect = clock.beatsPerSec * FRAMES_PERFECT;
-		beatsGreat = clock.beatsPerSec * FRAMES_GREAT;
 		beatsGood = clock.beatsPerSec * FRAMES_GOOD;
 	}
 
@@ -115,11 +89,6 @@ public class Judgment : MonoBehaviour
 				if (Math.Abs(diff) <= beatsPerfect)
 				{
 					stats.UpdateScore(Ratings.Perfect, CheckLean(diff));
-				}
-
-				else if (Math.Abs(diff) <= beatsGreat)
-				{
-					stats.UpdateScore(Ratings.Great, CheckLean(diff));
 				}
 				
 				else if (Math.Abs(diff) <= beatsGood)
@@ -239,7 +208,7 @@ public class Judgment : MonoBehaviour
 	}
 
 	/*
-		Check if the non-best input hit the early or late side of the timing window.
+		Check if the non-Marvelous input hit the early or late side of the timing window.
 	*/
 
 	private Leanings CheckLean(double diff)
@@ -262,9 +231,8 @@ public class Judgment : MonoBehaviour
 	private void PrintWindows()
 	{
 		string judgmentWindows =
-			"Marvelous: +/- " + beatsMarvelous + " beats (+/- " + FRAMES_MARVELOUS + " sec)\n"
-			+ "Excellent: +/- " + beatsPerfect + " beats (+/- " + FRAMES_PERFECT + " sec)\n"
-			+ "Great: +/- " + beatsGreat + " beats (+/- " + FRAMES_GREAT + " sec)\n"
+			"R-Perfect: +/- " + beatsMarvelous + " beats (+/- " + FRAMES_MARVELOUS + " sec)\n"
+			+ "Perfect: +/- " + beatsPerfect + " beats (+/- " + FRAMES_PERFECT + " sec)\n"
 			+ "Good: +/- " + beatsGood + " beats (+/- " + FRAMES_GOOD + " sec)";
 
 		Debug.Log(judgmentWindows);

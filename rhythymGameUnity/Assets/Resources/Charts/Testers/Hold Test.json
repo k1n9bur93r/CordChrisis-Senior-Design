@@ -1,0 +1,11 @@
+{
+	"title": "Lucky Star (Short Ver)",
+	"artist": "hitoshi",
+	"genre": "Happy Hardcore",
+	"tempo_change_amount": [120.0],
+    "tempo_change_beat": [0.0],
+	"offset": 0.028,
+	"beats": [1.0, 2.0, 3.0, 4.0],
+	"notes": [1, 2, 3, 4],
+	"note_lengths": [0.5, 1.0, 2.0, 4.0]
+}

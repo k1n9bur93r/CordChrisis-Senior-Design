@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum Ratings { Miss, Good, Great, Perfect, Marvelous };
+public enum Ratings { Miss, Good, Perfect, Marvelous };
 public enum Leanings { None, Early, Late };
 
 /*
@@ -16,7 +16,7 @@ public class Scoreboard : MonoBehaviour
 	//private const double ACC_SCORE_MAX = 800000;
 	//private const double COMBO_SCORE_MAX = 200000;
 	private const double MAX_SCORE = 1000000.0;
-	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT", "PERFECT" };
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "PERFECT", "PERFECT" };
 
 	// Other classes
 	public Track meta;
@@ -34,7 +34,7 @@ public class Scoreboard : MonoBehaviour
 	private int scoreDisplayed;
 
 	// Statistics for scoring
-	private int notesMarvelous, notesPerfect, notesGreat, notesGood, notesMiss;
+	private int notesMarvelous, notesPerfect, notesGood, notesMiss;
 	private int notesEarly, notesLate;
 	private int combo, negativeCombo, comboMax;
 	private double score;
@@ -46,7 +46,6 @@ public class Scoreboard : MonoBehaviour
 	{
 		notesMarvelous = 0;
 		notesPerfect = 0;
-		notesGreat = 0;
 		notesGood = 0;
 		notesMiss = 0;
 		combo = 0;
@@ -64,12 +63,11 @@ public class Scoreboard : MonoBehaviour
 	{
 		baseNoteValue = MAX_SCORE / (double)meta.noteTotal;
 
-		ratingValues = new double[5] {
+		ratingValues = new double[4] {
 			0, // Miss
-			baseNoteValue * 0.3, // Good
-			baseNoteValue * 0.7, // Great
-			baseNoteValue - 10.0, // Perfect
-			baseNoteValue  // Marvelous
+			baseNoteValue * 0.5, // Good
+			baseNoteValue, // Perfect
+			baseNoteValue + 1.0  // Marvelous
 		};
 	}
 
@@ -79,20 +77,10 @@ public class Scoreboard : MonoBehaviour
 		DrawScore();
 	}
 
-	/*
-	private double LerpDouble(double a, double b, double time)
-	{
-		return a + (b - a) * time;
-	}
-	*/
-
 	private void DrawScore()
 	{
-		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime); //(int)LerpDouble(scoreDisplayed, score, 16.0f * Time.deltaTime);
-		/*
-		float scoreVelocity = 0.0f;
-		scoreDisplayed = (int)Mathf.SmoothDamp((float)scoreDisplayed, (float)score, ref scoreVelocity, 0.05f);
-		*/
+		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
+		//scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 4.0f * (float)baseNoteValue * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
@@ -110,15 +98,10 @@ public class Scoreboard : MonoBehaviour
 				notesPerfect++;
 				combo++;
 				break;
-
-			case Ratings.Great:
-				notesGreat++;
-				combo++;
-				break;
 		
 			case Ratings.Good:
 				notesGood++;
-				combo = 0;
+				combo++;
 				break;
 
 			case Ratings.Miss:
@@ -134,14 +117,14 @@ public class Scoreboard : MonoBehaviour
 		AnimateRating(rate);
 
 		// Negative combo scoring
-		SetNegativeCombo(rate);
+		//SetNegativeCombo(rate);
 		AnimateCombo();
 
 		// Calculate score
 		
 		if (negativeCombo < 0)
 		{
-			score += ratingValues[(int)rate] * 0.9;
+			score += ratingValues[(int)rate] * 0.5;
 		}
 
 		else
@@ -174,17 +157,10 @@ public class Scoreboard : MonoBehaviour
 
 	private void SetNegativeCombo(Ratings rate)
 	{
-		if (rate >= Ratings.Great)
+		if (rate == Ratings.Miss)
 		{
 			negativeCombo++;
 		}
-
-		/*
-		else if (rate == Ratings.Good)
-		{
-			// Nothing happens
-		}
-		*/
 
 		else
 		{
@@ -202,7 +178,7 @@ public class Scoreboard : MonoBehaviour
 
 	private void AnimateRating(Ratings rate)
 	{
-		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
+		ratingAnim.ForceStateNormalizedTime(0.0f);
 
 		ratingText.text = RATING_NAMES[(int)rate];
 		ratingText.fontMaterial = ratingColors[(int)rate];
@@ -213,23 +189,18 @@ public class Scoreboard : MonoBehaviour
 		// DEBUG
 		//streakText.text = negativeCombo.ToString() + " Combo";
 
-		if (combo > 0)
+		if (combo >= 3)
 		{
-			if ((notesGood > 0) || (notesMiss > 0))
+			if (notesMiss > 0)
 			{
-				/*
-				if (negativeCombo < 0) { streakText.fontMaterial = ratingColors[7]; }
-				else { streakText.fontMaterial = ratingColors[5]; }
-				*/
-
-				streakText.fontMaterial = ratingColors[5];
+				streakText.fontMaterial = ratingColors[4];
 			}
 
 			else
 			{
-				if ((notesPerfect == 0) && (notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[6]; }
-				else if ((notesGreat == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; }
-				else { streakText.fontMaterial = ratingColors[(int)Ratings.Great]; }
+				if ((notesPerfect == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[5]; } // Unbroken Marvelous
+				else if ((notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; } // Unbroken Perfect
+				else { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; } // Unbroken Good
 			}
 
 			streakText.text = combo.ToString();

@@ -13,6 +13,8 @@ public class JsonTrack
     #pragma warning disable 0649
 
     // Song metadata
+    public AudioClip audio;
+    public string background;
     public string title;
     public string artist;
 
@@ -34,6 +36,7 @@ public class Track : MonoBehaviour
     // do so through 'Track.json'
 
     // Track vars
+    [Header("Used by SiteHandler - LEAVE THIS BLANK")]
     public string track_file;
     public JsonTrack json;
     public NoteSpawner noteSpawner;
@@ -42,9 +45,9 @@ public class Track : MonoBehaviour
     // Derived chart statistics
     public int noteTotal;
 
-    JsonTrack readJsonFile(string filename) {
+    JsonTrack readJsonFile() {
         // reads a json file and returns the parsed object as JsonTrack object
-        string json_string = Resources.Load<TextAsset>(filename).ToString();
+        string json_string = track_file; //Resources.Load<TextAsset>(filename).ToString();
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);
 
         return json;
@@ -100,7 +103,7 @@ public class Track : MonoBehaviour
     {
         // Read JSON file
         Debug.Log("[Track] Reading...");
-        json = readJsonFile(track_file);
+        json = readJsonFile();
 
         // Validate JSON file
         Debug.Log("[Track] Validating...");
@@ -113,6 +116,7 @@ public class Track : MonoBehaviour
     {
         // Spawn the notes
         for (int i = 0; i < json.notes.Length; i++) {
+            //Debug.Log(json.beats[i]); // !
             int note = json.notes[i];
             double beat = json.beats[i];
             double length = json.note_lengths[i];

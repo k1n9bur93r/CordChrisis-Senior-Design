@@ -1,34 +1,29 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TouchInputController : MonoBehaviour
 {
     public float distance = 50f;
-
     public List<float> distances;
+    public List<bool> held;
+    public List<bool> touched;
     // Start is called before the first frame update
     void Start()
     {
-        
+        for (int x=0; x<4; x++)
+        {
+            touched.Add(false);
+            held.Add(false);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    public void checkTouch()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            // RaycastHit  hit;
-            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            
-            // if (Physics.Raycast(ray, out hit)) {
-            //     print(hit.transform.name);
-            //     if (hit.transform.name == "Red_Receptor" )
-            //     {print( "My object is clicked by mouse");}
-            // }
-
-                          //create a ray cast and set it to the mouses cursor position in game
-
-            Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+       for (int x = 0; x < Input.touchCount; x++)
+        {
+            Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch(x).position);
             RaycastHit hit;
             if (Physics.Raycast (ray, out hit, distance)) 
             {
@@ -37,24 +32,22 @@ public class TouchInputController : MonoBehaviour
                 //log hit area to the console
                 Debug.Log(hit.point);
 
-                if (hit.point.x < distances[0])
+                for (int y = 0; y < 4; y++)
                 {
-                    print("button 1");
-                }
-                else if (hit.point.x < distances[1])
-                {
-                    print("button 2");
-                }
-                else if (hit.point.x < distances[2])
-                {
-                    print("button 3");
-                }
-                else
-                {
-                    print("button 4");
-                }  
-            }    
+                    if (hit.point.x < distances[y])
+                    {
+                        print("button " + (y+1));
 
+                        if (Input.GetTouch(x).phase == TouchPhase.Began)
+                            touched[y]=true;
+
+                        held[y]=true;
+
+                        break;
+                    }
+                }
+            }    
         }
     }
+    
 }
