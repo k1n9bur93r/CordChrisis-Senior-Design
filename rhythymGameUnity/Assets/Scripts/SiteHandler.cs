@@ -11,27 +11,27 @@ using UnityEngine.Networking;
 
 public class SiteHandler : MonoBehaviour
 {
-	/*
-	[Header("Check this while testing, uncheck before building")]
-	public bool bypassWait = false;
-	[Space]
-	*/
+	[Tooltip("Off: Download data from URL.\nOn: Read data from Resources folder.\n\nDisable this when building for WebGL!")]
+	public bool localMode = false;
 
 	bool siteArgsDone = false;
 	bool downloadersDone = false;
 
 	// Track vars
+	[Space]
 	public Track track;
-	public string jsonURL;
+	public string chartURL;
 	private bool trackDone = false;
 
 	// Metronome vars
+	[Space]
 	public Metronome metronome;
 	public string audioURL;
 	public double userOffset;
 	private bool metronomeDone = false;
 
 	// NoteSpawner vars
+	[Space]
 	public NoteSpawner noteSpawner;
 	public float speedMod;
 
@@ -74,36 +74,52 @@ public class SiteHandler : MonoBehaviour
 
 	IEnumerator InitTrack()
 	{
-		UnityWebRequest www = UnityWebRequest.Get(jsonURL);
-
-		yield return www.SendWebRequest(); // Request and sit tight
-
-		if (www.isNetworkError || www.isHttpError)
+		if (!localMode)
 		{
-			Debug.Log("[SiteHandler] InitTrack(): " + www.error);
+			UnityWebRequest www = UnityWebRequest.Get(chartURL);
+
+			yield return www.SendWebRequest(); // Request and sit tight
+
+			if (www.isNetworkError || www.isHttpError)
+			{
+				Debug.Log("[SiteHandler] InitTrack(): " + www.error);
+			}
+
+			else
+			{
+				track.track_file = www.downloadHandler.text;
+				trackDone = true;
+			}
 		}
 
 		else
 		{
-			track.track_file = www.downloadHandler.text;
-			trackDone = true;
+			track.track_file = Resources.Load<TextAsset>(chartURL).ToString();
 		}
 	}
 
 	IEnumerator InitMetronome()
 	{
-		UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
-
-		yield return www.Send(); //SendWebRequest(); // 
-
-		if (www.isNetworkError || www.isHttpError)
+		if (!localMode)
 		{
-			Debug.Log("[SiteHandler] InitMetronome(): " + www.error);
+			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
+
+			yield return www.Send(); //SendWebRequest(); // 
+
+			if (www.isNetworkError || www.isHttpError)
+			{
+				Debug.Log("[SiteHandler] InitMetronome(): " + www.error);
+			}
+
+			else
+			{
+				metronome.GetComponent<AudioSource>().clip = DownloadHandlerAudioClip.GetContent(www);
+			}
 		}
 
 		else
 		{
-			metronome.GetComponent<AudioSource>().clip = DownloadHandlerAudioClip.GetContent(www);
+			metronome.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(audioURL);
 		}
 	}
 }

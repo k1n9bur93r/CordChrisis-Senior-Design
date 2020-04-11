@@ -124,11 +124,12 @@ public class Scoreboard : MonoBehaviour
 		AnimateRating(rate);
 
 		// Negative combo scoring
-		SetNegativeCombo(rate);
+		//SetNegativeCombo(rate);
 		AnimateCombo();
 
 		// Calculate score
 		
+		/*
 		if (negativeCombo < 0)
 		{
 			score += ratingValues[(int)rate] * 0.8;
@@ -138,6 +139,9 @@ public class Scoreboard : MonoBehaviour
 		{
 			score += ratingValues[(int)rate];
 		}
+		*/
+
+		score += ratingValues[(int)rate];
 
 		// Early/Late
 		switch (lean)
@@ -192,7 +196,7 @@ public class Scoreboard : MonoBehaviour
 
 	private void AnimateRating(Ratings rate)
 	{
-		ratingAnim.ForceStateNormalizedTime(0.0f); // Deprecated function!
+		ratingAnim.ForceStateNormalizedTime(0.0f);
 
 		ratingText.text = RATING_NAMES[(int)rate];
 		ratingText.fontMaterial = ratingColors[(int)rate];
@@ -203,7 +207,7 @@ public class Scoreboard : MonoBehaviour
 		// DEBUG
 		//streakText.text = negativeCombo.ToString() + " Combo";
 
-		if (combo > 0)
+		if (combo >= 3)
 		{
 			if ((notesGood > 0) || (notesMiss > 0))
 			{
