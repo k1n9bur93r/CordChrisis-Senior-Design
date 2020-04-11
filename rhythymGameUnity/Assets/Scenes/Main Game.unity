@@ -3581,7 +3581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -24.165, y: -20.524, z: 7.089}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 25.49997, y: -40.389984}
+  m_AnchoredPosition: {x: 25.5, y: -40.389893}
   m_SizeDelta: {x: 50, y: -45.880066}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &1281229434
@@ -3887,7 +3887,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -18.248001, y: 30.157001, z: -6.5540004}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 628.8, y: 127.100006}
+  m_AnchoredPosition: {x: 628.8, y: 127.10004}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1338066422
@@ -4108,7 +4108,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.898804, y: -581.4852}
+  m_AnchoredPosition: {x: 11.898926, y: -581.4851}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1394694702
@@ -10656,7 +10656,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.898804, y: -487.54236}
+  m_AnchoredPosition: {x: 11.898926, y: -487.54224}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1916113839
@@ -16331,6 +16331,9 @@ MonoBehaviour:
   - -0.35
   - 0
   - 0.35
+  - 100
+  held: 
+  touched: 
 --- !u!4 &2059179809
 Transform:
   m_ObjectHideFlags: 0
@@ -16412,6 +16415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a826dc996c364364cab2237850bac979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  touchInput: {fileID: 2059179808}
   noteSpawner: {fileID: 789386881}
   judge: {fileID: 401751258}
   metronome: {fileID: 251699263}
@@ -16762,7 +16766,7 @@ PrefabInstance:
     - target: {fileID: 1609524037283753296, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
       propertyPath: track_file
-      value: Charts/gesture_test
+      value: Charts/hold_test
       objectReference: {fileID: 0}
     - target: {fileID: 1609524037283753297, guid: e36aec602ee787045ae760f29ddbdee8,
         type: 3}
