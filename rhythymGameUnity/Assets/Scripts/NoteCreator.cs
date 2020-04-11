@@ -9,30 +9,26 @@ public class NoteCreator : MonoBehaviour
     private GameObject holdLine;
     private GameObject endNote;
     public GameObject line;
+    public GameObject originalNote;
 
-    // object info
-    private Color original;
-    private Color hover;
-    private float scalar;
-    private double beat;
-    private double length;
-    private int queueNum;
+    // indicators
+    private Color originalColor;
+    private Color hoverColor;
 
     // input info
     private bool clicked;
     private bool isHeld;
     private float holdTime;
+    private static float scalar;
 
     void Start()
-    { 
+    {
+        originalColor = GetComponent<MeshRenderer>().material.color;
         note = holdLine = endNote = null;
-
-        original = GetComponent<MeshRenderer>().material.color;
-        hover = original;
-        hover.a = 1;
-
-        clicked = false;
+        hoverColor = originalColor;
         scalar = holdTime = 0;
+        hoverColor.a = 1;
+        clicked = false;
     }
 
     void Update()
@@ -41,23 +37,29 @@ public class NoteCreator : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                // should have a max size for a hold note
-                scalar += 0.0005f;
+                // should a hold note have a max length?
+                scalar += 0.0025f;
                 holdTime += Time.deltaTime;
 
-                isHeld = holdTime > 0.25f ? true : false;
+                isHeld = holdTime > 0.20f ? true : false;
+
                 if (isHeld)
                 {
                     holdLine.SetActive(true);
+
+                    // increases length on the z-axis
                     holdLine.GetComponent<Transform>().transform.localPosition += new Vector3(0f, 0f, scalar / 2.0f);
                     holdLine.GetComponent<Transform>().transform.localScale += new Vector3(0f, 0f, scalar);
-                    note.GetComponent<NoteCreator>().length += scalar;
+
+                    
+                    note.GetComponent<NoteData>().length += scalar * 10.0;
                 }
 
-                Debug.Log(note.GetComponent<NoteCreator>().length);
                 //Debug.Log(holdTime);
             }
+            scalar = 0;
         }
+        
     }
 
     // in theory, these functions parallel touch input
@@ -67,19 +69,28 @@ public class NoteCreator : MonoBehaviour
 
         if (endNote == null && isHeld)
         {
-            endNote = Instantiate(gameObject);
+            endNote = Instantiate(originalNote);
+            endNote.GetComponent<Transform>().parent = note.GetComponent<Transform>();
             endNote.GetComponent<Transform>().position =
                 new Vector3(holdLine.GetComponent<Transform>().position.x,
                             holdLine.GetComponent<Transform>().position.y,
                             holdLine.GetComponent<Transform>().position.z * 2f);
 
-            endNote.GetComponent<MeshRenderer>().material.color = hover;
+            endNote.GetComponent<MeshRenderer>().material.color = hoverColor;
             endNote.GetComponent<BoxCollider>().enabled = false;
-            endNote.GetComponent<NoteCreator>().beat = 0.0;
-            endNote.GetComponent<NoteCreator>().length = 0.0;
+
+
+            // beat should be divisible by 0.25 (quarter beat)
+            endNote.GetComponent<NoteData>().beat = 
+                note.GetComponent<NoteData>().beat + note.GetComponent<NoteData>().length;
+
+            //endNote.GetComponent<NoteData>().length = 0.0;
+            //endNote.GetComponent<NoteData>().queueNum = 0;
+
+            Debug.Log("End Note Beat: " + endNote.GetComponent<NoteData>().beat);
         }
         else
-        {
+        {            
             Destroy(endNote);
         }
 
@@ -89,24 +100,35 @@ public class NoteCreator : MonoBehaviour
     public void OnMouseDown()
     {
         clicked = true;
+
         if (note == null)
         {
-            note = Instantiate(gameObject);
-            note.GetComponent<Transform>().position += new Vector3(0f, 1f, 0f);
-            note.GetComponent<MeshRenderer>().material.color = hover;
+            // init note setup
+            note = Instantiate(originalNote);
+            note.GetComponent<Transform>().parent = this.transform;
+            note.GetComponent<Transform>().position = this.transform.position;
+            note.GetComponent<Transform>().position += new Vector3(0f, 0.5f, 0f);
+            note.GetComponent<MeshRenderer>().material.color = hoverColor;
             note.GetComponent<BoxCollider>().enabled = false;
+            
+            /** things to pass to NoteSpawner **/
+            // note's beat should be set to current position in editor
+            note.GetComponent<NoteData>().beat = 0.0;
 
-            // beat must be set based on current position in editor
-            note.GetComponent<NoteCreator>().beat = 0.0;
-
-            // tap notes length default to zero;
-            note.GetComponent<NoteCreator>().length = 0.0;
+            // tap notes length default to zero; length increases based on hold time
+            note.GetComponent<NoteData>().length = 0.0;
 
             // queue number
-            note.GetComponent<NoteCreator>().queueNum = 0;
+            //note.GetComponent<NoteData>().queueNum = 0;
+            Debug.Log(note.GetComponent<NoteData>().queueNum);
 
+            // hold note setup
             holdLine = Instantiate(line);
+            holdLine.GetComponent<Transform>().parent = note.GetComponent<Transform>();
             holdLine.GetComponent<Transform>().position = note.GetComponent<Transform>().position;
+            holdLine.GetComponent<MeshRenderer>().material.color = Color.white;
+            holdLine.GetComponent<BoxCollider>().enabled = false;
+
             holdLine.SetActive(false);
         }
         else
@@ -116,18 +138,13 @@ public class NoteCreator : MonoBehaviour
         }
     }
 
-    private void CreateNote(int qnum, double beat, double length)
-    {
-
-    }
-
     private void OnMouseEnter()
     {
-        GetComponent<MeshRenderer>().material.color = hover;
+        GetComponent<MeshRenderer>().material.color = hoverColor;
     }
 
     private void OnMouseExit()
     {
-        GetComponent<MeshRenderer>().material.color = original;
+        GetComponent<MeshRenderer>().material.color = originalColor;
     }
 }
