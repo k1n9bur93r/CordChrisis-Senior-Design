@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4870869338093480635}
   - component: {fileID: 4522682082017169549}
   - component: {fileID: 7926126503507766388}
-  - component: {fileID: 8485788866923567275}
   - component: {fileID: 8485788866923567274}
+  - component: {fileID: 9142208869214248753}
   m_Layer: 0
-  m_Name: Note Blueprint
+  m_Name: NoteBlueprint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,19 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8485788866923567275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8485788866923567272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f5c44fd07f70d489df14da163c443b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  line: {fileID: 294451225485616511, guid: 134668d2f1770714f921248816aa1301, type: 3}
 --- !u!65 &8485788866923567274
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -108,3 +95,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.04, z: 0.02}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9142208869214248753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8485788866923567272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cccd3d659dceecf44b1d8f3569a94a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
