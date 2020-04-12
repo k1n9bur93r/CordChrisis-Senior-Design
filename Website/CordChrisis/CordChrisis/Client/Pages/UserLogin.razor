@@ -180,7 +180,14 @@
         }
         else
         {
+            UserStats stats = await Http.PostJsonAsync<UserStats>("userstats/post",checkData.ID.ToString());
             await SaveLogOnToSession(checkData.ID.ToString());
+            if (stats.UserImage != null)
+            {
+                string ImageString= await this.js.InvokeAsync<string>("ConvertByteArrayToImage",stats.UserImage);
+                await SaveImageToSession(ImageString);
+
+            }
             NavigationManager.NavigateTo("/");
             success = true;
             return success;
@@ -190,6 +197,10 @@
     async Task SaveLogOnToSession(string UserID)
     {
         await Storage.SetItemAsync("LoggedIn", UserID);
+    }
+        async Task SaveImageToSession(string ImageString)
+    {
+        await Storage.SetItemAsync("UserPFP", ImageString);
     }
 
 

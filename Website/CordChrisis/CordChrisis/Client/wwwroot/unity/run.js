@@ -25,4 +25,11 @@ function quit()
     unityWebGL.Quit(function () { console.log("Ended Game Session."); });
     unityWebGL = null;
 }
+
+function ConvertByteArrayToImage(ByteArray)
+{
+    console.log("Hey mah look at me !");
+    return "data:image/png;base64," + ByteArray;
+}
+
 //};

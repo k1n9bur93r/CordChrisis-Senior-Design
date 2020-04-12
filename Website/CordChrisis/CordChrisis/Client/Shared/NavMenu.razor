@@ -1,48 +1,39 @@
 ﻿
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm  bg-dark border-bottom box-shadow mb-3 fixed-top">
-    <div class="container">
-        <a class="navbar-brand text-light" href="/"><img  class="NeonY" style="height:58px"src="/css/images/ccglow.png"></a>
-        <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="ToggleNavMenu">
-            <ul class="navbar-nav flex-grow-1">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-dark border-bottom box-shadow mb-3 fixed-top justify-content-between">
+            <div class="flex-row d-flex">
+                <div>
+                    <a class="navbar-brand text-light" href="/"><img class="NeonY LogoSize"  src="/css/images/ccglow.png"></a>
+                </div>
+                <NavLink class="nav-link NeonV h5 align-self-center" href="searchpage">
+                    Search
+                </NavLink>
+                <NavLink class="nav-link NeonV h5 align-self-center" href="">
+                    Build
+                </NavLink>
+            </div>
 
-                <li class="nav-item px-3  "> 
-                    <NavLink class="nav-link NeonB h5"  href="searchpage" >
-                        Search
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link NeonB h5" href="signup" >
-                         Create Account
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink href="login" class="nav-link NeonB h5">
+            <div class=" dropdown dropleft">
+                <div class=" dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="dropdown-toggle  rounded-circle  border border-warning border-1 ml-auto IconSize"  src="/css/images/loginGenericUserPFP.jpg" id="pfpDropDown">
+                </div>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <h4 class="dropdown-header text-light">Sign In Options</h4>
+                    <NavLink class="nav-link NeonV h5 " href="login">
                         Login
                     </NavLink>
-                </li>
 
-            </ul>
-        </div>
-    </div>
-</nav>
+                    <div class="dropdown-divider"></div>
+                    <NavLink class="nav-link NeonV h5 " href="signUp">
+                        Sign Up
+                    </NavLink>
+                </div>
+            </div>
+
+    </nav>
 
 
 @code {
-    bool collapseNavMenu = true;
-
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
 
 
 }

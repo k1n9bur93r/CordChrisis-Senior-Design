@@ -28,13 +28,15 @@ else
 {
     if (stats != null)
     {
+
         <div class="container  pt-lg-5">
             <div class="row">
                 <div class="rounded bg-secondary col-2 pl-1 ">
-                    <img class="rounded-circle border border-light border-4" src=@pfp>
+                    <img class="rounded-circle border border-light border-4" src=@imagefile>
                     <InputFile OnChange="HandleFile" />
 
                 </div>
+               
                 <div class=" rounded bg-secondary col-10 text-center mx-auto">
                     <span class=" h1"> DOOM's Account Page  </span>
                     <span class="text-muted">@ID</span>
@@ -79,9 +81,7 @@ else
     bool hasID = false;
     Task<bool> checkGameRunning { get; set; }
     UserStats stats = new UserStats();
-    string pfp;
-    Image userpfp;
-    System.Drawing.Image image;
+    string imagefile;
 
     protected async override void OnInitialized()
     {
@@ -110,17 +110,18 @@ else
         {
             hasID = true;
             stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
+            Console.WriteLine("Hey I came back with data");
             if(stats.UserImage== null)
             {
-                pfp = "/css/images/pfp2.jpg";
+                Console.WriteLine("Oop I'm empty");
+                imagefile = "/css/images/pfp2.jpg";
             }
             else
             {
-                using (var ms = new MemoryStream(stats.UserImage))
-                {
 
-                    userpfp = Image.FromStream(ms);
-                }
+                imagefile = await Storage.GetItemAsync<string>("UserPFP");
+
+                Console.WriteLine("I made it too :)");
             }
             StateHasChanged();
         }
