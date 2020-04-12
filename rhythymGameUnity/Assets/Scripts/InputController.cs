@@ -32,12 +32,15 @@ public class InputController : MonoBehaviour
 
     private double beatPressed;
     private double[] lengthRemain;
+    private const double GRACE_TIME = 0.33;
+    private double[] holdGrace;
 
     // Text for testing
-    public Text t1;
-    public Text t2;
-    public Text t3;
-    public Text t4;
+    public Text t1; // Current beat
+    public Text t2; // Beat on key press
+    public Text t3; // Tempo
+    public Text t4; // Note length
+    public Text t5; // Grace
 
     // Splash flag
     private bool[] splashFlag = new bool[4];
@@ -49,6 +52,7 @@ public class InputController : MonoBehaviour
     void Awake()
     {
         lengthRemain = new double[] { 0.0, 0.0, 0.0, 0.0 };
+        holdGrace = new double[] { 0.0, 0.0, 0.0, 0.0 };
     }
 
     void Start()
@@ -65,6 +69,8 @@ public class InputController : MonoBehaviour
         t3.text = "Tempo: " + metronome.tempo.ToString();
         SetBeatOnKeyPress();
         touchInput.checkTouch();
+
+        CheckGrace();
 
         // An equivalent function for swipe notes goes here
         for (int i = 0; i < MAX_GESTURES; i++) {
@@ -121,6 +127,8 @@ public class InputController : MonoBehaviour
             }
 
             // Process taps length > 0
+
+            // While holding
             if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey) || touchInput.held[i])
             {
                 if (lengthRemain[i] > 0.0)
@@ -142,9 +150,21 @@ public class InputController : MonoBehaviour
                 touchInput.held[i] = false;
             }
 
+            // While not holding
             else
             {
-                if (lengthRemain[i] > 0.0)
+                // Briefly continue holding button after release
+                if ((lengthRemain[i] > 0.0) && (holdGrace[i] > 0.0))
+                {
+                    lengthRemain[i] = judge.ReduceHoldDuring(lengthRemain[i]);
+                   
+                    if (lengthRemain[i] <= 0.0)
+                    {                        
+                        judge.HoldSuccess();
+                    }
+                }
+
+                else if (lengthRemain[i] > 0.0)
                 {
                     lengthRemain[i] = 0.0;
                     //noteController.RemoveTopNote(i);
@@ -154,6 +174,7 @@ public class InputController : MonoBehaviour
                     noteSpawner.holds[0].SetActive(false);
                     noteSpawner.holds.RemoveAt(0);
                 }
+
                 button[i].GetComponent<ButtonAnimator>().SetDefaultBtnColor();
             }
         }
@@ -203,6 +224,37 @@ public class InputController : MonoBehaviour
             */
         }
 
+    }
+
+    /*
+        Hold note lenciency function. Checks if the button has been released recently.
+    */
+
+    void CheckGrace()
+    {
+        t5.text =
+            "Key 1: " + holdGrace[0] + "\n" + lengthRemain[0] + "\n"
+            + "Key 2: " + holdGrace[1] + "\n" + lengthRemain[1] + "\n"
+            + "Key 3: " + holdGrace[2] + "\n" + lengthRemain[2] + "\n"
+            + "Key 4: " + holdGrace[3] + "\n" + lengthRemain[3] + "\n";
+
+        for (int i = 0; i < MAX_KEYS; i++)
+        {
+            if (Input.GetKey(button[i].GetComponent<ButtonAnimator>().btnKey) || touchInput.held[i])
+            {
+                holdGrace[i] = GRACE_TIME;
+            }
+
+            else
+            {
+                holdGrace[i] -= Time.deltaTime;
+
+                if (holdGrace[i] < 0.0)
+                {
+                    holdGrace[i] = 0.0;
+                }
+            }
+        }
     }
 
     public double GetBeatOnKeyPress()
