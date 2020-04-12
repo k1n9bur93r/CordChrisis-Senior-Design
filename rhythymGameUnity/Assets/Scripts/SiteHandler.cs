@@ -14,8 +14,8 @@ public class SiteHandler : MonoBehaviour
 	[Tooltip("Off: Download data from URL.\nOn: Read data from Resources folder.\n\nDisable this when building for WebGL!")]
 	public bool localMode = false;
 
-	bool siteArgsDone = false;
-	bool downloadersDone = false;
+	private bool siteArgsDone = false;
+	private bool downloadersDone = false;
 
 	// Track vars
 	[Space]
@@ -27,12 +27,14 @@ public class SiteHandler : MonoBehaviour
 	[Space]
 	public Metronome metronome;
 	public string audioURL;
+	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -90.")]
 	public double userOffset;
 	private bool metronomeDone = false;
 
 	// NoteSpawner vars
 	[Space]
 	public NoteSpawner noteSpawner;
+	[Tooltip("Note scroll speed relative to initial chart speed.\n\nValues are factors of 100 BPM.")]
 	public float userSpeed;
 
 	// InputController vars
@@ -47,7 +49,7 @@ public class SiteHandler : MonoBehaviour
 		// Do this later
 		
 		// TEMP SETTERS
-		metronome.userOffset = userOffset;
+		metronome.userOffset = userOffset / 1000.0;
 		noteSpawner.userSpeed = userSpeed;
 
 		siteArgsDone = true; // may or may not actually do anything
