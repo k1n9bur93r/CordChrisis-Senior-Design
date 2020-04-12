@@ -1955,7 +1955,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15.25, y: -338.94}
+  m_AnchoredPosition: {x: 15.25, y: -315.65}
   m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &712912387
@@ -1989,7 +1989,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Timer
+  m_Text: Timers
 --- !u!222 &712912388
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15774,7 +15774,7 @@ PrefabInstance:
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
       propertyPath: startBeat
-      value: 0
+      value: 76
       objectReference: {fileID: 0}
     - target: {fileID: 5573155426960535795, guid: 97a7bc46d938afe4a87b2d0695ce78ae,
         type: 3}
@@ -17174,7 +17174,7 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: audioURL
-      value: Music/Milky Way
+      value: Music/Journey (Part 2)
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
@@ -17184,12 +17184,17 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: chartURL
-      value: Charts/Milky Way
+      value: Charts/Journey (Part 2) DEMO EX
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: localMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
+        type: 3}
+      propertyPath: userSpeed
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817597, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}

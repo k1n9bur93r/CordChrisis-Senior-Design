@@ -35,9 +35,9 @@ public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
-	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 	private const double SIXTYFOUR_NOTE = 0.0625;
-	private const double BASE_OFFSET = 0.63; //0.09; // Base visual delay
+	private const double BASE_OFFSET = 0.09; // Base visual delay
 	// ^ ISSUE: Base offset increased by a huge amount after doing SiteHandler stuff!
 
 	public Track meta;
@@ -139,7 +139,8 @@ public class Metronome : MonoBehaviour
 
 	public void UpdateTimeAnywhere()
 	{
-		timer.text = "DSP time: " + timeElapsed.ToString();
+		timer.text = "DSP: " + timeElapsed.ToString() + "\n"
+			+ "Clip: " + GetComponent<AudioSource>().time;
 
 		if (!playbackStarted)
 		{
@@ -171,7 +172,8 @@ public class Metronome : MonoBehaviour
 
 				pastSchedule = true;
 
-				GetComponent<AudioSource>().PlayScheduled(songStart + BUFFER_DELAY);
+
+				GetComponent<AudioSource>().PlayScheduled(BUFFER_DELAY);
 			}
 
 			else

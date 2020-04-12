@@ -12,16 +12,14 @@ public class NoteSpawner : MonoBehaviour
     public List<float> noteXoffsets;
     // Note scroll speed multiplier
     [Header("Used by SiteHandler - LEAVE THIS BLANK")]
-    public float speedMod;
-    //where the notes start from
-    //public float startDistance;
-    //how long until the note hits the reciever - this gets computed from startDistance and speedMod
-    //private float noteTravelTime;
+    public float userSpeed;
+    private const float SPEED_MULTIPLIER = 100.0f;
+    private float speedMod;
     //what y position the notes should be spawned at
     public float yOffset;
     private Transform noteReciever;
     // Start is called before the first frame update
-    public double bpm; // this will need to be a reference to the metronomes bpm
+    private double firstTempo; // this will need to be a reference to the metronomes bpm
     public Metronome metronome;
 
     //creating the queues for notes
@@ -42,28 +40,29 @@ public class NoteSpawner : MonoBehaviour
             notes[i] = new List<GameObject>();
         }
 
-        bpm = metronome.tempo; //getting tempo from metronome
         noteReciever = transform.Find("noteReceiver").transform;
         //noteTravelTime = startDistance / speedMod;
         //print("The first notes should play in " + noteTravelTime + " seconds");
-    }    
+    }
+
+    void Start()
+    {
+        firstTempo = metronome.tempo;
+    }
 
     /*
-        ISSUE:
-        - Race condition! Metronome does not calculate this in time!!!
+        Sets the note scroll speed to (userSpeed * 100), relative to the first tempo index.
     */
-    
-    /*
-    private float beatToDistance(double beat)
+
+    public void SetSpeedMMod()
     {
-        double time, distance;
-        //convert beat to time
-        time = (60 / bpm) * beat;
-        //convert time to distance
-        distance = (time * speedMod);
-        return (float)distance;
+        float targetSpeed = userSpeed * SPEED_MULTIPLIER;
+        float multiplier = targetSpeed / (float)firstTempo;
+
+        speedMod = multiplier;        
+
+        //Debug.Log("speedMod: " + speedMod);
     }
-    */
 
     //This function takes a note number from 0-3 and spawns it
     public void spawnNote(int noteNum, double beat, double length=0)
@@ -121,6 +120,8 @@ public class NoteSpawner : MonoBehaviour
 
     public void Update()
     {
+        SetSpeedMMod();
+
         //set location of all notes according to beatsElapsed
         for (int x=0;x<4;x++)
         {

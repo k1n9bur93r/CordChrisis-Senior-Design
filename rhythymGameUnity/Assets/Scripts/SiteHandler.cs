@@ -33,7 +33,7 @@ public class SiteHandler : MonoBehaviour
 	// NoteSpawner vars
 	[Space]
 	public NoteSpawner noteSpawner;
-	public float speedMod;
+	public float userSpeed;
 
 	// InputController vars
 		// BINDINGS GO HERE
@@ -48,7 +48,7 @@ public class SiteHandler : MonoBehaviour
 		
 		// TEMP SETTERS
 		metronome.userOffset = userOffset;
-		noteSpawner.speedMod = speedMod;
+		noteSpawner.userSpeed = userSpeed;
 
 		siteArgsDone = true; // may or may not actually do anything
 
