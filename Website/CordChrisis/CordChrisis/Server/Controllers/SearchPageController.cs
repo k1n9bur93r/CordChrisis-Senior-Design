@@ -29,6 +29,16 @@ namespace CordChrisis.Server.Controllers
             return returnData;
         }
 
+        [HttpPost]
+        [Route("readsingle")]
+        public Map GetMapByID([FromBody]string ID)
+        {
+            MapBO map = new MapBO();
+            Map data = new Map();
+            data = map.GetMapData(ID);
+            return data;
+        }
+
         //public IActionResult GetDefaultSearchList()
         //{
         //    return View();

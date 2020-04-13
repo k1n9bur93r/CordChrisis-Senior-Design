@@ -17,7 +17,7 @@
             <div class="card-body">
                 <p class="card-title h3">@item.Name</p>
                 <p class="card-title h5 text-secondary"> Created By: @item.Author</p>              
-                    <button class="btn btn-outline-primary btn-block itm-skew" @onclick="(()=>NavigateToGame(item.ID.ToString()))"> <div class="itm-skew-text">Play!</div></button>
+                    <button class="btn btn-outline-primary btn-shadow btn-block " @onclick="(()=>NavigateToGame(item.ID.ToString()))" style="margin-left:0px!important"> <div class="NeonO">Play!</div></button>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Created: @item.CreatedDate.ToString("MM/dd/yyyy")</small>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
+using CordChrisis.DAOs;
 using CordChrisis.Shared.Models;
 
 namespace CordChrisis.BOs
@@ -13,7 +14,8 @@ namespace CordChrisis.BOs
 		public Map GetMapData(string mapID) {
 			try
 			{
-				throw new NotImplementedException();
+				MapDA mapda = new MapDA();
+				return mapda.ReadSingle(mapID);
 			}
 			catch (Exception ex)
 			{

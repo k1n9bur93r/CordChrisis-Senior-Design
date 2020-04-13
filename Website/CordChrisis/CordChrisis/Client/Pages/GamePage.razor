@@ -14,9 +14,66 @@
             <div id="unityContainer" style="width: 100%; height: 500px"></div>
         </div>
         <hr>
-        <button class="btn btn-block btn-secondary"  @onclick="SetFullScreen"> Click me please</button>
-        <button @onclick="SaveUserMapStats" class="btn btn-block btn-primary"> Played the Game, store data for it please!</button>
+        <button class="btn btn-block btn-secondary" @onclick="SetFullScreen"> Click me please</button>
+        @if (!MapTask.IsCompleted)
+        {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div style="display:none;">
+            @WaitForMapData();
+                </div>
+        }
+        else
+        {
+            @*<button @onclick="SaveUserMapStats" class="btn btn-block btn-primary"> Played the Game, store data for it please!</button>*@
+    <div class="mt-2">
+
+        <div class="d-flex justify-content-between">
+            <div class="w-50 mr-lg-4 rounded bg-dark">
+                <p class="h3 m-2 "> <strong>@GameMap.Name</strong></p>
+                <p class="h5 m-2 italics ">Created: @GameMap.CreatedDate.ToString("MM/dd/yyyy")</p>
+                <div class=" d-flex align-items-center ">
+                    <p class="h4 m-2 italics "> Created By:&nbsp; <em> @GameMap.Author</em></p>
+                    <img class="rounded-circle border border-light border-4 IconSize" src="/css/images/pfp2.jpg">
+                </div>
+            </div>
+            <div class="d-flex  align-items-stretch rounded bg-dark p-1">
+                <div class="badge badge-primary mr-1 d-flex align-items-center">
+                    <p class="h3 " style="margin-bottom:0px!important">Plays :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @GameMap.Plays </p>
+                </div>
+
+                <div class="badge badge-success mr-1 p-2 ">
+                    <div class="d-flex align-items-center">
+                    <p class="h3 " style="margin-bottom:0px!important">Rating :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @GameMap.Rating </p>
+                    </div>
+                      <div class="rating">
+                            <input type="radio" name="rating" id="r1" @onclick="GetRating1">
+                            <label class="ratinglabel" for="r1"></label>
+                            <input type="radio" name="rating" id="r2" @onclick="GetRating2">
+                            <label class="ratinglabel" for="r2"></label>
+                            <input type="radio" name="rating" id="r3" @onclick="GetRating3">
+                            <label  class="ratinglabel"for="r3"></label>
+                            <input type="radio" name="rating" id="r4" @onclick="GetRating4">
+                            <label class="ratinglabel"for="r4"></label>
+                            <input type="radio" name="rating" id="r5" @onclick="GetRating5">
+                            <label class="ratinglabel"for="r5"></label>
+                       </div>
+                    <button class="btn btn-outline-light btn-block btn-shadow m-1"style="margin-left:0px!important" @onclick="SubmitUserRating"> Submit Rating</button>
+                </div>
+
+                <div class="badge badge-warning  d-flex align-items-center">
+                    <p class="h3" style="margin-bottom:0px!important">Difficulty :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @DisplayDifficulty </p>
+                </div>
+            </div>
+        </div>
+
+
     </div>
+        }
+        </div>
 
  
  
@@ -27,28 +84,34 @@
     [Parameter]
     public string MapID { get; set; }
     Map GameMap { get; set; }
+    Task<Map> MapTask { get; set; }
     string LoggedInUserID = string.Empty;
     UserMapStats userStats = new UserMapStats();
+    string DisplayDifficulty = "";
     bool hasStats = false;
+    int UserRating = 0;
+
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
-        if(firstRender)
+        if (!firstRender)
         {
             await this.js.InvokeVoidAsync("start");
-            await Storage.SetItemAsync("GameRunning",false);
+            await Storage.SetItemAsync("GameRunning", false);
             await SaveGameActivationToSession();
         }
     }
 
-        async void  SetFullScreen()
-    { 
-     await this.js.InvokeVoidAsync("FullScreen");
+    async void SetFullScreen()
+    {
+        await this.js.InvokeVoidAsync("FullScreen");
     }
 
     protected async override void OnInitialized()
     {
+        MapTask = Http.PostJsonAsync<Map>(@"searchpage/readsingle", MapID);
         LoggedInUserID = await GetCurrentLogOnSession();
         if (LoggedInUserID != null)
         {
@@ -58,6 +121,7 @@
             if (userStats.Plays != 0) hasStats = true;
             base.OnInitialized();
         }
+        base.OnInitialized();
     }
 
     async Task SaveGameActivationToSession()
@@ -70,12 +134,38 @@
         return await Storage.GetItemAsync<string>("LoggedIn");
     }
 
+
+    async Task WaitForMapData()
+    {
+        Console.WriteLine("Currently waiting for the map");
+        GameMap = await MapTask;
+        DisplayDifficulty = convertDifficulty(GameMap.Difficulty);
+        StateHasChanged();
+
+    }
+    string convertDifficulty(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                return "Easy";
+            case 2:
+                return "Medium";
+            case 3:
+                return "Hard";
+            case 4:
+                return "Ultra";
+        }
+        return "N/A";
+    }
+
+
     async Task SaveUserMapStats()
     {
         if (!String.IsNullOrWhiteSpace(LoggedInUserID)) {
             if (!hasStats)
             {
-                Console.WriteLine(MapID);
+
                 Random rnd = new Random();
                 userStats = new UserMapStats
                 {
@@ -97,5 +187,16 @@
 
         }
     }
+
+    async Task SubmitUserRating()
+    { 
+    //HTTP CALL HERE TO SUBMIT A RATING, ALSO NEED TO UPDATE THE SQL TO ALLOW TO COUNT THE NUMBER OF RATINGS THAT A MAP HAS 
+    }
+
+    void GetRating1() => UserRating = 1;
+    void GetRating2() => UserRating = 2;
+    void GetRating3() => UserRating = 3;
+    void GetRating4() => UserRating = 4;
+    void GetRating5() => UserRating = 5;
 
 }
