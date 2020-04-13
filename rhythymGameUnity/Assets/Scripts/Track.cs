@@ -23,6 +23,7 @@ public class JsonTrack
     public double[] beats;
     public int[] notes;
     public double[] note_lengths;
+    public double tempo_normal;
     public double[] tempo_change_amount;
     public double[] tempo_change_beat;
 

@@ -1,9 +1,9 @@
 {
-	"audio": "Music/Milky Way",
 	"background": "none",
 	"title": "Milky Way",
 	"artist": "SHK",
 	"genre": "???",
+	"tempo_normal": 155.0,
 	"tempo_change_amount": [155.0],
     "tempo_change_beat": [0.0],
 	"offset": 0.9188,

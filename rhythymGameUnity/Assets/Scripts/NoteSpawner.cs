@@ -47,7 +47,7 @@ public class NoteSpawner : MonoBehaviour
 
     void Start()
     {
-        firstTempo = metronome.tempo;
+        firstTempo = metronome.tempoNormal;
     }
 
     /*

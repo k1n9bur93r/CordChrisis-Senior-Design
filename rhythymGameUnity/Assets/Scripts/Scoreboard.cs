@@ -16,7 +16,7 @@ public class Scoreboard : MonoBehaviour
 	//private const double ACC_SCORE_MAX = 800000;
 	//private const double COMBO_SCORE_MAX = 200000;
 	private const double MAX_SCORE = 1000000.0;
-	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "PERFECT", "PERFECT" };
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "*GREAT*" };
 
 	// Other classes
 	public Track meta;

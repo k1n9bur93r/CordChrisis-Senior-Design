@@ -1,0 +1,16 @@
+{
+	"title": "Deadly Trick",
+	"artist": "Systile",
+	"genre": "Speedcore",
+	"difficulty": "Spooky",
+	"offset": 0.2315,
+	"tempo_normal": 280.0,
+	"tempo_change_amount": [140.0, 280.0, 140.0],
+	"tempo_change_beat": [0.0, 96.0, 224.0],
+	"beats": [0.0, 1.0, 2.0, 3.0
+	],
+	"notes": [1, 2, 3, 4
+	],
+	"note_lengths": [0.0, 0.0, 0.0, 0.0
+	]
+}

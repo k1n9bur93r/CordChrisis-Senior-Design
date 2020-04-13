@@ -4,6 +4,7 @@
 	"genre": "EDM",
 	"difficulty": "???",
 	"offset": 0.014,
+	"tempo_normal": 90.0,
 	"tempo_change_amount": [90.0, 180.0, 90.0, 180.0, 90.0],
 	"tempo_change_beat": [0.0, 96.0, 128.0, 129.0, 159.0],
 	"beats": [

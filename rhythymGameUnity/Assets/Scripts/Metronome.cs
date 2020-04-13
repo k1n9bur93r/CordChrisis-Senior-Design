@@ -22,7 +22,7 @@ using UnityEngine.UI;
 
 	Important public variables:
 		- double beatsElapsed: Current position in the song (in number of beats).
-		- double startOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
+		- double beatZeroOffset: Chart-determined chart delay (in seconds). Creates an offset between the chart's and song's start times.
 		- double userOffset: User-determined calibration for chart delay (in seconds). Creates an offset to compensate for audio/visual and input lag.
 		- double tempo: Chart-determined tempo of the song.
 
@@ -35,7 +35,7 @@ public class Metronome : MonoBehaviour
 {
 	private const double SEC_PER_MIN = 60.0; // 60 seconds per minute
 	private const double FRAME_LENGTH = 1.0 / 60.0; // 0.0167 seconds in one frame
-	private const double BUFFER_DELAY = 10.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
+	private const double BUFFER_DELAY = 30.0 * FRAME_LENGTH; // Forces a delay of this length before starting the music
 	private const double SIXTYFOUR_NOTE = 0.0625;
 	private const double BASE_OFFSET = 0.09; // Base visual delay
 	// ^ ISSUE: Base offset increased by a huge amount after doing SiteHandler stuff!
@@ -51,10 +51,11 @@ public class Metronome : MonoBehaviour
 
 	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
 	public double tempo; // Song speed in beats per minute
+	public double tempoNormal; // Song speed to base note scroll speed on
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed; // Song position in beats
 	public double beatsElapsedDelta;
-	public double startOffset; // Chart-determined visual delay
+	public double beatZeroOffset; // Chart-determined visual delay
 	public double userOffset; // User-determined visual delay
 
 	private bool pastSchedule;
@@ -64,6 +65,7 @@ public class Metronome : MonoBehaviour
 	private double timeElapsedLast;
 	private double timeElapsedDelta; // DSP time elapsed since the last frame
 	private double overtime;
+	private double negativeDelay;
 	private int tempoIndex;
 
 	/*
@@ -76,6 +78,7 @@ public class Metronome : MonoBehaviour
 		beatsElapsedDelta = 0.0;
 		timeElapsed = 0.0;
 		timeElapsedDelta = 0.0;
+		negativeDelay = 0.0;
 		
 		playbackStarted = false;
 		pastSchedule = false;
@@ -84,6 +87,8 @@ public class Metronome : MonoBehaviour
 
 	void Start()
 	{
+		tempoNormal = meta.json.tempo_normal;
+		
 		UpdateRates();
 	}
 
@@ -105,27 +110,64 @@ public class Metronome : MonoBehaviour
 	{
 		GetSongData();
 		
-		// Step through every tempo change and increment the correct amount of time!
+		// ステップ through every tempo change and increment the correct amount of time!
 
 		double anyTime = 0.0;
 		startTime = 0.0;
 
-		// Move forward
-		for (double i = 0.0; i <= startBeat; i += SIXTYFOUR_NOTE)
+		// Step through song forwards
+		if (startBeat >= 0.0)
 		{
-			if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
+			for (double i = 0.0; i < startBeat; i += SIXTYFOUR_NOTE)
 			{
-				tempo = meta.json.tempo_change_amount[tempoIndex];
-				tempoIndex++;
+				if ((tempoIndex < meta.json.tempo_change_beat.Length) && (i >= meta.json.tempo_change_beat[tempoIndex]))
+				{
+					tempo = meta.json.tempo_change_amount[tempoIndex];
+					tempoIndex++;
+				}
+
+				secPerBeat = SEC_PER_MIN / tempo / 16.0;
+				anyTime += secPerBeat;
+
+				beatsElapsed = i;
 			}
+		}
 
-			secPerBeat = SEC_PER_MIN / tempo / 16.0;
-			anyTime += secPerBeat;
+		// Step through song backwards
+		else
+		{
+			/*
+				-6: "Are you ready?"
+				-4: "Three!"
+				-3: "Two!"
+				-2: "One!"
+				-1: "GO!"
+			*/
 
-			beatsElapsed = i;
+			//beatsElapsed = startBeat;
+
+			for (double i = 0.0; i >= startBeat; i -= SIXTYFOUR_NOTE)
+			{
+				tempo = meta.json.tempo_change_amount[0];
+
+				secPerBeat = SEC_PER_MIN / tempo / 16.0;
+				anyTime -= secPerBeat;
+
+				beatsElapsed = i;
+			}
 		}
 
 		startTime = anyTime;
+		//Debug.Log("[Metronome] startTime: " + startTime);		
+
+		if (startTime < 0.0)
+		{
+
+			startTime = 0.0;
+			negativeDelay = -anyTime;
+		}
+
+		//Debug.Log("[Metronome] negativeDelay: " + negativeDelay);	
 	}
 
 	/*
@@ -155,45 +197,25 @@ public class Metronome : MonoBehaviour
 		{
 			if (!pastSchedule)
 			{
-				if (startBeat == 0)
-				{
-					GetComponent<AudioSource>().time = 0.0f;					
-				}
-
-				else
-				{
-					GetComponent<AudioSource>().time = (float)(startTime + startOffset);
-				}
+				GetComponent<AudioSource>().time = (float)(startTime + beatZeroOffset);
 
 				// ---
 
-				songStart = AudioSettings.dspTime + startTime;
+				songStart = AudioSettings.dspTime + startTime; // REQUIRED - DO NOT CHANGE OR MOVE
 				timeElapsedLast = AudioSettings.dspTime - songStart + startTime;
 
 				pastSchedule = true;
 
-
-				GetComponent<AudioSource>().PlayScheduled(BUFFER_DELAY);
+				GetComponent<AudioSource>().PlayScheduled(AudioSettings.dspTime + BUFFER_DELAY + negativeDelay);
 			}
 
 			else
 			{
 				timeElapsed = AudioSettings.dspTime - songStart + startTime;
 
-				if (startBeat == 0.0)
+				if (timeElapsed >= (BASE_OFFSET + userOffset + BUFFER_DELAY))
 				{
-					if ((timeElapsed >= (BASE_OFFSET + userOffset + startOffset)))
-					{
-						beatsElapsed += beatsElapsedDelta;
-					}
-				}
-
-				else
-				{
-					if (timeElapsed >= (BASE_OFFSET + userOffset))
-					{
-						beatsElapsed += beatsElapsedDelta;
-					}
+					beatsElapsed += beatsElapsedDelta;
 				}
 
 				timeElapsedDelta = timeElapsed - timeElapsedLast;
@@ -209,7 +231,7 @@ public class Metronome : MonoBehaviour
 	private void GetSongData()
 	{
 		tempo = meta.json.tempo_change_amount[0];
-		startOffset = meta.json.offset;
+		beatZeroOffset = meta.json.offset;
 	}
 
 	/*
