@@ -51,5 +51,7 @@ namespace CordChrisis.Shared.Models
         [Required]
         [MaxLength(25)]
         public string Author { get; set; }
+        [MaxLength(50)]
+        public string AuthorID { get; set; }
     }
 }

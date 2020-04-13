@@ -16,6 +16,9 @@
                 <p class="font-weight-light">Please fill in this form to create an account.</p>
                 <hr>
 
+                <label for="username"><b>Username</b></label>
+                <input class="form-control" type="text" placeholder="Enter Username" name="username" @bind="username" required>
+
                 <label for="email"><b>Email</b></label>
                 <input class="form-control" type="text" placeholder="Enter Email" name="email" @bind="email" required>
 
@@ -25,25 +28,30 @@
                 <label for="pswrepeat"><b>Repeat Password</b></label>
                 <input class="form-control" type="password" placeholder="Repeat Password" name="pswrepeat" @bind="pswrepeat" required>
 
-                    @if(check== false)
-                    {
-                        @if (alreadyCreated == true)
-                        {
-                            <p>Account with this email has already been created, please Login or use a different Email</p>
-                        }
                 @if (check == false)
                 {
-                    @if (bademail == true)
+                    @if (alreadyCreated == true)
                     {
-                        <p>@email</p>
-                        <p>Email</p>
+                        <p>Account with this email has already been created, please Login or use a different Email</p>
+                    }
+                    @if (check == false)
+                    {
+                        @if (bademail == true)
+                        {
+                            <p>@email</p>
+                            <p>Email</p>
 
-                    }
-                    else if (badpassword == true)
-                    {
-                        <p>@password</p>
-                        <p>password</p>
-                    }
+                        }
+                        else if (badpassword == true)
+                        {
+                            <p>@password</p>
+                            <p>password</p>
+                        }
+                        else if (badusername == true)
+                        {
+                            <p>@username</p>
+                            <p>username</p>
+                        }
 
                         <p>One more fields were not filled out correctly</p>
                     }
@@ -69,12 +77,14 @@
     string email { get; set; }
     string password { get; set; }
     string pswrepeat { get; set; }
+    string username { get; set; }
     bool checkData;
     bool check = true;
     bool noteq = false;
     bool bademail = false;
     bool badpassword = false;
     bool badpsswordreapeat = false;
+    bool badusername = false;
     bool alreadyCreated = false;
     int length = 16;
     byte [] salt;
@@ -100,6 +110,12 @@
     public async Task<bool> addUser()
     {
 
+        if (String.IsNullOrWhiteSpace(username))
+        {
+            badusername = true;
+            check = false;
+            return check;
+        }
 
         if (email == null || email == String.Empty)
         {
@@ -138,8 +154,10 @@
             Password = newPass
         };
 
-
-        checkData = await Http.PostJsonAsync<bool>("createaccount/post", loginObject);
+        CreateAccount AccountHolder = new CreateAccount();
+        AccountHolder.loginObject = loginObject;
+        AccountHolder.username = username;
+        checkData = await Http.PostJsonAsync<bool>("createaccount/post", AccountHolder);
         if (checkData != false)
         {
             NavigationManager.NavigateTo("/");
@@ -148,7 +166,7 @@
         else
         {
             check = false;
-            alreadyCreated = true; 
+            alreadyCreated = true;
             return true;
         }
     }

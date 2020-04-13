@@ -1,14 +1,16 @@
 ﻿@page "/account"
+@page "/account/{MapMakerID}"
 @using CordChrisis.Shared.Models
-@using System.Drawing;   
+@using System.Drawing;
 @inject HttpClient Http;
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService Storage
 @inject IJSRuntime js;
 
 
-@if (!UserID.IsCompleted)
+@if (stats==null||MapMakerID!=null)
 {
+    Console.WriteLine(MapMakerID);
     <div class="d-flex justify-content-center">
         <div class="spinner-grow" role="status">
             <span class="sr-only">Loading...</span>
@@ -18,8 +20,9 @@
         @waitForLogin();
     </div>
 }
-else if (!hasID)
+else if (!hasID || MapMakerID == null)
 {
+    Console.WriteLine(MapMakerID);
     <p class="h1"> You are not logged in </p>
     NavigationManager.NavigateTo("/login");
 
@@ -33,12 +36,16 @@ else
             <div class="row">
                 <div class="rounded bg-secondary col-2 pl-1 ">
                     <img class="rounded-circle border border-light border-4" src=@imagefile>
-                    <InputFile OnChange="HandleFile" />
+                    @if (MapMakerID != null && UserID != null)
+                    {
+                        <InputFile OnChange="HandleFile" />
+                    }
 
                 </div>
-               
+
                 <div class=" rounded bg-secondary col-10 text-center mx-auto">
-                    <span class=" h1"> DOOM's Account Page  </span>
+                    <span class=" h1"> @baseUserInfo.UserName's Account Page  </span>
+
                     <span class="text-muted">@ID</span>
                 </div>
             </div>
@@ -74,62 +81,71 @@ else
 }
 
 @code {
-
+    [Parameter]
+    public string MapMakerID { get; set; }
     [Parameter]
     public Task<string> UserID { get; set; }
     string ID = "Temp";
     bool hasID = false;
     Task<bool> checkGameRunning { get; set; }
     UserStats stats = new UserStats();
+    User baseUserInfo = new User();
     string imagefile;
 
-    protected async override void OnInitialized()
+
+       protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
+        if (!firstRender)
+        {
         checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
-        UserID = Storage.GetItemAsync<string>("LoggedIn");
+       
         bool isRunning = await checkGameRunning;
 
         if (isRunning)
         {
             await this.js.InvokeVoidAsync("quit");
-            await Storage.SetItemAsync("GameRunning",false);
-            base.OnInitialized();
+            await Storage.SetItemAsync("GameRunning", false);
         }
         Console.WriteLine(isRunning);
-        base.OnInitialized();
-
-
+        }
     }
-
 
     async Task waitForLogin()
     {
-
-        ID = await UserID;
-        if (!String.IsNullOrWhiteSpace(ID))
+        ID = await Storage.GetItemAsync<string>("LoggedIn");
+        if (MapMakerID != null && MapMakerID != ID)
         {
+
+            stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", MapMakerID);
+            baseUserInfo = await Http.PostJsonAsync<User>("user/post", MapMakerID);
             hasID = true;
-            stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
-            Console.WriteLine("Hey I came back with data");
-            if(stats.UserImage== null)
-            {
-                Console.WriteLine("Oop I'm empty");
-                imagefile = "/css/images/pfp2.jpg";
-            }
-            else
-            {
-
-                imagefile = await Storage.GetItemAsync<string>("UserPFP");
-
-                Console.WriteLine("I made it too :)");
-            }
-            StateHasChanged();
         }
         else
         {
-            StateHasChanged();
+            if (!String.IsNullOrWhiteSpace(ID))
+            {
+                hasID = true;
+                stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
+                baseUserInfo = await Http.PostJsonAsync<User>("user/post", ID);
+
+            }
+            else
+            {
+                StateHasChanged();
+            }
         }
 
+        if (stats.UserImage == null)
+        {
+            imagefile = "/css/images/pfp2.jpg";
+        }
+        else
+        {
+
+            imagefile = await Storage.GetItemAsync<string>("UserPFP");
+        }
+        StateHasChanged();
     }
 
 

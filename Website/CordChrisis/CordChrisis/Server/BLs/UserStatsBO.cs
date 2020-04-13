@@ -29,7 +29,7 @@ namespace CordChrisis.BOs
             }
         }
 
-        public bool createUser(Login newUser)
+        public bool createUser(Login newUser, string username)
         {
             try
             {
@@ -57,9 +57,10 @@ namespace CordChrisis.BOs
                 User newU = new User
                 {
                     ID = id.ToString(),
-                    UserName = newUser.Email,
+                    UserName = username,
                     Rank = 0,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    UserEmail=newUser.Email
                 };
 
                 bool check;
@@ -87,6 +88,12 @@ namespace CordChrisis.BOs
                 throw;
             }
 
+        }
+
+        public User GetUser(string UserID)
+        {
+            UserDA userDA = new UserDA();
+            return userDA.ReadSingle(UserID);
         }
 
         public int GetSalt(SecureString password) {

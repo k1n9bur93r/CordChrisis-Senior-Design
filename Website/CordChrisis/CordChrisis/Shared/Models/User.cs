@@ -11,13 +11,14 @@ namespace CordChrisis.Shared.Models
         [Key]
         public string ID{ get; set; }
         [Required]
-        [MaxLength(25)]
+        [MaxLength(50)]
         public string UserName { get; set; }
         [Required]
-        [MaxLength(3)]
+        [MaxLength(50)]
+        public string UserEmail { get; set; }
+        [Required]
         public int Rank { get; set; }
         [Required]
-        [MaxLength(1)]
         public bool IsDeleted { get; set; }
 
 

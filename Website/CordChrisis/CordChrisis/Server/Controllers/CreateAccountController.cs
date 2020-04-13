@@ -14,12 +14,12 @@ namespace CordChrisis.Server.DALs
     {
         [HttpPost]
         [Route("post")]
-        public bool CreateUserController([FromBody] Login data)
+        public bool CreateUserController([FromBody] CreateAccount newAccount)
         {
 
            
             UserStatsBO user = new UserStatsBO();
-            bool check = user.createUser(data);
+            bool check = user.createUser(newAccount.loginObject, newAccount.username);
 
          
             return check; 
