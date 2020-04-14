@@ -36,11 +36,13 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BeatLines.cs" />
      <Compile Include="Assets\Scripts\ButtonAnimator.cs" />
      <Compile Include="Assets\Scripts\DragAndDrop.cs" />
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GestureRecognizer.cs" />
+     <Compile Include="Assets\Scripts\GestureSpawner.cs" />
      <Compile Include="Assets\Scripts\HoldNoteLine.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
      <Compile Include="Assets\Scripts\Judgment.cs" />

@@ -16,7 +16,8 @@ public class Scoreboard : MonoBehaviour
 	//private const double ACC_SCORE_MAX = 800000;
 	//private const double COMBO_SCORE_MAX = 200000;
 	private const double MAX_SCORE = 1000000.0;
-	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "*GREAT*" };
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT" };
+	private readonly string[] LEAN_NAMES = { " ", "EARLY", "LATE" };
 
 	// Other classes
 	public Track meta;
@@ -114,7 +115,29 @@ public class Scoreboard : MonoBehaviour
 				break;
 		}
 
-		AnimateRating(rate);
+		// Early/Late
+		switch (lean)
+		{
+			case Leanings.Early:
+				//leanText.text = "EARLY";
+				notesEarly++;
+				break;
+
+			case Leanings.Late:
+				//leanText.text = "LATE";
+				notesLate++;
+				break;
+
+			case Leanings.None:
+				leanText.text = "";
+				break;
+
+			default:
+				Debug.Log("[Scoreboard] UpdateScore() lean fell through!");
+				break;
+		}
+
+		AnimateRating(rate, lean);
 
 		// Negative combo scoring
 		//SetNegativeCombo(rate);
@@ -131,56 +154,37 @@ public class Scoreboard : MonoBehaviour
 		{
 			score += ratingValues[(int)rate];
 		}
-
-		// Early/Late
-		switch (lean)
-		{
-			case Leanings.Early:
-				leanText.text = "EARLY";
-				notesEarly++;
-				break;
-
-			case Leanings.Late:
-				leanText.text = "LATE";
-				notesLate++;
-				break;
-
-			case Leanings.None:
-				leanText.text = "";
-				break;
-
-			default:
-				Debug.Log("[Scoreboard] UpdateScore() lean fell through!");
-				break;
-		}
 	}
 
-	private void SetNegativeCombo(Ratings rate)
-	{
-		if (rate == Ratings.Miss)
-		{
-			negativeCombo++;
-		}
-
-		else
-		{
-			if (negativeCombo > 0)
-			{
-				negativeCombo = 0;
-			}
-
-			else
-			{
-				negativeCombo--;
-			}			
-		}
-	}
-
-	private void AnimateRating(Ratings rate)
+	private void AnimateRating(Ratings rate, Leanings lean)
 	{
 		ratingAnim.ForceStateNormalizedTime(0.0f);
 
 		ratingText.text = RATING_NAMES[(int)rate];
+		leanText.text += LEAN_NAMES[(int)lean];
+
+		/*
+		// Draw lean on ratings
+		if (lean == Leanings.None)
+		{
+			ratingText.text = RATING_NAMES[(int)rate];
+		}
+
+		else if (lean == Leanings.Early)
+		{
+			ratingText.text = "-";
+			ratingText.text += RATING_NAMES[(int)rate];
+			ratingText.text += " ";
+		}
+
+		else if (lean == Leanings.Late)
+		{
+			ratingText.text = " ";
+			ratingText.text += RATING_NAMES[(int)rate];
+			ratingText.text += "-";
+		}
+		*/
+
 		ratingText.fontMaterial = ratingColors[(int)rate];
 	}
 
@@ -209,6 +213,27 @@ public class Scoreboard : MonoBehaviour
 		else
 		{
 			streakText.text = "";
+		}
+	}
+
+	private void SetNegativeCombo(Ratings rate)
+	{
+		if (rate == Ratings.Miss)
+		{
+			negativeCombo++;
+		}
+
+		else
+		{
+			if (negativeCombo > 0)
+			{
+				negativeCombo = 0;
+			}
+
+			else
+			{
+				negativeCombo--;
+			}			
 		}
 	}
 }
