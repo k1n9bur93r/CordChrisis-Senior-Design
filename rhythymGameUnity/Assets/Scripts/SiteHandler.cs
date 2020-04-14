@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 public class SiteHandler : MonoBehaviour
 {
-	[Tooltip("Off: Download data from URL.\nOn: Read data from Resources folder.\n\nDisable this when building for WebGL!")]
+	[Tooltip("Off: Download data from a given URL.\nOn: Read data from the Resources folder.\n\nDisable this when building for WebGL!")]
 	public bool localMode = false;
 
 	private bool siteArgsDone = false;
@@ -27,14 +27,14 @@ public class SiteHandler : MonoBehaviour
 	[Space]
 	public Metronome metronome;
 	public string audioURL;
-	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -90.")]
+	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
 	public double userOffset;
 	private bool metronomeDone = false;
 
 	// NoteSpawner vars
 	[Space]
 	public NoteSpawner noteSpawner;
-	[Tooltip("Note scroll speed relative to initial chart speed.\n\nValues are factors of 100 BPM.")]
+	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.")]
 	public float userSpeed;
 
 	// InputController vars
