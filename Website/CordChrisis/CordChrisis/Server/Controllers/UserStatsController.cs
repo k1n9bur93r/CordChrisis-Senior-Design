@@ -17,7 +17,13 @@ namespace CordChrisis.Server.Controllers
         public UserStats GetUserStats([FromBody]string Id)
         {
             UserBO userStats = new UserBO();
-            UserStats returnData= userStats.GetUserStats(Id);
+
+            UserStats returnData = userStats.GetUserStats(Id);
+            if (returnData == null)
+            {
+                returnData = new UserStats { ID = "NO DATA" };
+
+            }
             return returnData;
         }
 

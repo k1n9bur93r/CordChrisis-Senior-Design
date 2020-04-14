@@ -14,8 +14,8 @@
     <div class="webgl-content">
         <div id="unityContainer" style="width: 100%; height: 500px"></div>
     </div>
-    <hr>
-    <button class="btn btn-block btn-secondary" @onclick="SetFullScreen"> Click me please</button>
+    <hr class="bg-warning">
+    <button class="btn btn-block btn-dark" @onclick="SetFullScreen"> Full Screen</button>
     @if (!MapTask.IsCompleted)
     {
         <div class="d-flex justify-content-center">
@@ -32,15 +32,16 @@
         @*<button @onclick="SaveUserMapStats" class="btn btn-block btn-primary"> Played the Game, store data for it please!</button>*@
         <div class="mt-2">
 
-            <div class="d-flex justify-content-between">
-                <div class="w-50 mr-lg-4 rounded bg-dark">
+            <div class="container">
+                <div class="row p-2">
+                <div class=" m-2  rounded bg-dark col-sm"style="min-width:25%;max-width:100%">
                     <p class="h3 m-2 "> <strong>@GameMap.Name</strong></p>
                     <p class="h5 m-2 italics ">Created: @GameMap.CreatedDate.ToString("MM/dd/yyyy")</p>
-                    <div class=" d-flex justify-content-start align-content-center NeonO " @onclick="(()=>NavigateToAccount(GameMap.Author))">
-                        <p class="h4 m-2 italics "> Created By:&nbsp; <em> @GameMap.Author</em></p>
+                    <div class=" d-flex justify-content-start align-content-center" @onclick="(()=>NavigateToAccount(GameMap.Author))">
+                        <p class="h4 m-2 italics "> Created By:&nbsp; <em class="NeonO "> @GameMap.Author</em></p>
                         @if (String.IsNullOrWhiteSpace(MapMakerIcon))
                         {
-                            <img class="rounded-circle border border-light border-4 IconSize m-2" src="~/css/images/loginGenericUserPFP.jpg">
+                            <img class="rounded-circle border border-light border-4 IconSize m-2" src="/css/images/loginGenericUserPFP.jpg">
                         }
                         else
                         {
@@ -48,35 +49,43 @@
                         }
                     </div>
                 </div>
-                <div class="d-flex  align-items-stretch rounded bg-dark p-1">
-                    <div class="badge badge-primary mr-1 d-flex align-items-center">
-                        <p class="h3 " style="margin-bottom:0px!important">Plays :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @GameMap.Plays </p>
-                    </div>
+                <div class="container rounded bg-dark m-2 pl-4 pr-4 pt-1 col-sm">
+                    <div class="row">
+                        <div class="badge badge-success m-1 p-2 col-sm " style="min-width:25%;max-width:100%">
+                                <p class="h3 " style="margin-bottom:0px!important">Rating :</p> <p class="h3" style="margin-bottom:0px!important"> @GameMap.Rating </p>
+                            <div class="rating w-100">
 
-                    <div class="badge badge-success mr-1 p-2 ">
-                        <div class="d-flex align-items-center">
-                            <p class="h3 " style="margin-bottom:0px!important">Rating :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @GameMap.Rating </p>
-                        </div>
-                        <div class="rating">
-                            <input type="radio" name="rating" id="r1" @onclick="GetRating1">
-                            <label class="ratinglabel" for="r1"></label>
-                            <input type="radio" name="rating" id="r2" @onclick="GetRating2">
-                            <label class="ratinglabel" for="r2"></label>
-                            <input type="radio" name="rating" id="r3" @onclick="GetRating3">
-                            <label class="ratinglabel" for="r3"></label>
-                            <input type="radio" name="rating" id="r4" @onclick="GetRating4">
-                            <label class="ratinglabel" for="r4"></label>
-                            <input type="radio" name="rating" id="r5" @onclick="GetRating5">
-                            <label class="ratinglabel" for="r5"></label>
-                        </div>
-                        <button class="btn btn-outline-light btn-block btn-shadow m-1" style="margin-left:0px!important" @onclick="SubmitUserRating"> Submit Rating</button>
-                    </div>
+                                <input type="radio" name="rating" id="r1" @onclick="GetRating1">
+                                <label class="ratinglabel" for="r1"></label>
+                                <input type="radio" name="rating" id="r2" @onclick="GetRating2">
+                                <label class="ratinglabel" for="r2"></label>
+                                <input type="radio" name="rating" id="r3" @onclick="GetRating3">
+                                <label class="ratinglabel" for="r3"></label>
+                                <input type="radio" name="rating" id="r4" @onclick="GetRating4">
+                                <label class="ratinglabel" for="r4"></label>
+                                <input type="radio" name="rating" id="r5" @onclick="GetRating5">
+                                <label class="ratinglabel" for="r5"></label>
 
-                    <div class="badge badge-warning  d-flex align-items-center">
-                        <p class="h3" style="margin-bottom:0px!important">Difficulty :</p> <p class="h3" style="margin-bottom:0px!important"> &nbsp; @DisplayDifficulty </p>
+                                </div>
+                            <button class="btn btn-outline-light btn-block btn-shadow m-1" style="margin-left:0px!important" @onclick="SubmitUserRating"> Submit Rating</button>
+                        </div>
+
+                        <div class="badge badge-primary m-1 col-sm " style="min-width:25%;max-width:100%">
+
+                            <p class="h3 " style="margin-bottom:0px!important">Plays :</p>
+                            <p class="h3" style="margin-bottom:0px!important"> @GameMap.Plays </p>
+
+                        </div>
+
+
+                        <div class="badge badge-warning m-1 col-sm " style="min-width:25%;max-width:100%">
+                            <p class="h3" style="margin-bottom:0px!important">Difficulty :</p>
+                            <p class="h3" style="margin-bottom:0px!important"> @DisplayDifficulty </p>
+                        </div>
                     </div>
                 </div>
-            </div>
+                </div>
+                </div>
 
 
         </div>
@@ -99,20 +108,8 @@
     string DisplayDifficulty = "";
     bool hasStats = false;
     int UserRating = 0;
-    string MapMakerIcon;
+    string MapMakerIcon= String.Empty;
 
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-
-        if (!firstRender)
-        {
-            await this.js.InvokeVoidAsync("start");
-            await Storage.SetItemAsync("GameRunning", false);
-            await SaveGameActivationToSession();
-        }
-    }
 
     async void SetFullScreen()
     {
@@ -149,11 +146,19 @@
     {
         Console.WriteLine("Currently waiting for the map");
         GameMap = await MapTask;
-        MapMakerTask = Http.PostJsonAsync<UserStats>("userstats/post", GameMap.Author);
-        UserStats temp = await MapMakerTask;
-        MapMakerIcon = await this.js.InvokeAsync<string>("ConvertByteArrayToImage", temp.UserImage);
-
+        Console.WriteLine("Getting User info");
+       UserStats temp = await Http.PostJsonAsync<UserStats>("userstats/post", GameMap.AuthorID);
+      Console.WriteLine("Managed to leave that task...");
+        if (temp.ID!="NO DATA")
+        {
+            Console.WriteLine("User info was returned!");
+            MapMakerIcon = await this.js.InvokeAsync<string>("ConvertByteArrayToImage", temp.UserImage);
+        }
+        Console.WriteLine("Dealing with difficulty conversion");
         DisplayDifficulty = convertDifficulty(GameMap.Difficulty);
+            await this.js.InvokeVoidAsync("start");
+            await Storage.SetItemAsync("GameRunning", false);
+            await SaveGameActivationToSession();
         StateHasChanged();
 
     }
