@@ -216,7 +216,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: c507cb2f5baa94f40b682cc81cd20f77,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c507cb2f5baa94f40b682cc81cd20f77, type: 3}
@@ -1231,7 +1231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &338575608
 Transform:
   m_ObjectHideFlags: 0
@@ -1277,7 +1277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &339278957
 Transform:
   m_ObjectHideFlags: 0
@@ -3966,7 +3966,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -24.165, y: -20.524, z: 7.089}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 35.299957, y: -44.299988}
+  m_AnchoredPosition: {x: 35.299973, y: -44.299988}
   m_SizeDelta: {x: 50, y: -45.880066}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &1281229434
@@ -4272,7 +4272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -18.248001, y: 30.157001, z: -6.5540004}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 628.8, y: 127.100006}
+  m_AnchoredPosition: {x: 628.8, y: 127.10004}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1338066422
@@ -11271,7 +11271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1934815627
 Transform:
   m_ObjectHideFlags: 0
@@ -17347,7 +17347,7 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: audioURL
-      value: Music/Lucky Star (short)
+      value: https://se7enytes.github.io/Music/Milky%20Way.ogg
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
@@ -17357,17 +17357,27 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: chartURL
-      value: Charts/Lucky Star
+      value: https://se7enytes.github.io/Charts/Milky%20Way.json
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: localMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: userSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
+        type: 3}
+      propertyPath: webMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
+        type: 3}
+      propertyPath: gameMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817597, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}

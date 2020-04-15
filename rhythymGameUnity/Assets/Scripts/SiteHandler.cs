@@ -11,8 +11,11 @@ using UnityEngine.Networking;
 
 public class SiteHandler : MonoBehaviour
 {
-	[Tooltip("Off: Download data from a given URL.\nOn: Read data from the Resources folder.\n\nDisable this when building for WebGL!")]
-	public bool localMode = false;
+	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
+	public bool webMode = false;
+
+	[Tooltip("On: Launch the main game.\nOff: Launch the editor.\n\nThis option is ignored on a real WebGL build.")]
+	public bool gameMode = false;
 
 	private bool siteArgsDone = false;
 	private bool downloadersDone = false;
@@ -34,7 +37,7 @@ public class SiteHandler : MonoBehaviour
 	// NoteSpawner vars
 	[Space]
 	public NoteSpawner noteSpawner;
-	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.")]
+	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
 	public float userSpeed;
 
 	// InputController vars
@@ -76,12 +79,19 @@ public class SiteHandler : MonoBehaviour
 
 	IEnumerator InitTrack()
 	{
-		if (!localMode)
+		if (webMode)
 		{
 			UnityWebRequest www = UnityWebRequest.Get(chartURL);
+			www.SendWebRequest();
+			
+			// Download the file and sit tight
+			while (!www.isDone)
+			{
+				Debug.Log("[SiteHandler]: JSON DL " + www.downloadProgress * 100.0 + "%");
+				yield return null;
+			}
 
-			yield return www.SendWebRequest(); // Request and sit tight
-
+			// Results of the download
 			if (www.isNetworkError || www.isHttpError)
 			{
 				Debug.Log("[SiteHandler] InitTrack(): " + www.error);
@@ -102,12 +112,21 @@ public class SiteHandler : MonoBehaviour
 
 	IEnumerator InitMetronome()
 	{
-		if (!localMode)
+		if (webMode)
 		{
-			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
+			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.OGGVORBIS); // OGG
 
-			yield return www.Send(); //SendWebRequest(); // 
+			Debug.Log("[SiteHandler]: Audio DL " + www.downloadProgress + "%");
+			www.Send();
 
+			// Download the file and sit tight
+			while (!www.isDone)
+			{
+				Debug.Log("[SiteHandler]: JSON DL " + www.downloadProgress * 100.0 + "%");
+				yield return null;
+			}
+
+			// Results of the download
 			if (www.isNetworkError || www.isHttpError)
 			{
 				Debug.Log("[SiteHandler] InitMetronome(): " + www.error);
@@ -116,6 +135,7 @@ public class SiteHandler : MonoBehaviour
 			else
 			{
 				metronome.GetComponent<AudioSource>().clip = DownloadHandlerAudioClip.GetContent(www);
+				metronomeDone = true;
 			}
 		}
 

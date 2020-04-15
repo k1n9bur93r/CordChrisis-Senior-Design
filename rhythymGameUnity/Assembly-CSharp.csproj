@@ -38,6 +38,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BeatLines.cs" />
      <Compile Include="Assets\Scripts\ButtonAnimator.cs" />
+     <Compile Include="Assets\Scripts\Downloader.cs" />
+     <Compile Include="Assets\Scripts\DownloaderTester.cs" />
      <Compile Include="Assets\Scripts\DragAndDrop.cs" />
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
