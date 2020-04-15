@@ -8,9 +8,13 @@
 @inject IJSRuntime js;
 
 
-@if (stats==null||MapMakerID!=null)
+
+@if (stats.ID == String.Empty || MapMakerID != null || stats.ID == null)
 {
     Console.WriteLine(MapMakerID);
+    Console.WriteLine("Were in the account Page");
+    Console.WriteLine("1st IF");
+
     <div class="d-flex justify-content-center">
         <div class="spinner-grow" role="status">
             <span class="sr-only">Loading...</span>
@@ -20,15 +24,18 @@
         @waitForLogin();
     </div>
 }
-else if (!hasID || MapMakerID == null)
+else if (hasID == false || MapMakerID == String.Empty)
 {
+    Console.WriteLine("2 IF");
     Console.WriteLine(MapMakerID);
+    Console.WriteLine(hasID);
     <p class="h1"> You are not logged in </p>
     NavigationManager.NavigateTo("/login");
 
 }
 else
 {
+    Console.WriteLine("last else");
     if (stats != null)
     {
 
@@ -93,21 +100,21 @@ else
     string imagefile;
 
 
-       protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
         if (!firstRender)
         {
-        checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
-       
-        bool isRunning = await checkGameRunning;
+            checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
 
-        if (isRunning)
-        {
-            await this.js.InvokeVoidAsync("quit");
-            await Storage.SetItemAsync("GameRunning", false);
-        }
-        Console.WriteLine(isRunning);
+            bool isRunning = await checkGameRunning;
+
+            if (isRunning)
+            {
+                await this.js.InvokeVoidAsync("quit");
+                await Storage.SetItemAsync("GameRunning", false);
+            }
+            Console.WriteLine(isRunning);
         }
     }
 
@@ -125,9 +132,14 @@ else
         {
             if (!String.IsNullOrWhiteSpace(ID))
             {
+
+                Console.WriteLine(ID);
                 hasID = true;
                 stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
+                Console.WriteLine("after stats");
                 baseUserInfo = await Http.PostJsonAsync<User>("user/post", ID);
+                
+                Console.WriteLine("after baseuserinfo");
 
             }
             else

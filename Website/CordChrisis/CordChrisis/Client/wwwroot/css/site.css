@@ -721,9 +721,11 @@ app {
 }
 
 .input_user,
+.input_pass,
 .input_pass:focus {
     box-shadow: none !important;
     outline: 0px !important;
+    background: white !important;
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
