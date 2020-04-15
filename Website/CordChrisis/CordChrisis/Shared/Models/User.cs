@@ -8,6 +8,7 @@ namespace CordChrisis.Shared.Models
 {
     public class User
     {
+        [Required]
         [Key]
         public string ID{ get; set; }
         [Required]

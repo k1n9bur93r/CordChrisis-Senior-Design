@@ -36,7 +36,7 @@ namespace CordChrisis.DAOs
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                data = context.Users.Where(a=> ( a.ID == userID)&&(a.IsDeleted==false)).FirstOrDefault();
+                data = context.Users.Where(a=> (a.ID == userID)&&(a.IsDeleted==false)).FirstOrDefault();
             }
             return data;
         }
