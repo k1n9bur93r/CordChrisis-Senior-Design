@@ -9,69 +9,112 @@
 @inject Blazored.SessionStorage.ISessionStorageService Storage
 @inject IJSRuntime js
 
-<div class="container rounded mt-4 p-1 bg-light">
-    <div class="jumbotron">
-        <h2>Login!</h2>
+<head>
+    <title>My Awesome Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
 
 
-        <div class="input-group mb-2 mr-sm-2">
-            <input id="LoginInput" type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" @bind="email" />
-            <input id="PassWordInput" type="password" class="form-control mb-2 mr-sm-2" placeholder="Password" maxlength="16" @bind="password" />
-        </div>
-
-        <div class="">
-            @if (success == false)
-            {
-                @if (isEmail == false && isPassword == false)
-                {
-                    <div>
-                        <p>Email and Password Fields are blank</p>
-                    </div>
-                }
-                else if (isPassword == false)
-                {
-                    <div>
-                        <p>Password Field Cant be Blank</p>
-                    </div>
-                }
-                else if (isEmail == false)
-                {
-                    <div>
-                        <p>Email Field Cant be Blank</p>
-                    </div>
-                }
-                else if (islogin == false)
-                {
-                    <div>
-                        <p>Oh no! You Dumb Bitch, Your Email or Password was Incorrect</p>
-                    </div>
-
-                }
-
-            }
-
-        </div>
-        <p>Don't have an Account? Make one <a href="signup" style="color:dodgerblue">Here</a>.</p>
-        <div>
-
-            <button id="SubmitloginQuery" class="btn btn-primary btn-block" @onclick="SubmitLoginQuery"> Submit</button>
-
-        </div>
-
-        <div class="">
-            @if (loadingData)
-            {
+<body class="login_body">
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-200">
+            <div class="user_card">
                 <div class="d-flex justify-content-center">
-                    <div class="spinner-grow" role="status">
-                        <span class="sr-only">Loading...</span>
+
+                    <div class="brand_logo_container">
+                        <img src="css/images/CC_logo_Small.png" class="brand_logo" alt="Logo">
                     </div>
                 </div>
-            }
+                <div class="login_header">
+                    <div class="mt-lg-4">
+                        <div class="d-flex justify-content-center">
+                            <h1>Login</h1>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center form_container">
+
+                    <form>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="" class="form-control input_user" placeholder="Email" @bind="email">
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="" class="form-control input_pass" placeholder="Password" maxlength="16" @bind="password">
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                <label class="custom-control-label" for="customControlInline">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="">
+                            @if (success == false)
+                            {
+                                @if (isEmail == false && isPassword == false)
+                                {
+                                    <div>
+                                        <p>Email and Password Fields are blank</p>
+                                    </div>
+                                }
+                                else if (isPassword == false)
+                                {
+                                    <div>
+                                        <p>Password Field Cant be Blank</p>
+                                    </div>
+                                }
+                                else if (isEmail == false)
+                                {
+                                    <div>
+                                        <p>Email Field Cant be Blank</p>
+                                    </div>
+                                }
+                                else if (islogin == false)
+                                {
+                                    <div>
+                                        <p>Oh no! You Dumb Bitch, Your Email or Password was Incorrect</p>
+                                    </div>
+
+                                }
+
+                            }
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="button" button id="SubmitloginQuery" @onclick="SubmitLoginQuery" class="btn login_btn">Login</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        Don't have an account? <a href="signup" class="ml-2">Sign Up</a>
+                    </div>
+
+                </div>
+                <div class="">
+                    @if (loadingData)
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
-
-
     </div>
-</div>
+</body>
+
 
 @code {
 
@@ -180,11 +223,11 @@
         }
         else
         {
-            UserStats stats = await Http.PostJsonAsync<UserStats>("userstats/post",checkData.ID.ToString());
+            UserStats stats = await Http.PostJsonAsync<UserStats>("userstats/post", checkData.ID.ToString());
             await SaveLogOnToSession(checkData.ID.ToString());
             if (stats.UserImage != null)
             {
-                string ImageString= await this.js.InvokeAsync<string>("ConvertByteArrayToImage",stats.UserImage);
+                string ImageString = await this.js.InvokeAsync<string>("ConvertByteArrayToImage", stats.UserImage);
                 await SaveImageToSession(ImageString);
 
             }
@@ -198,7 +241,7 @@
     {
         await Storage.SetItemAsync("LoggedIn", UserID);
     }
-        async Task SaveImageToSession(string ImageString)
+    async Task SaveImageToSession(string ImageString)
     {
         await Storage.SetItemAsync("UserPFP", ImageString);
     }
