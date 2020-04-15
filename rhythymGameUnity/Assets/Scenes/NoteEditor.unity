@@ -636,6 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc513a8c7ebb54429e2d76b4647b6e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distPerBeat: 1
   curBeat: 0
 --- !u!4 &1135057449
 Transform:
@@ -1073,6 +1074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 122968b1f9b07491297209816ebaacb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editorNoteController: {fileID: 1135057448}
   gestureObjects:
   - {fileID: 5885463680574226733, guid: 068797dd952e6544d86aee388d3b6246, type: 3}
   - {fileID: 3473454625513459490, guid: b24721d1db10b40489e6c1a5eb4f3843, type: 3}

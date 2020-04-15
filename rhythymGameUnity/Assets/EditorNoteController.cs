@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class EditorNoteController : MonoBehaviour
 { 
-    public int curBeat = 0;
+    public double distPerBeat;
+    public double curBeat;
 
     /*
-        atBeat:
+        notes:
             key = beat (double)
-            value = array of 5 bools which 
-                signify what gestures
-                and notes start on it
+            value = 5 game objects at that beat
 
-            ex: value TFTFFFFF
-            means that there is a chord of a first and third note
+        if gameobjects are null at that beat, then that beat
+        does not have that type of note
 
-            the first 4 are the 4 notes and the next 4 are the 
-            four gestures
+        the first 4 are for the 4 notes, and the fifth is for
+        any gesture note (multiple gesture notes may not be
+        on the same beat)
     */
     public Dictionary<double, GameObject[]> notes;
     
@@ -25,6 +25,7 @@ public class EditorNoteController : MonoBehaviour
     void Start()
     {
         notes = new Dictionary<double,GameObject[]>(); 
+        curBeat = 0;
     }
 
     // Update is called once per frame
@@ -42,21 +43,32 @@ public class EditorNoteController : MonoBehaviour
                 }
             }
         }
+
+        foreach (KeyValuePair<double,GameObject[]> kvp in notes)
+        {
+            foreach (GameObject gb in kvp.Value)
+            {
+                //set objects position
+                if (gb != null)
+                {
+                    float newZ = (float)(gb.GetComponent<NoteData>().beat - curBeat * (float)distPerBeat);
+
+                    gb.transform.position = new Vector3 (gb.transform.position.x, gb.transform.position.y, newZ);
+                }
+            }
+        }
     }
     public bool isNoteIn(int noteNum)
     {
         //check if beat has any entries in dict
         if (notes.ContainsKey(curBeat))
         {
-            //if it doesn't, then 
-            return false;
+            if (notes[curBeat][noteNum] != null)
+            {
+                return true;
+            }
         }
-        else if (notes[curBeat][noteNum] == null)
-        {
-            return false;
-        }
-        //the note already exists!
-        return true;
+        return false;
     }
     public void AddNote(int spot, GameObject newNote)
     {
@@ -65,7 +77,7 @@ public class EditorNoteController : MonoBehaviour
         if (!notes.ContainsKey(curBeat))
         {
             //then create a new empty beat info key
-            beatInfo = new GameObject[] {null,null,null,null};
+            beatInfo = new GameObject[] {null,null,null,null,null};
         }
         else
         {

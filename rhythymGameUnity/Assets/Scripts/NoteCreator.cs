@@ -69,7 +69,7 @@ public class NoteCreator : MonoBehaviour
     {
         clicked = false;
 
-        if (endNote == null && isHeld)
+        if (isHeld)
         {
             endNote = Instantiate(originalNote);
             endNote.GetComponent<Transform>().parent = note.GetComponent<Transform>();
@@ -90,10 +90,6 @@ public class NoteCreator : MonoBehaviour
 
             Debug.Log("End Note Beat: " + endNote.GetComponent<NoteData>().beat);
         }
-        else
-        {            
-            Destroy(endNote);
-        }
 
         holdTime = 0;
     }
@@ -102,11 +98,11 @@ public class NoteCreator : MonoBehaviour
     {
         clicked = true;
 
-        if (note == null)
+        if (editorController.isNoteIn(noteNum) == false)
         {
             // init note setup
             note = Instantiate(originalNote);
-            note.GetComponent<Transform>().parent = this.transform;
+            //note.GetComponent<Transform>().parent = this.transform;
             note.GetComponent<Transform>().position = this.transform.position;
             note.GetComponent<Transform>().position += new Vector3(0f, 0.5f, 0f);
             note.GetComponent<MeshRenderer>().material.color = hoverColor;
@@ -117,7 +113,7 @@ public class NoteCreator : MonoBehaviour
 
             /** things to pass to NoteSpawner **/
             // note's beat should be set to current position in editor
-            note.GetComponent<NoteData>().beat = 0.0;
+            note.GetComponent<NoteData>().beat = editorController.curBeat;
 
             // tap notes length default to zero; length increases based on hold time
             note.GetComponent<NoteData>().length = 0.0;
@@ -139,8 +135,8 @@ public class NoteCreator : MonoBehaviour
         }
         else
         {
-            Destroy(note);
-            Destroy(holdLine);
+            Destroy(editorController.notes[editorController.curBeat][noteNum]);
+            //Destroy(holdLine);
             //adding a null note is the same as removing it from the dict
             editorController.AddNote(noteNum, null);
         }

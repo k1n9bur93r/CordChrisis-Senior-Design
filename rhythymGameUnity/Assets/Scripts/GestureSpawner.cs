@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GestureSpawner : MonoBehaviour
 {
+    public EditorNoteController editorNoteController;
     public List<GameObject> gestureObjects;
     // public List<GameObject>[] gestures = new List<GameObject>[4];
 
@@ -27,39 +28,23 @@ public class GestureSpawner : MonoBehaviour
 
     public void spawnGesture(int gestureNum, double beat)
     {
-        GameObject curGesture = Instantiate(gestureObjects[gestureNum], new Vector3(0f, 2.0f, (float) beat), Quaternion.Euler(31.69f, 0, 0));
+        removeGesture();
+        GameObject curGesture = Instantiate(gestureObjects[gestureNum], new Vector3(0f, 2.0f, 0f), Quaternion.Euler(31.69f, 0, 0));
 
-        removeGesture(beat);
-
-        try
-        {
-            gestureGameObjects.Add(beat, curGesture);
-            gestureNums.Add(beat, gestureNum);
-        }
-        catch (ArgumentException)
-        {
-            gestureGameObjects[beat] = curGesture;
-            gestureNums[beat] = gestureNum;
-        }
-
-        // gestureObjects.Add(beat, curGesture);
-        // gestureNums.Add(beat, int);
+        curGesture.AddComponent<NoteData>();
+        curGesture.GetComponent<NoteData>().beat = editorNoteController.curBeat;
         
-        // print(curGesture);
-
-        // gestures[gestureNum].Add(curGesture.gameObject);
+        editorNoteController.AddNote(4, curGesture);
 
     }
 
-    void removeGesture(double beat)
+    void removeGesture()
     {
-        if (gestureGameObjects.ContainsKey(beat)) {
-            GameObject gesture = gestureGameObjects[beat];
-            gestureGameObjects.Remove(beat);
-            Destroy(gesture);
-        }
-        if (gestureNums.ContainsKey(beat)) {
-            gestureNums.Remove(beat);
+        if (editorNoteController.isNoteIn(4))
+        {
+            Destroy(editorNoteController.notes[editorNoteController.curBeat][4]);
+            //adding null at spot 5 is removing gesture from that beat
+            editorNoteController.AddNote(4, null);
         }
     }
 
@@ -76,7 +61,7 @@ public class GestureSpawner : MonoBehaviour
             spawnGesture(3, 4);
         } else if (Input.GetKey("backspace")) {
             Debug.Log("delete");
-            removeGesture(4);
+            removeGesture();
         }
     }
 }
