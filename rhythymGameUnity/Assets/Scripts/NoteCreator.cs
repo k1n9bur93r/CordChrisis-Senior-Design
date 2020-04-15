@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NoteCreator : MonoBehaviour
 {
+    public int noteNum;
+    public EditorNoteController editorController;
     // objects to create
     private GameObject note;
     private GameObject holdLine;
@@ -79,7 +81,6 @@ public class NoteCreator : MonoBehaviour
             endNote.GetComponent<MeshRenderer>().material.color = hoverColor;
             endNote.GetComponent<BoxCollider>().enabled = false;
 
-
             // beat should be divisible by 0.25 (quarter beat)
             endNote.GetComponent<NoteData>().beat = 
                 note.GetComponent<NoteData>().beat + note.GetComponent<NoteData>().length;
@@ -111,6 +112,9 @@ public class NoteCreator : MonoBehaviour
             note.GetComponent<MeshRenderer>().material.color = hoverColor;
             note.GetComponent<BoxCollider>().enabled = false;
             
+            //add the note to the editor dictionary
+            editorController.AddNote(noteNum, note.gameObject);
+
             /** things to pass to NoteSpawner **/
             // note's beat should be set to current position in editor
             note.GetComponent<NoteData>().beat = 0.0;
@@ -130,11 +134,15 @@ public class NoteCreator : MonoBehaviour
             holdLine.GetComponent<BoxCollider>().enabled = false;
 
             holdLine.SetActive(false);
+
+            
         }
         else
         {
             Destroy(note);
             Destroy(holdLine);
+            //adding a null note is the same as removing it from the dict
+            editorController.AddNote(noteNum, null);
         }
     }
 
