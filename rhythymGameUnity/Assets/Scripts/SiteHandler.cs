@@ -17,14 +17,16 @@ public class SiteHandler : MonoBehaviour
 	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
 	public bool webMode;
 
-	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nDisable this when building for WebGL!")]
+	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nEnable this when building for WebGL!")]
 	public bool waitForSettings;
 
+	[Header("Non-Web Mode/Wait For Settings options")]
 	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
 	public bool gameMode;
 
 	//private bool siteArgsDone = false;
 	//private bool downloadersDone = false;
+	private bool locationsDone;
 	private bool settingsDone;
 
 	// Track vars
@@ -53,12 +55,14 @@ public class SiteHandler : MonoBehaviour
 		if (!waitForSettings)
 		{
 			userOffset = userOffset / 1000.0;
+			locationsDone = true;
 			settingsDone = true;
 		}
 
 		if (!webMode)
 		{
 			userOffset = userOffset / 1000.0;
+			locationsDone = true;
 			settingsDone = true;
 		}
 
@@ -70,7 +74,7 @@ public class SiteHandler : MonoBehaviour
 	IEnumerator StartDownloads()
 	{
 		// Get user settings
-		Coroutine site = StartCoroutine(WaitForUserSettings());
+		Coroutine site = StartCoroutine(WaitForSite());
 		yield return site;
 
 		// Download the files (does not download parallel, but the only big file will be audio anyway)
@@ -85,16 +89,22 @@ public class SiteHandler : MonoBehaviour
 		LoadNextScene();
 	}
 
-	IEnumerator WaitForUserSettings()
+	IEnumerator WaitForSite()
 	{
-		//Debug.Log ("settingsDone: " + settingsDone);
-
-		while (!settingsDone)
+		while (!locationsDone || !settingsDone)
 		{
 			yield return null;
 		}
 
 		yield return true;
+	}
+
+	void GetSiteURL(string audio, string chart)
+	{
+		audioURL = audio;
+		chartURL = chart;
+
+		locationsDone = true;
 	}
 
 	void GetUserSettings(bool mode, float speed, double offset)
