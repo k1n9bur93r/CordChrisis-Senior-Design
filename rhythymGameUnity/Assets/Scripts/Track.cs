@@ -48,7 +48,21 @@ public class Track : MonoBehaviour
 
     JsonTrack readJsonFile() {
         // reads a json file and returns the parsed object as JsonTrack object
-        string json_string = track_file; //Resources.Load<TextAsset>(filename).ToString();
+        //string json_string = track_file; //Resources.Load<TextAsset>(filename).ToString();
+
+		GameObject files = GameObject.Find("SiteHandler");
+        string json_string;
+
+		if (files.GetComponent<SiteHandler>().webMode)
+		{
+            json_string = files.GetComponent<SiteHandler>().chartFile;
+		}
+
+		else
+		{
+			json_string = Resources.Load<TextAsset>(files.GetComponent<SiteHandler>().chartURL).ToString();
+		}
+
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);
 
         return json;

@@ -34,6 +34,9 @@ public class NoteSpawner : MonoBehaviour
 
     void Awake()
     {
+		GameObject files = GameObject.Find("SiteHandler");
+        userSpeed = files.GetComponent<SiteHandler>().userSpeed;
+
         for (int i=0;i<4;i++)
         {
             gestures[i] = new List<GameObject>();

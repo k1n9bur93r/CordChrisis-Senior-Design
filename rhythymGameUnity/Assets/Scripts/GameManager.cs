@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	enum GameState { Play, Results, Zero };
+	enum GameState { None, Play, Edit, Results };
 
 	void Awake()
 	{
