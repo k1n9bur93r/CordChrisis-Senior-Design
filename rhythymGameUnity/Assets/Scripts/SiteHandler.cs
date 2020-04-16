@@ -42,7 +42,7 @@ public class SiteHandler : MonoBehaviour
 	public double userOffset;
 
 	// NoteSpawner vars
-	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
+	[Tooltip("Note scroll speed.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
 	public float userSpeed;
 
 	// InputController vars
@@ -70,6 +70,22 @@ public class SiteHandler : MonoBehaviour
 
 		StartCoroutine(StartDownloads());
 	}
+
+	/*
+	void Update()
+	{
+		// Test site-waiting co-routines
+		if (Input.GetKeyDown(KeyCode.G))
+		{
+			GetSiteURL("https://se7enytes.github.io/Music/Lucky%20Star.ogg", "https://se7enytes.github.io/Charts/Lucky%20Star.json");
+		}
+
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			GetUserSettings(true, 2.0f, 0.0);
+		}
+	}
+	*/
 
 	IEnumerator StartDownloads()
 	{
@@ -102,7 +118,7 @@ public class SiteHandler : MonoBehaviour
 		yield return true;
 	}
 
-	void GetSiteURL(string audio, string chart)
+	public void GetSiteURL(string audio, string chart)
 	{
 		audioURL = audio;
 		chartURL = chart;
@@ -110,7 +126,7 @@ public class SiteHandler : MonoBehaviour
 		locationsDone = true;
 	}
 
-	void GetUserSettings(bool mode, float speed, double offset)
+	public void GetUserSettings(bool mode, float speed, double offset)
 	{
 		gameMode = mode; // true = play, false = editor
 		userSpeed = speed;
