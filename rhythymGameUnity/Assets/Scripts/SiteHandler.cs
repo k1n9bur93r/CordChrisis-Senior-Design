@@ -2,126 +2,221 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 /*
 	> SiteHandler class
 
-	Recieves audio, chart, and user options from the site for use in the game.
+	Recieves data from website for use ingame.
 */
 
 public class SiteHandler : MonoBehaviour
 {
-	[Tooltip("Off: Download data from a given URL.\nOn: Read data from the Resources folder.\n\nDisable this when building for WebGL!")]
-	public bool localMode = false;
+	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
+	public bool webMode;
 
-	private bool siteArgsDone = false;
-	private bool downloadersDone = false;
+	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nEnable this when building for WebGL!")]
+	public bool waitForSettings;
+
+	[Header("Non-Wait For Settings options")]
+	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
+	public bool gameMode;
+
+	//private bool siteArgsDone = false;
+	//private bool downloadersDone = false;
+	private bool locationsDone;
+	private bool settingsDone;
 
 	// Track vars
-	[Space]
-	public Track track;
 	public string chartURL;
-	private bool trackDone = false;
+	[HideInInspector]
+	public string chartFile;
 
 	// Metronome vars
-	[Space]
-	public Metronome metronome;
 	public string audioURL;
+	[HideInInspector]
+	public AudioClip audioFile;
 	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
 	public double userOffset;
-	private bool metronomeDone = false;
 
 	// NoteSpawner vars
-	[Space]
-	public NoteSpawner noteSpawner;
-	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.")]
+	[Tooltip("Note scroll speed.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
 	public float userSpeed;
 
 	// InputController vars
 		// BINDINGS GO HERE
 
-	// Check if these ^^^^^ have been called during the Awake() loop
-
 	void Awake()
 	{
-		// FIRST STEP: Recieve URLS and other small data from site.
-		Debug.Log("[SiteHandler] Waiting for site to pass data (not really lol)...");
-		// Do this later
-		
-		// TEMP SETTERS
-		metronome.userOffset = userOffset / 1000.0;
-		noteSpawner.userSpeed = userSpeed;
+		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
 
-		siteArgsDone = true; // may or may not actually do anything
+		if (!waitForSettings)
+		{
+			userOffset = userOffset / 1000.0;
+			locationsDone = true;
+			settingsDone = true;
+		}
 
-		// SECOND STEP: Start downloader co-routines.
+		if (!webMode)
+		{
+			userOffset = userOffset / 1000.0;
+			locationsDone = true;
+			settingsDone = true;
+		}
+
 		Debug.Log("[SiteHandler] Downloading...");
 
-		StartCoroutine(InitTrack()); // JSON downloader
-		StartCoroutine(InitMetronome()); // Audio downloader		
+		StartCoroutine(StartDownloads());
+	}
+
+	/*
+	void Update()
+	{
+		// Test site-waiting co-routines
+		if (Input.GetKeyDown(KeyCode.G))
+		{
+			GetSiteURL("https://se7enytes.github.io/Music/Lucky%20Star.ogg", "https://se7enytes.github.io/Charts/Lucky%20Star.json");
+		}
+
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			GetUserSettings(true, 2.0f, 0.0);
+		}
+	}
+	*/
+
+	IEnumerator StartDownloads()
+	{
+		// Get user settings
+		Coroutine site = StartCoroutine(WaitForSite());
+		yield return site;
+
+		// Download the files (does not download in parallel, but the only big file will be audio anyway)
+		Coroutine chart = StartCoroutine(GetChart());
+		yield return chart;
+
+		Coroutine audio = StartCoroutine(GetAudio());
+		yield return audio;
+
+		Debug.Log("[SiteHandler] Downloads finished!");
+
+		LoadNextScene();
+	}
+
+	IEnumerator WaitForSite()
+	{
+		while (!locationsDone || !settingsDone)
+		{
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Waiting for response from site...";
+
+			yield return null;
+		}
+
+		yield return true;
+	}
+
+	public void GetSiteURL(string audio, string chart)
+	{
+		audioURL = audio;
+		chartURL = chart;
+
+		locationsDone = true;
+	}
+
+	public void GetUserSettings(bool mode, float speed, double offset)
+	{
+		gameMode = mode; // true = play, false = editor
+		userSpeed = speed;
+		userOffset = offset / 1000.0;
+
+		settingsDone = true;
+	}
+
+	IEnumerator GetChart()
+	{
+		UnityWebRequest www = UnityWebRequest.Get(chartURL);
 		
-		/*
-		do
+		if (webMode)
 		{
-			if (metronomeDone && trackDone)
-			{
-				downloadersDone = true; // this goes here?
-			}
+			// Download the file and sit tight
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Loading chart: ";
 
-		} while (!downloadersDone);
-		*/
+			StartCoroutine(ProgressBar(www));
+			yield return www.SendWebRequest();
 
-		Debug.Log("[SiteHandler] Done!");
-	}
-
-	IEnumerator InitTrack()
-	{
-		if (!localMode)
-		{
-			UnityWebRequest www = UnityWebRequest.Get(chartURL);
-
-			yield return www.SendWebRequest(); // Request and sit tight
-
+			// Results of the download
 			if (www.isNetworkError || www.isHttpError)
 			{
-				Debug.Log("[SiteHandler] InitTrack(): " + www.error);
+				Debug.Log("[Downloader] GetChart(): " + www.error);
 			}
 
 			else
 			{
-				track.track_file = www.downloadHandler.text;
-				trackDone = true;
+				Debug.Log("[Downloader] GetChart(): done!");
+				chartFile = www.downloadHandler.text;
 			}
-		}
-
-		else
-		{
-			track.track_file = Resources.Load<TextAsset>(chartURL).ToString();
 		}
 	}
 
-	IEnumerator InitMetronome()
+	IEnumerator GetAudio()
 	{
-		if (!localMode)
+		UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.OGGVORBIS); // OGG
+		
+		if (webMode)
 		{
-			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
+			// Download the file and sit tight
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Loading music: ";
 
-			yield return www.Send(); //SendWebRequest(); // 
+			StartCoroutine(ProgressBar(www));
+			yield return www.SendWebRequest();
 
+			// Results of the download
 			if (www.isNetworkError || www.isHttpError)
 			{
-				Debug.Log("[SiteHandler] InitMetronome(): " + www.error);
+				Debug.Log("[Downloader] GetAudio(): " + www.error);
 			}
 
 			else
 			{
-				metronome.GetComponent<AudioSource>().clip = DownloadHandlerAudioClip.GetContent(www);
+				Debug.Log("[Downloader] GetAudio(): done!");
+				audioFile = DownloadHandlerAudioClip.GetContent(www);
 			}
+		}
+	}
+
+	IEnumerator ProgressBar(UnityWebRequest www)
+	{
+		GameObject loadingText = GameObject.Find("LoadText");
+		string originalText = loadingText.GetComponent<TextMeshProUGUI>().text;
+
+		while (!www.isDone)
+		{
+			//Debug.Log("[Downloader]: Progress " + www.downloadProgress * 100.0 + "%");
+			loadingText.GetComponent<TextMeshProUGUI>().text = originalText;
+
+			int loadPercent = (int)(www.downloadProgress * 100);
+
+			loadingText.GetComponent<TextMeshProUGUI>().text += " " + loadPercent + "%";
+
+			yield return new WaitForSeconds((1.0f / 30.0f));
+		}
+	}
+
+	private void LoadNextScene()
+	{
+		if (gameMode)
+		{
+			SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
 		}
 
 		else
 		{
-			metronome.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(audioURL);
+			SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
 		}
 	}
 }

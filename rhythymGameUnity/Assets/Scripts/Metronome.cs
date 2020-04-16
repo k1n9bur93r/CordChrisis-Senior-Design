@@ -43,7 +43,7 @@ public class Metronome : MonoBehaviour
 
 	public Text timer;
 
-	private bool playbackStarted;
+	private bool playbackStarted = false;
 
 	public double startBeat;
 	private double startTime;
@@ -52,36 +52,49 @@ public class Metronome : MonoBehaviour
 	public double tempo; // Song speed in beats per minute
 	public double tempoNormal; // Song speed to base note scroll speed on
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
-	public double beatsElapsed; // Song position in beats
-	public double beatsElapsedDelta;
+	public double beatsElapsed = 0.0; // Song position in beats
+	public double beatsElapsedDelta = 0.0;
 	public double beatZeroOffset; // Chart-determined visual delay
 	public double userOffset; // User-determined visual delay
 
-	private bool pastSchedule;
+	private bool pastSchedule = false;
 	private double songStart; // DSP time reference point for beginning of playback
 	private double secPerBeat; // How many seconds in one beat
-	private double timeElapsed; // Song position based on DSP time's original reference point and current point in time
-	private double timeElapsedLast;
-	private double timeElapsedDelta; // DSP time elapsed since the last frame
-	private double overtime;
-	private double negativeDelay;
-	private int tempoIndex;
+	private double timeElapsed = 0.0; // Song position based on DSP time's original reference point and current point in time
+	private double timeElapsedLast = 0.0;
+	private double timeElapsedDelta = 0.0; // DSP time elapsed since the last frame
+	//private double overtime;
+	private double negativeDelay = 0.0;
+	private int tempoIndex = 0;
 
 	/*
 		Initialize timekeepers.	
 	*/
 	
 	void Awake()
-	{
-		beatsElapsed = 0.0;
-		beatsElapsedDelta = 0.0;
-		timeElapsed = 0.0;
-		timeElapsedDelta = 0.0;
-		negativeDelay = 0.0;
+	{		
+		GameObject files = GameObject.Find("SiteHandler");
 		
-		playbackStarted = false;
-		pastSchedule = false;
-		tempoIndex = 0;
+		if (files.GetComponent<SiteHandler>().webMode)
+		{
+			GetComponent<AudioSource>().clip = files.GetComponent<SiteHandler>().audioFile;
+		}
+
+		else
+		{
+			GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(files.GetComponent<SiteHandler>().audioURL);
+		}
+
+		userOffset = files.GetComponent<SiteHandler>().userOffset;
+
+		// ---
+
+		GameObject switcher = GameObject.Find("PlaytestSwitcher");
+
+		if (switcher != null)
+		{
+			startBeat = switcher.GetComponent<PlaytestSwitcher>().currentBeat;		
+		}
 	}
 
 	void Start()
@@ -175,7 +188,7 @@ public class Metronome : MonoBehaviour
 
 	public bool PlayButton()
 	{
-		return (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
+		return (Input.GetKeyDown(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
 	}
 
 	public void UpdateTimeAnywhere()

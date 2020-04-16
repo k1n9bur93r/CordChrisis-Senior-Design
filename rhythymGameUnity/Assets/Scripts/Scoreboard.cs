@@ -16,7 +16,7 @@ public class Scoreboard : MonoBehaviour
 	//private const double ACC_SCORE_MAX = 800000;
 	//private const double COMBO_SCORE_MAX = 200000;
 	private const double MAX_SCORE = 1000000.0;
-	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "GREAT", "PERFECT" };
+	private readonly string[] RATING_NAMES = { "MISS", "GOOD", "PERFECT", "PERFECT" };
 	private readonly string[] LEAN_NAMES = { " ", "EARLY", "LATE" };
 
 	// Other classes
@@ -68,7 +68,7 @@ public class Scoreboard : MonoBehaviour
 			0, // Miss
 			baseNoteValue * 0.5, // Good
 			baseNoteValue, // Perfect
-			baseNoteValue + 1.0  // Marvelous
+			baseNoteValue + 1  // Marvelous
 		};
 	}
 
@@ -80,8 +80,8 @@ public class Scoreboard : MonoBehaviour
 
 	private void DrawScore()
 	{
-		scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
-		//scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 4.0f * (float)baseNoteValue * Time.deltaTime);
+		//scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
+		scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 10.0f * (float)baseNoteValue * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
