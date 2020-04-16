@@ -66,9 +66,9 @@ public class Scoreboard : MonoBehaviour
 
 		ratingValues = new double[4] {
 			0, // Miss
-			baseNoteValue * 0.5, // Good
-			baseNoteValue, // Perfect
-			baseNoteValue + 1.0  // Marvelous
+			baseNoteValue * 0.3, // Good
+			baseNoteValue * 0.7, // Perfect
+			baseNoteValue  // Marvelous
 		};
 	}
 

@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+	> DownloaderTester class
+
+	Uses downloaded items.
+	NOTICE: Do not use this in the actual game!
+*/
+
 public class DownloaderTester : MonoBehaviour
 {
 	void Awake()

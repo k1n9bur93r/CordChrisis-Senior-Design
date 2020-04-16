@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 	> Downloader class
 
 	Downloads items from the internet.
+	NOTICE: Do not use this in the actual game!
 */
 
 public class Downloader : MonoBehaviour
