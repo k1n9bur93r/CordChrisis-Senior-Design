@@ -20,7 +20,7 @@ public class SiteHandler : MonoBehaviour
 	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nEnable this when building for WebGL!")]
 	public bool waitForSettings;
 
-	[Header("Non-Web Mode/Wait For Settings options")]
+	[Header("Non-Wait For Settings options")]
 	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
 	public bool gameMode;
 
@@ -77,12 +77,12 @@ public class SiteHandler : MonoBehaviour
 		Coroutine site = StartCoroutine(WaitForSite());
 		yield return site;
 
-		// Download the files (does not download parallel, but the only big file will be audio anyway)
-		Coroutine audio = StartCoroutine(GetAudio());
-		yield return audio;
-
+		// Download the files (does not download in parallel, but the only big file will be audio anyway)
 		Coroutine chart = StartCoroutine(GetChart());
 		yield return chart;
+
+		Coroutine audio = StartCoroutine(GetAudio());
+		yield return audio;
 
 		Debug.Log("[SiteHandler] Downloads finished!");
 
@@ -93,6 +93,9 @@ public class SiteHandler : MonoBehaviour
 	{
 		while (!locationsDone || !settingsDone)
 		{
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Waiting for response from site...";
+
 			yield return null;
 		}
 
@@ -124,7 +127,7 @@ public class SiteHandler : MonoBehaviour
 		{
 			// Download the file and sit tight
 			GameObject loadingText = GameObject.Find("LoadText");
-			loadingText.GetComponent<TextMeshProUGUI>().text = "Chart loading: ";
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Loading chart: ";
 
 			StartCoroutine(ProgressBar(www));
 			yield return www.SendWebRequest();
@@ -151,7 +154,7 @@ public class SiteHandler : MonoBehaviour
 		{
 			// Download the file and sit tight
 			GameObject loadingText = GameObject.Find("LoadText");
-			loadingText.GetComponent<TextMeshProUGUI>().text = "Music loading: ";
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Loading music: ";
 
 			StartCoroutine(ProgressBar(www));
 			yield return www.SendWebRequest();
@@ -180,7 +183,7 @@ public class SiteHandler : MonoBehaviour
 			//Debug.Log("[Downloader]: Progress " + www.downloadProgress * 100.0 + "%");
 			loadingText.GetComponent<TextMeshProUGUI>().text = originalText;
 
-			double loadPercent = www.downloadProgress * 100.0;
+			int loadPercent = (int)(www.downloadProgress * 100);
 
 			loadingText.GetComponent<TextMeshProUGUI>().text += " " + loadPercent + "%";
 
