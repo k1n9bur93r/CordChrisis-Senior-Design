@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 /*
 	> SiteHandler class
@@ -13,13 +15,17 @@ using UnityEngine.SceneManagement;
 public class SiteHandler : MonoBehaviour
 {
 	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
-	public bool webMode = true;
+	public bool webMode;
 
-	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored on a real WebGL build due to the site setting this.")]
-	public bool gameMode = true;
+	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nDisable this when building for WebGL!")]
+	public bool waitForSettings;
+
+	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
+	public bool gameMode;
 
 	//private bool siteArgsDone = false;
 	//private bool downloadersDone = false;
+	private bool settingsDone;
 
 	// Track vars
 	public string chartURL;
@@ -32,7 +38,6 @@ public class SiteHandler : MonoBehaviour
 	public AudioClip audioFile;
 	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
 	public double userOffset;
-	private bool metronomeDone = false;
 
 	// NoteSpawner vars
 	[Tooltip("Note scroll speed relative to chart-designated \"normal\" tempo.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
@@ -45,34 +50,60 @@ public class SiteHandler : MonoBehaviour
 	{
 		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
 
-		// FIRST STEP: Recieve URLS and other small data from site
-		Debug.Log("[SiteHandler] Waiting for site to pass data (not really lol)...");
+		if (!waitForSettings)
+		{
+			userOffset = userOffset / 1000.0;
+			settingsDone = true;
+		}
 
-		// TEMP SETTERS
-		//metronome.userOffset = userOffset / 1000.0;
-		//noteSpawner.userSpeed = userSpeed;
+		if (!webMode)
+		{
+			userOffset = userOffset / 1000.0;
+			settingsDone = true;
+		}
 
-		//siteArgsDone = true; // may or may not actually do anything
-
-		// SECOND STEP: Start downloader co-routines
 		Debug.Log("[SiteHandler] Downloading...");
 
 		StartCoroutine(StartDownloads());
-
-		//Debug.Log("[SiteHandler] All done!");
 	}
 
 	IEnumerator StartDownloads()
 	{
-		// Download the files (not parallel, but the only big file will be audio anyway)
-		Coroutine chart = StartCoroutine(GetChart());
-		yield return chart;
+		// Get user settings
+		Coroutine site = StartCoroutine(WaitForUserSettings());
+		yield return site;
+
+		// Download the files (does not download parallel, but the only big file will be audio anyway)
 		Coroutine audio = StartCoroutine(GetAudio());
 		yield return audio;
+
+		Coroutine chart = StartCoroutine(GetChart());
+		yield return chart;
 
 		Debug.Log("[SiteHandler] Downloads finished!");
 
 		LoadNextScene();
+	}
+
+	IEnumerator WaitForUserSettings()
+	{
+		//Debug.Log ("settingsDone: " + settingsDone);
+
+		while (!settingsDone)
+		{
+			yield return null;
+		}
+
+		yield return true;
+	}
+
+	void GetUserSettings(bool mode, float speed, double offset)
+	{
+		gameMode = mode; // true = play, false = editor
+		userSpeed = speed;
+		userOffset = offset / 1000.0;
+
+		settingsDone = true;
 	}
 
 	IEnumerator GetChart()
@@ -82,6 +113,9 @@ public class SiteHandler : MonoBehaviour
 		if (webMode)
 		{
 			// Download the file and sit tight
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Chart loading: ";
+
 			StartCoroutine(ProgressBar(www));
 			yield return www.SendWebRequest();
 
@@ -106,6 +140,9 @@ public class SiteHandler : MonoBehaviour
 		if (webMode)
 		{
 			// Download the file and sit tight
+			GameObject loadingText = GameObject.Find("LoadText");
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Music loading: ";
+
 			StartCoroutine(ProgressBar(www));
 			yield return www.SendWebRequest();
 
@@ -121,19 +158,22 @@ public class SiteHandler : MonoBehaviour
 				audioFile = DownloadHandlerAudioClip.GetContent(www);
 			}
 		}
-
-		else
-		{
-			// NO.
-			//metronome.GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(audioURL);
-		}
 	}
 
 	IEnumerator ProgressBar(UnityWebRequest www)
 	{
+		GameObject loadingText = GameObject.Find("LoadText");
+		string originalText = loadingText.GetComponent<TextMeshProUGUI>().text;
+
 		while (!www.isDone)
 		{
-			Debug.Log("[Downloader]: Progress " + www.downloadProgress * 100.0 + "%");
+			//Debug.Log("[Downloader]: Progress " + www.downloadProgress * 100.0 + "%");
+			loadingText.GetComponent<TextMeshProUGUI>().text = originalText;
+
+			double loadPercent = www.downloadProgress * 100.0;
+
+			loadingText.GetComponent<TextMeshProUGUI>().text += " " + loadPercent + "%";
+
 			yield return new WaitForSeconds((1.0f / 30.0f));
 		}
 	}
