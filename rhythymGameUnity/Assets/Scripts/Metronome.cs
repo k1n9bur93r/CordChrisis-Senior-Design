@@ -86,6 +86,15 @@ public class Metronome : MonoBehaviour
 		}
 
 		userOffset = files.GetComponent<SiteHandler>().userOffset;
+
+		// ---
+
+		GameObject switcher = GameObject.Find("PlaytestSwitcher");
+
+		if (switcher != null)
+		{
+			startBeat = switcher.GetComponent<PlaytestSwitcher>().currentBeat;		
+		}
 	}
 
 	void Start()
@@ -179,7 +188,7 @@ public class Metronome : MonoBehaviour
 
 	public bool PlayButton()
 	{
-		return (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
+		return (Input.GetKeyDown(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
 	}
 
 	public void UpdateTimeAnywhere()
