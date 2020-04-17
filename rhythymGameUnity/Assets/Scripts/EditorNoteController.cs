@@ -51,7 +51,7 @@ public class EditorNoteController : MonoBehaviour
                 //set objects position
                 if (gb != null)
                 {
-                    float newZ = (float)(gb.GetComponent<NoteData>().beat - curBeat * (float)distPerBeat);
+                    float newZ = (float)((gb.GetComponent<NoteData>().beat - curBeat) * (float)distPerBeat);
 
                     gb.transform.position = new Vector3 (gb.transform.position.x, gb.transform.position.y, newZ);
                 }
