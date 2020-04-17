@@ -50,7 +50,6 @@ public class Metronome : MonoBehaviour
 
 	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
 	public double tempo; // Song speed in beats per minute
-	public double tempoNormal; // Song speed to base note scroll speed on
 	public double beatsPerSec; // How many beats in one second <- Public for Judgment
 	public double beatsElapsed = 0.0; // Song position in beats
 	public double beatsElapsedDelta = 0.0;
@@ -98,9 +97,7 @@ public class Metronome : MonoBehaviour
 	}
 
 	void Start()
-	{
-		tempoNormal = meta.json.tempo_normal;
-		
+	{		
 		UpdateRates();
 	}
 
