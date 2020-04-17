@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,10 +25,7 @@ public class SiteHandler : MonoBehaviour
 	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
 	public bool gameMode;
 
-	//private bool siteArgsDone = false;
-	//private bool downloadersDone = false;
-	private bool locationsDone;
-	private bool settingsDone;
+	private bool infoDone;
 
 	// Track vars
 	public string chartURL;
@@ -52,18 +50,10 @@ public class SiteHandler : MonoBehaviour
 	{
 		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
 
-		if (!waitForSettings)
+		if (!waitForSettings || !webMode)
 		{
 			userOffset = userOffset / 1000.0;
-			locationsDone = true;
-			settingsDone = true;
-		}
-
-		if (!webMode)
-		{
-			userOffset = userOffset / 1000.0;
-			locationsDone = true;
-			settingsDone = true;
+			infoDone = true;
 		}
 
 		Debug.Log("[SiteHandler] Downloading...");
@@ -71,21 +61,22 @@ public class SiteHandler : MonoBehaviour
 		StartCoroutine(StartDownloads());
 	}
 
-	/*
 	void Update()
 	{
 		// Test site-waiting co-routines
 		if (Input.GetKeyDown(KeyCode.G))
 		{
-			GetSiteURL("https://se7enytes.github.io/Music/Lucky%20Star.ogg", "https://se7enytes.github.io/Charts/Lucky%20Star.json");
-		}
+			string[] mySettings = new string[5];
 
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			GetUserSettings(true, 2.0f, 0.0);
+			mySettings[0] = "https://se7enytes.github.io/Music/Lucky%20Star.ogg";
+			mySettings[1] = "https://se7enytes.github.io/Charts/Lucky%20Star.json";
+			mySettings[2] = "true";
+			mySettings[3] = "2.0";
+			mySettings[4] = "0.0";
+
+			GetSiteInfo(mySettings);
 		}
 	}
-	*/
 
 	IEnumerator StartDownloads()
 	{
@@ -107,7 +98,7 @@ public class SiteHandler : MonoBehaviour
 
 	IEnumerator WaitForSite()
 	{
-		while (!locationsDone || !settingsDone)
+		while (!infoDone)
 		{
 			GameObject loadingText = GameObject.Find("LoadText");
 			loadingText.GetComponent<TextMeshProUGUI>().text = "Waiting for response from site...";
@@ -118,21 +109,16 @@ public class SiteHandler : MonoBehaviour
 		yield return true;
 	}
 
-	public void GetSiteURL(string audio, string chart)
-	{
-		audioURL = audio;
-		chartURL = chart;
+	public void GetSiteInfo(string[] settings)
+	{		
+		audioURL = settings[0]; // string
+		chartURL = settings[1]; // string
 
-		locationsDone = true;
-	}
+		gameMode = Convert.ToBoolean(settings[2]); // bool
+		userSpeed = (float)Convert.ToDouble(settings[3]); // float
+		userOffset = Convert.ToDouble(settings[4]) / 1000.0; // double
 
-	public void GetUserSettings(bool mode, float speed, double offset)
-	{
-		gameMode = mode; // true = play, false = editor
-		userSpeed = speed;
-		userOffset = offset / 1000.0;
-
-		settingsDone = true;
+		infoDone = true;
 	}
 
 	IEnumerator GetChart()
