@@ -120,7 +120,7 @@ public class SiteHandler : MonoBehaviour
 		audioURL = settings.audioURL;
 		chartURL = settings.chartURL;
 		gameMode = settings.gameMode;
-		userSpeed = settings.userSpeed;
+		userSpeed = (float)settings.userSpeed; // REBUILD
 		userOffset = settings.userOffset / 1000.0;
 
 		infoDone = true;
