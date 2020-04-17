@@ -2654,6 +2654,11 @@ PrefabInstance:
       propertyPath: yOffset
       value: -4.75
       objectReference: {fileID: 0}
+    - target: {fileID: 3447156844880064055, guid: 206241700027747e58ab9410e343c31c,
+        type: 3}
+      propertyPath: meta
+      value: 
+      objectReference: {fileID: 1285531791}
     m_RemovedComponents:
     - {fileID: 4612268101121818364, guid: 206241700027747e58ab9410e343c31c, type: 3}
     - {fileID: 7799300915055230501, guid: 206241700027747e58ab9410e343c31c, type: 3}
