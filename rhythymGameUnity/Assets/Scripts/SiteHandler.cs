@@ -13,6 +13,15 @@ using TMPro;
 	Recieves data from website for use ingame.
 */
 
+public class ArgumentsContainer
+{
+	public string audioURL;
+	public string chartURL;
+	public bool gameMode;
+	public float userSpeed;
+	public double userOffset;
+}
+
 public class SiteHandler : MonoBehaviour
 {
 	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
@@ -66,13 +75,8 @@ public class SiteHandler : MonoBehaviour
 		// Test site-waiting co-routines
 		if (Input.GetKeyDown(KeyCode.G))
 		{
-			string[] mySettings = new string[5];
-
-			mySettings[0] = "https://se7enytes.github.io/Music/Lucky%20Star.ogg";
-			mySettings[1] = "https://se7enytes.github.io/Charts/Lucky%20Star.json";
-			mySettings[2] = "true";
-			mySettings[3] = "2.0";
-			mySettings[4] = "0.0";
+			string mySettings =
+			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.ogg\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 2.0, \"userOffset\": 0.0 }";
 
 			GetSiteInfo(mySettings);
 		}
@@ -109,14 +113,15 @@ public class SiteHandler : MonoBehaviour
 		yield return true;
 	}
 
-	public void GetSiteInfo(string[] settings)
-	{		
-		audioURL = settings[0]; // string
-		chartURL = settings[1]; // string
+	public void GetSiteInfo(string data)
+	{
+		ArgumentsContainer settings = JsonUtility.FromJson<ArgumentsContainer>(data);
 
-		gameMode = Convert.ToBoolean(settings[2]); // bool
-		userSpeed = (float)Convert.ToDouble(settings[3]); // float
-		userOffset = Convert.ToDouble(settings[4]) / 1000.0; // double
+		audioURL = settings.audioURL;
+		chartURL = settings.chartURL;
+		gameMode = settings.gameMode;
+		userSpeed = settings.userSpeed;
+		userOffset = settings.userOffset / 1000.0;
 
 		infoDone = true;
 	}

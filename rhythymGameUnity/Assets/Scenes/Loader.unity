@@ -385,12 +385,12 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: audioURL
-      value: 
+      value: https://se7enytes.github.io/Music/Lucky%20Star.ogg
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: chartURL
-      value: 
+      value: https://se7enytes.github.io/Charts/Lucky%20Star.json
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
