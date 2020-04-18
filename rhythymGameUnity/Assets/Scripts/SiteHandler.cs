@@ -11,6 +11,7 @@ using TMPro;
 	> SiteHandler class
 
 	Recieves data from website for use ingame.
+	Do not add this object to any other scene besides Loader. It transfers itself via scene transitions.
 */
 
 public class ArgumentsContainer
