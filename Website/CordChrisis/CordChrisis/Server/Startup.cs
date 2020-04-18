@@ -40,7 +40,7 @@ namespace CordChrisis.Server
                     .WithOrigins("https://youtubewebgl.herokuapp.com", "https://unity-dev-youtube.herokuapp.com");
                 });
             });
-
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddBlazoredSessionStorage();
             //services.AddScoped<Blazored.SessionStorage.ISessionStorageService>();

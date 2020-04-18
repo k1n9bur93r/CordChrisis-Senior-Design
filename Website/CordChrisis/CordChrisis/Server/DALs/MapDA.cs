@@ -62,7 +62,10 @@ namespace CordChrisis.DAOs
             {
                 var row = context.Map.Where(a => a.ID == map.ID).FirstOrDefault();
                 if (row == null) return;
-                row = map;
+                row.Rating = map.Rating;
+                row.NumOfRatings = map.NumOfRatings;
+                row.Plays = map.Plays;
+                row.PublicVisible = map.PublicVisible;
                 context.Map.Update(row);
                 context.SaveChanges();
             }

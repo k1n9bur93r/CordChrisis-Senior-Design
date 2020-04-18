@@ -6,6 +6,8 @@ public class NoteSpawner : MonoBehaviour
 {
     private const float NOTE_PADDING = 8.0f;
 
+    public Track meta; // GROSS HACK FOR EXEC ORDER
+
     //holds all 4 note prefabs so they may be spawned
     public List<GameObject> noteObjects;
     public List<GameObject> gestureObjects;
@@ -50,7 +52,7 @@ public class NoteSpawner : MonoBehaviour
 
     void Start()
     {
-        firstTempo = metronome.tempoNormal;
+        firstTempo = meta.json.tempo_normal;
     }
 
     /*

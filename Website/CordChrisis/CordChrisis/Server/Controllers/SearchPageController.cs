@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CordChrisis.Shared.Models;
 using CordChrisis.BOs;
+using Newtonsoft.Json;
 
 namespace CordChrisis.Server.Controllers
 {
@@ -37,6 +38,15 @@ namespace CordChrisis.Server.Controllers
             Map data = new Map();
             data = map.GetMapData(ID);
             return data;
+        }
+
+
+        [HttpPost]
+        [Route("update")]
+        public  void UpdateMap([FromBody]string updatedMap)
+        {
+            MapBO map = new MapBO();
+             map.UpdateMap(JsonConvert.DeserializeObject<Map>(updatedMap));
         }
 
         //public IActionResult GetDefaultSearchList()

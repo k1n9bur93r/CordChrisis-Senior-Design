@@ -26,27 +26,23 @@ namespace CordChrisis.Shared.Models
         [MaxLength(25)]
         public string Genre { get; set; }
         [Required]
-        [MaxLength(3)]
         public int BPM { get; set; }
         [Required]
-        [MaxLength(1)]
         public int ApiType { get; set; }
         [Required]
         public Guid ThumbnailPK { get; set; }
         [Required]
-        [MaxLength(1)]
         public int Difficulty { get; set; }
         [Required]
-        [MaxLength(10)]
         public decimal Rating { get; set; }
-        [MaxLength(10)]
+        [Required]
+        public int NumOfRatings { get; set; }
         public double MapRating => (double)Rating;
         [Required]
         public int Plays { get; set; }
         [Required]
         public  DateTime CreatedDate { get; set; }
         [Required]
-        [MaxLength(1)]
         public bool PublicVisible { get; set; }
         [Required]
         [MaxLength(25)]

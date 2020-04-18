@@ -11,6 +11,7 @@ using TMPro;
 	> SiteHandler class
 
 	Recieves data from website for use ingame.
+	Do not add this object to any other scene besides Loader. It transfers itself via scene transitions.
 */
 
 public class ArgumentsContainer
@@ -76,7 +77,7 @@ public class SiteHandler : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			string mySettings =
-			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 2.0, \"userOffset\": 0.0 }";
+			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
 
 			GetSiteInfo(mySettings);
 		}
@@ -120,7 +121,7 @@ public class SiteHandler : MonoBehaviour
 		audioURL = settings.audioURL;
 		chartURL = settings.chartURL;
 		gameMode = settings.gameMode;
-		userSpeed = settings.userSpeed;
+		userSpeed = (float)settings.userSpeed; // REBUILD
 		userOffset = settings.userOffset / 1000.0;
 
 		infoDone = true;
