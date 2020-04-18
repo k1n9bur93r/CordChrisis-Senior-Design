@@ -54,7 +54,8 @@ namespace CordChrisis.BOs
 		{
 			try
 			{
-				throw new NotImplementedException();
+				MapDA mapDA = new MapDA();
+				mapDA.Update(map);
 			}
 			catch (Exception ex)
 			{

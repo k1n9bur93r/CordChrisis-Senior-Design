@@ -12,6 +12,8 @@
           "Blazor.Extensions.Canvas": "1.1.0-preview1",
           "BlazorInputFile": "0.1.0-preview-00002",
           "Blazored.SessionStorage": "1.0.11",
+          "NVorbis": "0.10.1",
+          "Newtonsoft.Json": "12.0.3",
           "System.ComponentModel.Annotations": "4.7.0",
           "System.Drawing.Common": "4.7.0"
         },
@@ -194,6 +196,26 @@
           }
         }
       },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
+        }
+      },
+      "NVorbis/0.10.1": {
+        "dependencies": {
+          "System.Memory": "4.5.3",
+          "System.ValueTuple": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/NVorbis.dll": {
+            "assemblyVersion": "0.10.0.3",
+            "fileVersion": "0.10.0.3"
+          }
+        }
+      },
       "System.Buffers/4.5.0": {
         "runtime": {
           "lib/netstandard2.0/System.Buffers.dll": {
@@ -282,7 +304,8 @@
             "fileVersion": "4.6.27129.4"
           }
         }
-      }
+      },
+      "System.ValueTuple/4.5.0": {}
     }
   },
   "libraries": {
@@ -403,6 +426,20 @@
       "path": "microsoft.jsinterop/3.1.0-preview1.19506.1",
       "hashPath": "microsoft.jsinterop.3.1.0-preview1.19506.1.nupkg.sha512"
     },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
+    },
+    "NVorbis/0.10.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-N9O85efwPqUR29HlFRS8eSAORkhMQe5OPye49EzUSPuDU2XCHZIZi2MIgdFrlxWqHxMzJzSFgrvHy5Un1a3DFA==",
+      "path": "nvorbis/0.10.1",
+      "hashPath": "nvorbis.0.10.1.nupkg.sha512"
+    },
     "System.Buffers/4.5.0": {
       "type": "package",
       "serviceable": true,
@@ -465,6 +502,13 @@
       "sha512": "sha512-BG/TNxDFv0svAzx8OiMXDlsHfGw623BZ8tCXw4YLhDFDvDhNUEV58jKYMGRnkbJNm7c3JNNJDiN7JBMzxRBR2w==",
       "path": "system.threading.tasks.extensions/4.5.2",
       "hashPath": "system.threading.tasks.extensions.4.5.2.nupkg.sha512"
+    },
+    "System.ValueTuple/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "path": "system.valuetuple/4.5.0",
+      "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     }
   }
 }

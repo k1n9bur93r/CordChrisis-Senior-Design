@@ -1,6 +1,8 @@
 ﻿@page "/game/{GameMode:int}/{MapID}"
 @page "/game/{GameMode:int}/"
 @using CordChrisis.Shared.Models
+@using Newtonsoft.Json;
+@using NVorbis.Ogg;
 
 @inject IJSRuntime js;
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
@@ -34,58 +36,65 @@
 
             <div class="container">
                 <div class="row p-2">
-                <div class=" m-2  rounded bg-dark col-sm"style="min-width:25%;max-width:100%">
-                    <p class="h3 m-2 "> <strong>@GameMap.Name</strong></p>
-                    <p class="h5 m-2 italics ">Created: @GameMap.CreatedDate.ToString("MM/dd/yyyy")</p>
-                    <div class=" d-flex justify-content-start align-content-center" @onclick="(()=>NavigateToAccount(GameMap.Author))">
-                        <p class="h4 m-2 italics "> Created By:&nbsp; <em class="NeonO "> @GameMap.Author</em></p>
-                        @if (String.IsNullOrWhiteSpace(MapMakerIcon))
-                        {
-                            <img class="rounded-circle border border-light border-4 IconSize m-2" src="/css/images/loginGenericUserPFP.jpg">
-                        }
-                        else
-                        {
-                            <img class="rounded-circle border border-light border-4 IconSize m-2 " src="@MapMakerIcon">
-                        }
+                    <div class=" m-2  rounded bg-dark col-sm" style="min-width:25%;max-width:100%">
+                        <p class="h3 m-2 "> <strong>@GameMap.Name</strong></p>
+                        <p class="h5 m-2 italics ">Created: @GameMap.CreatedDate.ToString("MM/dd/yyyy")</p>
+                        <div class=" d-flex justify-content-start align-content-center" @onclick="(()=>NavigateToAccount(GameMap.AuthorID))">
+                            <p class="h4 m-2 italics "> Created By:&nbsp; <em class="NeonO "> @GameMap.Author</em></p>
+                            @if (String.IsNullOrWhiteSpace(MapMakerIcon))
+                            {
+                                <img class="rounded-circle border border-light border-4 IconSize m-2" src="/css/images/loginGenericUserPFP.jpg">
+                            }
+                            else
+                            {
+                                <img class="rounded-circle border border-light border-4 IconSize m-2 " src="@MapMakerIcon">
+                            }
+                        </div>
                     </div>
-                </div>
-                <div class="container rounded bg-dark m-2 pl-4 pr-4 pt-1 col-sm">
-                    <div class="row">
-                        <div class="badge badge-success m-1 p-2 col-sm " style="min-width:25%;max-width:100%">
+                    <div class="container rounded bg-dark m-2 pl-4 pr-4 pt-1 col-sm">
+                        <div class="row">
+                            <div class="badge badge-success m-1 p-2 col-sm " style="min-width:25%;max-width:100%">
                                 <p class="h3 " style="margin-bottom:0px!important">Rating :</p> <p class="h3" style="margin-bottom:0px!important"> @GameMap.Rating </p>
-                            <div class="rating w-100">
+                                <div class="rating w-100">
 
-                                <input type="radio" name="rating" id="r1" @onclick="GetRating1">
-                                <label class="ratinglabel" for="r1"></label>
-                                <input type="radio" name="rating" id="r2" @onclick="GetRating2">
-                                <label class="ratinglabel" for="r2"></label>
-                                <input type="radio" name="rating" id="r3" @onclick="GetRating3">
-                                <label class="ratinglabel" for="r3"></label>
-                                <input type="radio" name="rating" id="r4" @onclick="GetRating4">
-                                <label class="ratinglabel" for="r4"></label>
-                                <input type="radio" name="rating" id="r5" @onclick="GetRating5">
-                                <label class="ratinglabel" for="r5"></label>
+                                    <input type="radio" name="rating" id="r1" @onclick="GetRating5">
+                                    <label class="ratinglabel" for="r1"></label>
+                                    <input type="radio" name="rating" id="r2" @onclick="GetRating4">
+                                    <label class="ratinglabel" for="r2"></label>
+                                    <input type="radio" name="rating" id="r3" @onclick="GetRating3">
+                                    <label class="ratinglabel" for="r3"></label>
+                                    <input type="radio" name="rating" id="r4" @onclick="GetRating2">
+                                    <label class="ratinglabel" for="r4"></label>
+                                    <input type="radio" name="rating" id="r5" @onclick="GetRating1">
+                                    <label class="ratinglabel" for="r5"></label>
 
                                 </div>
-                            <button class="btn btn-outline-light btn-block btn-shadow m-1" style="margin-left:0px!important" @onclick="SubmitUserRating"> Submit Rating</button>
-                        </div>
+                                @if (LoggedInUserID != String.Empty)
+                                {
+                                    <button class="btn btn-outline-light btn-block btn-shadow m-1" style="margin-left:0px!important" @onclick="SubmitUserRating"> Submit Rating</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-light btn-block btn-shadow m-1 disabled" style="margin-left:0px!important" @onclick="SubmitUserRating"> Log in to rate</button>
+                                }
+                            </div>
 
-                        <div class="badge badge-primary m-1 col-sm " style="min-width:25%;max-width:100%">
+                            <div class="badge badge-primary m-1 col-sm " style="min-width:25%;max-width:100%">
 
-                            <p class="h3 " style="margin-bottom:0px!important">Plays :</p>
-                            <p class="h3" style="margin-bottom:0px!important"> @GameMap.Plays </p>
+                                <p class="h3 " style="margin-bottom:0px!important">Plays :</p>
+                                <p class="h3" style="margin-bottom:0px!important"> @GameMap.Plays </p>
 
-                        </div>
+                            </div>
 
 
-                        <div class="badge badge-warning m-1 col-sm " style="min-width:25%;max-width:100%">
-                            <p class="h3" style="margin-bottom:0px!important">Difficulty :</p>
-                            <p class="h3" style="margin-bottom:0px!important"> @DisplayDifficulty </p>
+                            <div class="badge badge-warning m-1 col-sm " style="min-width:25%;max-width:100%">
+                                <p class="h3" style="margin-bottom:0px!important">Difficulty :</p>
+                                <p class="h3" style="margin-bottom:0px!important"> @DisplayDifficulty </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                </div>
+            </div>
 
 
         </div>
@@ -107,8 +116,8 @@
     UserMapStats userStats = new UserMapStats();
     string DisplayDifficulty = "";
     bool hasStats = false;
-    int UserRating = 0;
-    string MapMakerIcon= String.Empty;
+    decimal UserRating = 0;
+    string MapMakerIcon = String.Empty;
 
 
     async void SetFullScreen()
@@ -147,18 +156,35 @@
         Console.WriteLine("Currently waiting for the map");
         GameMap = await MapTask;
         Console.WriteLine("Getting User info");
-       UserStats temp = await Http.PostJsonAsync<UserStats>("userstats/post", GameMap.AuthorID);
-      Console.WriteLine("Managed to leave that task...");
-        if (temp.ID!="NO DATA")
+        UserStats temp = await Http.PostJsonAsync<UserStats>("userstats/post", GameMap.AuthorID);
+        Console.WriteLine("Managed to leave that task...");
+        if (temp.UserImage != null)
         {
             Console.WriteLine("User info was returned!");
             MapMakerIcon = await this.js.InvokeAsync<string>("ConvertByteArrayToImage", temp.UserImage);
         }
         Console.WriteLine("Dealing with difficulty conversion");
         DisplayDifficulty = convertDifficulty(GameMap.Difficulty);
-            await this.js.InvokeVoidAsync("start");
-            await Storage.SetItemAsync("GameRunning", false);
-            await SaveGameActivationToSession();
+        string passGameMode = GameMode == 1 ? "true" : "false";
+        Console.WriteLine("Calling for json");
+        //Console.WriteLine(GC.GetTotalMemory(true).ToString());
+        Console.WriteLine("Calling for song ");
+
+        // GC.Collect();
+        // MemoryStream datastream = await Http.GetJsonAsync<MemoryStream>("/GameFiles/audio.ogg");
+        // Console.WriteLine("Converting byte[] to memstream");
+        // MemoryStream datastream = new MemoryStream(songdata);
+        // Console.WriteLine("Converting memstream to ogg");
+        //var song = new NVorbis.VorbisReader(datastream);
+
+        //Console.WriteLine("Converting ogg to string");
+        // string passSong = song.ToString();
+        Console.WriteLine("About to call the js to start the game and pass its data");
+        string songurl = NavigationManager.BaseUri + @"GameFiles/audio.mp3";
+        string mapurl = NavigationManager.BaseUri  + @"GameFiles/game.json";
+        await this.js.InvokeVoidAsync("start", passGameMode, "2.0", "0.0", mapurl, songurl);
+        await Storage.SetItemAsync("GameRunning", false);
+        await SaveGameActivationToSession();
         StateHasChanged();
 
     }
@@ -216,7 +242,15 @@
 
     async Task SubmitUserRating()
     {
-        //HTTP CALL HERE TO SUBMIT A RATING, ALSO NEED TO UPDATE THE SQL TO ALLOW TO COUNT THE NUMBER OF RATINGS THAT A MAP HAS
+        if (UserRating != 0)
+        {
+            GameMap.NumOfRatings++;
+
+            Console.WriteLine("Current Rating " + GameMap.Rating + "plus new rating " + UserRating + " Plus new amount of total ratings " + GameMap.NumOfRatings);
+            GameMap.Rating = (decimal)(GameMap.Rating + UserRating) / (GameMap.NumOfRatings);
+            string GameMapJson = JsonConvert.SerializeObject(GameMap);
+            await Http.PostJsonAsync(@"searchpage/update", GameMapJson);
+        }
     }
 
     void GetRating1() => UserRating = 1;
