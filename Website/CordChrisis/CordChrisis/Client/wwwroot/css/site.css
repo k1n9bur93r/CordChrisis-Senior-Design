@@ -137,7 +137,7 @@ app {
     top: 0.5rem;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
     .main .top-row:not(.auth) {
         display: none;
     }
@@ -156,11 +156,6 @@ app {
     .LogoSize {
     height:30px;
     }
-
-
-}
-
-@media (min-width: 768px) {
 
     .IconSize {
         height: 50px;
@@ -731,4 +726,23 @@ app {
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
     background-color: #c0392b !important;
     color:white; 
+}
+
+/* homepage stuff */
+.float-child {
+    float: left;
+    width: 50%;
+    min-width: 275px;
+}
+
+.single-line {
+    white-space: nowrap;
+}
+
+.dark-text {
+    color: darkblue
+}
+
+.w-60 {
+    width: 60%;
 }

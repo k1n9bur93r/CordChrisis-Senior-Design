@@ -10,21 +10,38 @@
     <div class="jumbotron">
         <h1 class="display-3">Chord Crisis</h1>
         <p class="lead">
-            This is flavor text describing why exactly this game is so good. It has features, like connecting to online APIS, making your own maps, and sharing them too!
+            Welcome to Chord Chrisis! Search our popular maps, or create your own. Then, challenge your friends to beat your high scores.
         </p>
-        <hr class="my-2">
-        <div class="">
-            <p>Find the right Map for you, or make one yourself!</p>
-            <div>
-                <NavLink href="searchpage">
-                    <button class="btn btn-primary btn-lg itm-skew" href=""> <div class="itm-skew-text">Search</div></button>
-                </NavLink>
-                <button class="btn btn-secondary btn-lg itm-skew" href=""> <div class="itm-skew-text">Map Maker</div></button>
+        <div class="float-container">
+            <div class="float-child">
+                <p>Find the right Map for you, or make one yourself!</p>
+                <div class="single-line">
+                    <NavLink href="searchpage">
+                        <button class="btn btn-primary btn-lg itm-skew" href=""> <div class="itm-skew-text">Search</div></button>
+                    </NavLink>
+                    <NavLink hrev="creator">
+                        <button class="btn btn-secondary btn-lg itm-skew" href=""> <div class="itm-skew-text">Map Maker</div></button>
+                    </NavLink>
+                </div>
+            </div>
+            <div class="float-child">
+                <div class="float-right">
+                    @if (UserID == null)
+                    {
+                    <p> Sign in to save your Maps and High Scores!</p>
+                    <NavLink href="login">
+                        <button class="btn btn-primary btn-lg itm-skew" href="login"> <div class="itm-skew-text">Sign In</div></button>
+                    </NavLink>
+                    <p class="font-weight-lighter"> Don't have an account? <a  href="signup" class="text-primary"> Create</a>  one today!</p>
+                    }
+                    else
+                    {
+                        <UserCard />
+                    }
+                </div>
             </div>
         </div>
-        <p> Sign in to save your Maps and High Scores!</p>
-        <button class="btn btn-primary btn-lg itm-skew" href="login"> <div class="itm-skew-text">Sign In</div></button>
-        <p class="font-weight-lighter"> Don't have an account? <a  href="signup" class="text-primary"> Create</a>  one today!</p>
+        <span class="clearfix"></span>
     </div>
 
     <div id="DemoImages" class="carousel slide" data-ride="carousel">
@@ -69,6 +86,9 @@
 @code{
     string SessionID = String.Empty;
     string GetSession = String.Empty;
+    string OldID;
+    string UserID;
+    User baseUserInfo = null;
     List<Map> popularMaps { get; set; }
 
     public async Task<List<Map>> getPopularMaps()
@@ -108,6 +128,21 @@
     async Task GetCurrentLogOnSession()
     {
         GetSession = await Storage.GetItemAsync<string>("LoggedIn");
+    }
+
+     protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        UserID = await Storage.GetItemAsync<string>("LoggedIn");
+        if (UserID != null)
+        {
+            Console.WriteLine("I'm logged in");
+            if (UserID != OldID)
+            {
+                OldID = UserID;
+                baseUserInfo = await Http.PostJsonAsync<User>("user/post", UserID);
+                StateHasChanged();
+            }
+        }
     }
     //protected override void OnInitialized()
     //{
