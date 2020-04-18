@@ -137,7 +137,7 @@ app {
     top: 0.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
     }
@@ -151,11 +151,15 @@ app {
     }
 
     .IconSize {
-    height:30px;
+        height: 30px;
     }
+
     .LogoSize {
-    height:30px;
+        height: 30px;
     }
+}
+
+@media (min-width: 768px) {
 
     .IconSize {
         height: 50px;
@@ -193,14 +197,17 @@ app {
     }
 
     .border-3 {
-    border-width:3px !important;
+        border-width: 3px !important;
     }
+
     .border-4 {
         border-width: 4px !important;
     }
+
     .border-5 {
         border-width: 5px !important;
     }
+
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
