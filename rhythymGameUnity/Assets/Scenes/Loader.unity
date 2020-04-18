@@ -400,17 +400,17 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: webMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: gameMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: waitForSettings
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817597, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 1155160049}
   - component: {fileID: 1155160048}
   m_Layer: 0
-  m_Name: Loading Camera
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

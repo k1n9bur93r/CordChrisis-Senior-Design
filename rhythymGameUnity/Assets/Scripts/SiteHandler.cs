@@ -77,7 +77,7 @@ public class SiteHandler : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			string mySettings =
-			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 2.0, \"userOffset\": 0.0 }";
+			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
 
 			GetSiteInfo(mySettings);
 		}
