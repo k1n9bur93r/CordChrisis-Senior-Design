@@ -35,6 +35,13 @@ public class ResultsManager : MonoBehaviour
 
 	void Start()
 	{
+		GameObject files = GameObject.Find("SiteHandler");
+
+		if (!files.GetComponent<SiteHandler>().gameMode)
+		{
+			gameObject.SetActive(false);
+		}
+
 		metronome = GameObject.Find("Metronome");
 		noteSpawner = GameObject.Find("NoteSpawner");
 		//scoreboard = GameObject.Find("Scoreboard");
