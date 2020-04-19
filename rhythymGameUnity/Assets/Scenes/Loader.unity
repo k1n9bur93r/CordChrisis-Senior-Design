@@ -385,12 +385,12 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: audioURL
-      value: Music/Milky Way
+      value: Music/Lucky Star (short)
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: chartURL
-      value: Charts/Milky Way
+      value: Charts/Lucky Star
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
@@ -400,17 +400,17 @@ PrefabInstance:
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: webMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: gameMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817596, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}
       propertyPath: waitForSettings
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5680133903361817597, guid: 92cb70e2e2e7d4345b567f12e478e88e,
         type: 3}

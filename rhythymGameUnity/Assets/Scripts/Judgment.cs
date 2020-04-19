@@ -35,6 +35,14 @@ public class Judgment : MonoBehaviour
 	private const double FRAMES_PERFECT = 4.0 / 60.0; // Perfect
 	private const double FRAMES_GOOD = 8.0 / 60.0; // Good
 
+	/*
+	// Accurate timing windows
+	private const double FRAMES_MARVELOUS = 2.0 / 60.0; // Rainbow Perfect
+	private const double FRAMES_PERFECT = 4.0 / 60.0; // Perfect
+	private const double FRAMES_GOOD =  8.0 / 60.0; // Good
+	private const double FRAMES_BAD = 10.0 / 60.0; // Bad
+	*/
+
 	private double beatsMarvelous, beatsPerfect, beatsGreat, beatsGood;
 
 	void Awake()

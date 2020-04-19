@@ -42,6 +42,7 @@
      <Compile Include="Assets\Scripts\Downloader.cs" />
      <Compile Include="Assets\Scripts\DownloaderTester.cs" />
      <Compile Include="Assets\Scripts\DragAndDrop.cs" />
+     <Compile Include="Assets\Scripts\EditorInfo.cs" />
      <Compile Include="Assets\Scripts\EditorNoteController.cs" />
      <Compile Include="Assets\Scripts\FPSLimiter.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
