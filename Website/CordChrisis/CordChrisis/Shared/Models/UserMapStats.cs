@@ -10,6 +10,9 @@ namespace CordChrisis.Shared.Models
     {
         [Key]
         public string UserID { get; set; }
+
+        public string Username { get; set; }
+
         [Required]
         [MaxLength(2048)]
         public string MapID { get; set; }

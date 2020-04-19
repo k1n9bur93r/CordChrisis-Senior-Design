@@ -16,8 +16,9 @@
             </div>
             <div class="card-body">
                 <p class="card-title h3">@item.Name</p>
-                <p class="card-title h5 text-secondary"> Created By: @item.Author</p>              
-                    <button class="btn btn-outline-primary btn-shadow btn-block " @onclick="(()=>NavigateToGame(item.ID.ToString()))" style="margin-left:0px!important"> <div class="NeonO">Play!</div></button>
+                <p class="card-title h5 text-warning NeonV mt-1 mb-1" @onclick="(()=>NavigateToHighScores(item.ID.ToString()))">High Scores</p>
+                <p class="card-title h5 text-secondary"> Created By: @item.Author</p>
+                <button class="btn btn-outline-primary btn-shadow btn-block " @onclick="(()=>NavigateToGame(item.ID.ToString()))" style="margin-left:0px!important"> <div class="NeonO">Play!</div></button>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Created: @item.CreatedDate.ToString("MM/dd/yyyy")</small>
@@ -48,6 +49,10 @@
     void NavigateToGame(string ID)
     {
         NavigationManager.NavigateTo("/game/1/"+ID);
+    }
+        void NavigateToHighScores(string ID)
+    {
+        NavigationManager.NavigateTo("/highscore/"+ID);
     }
 
 }

@@ -92,7 +92,6 @@
         }
         Console.WriteLine(isRunning);
         base.OnInitialized();
-        base.OnInitialized();
 
     }
 
@@ -109,12 +108,5 @@
     {
         GetSession = await Storage.GetItemAsync<string>("LoggedIn");
     }
-    //protected override void OnInitialized()
-    //{
-    //    if (firstRender)
-    //    { 
 
-    //    }
-
-    //}
 }

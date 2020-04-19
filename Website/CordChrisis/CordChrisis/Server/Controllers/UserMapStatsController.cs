@@ -31,5 +31,15 @@ namespace CordChrisis.Server.Controllers
             return stats;
             //return userBO.GetUserMapStats(stats.MapID,stats.UserID);
         }
+
+        [Route("gethighscores")]
+        [HttpPost]
+        public List<UserMapStats> GetUserMapStatsForMap([FromBody]string MapID)
+        {
+            List<UserMapStats> returnData = new List<UserMapStats>();
+            UserMapStatsBO userMapStatsBO = new UserMapStatsBO();
+            returnData = userMapStatsBO.GetMapHighScores(MapID);
+            return returnData;
+        }
     }
 }

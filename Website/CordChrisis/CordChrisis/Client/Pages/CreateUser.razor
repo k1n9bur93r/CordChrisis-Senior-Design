@@ -8,68 +8,65 @@
 @inject IJSRuntime js
 @inject Blazored.SessionStorage.ISessionStorageService Storage
 
-<div class=" container rounded mt-4 p-1 bg-light">
-    <div class="jumbotron">
-        <form name="createUser" onsubmit="return false">
-            <div class="container">
-                <h1>Sign Up</h1>
-                <p class="font-weight-light">Please fill in this form to create an account.</p>
-                <hr>
 
-                <label for="username"><b>Username</b></label>
-                <input class="form-control" type="text" placeholder="Enter Username" name="username" @bind="username" required>
+    <div class=" container rounded mt-4 p-1 bg-light">
+        <div class="jumbotron mb-0">
+            <form name="createUser" onsubmit="return false">
+                <div class="container">
+                    <h1>Sign Up</h1>
+                    <p class="font-weight-light">Please fill in this form to create an account.</p>
+                    <hr>
 
-                <label for="email"><b>Email</b></label>
-                <input class="form-control" type="text" placeholder="Enter Email" name="email" @bind="email" required>
+                    <label for="username"><b>Username</b></label>
+                    <input class="form-control" type="text" placeholder="Enter Username" name="username" @bind="username" required>
 
-                <label for="password"><b>Password</b></label>
-                <input class="form-control" type="password" placeholder="Enter Password" name="password" @bind="password" required>
+                    <label for="email"><b>Email</b></label>
+                    <input class="form-control" type="text" placeholder="Enter Email" name="email" @bind="email" required>
 
-                <label for="pswrepeat"><b>Repeat Password</b></label>
-                <input class="form-control" type="password" placeholder="Repeat Password" name="pswrepeat" @bind="pswrepeat" required>
+                    <label for="password"><b>Password</b></label>
+                    <input class="form-control" type="password" placeholder="Enter Password" name="password" @bind="password" required>
 
-                @if (check == false)
-                {
-                    @if (alreadyCreated == true)
-                    {
-                        <p>Account with this email has already been created, please Login or use a different Email</p>
-                    }
+                    <label for="pswrepeat"><b>Repeat Password</b></label>
+                    <input class="form-control" type="password" placeholder="Repeat Password" name="pswrepeat" @bind="pswrepeat" required>
+
                     @if (check == false)
                     {
-                        @if (bademail == true)
+                        @if (alreadyCreated == true)
                         {
-                            <p>@email</p>
-                            <p>Email</p>
+                            <p>Account with this email has already been created, please Login or use a different Email</p>
+                        }
+                        @if (check == false)
+                        {
+                            @if (bademail == true)
+                            {
+                                <p>@email</p>
+                                <p>Email</p>
 
-                        }
-                        else if (badpassword == true)
-                        {
-                            <p>@password</p>
-                            <p>password</p>
-                        }
-                        else if (badusername == true)
-                        {
-                            <p>@username</p>
-                            <p>username</p>
-                        }
+                            }
+                            else if (badpassword == true)
+                            {
+                                <p>@password</p>
+                                <p>password</p>
+                            }
+                            else if (badusername == true)
+                            {
+                                <p>@username</p>
+                                <p>username</p>
+                            }
 
-                        <p>One more fields were not filled out correctly</p>
+                            <p>One more fields were not filled out correctly</p>
+                        }
                     }
-                }
-                <hr>
-                <div>
-                    <button id="addUser" class="btn btn-primary btn-block" @onclick="addUser"> Sign Up</button>
+                    <hr>
+                    <div>
+                        <button id="addUser" class="btn btn-shadow-success btn-block" @onclick="addUser"> Sign Up</button>
+                    </div>
+                    <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
                 </div>
-                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-            </div>
-        </form>
+            </form>
 
+        </div>
     </div>
-</div>
-
-
-
-
 
 @code {
 
@@ -78,6 +75,7 @@
     string password { get; set; }
     string pswrepeat { get; set; }
     string username { get; set; }
+    bool loadingData = false;
     bool checkData;
     bool check = true;
     bool noteq = false;
@@ -157,6 +155,7 @@
         CreateAccount AccountHolder = new CreateAccount();
         AccountHolder.loginObject = loginObject;
         AccountHolder.username = username;
+        loadingData = true;
         checkData = await Http.PostJsonAsync<bool>("createaccount/post", AccountHolder);
         if (checkData != false)
         {

@@ -53,6 +53,18 @@ namespace CordChrisis.DAOs
             return data;
         }
 
+        public List<UserMapStats> ReadUserStatsByMapHighScores(string mapID)
+        {
+            List<UserMapStats> data = new List<UserMapStats>();
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+
+                data = context.MapStats.Where(a => a.MapID == mapID).OrderByDescending(a=>a.Score).Take(15).ToList();
+            }
+            return data;
+        }
+
         public void Update(UserMapStats userMapStats)
         {
             using (var context = new ApplicationDBContext())

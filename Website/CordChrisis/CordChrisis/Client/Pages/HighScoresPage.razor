@@ -1,0 +1,163 @@
+﻿@page "/highscore"
+@page "/highscore/{MapID}"
+@using CordChrisis.Shared.Models
+@using System.Drawing;
+@inject HttpClient Http;
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService Storage
+@inject IJSRuntime js;
+
+    <div class="container">
+
+        <div class="text-center">
+            <p class="display-1"> High Scores</p>
+        </div>
+
+        @if (!hasData)
+        {
+            <div class="d-flex justify-content-center mt-2">
+                <div class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div style="display:none">
+                @GetHighScores();
+            </div>
+        }
+        else
+        {
+            if (MapScores.Count == 0)
+            {
+    <div class="rounded container bg-dark p-2 ">
+        <div class=" bg-light rounded p-2 m-2 ">
+            <div class="text-center text-dark">
+                <p class="display-1"> No One has played this Map yet, be the first!</p>
+            </div>
+            </div>
+        </div>
+        }
+        else
+        {
+    <div class="rounded container bg-dark p-2">
+        @for (int i = 0; i < MapScores.Count; i++)
+        {
+         if (i == 0)
+            {
+                <div class="d-flex  rounded p-2 m-2 align-content-center justify-content-start gradient-border" style="background-color:#FFD700">
+                    <div class="bg-primary rounded p-1 pt-2  d-flex align-items-center" @onclick="(()=>NavigateToAccount(MapScores[i].UserID))">
+                        <p class="h3 text-light mr-1 NeonO">@MapScores[i].Username </p>
+                        @if (MapScores[i].UserID == UserID)
+                        {
+                            <div><img class="rounded-circle border border-light border-4 IconSize m-2 " src="@UserIDIcon"></div>
+                        }
+                    </div>
+                    <div class="d-flex justify-content-end w-100 align-items-center pt-1">
+                        <div class="bg-warning rounded p-1">  <p class="h4   mt-1 mr-1  ">@MapScores[i].LetterScore</p></div>
+                        <div> <p class="h3 text-dark  ml-1 border-left border-dark pt-1 pl-1 h-100">@MapScores[i].Score pts</p></div>
+
+                    </div>
+                </div>
+            }
+            else if (i == 1)
+            {
+                <div class="d-flex  rounded p-2 m-2 align-content-center justify-content-start gradient-border" style="background-color:#a7a3b3">
+                    <div class="bg-primary rounded p-1 pt-2  d-flex align-items-center" @onclick="(()=>NavigateToAccount(MapScores[i].UserID))">
+                        <p class="h3 text-light mr-1 NeonO">@MapScores[i].Username </p>
+
+                        @if (MapScores[i].UserID == UserID)
+                        {
+                            <div><img class="rounded-circle border border-light border-4 IconSize m-2 " src="@UserIDIcon"></div>
+                        }
+                    </div>
+                    <div class="d-flex justify-content-end w-100 align-items-center pt-1">
+                        <div class="bg-warning rounded p-1 NeonO">  <p class="h4   mt-1 mr-1  ">@MapScores[i].LetterScore</p></div>
+                        <div> <p class="h3 text-dark  ml-1 border-left border-dark pt-1 pl-1 h-100">@MapScores[i].Score pts</p></div>
+
+                    </div>
+                </div>
+            }
+            else if (i == 2)
+            {
+                <div class="d-flex  rounded p-2 m-2 align-content-center justify-content-start gradient-border" style="background-color:#a97142">
+                    <div class="bg-primary rounded p-1 pt-2  d-flex align-items-center" @onclick="(()=>NavigateToAccount(MapScores[i].UserID))">
+                        <p class="h3 text-light mr-1 NeonO">@MapScores[i].Username </p>
+                        @if (MapScores[i].UserID == UserID)
+                        {
+                            <div><img class="rounded-circle border border-light border-4 IconSize m-2 " src="@UserIDIcon"></div>
+                        }
+                    </div>
+                    <div class="d-flex justify-content-end w-100 align-items-center pt-1">
+                        <div class="bg-warning rounded p-1">  <p class="h4   mt-1 mr-1  ">@MapScores[i].LetterScore</p></div>
+                        <div> <p class="h3 text-dark  ml-1 border-left border-dark pt-1 pl-1 h-100">@MapScores[i].Score pts</p></div>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                @if (MapScores[i].UserID == UserID)
+                {<div class="d-flex bg-info rounded p-2 m-2 align-content-center justify-content-start gradient-border">
+                     <div class="bg-primary rounded p-1 pt-2 d-flex align-items-center" @onclick="(()=>NavigateToAccount(MapScores[i].UserID))">
+                         <p class="h3 text-light mr-1 NeonO" >@MapScores[i].Username </p>
+                         <div><img class="rounded-circle border border-light border-4 IconSize m-2 " src="@UserIDIcon"></div>
+                     </div>
+                        <div class="d-flex justify-content-end w-100 align-items-center pt-1">
+                            <div class="bg-warning rounded p-1">  <p class="h4   mt-1 mr-1  ">@MapScores[i].LetterScore</p></div>
+                            <div> <p class="h3 text-dark  ml-1 border-left border-dark pt-1 pl-1 h-100">@MapScores[i].Score pts</p></div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                <div class="d-flex bg-light rounded p-2 m-2 align-content-center justify-content-start gradient-border">
+                    <div class="bg-primary rounded p-1 pt-2 align-middle" @onclick="(()=>NavigateToAccount(MapScores[i].UserID))">  <p class="h3 text-light mr-1 NeonO">@MapScores[i].Username </p> </div>
+                    <div class="d-flex justify-content-end w-100 align-items-center pt-1">
+                        <div class="bg-warning rounded p-1">  <p class="h4   mt-1 mr-1  ">@MapScores[i].LetterScore</p></div>
+                        <div> <p class="h3 text-dark  ml-1 border-left border-dark pt-1 pl-1 h-100">@MapScores[i].Score pts</p></div>
+                    </div>
+                </div>
+                    }
+                }
+
+
+        }
+    </div>
+        }
+        }
+    </div>
+
+
+
+                @code {
+
+                    [Parameter]
+                    public string MapID { get; set; }
+                    string UserID { get; set; }
+                    List<UserMapStats> MapScores { get; set; }
+                    string UserIDIcon { get; set; }
+                    bool hasData = false;
+
+                    protected async override void OnInitialized()
+                    {
+                        UserID = await Storage.GetItemAsync<string>("LoggedIn");
+                        UserIDIcon = await Storage.GetItemAsync<string>("UserPFP");
+                        await base.OnInitializedAsync();
+                    }
+
+
+                    async Task GetHighScores()
+                    {
+                        MapScores = await Http.PostJsonAsync<List<UserMapStats>>("usermapstats/gethighscores", MapID);
+                        hasData = true;
+                        StateHasChanged();
+                    }
+
+                      public void NavigateToAccount(string MapMakerID)
+    {
+        Console.WriteLine(MapMakerID);
+        NavigationManager.NavigateTo("/account/" + MapMakerID);
+    }
+                }
+
+
