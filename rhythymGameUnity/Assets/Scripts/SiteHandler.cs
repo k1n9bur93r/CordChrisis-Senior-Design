@@ -191,11 +191,9 @@ public class SiteHandler : MonoBehaviour
 
 		while (!www.isDone)
 		{
-			//Debug.Log("[Downloader]: Progress " + www.downloadProgress * 100.0 + "%");
-			loadingText.GetComponent<TextMeshProUGUI>().text = originalText;
-
 			int loadPercent = (int)(www.downloadProgress * 100);
 
+			loadingText.GetComponent<TextMeshProUGUI>().text = originalText;
 			loadingText.GetComponent<TextMeshProUGUI>().text += " " + loadPercent + "%";
 
 			yield return new WaitForSeconds((1.0f / 30.0f));

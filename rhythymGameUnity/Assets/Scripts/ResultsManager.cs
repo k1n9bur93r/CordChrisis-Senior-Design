@@ -44,7 +44,6 @@ public class ResultsManager : MonoBehaviour
 
 		metronome = GameObject.Find("Metronome");
 		noteSpawner = GameObject.Find("NoteSpawner");
-		//scoreboard = GameObject.Find("Scoreboard");
 	}
 
 	void Update()
@@ -153,12 +152,12 @@ public class ResultsManager : MonoBehaviour
 			{
 				if (stats.notesPerfect == 0)
 				{
-					finalClearType = "MAX Perfect Full Combo!!!";
+					finalClearType = "Perfect Full Combo!";
 				}
 
 				else
 				{
-					finalClearType = "Perfect Full Combo!!";
+					finalClearType = "Great Full Combo!";
 				}
 			}
 
@@ -172,12 +171,12 @@ public class ResultsManager : MonoBehaviour
 		{
 			if (stats.score >= 700000)
 			{
-				finalClearType = "Cleared";
+				finalClearType = "Clear!";
 			}
 
 			else
 			{
-				finalClearType = "Failed";
+				finalClearType = "Failed...";
 			}
 		}
 
@@ -189,7 +188,7 @@ public class ResultsManager : MonoBehaviour
 		
 		// ---
 
-		judgeType.GetComponent<TextMeshProUGUI>().text = "MAX Perfect\nPerfect\nGood\nMiss";
+		judgeType.GetComponent<TextMeshProUGUI>().text = "Perfect\nGreat\nGood\nMiss";
 
 		judgeCount.GetComponent<TextMeshProUGUI>().text =
 			stats.notesMarvelous + "\n"
