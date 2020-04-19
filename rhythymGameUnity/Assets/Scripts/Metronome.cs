@@ -86,20 +86,25 @@ public class Metronome : MonoBehaviour
 		}
 
 		userOffset = files.GetComponent<SiteHandler>().userOffset;
-
-		// ---
-
-		switcher = GameObject.Find("PlaytestSwitcher");
-
-		if (switcher != null)
-		{
-			startBeat = switcher.GetComponent<PlaytestSwitcher>().currentBeat;		
-		}
 	}
 
 	void Start()
 	{		
 		UpdateRates();
+
+		switcher = GameObject.Find("PlaytestSwitcher");
+
+		if (switcher != null)
+		{
+			startBeat = switcher.GetComponent<PlaytestSwitcher>().currentBeat;
+			StartCoroutine(Play());
+		}
+
+		else
+		{
+			startBeat = -4.0; // Super-arbitrary delay
+			StartCoroutine(Play());
+		}
 	}
 
 	/*
@@ -108,7 +113,7 @@ public class Metronome : MonoBehaviour
 
 	void Update()
 	{
-		UpdateTimeAnywhere();
+		UpdateTime();
 		UpdateRates();
 	}
 
@@ -116,7 +121,7 @@ public class Metronome : MonoBehaviour
 		Start music at an arbitrary point.
 	*/
 
-	public void StartSongAnywhere()
+	public void StartSong()
 	{
 		GetSongData();
 		
@@ -172,38 +177,36 @@ public class Metronome : MonoBehaviour
 
 		if (startTime < 0.0)
 		{
-
 			startTime = 0.0;
 			negativeDelay = -anyTime;
 		}
 
-		//Debug.Log("[Metronome] negativeDelay: " + negativeDelay);	
+		playbackStarted = true;
 	}
 
 	/*
 		Update the timer based on the arbitrary start point.
 	*/
 
+	/*
 	public bool PlayButton()
 	{
 		return (Input.GetKeyDown(KeyCode.P) || Input.GetKey(KeyCode.Mouse0));
 	}
+	*/
 
-	public void UpdateTimeAnywhere()
+	private IEnumerator Play()
+	{
+		yield return new WaitForSecondsRealtime(2.0f); // Super-arbitrary delay to prevent loading-induced desync
+		StartSong();
+	}
+
+	public void UpdateTime()
 	{
 		timer.text = "DSP: " + timeElapsed.ToString() + "\n"
 			+ "Clip: " + GetComponent<AudioSource>().time;
 
-		if (!playbackStarted)
-		{
-			if (PlayButton())
-			{
-				StartSongAnywhere();
-				playbackStarted = true;
-			}
-		}
-
-		else
+		if (playbackStarted)
 		{
 			if (!pastSchedule)
 			{
