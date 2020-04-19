@@ -750,6 +750,7 @@ app {
     color: darkblue
 }
 
-.w-60 {
-    width: 60%;
+.homepage-user-card {
+    float: right;
+    width: 300px;
 }

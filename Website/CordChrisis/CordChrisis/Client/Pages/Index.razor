@@ -25,20 +25,20 @@
                 </div>
             </div>
             <div class="float-child">
-                <div class="float-right">
                     @if (UserID == null)
                     {
-                    <p> Sign in to save your Maps and High Scores!</p>
-                    <NavLink href="login">
-                        <button class="btn btn-primary btn-lg itm-skew" href="login"> <div class="itm-skew-text">Sign In</div></button>
-                    </NavLink>
-                    <p class="font-weight-lighter"> Don't have an account? <a  href="signup" class="text-primary"> Create</a>  one today!</p>
+                        <div class="float-right">
+                            <p> Sign in to save your Maps and High Scores!</p>
+                            <NavLink href="login">
+                                <button class="btn btn-primary btn-lg itm-skew" href="login"> <div class="itm-skew-text">Sign In</div></button>
+                            </NavLink>
+                            <p class="font-weight-lighter"> Don't have an account? <a  href="signup" class="text-primary"> Create</a>  one today!</p>
+                        </div>
                     }
                     else
                     {
                         <UserCard />
                     }
-                </div>
             </div>
         </div>
         <span class="clearfix"></span>
