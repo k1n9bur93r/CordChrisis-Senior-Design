@@ -8,8 +8,18 @@ public enum Ratings { Miss, Good, Perfect, Marvelous };
 public enum Leanings { None, Early, Late };
 
 /*
-	[documentation here]
+	> Scoreboard class
+
+	Displays play mode UI and calculates score.
 */
+
+public struct JudgeContainer
+{
+	public double score;
+	public int notesMarvelous, notesPerfect, notesGood, notesMiss;
+	public int notesEarly, notesLate;
+	public int comboMax;
+}
 
 public class Scoreboard : MonoBehaviour
 {
@@ -36,25 +46,27 @@ public class Scoreboard : MonoBehaviour
 	private int scoreDisplayed;
 
 	// Statistics for scoring
+	public JudgeContainer stats;
 	private bool scoreEnabled = true;
-	private int notesMarvelous, notesPerfect, notesGood, notesMiss;
-	private int notesEarly, notesLate;
-	private int combo, negativeCombo, comboMax;
-	private double score;
+	//private int notesMarvelous, notesPerfect, notesGood, notesMiss;
+	//private int notesEarly, notesLate;
+	//private int combo, negativeCombo, comboMax;
+	//private double score;
+	private int combo, negativeCombo;
 
 	double baseNoteValue;
 	double[] ratingValues;
 
 	void Awake()
 	{
-		notesMarvelous = 0;
-		notesPerfect = 0;
-		notesGood = 0;
-		notesMiss = 0;
+		stats.notesMarvelous = 0;
+		stats.notesPerfect = 0;
+		stats.notesGood = 0;
+		stats.notesMiss = 0;
 		combo = 0;
 		negativeCombo = 0;
-		comboMax = 0;
-		score = 0;
+		stats.comboMax = 0;
+		stats.score = 0;
 		scoreDisplayed = 0;
 
 		ratingText.text = "";
@@ -96,7 +108,7 @@ public class Scoreboard : MonoBehaviour
 	private void DrawScore()
 	{
 		//scoreDisplayed = (int)Mathf.Lerp((float)scoreDisplayed, (float)score, 16.0f * Time.deltaTime);
-		scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)score, 8.0f * (float)baseNoteValue * Time.deltaTime);
+		scoreDisplayed = (int)Mathf.MoveTowards((float)scoreDisplayed, (float)stats.score, 8.0f * (float)baseNoteValue * Time.deltaTime);
 		scoreText.text = (scoreDisplayed).ToString("000,000");
 	}
 
@@ -106,22 +118,22 @@ public class Scoreboard : MonoBehaviour
 		switch (rate)
 		{
 			case Ratings.Marvelous:
-				notesMarvelous++;
+				stats.notesMarvelous++;
 				combo++;
 				break;
 
 			case Ratings.Perfect:
-				notesPerfect++;
+				stats.notesPerfect++;
 				combo++;
 				break;
 		
 			case Ratings.Good:
-				notesGood++;
+				stats.notesGood++;
 				combo++;
 				break;
 
 			case Ratings.Miss:
-				notesMiss++;
+				stats.notesMiss++;
 				combo = 0;
 				break;
 
@@ -135,12 +147,12 @@ public class Scoreboard : MonoBehaviour
 		{
 			case Leanings.Early:
 				//leanText.text = "EARLY";
-				notesEarly++;
+				stats.notesEarly++;
 				break;
 
 			case Leanings.Late:
 				//leanText.text = "LATE";
-				notesLate++;
+				stats.notesLate++;
 				break;
 
 			case Leanings.None:
@@ -162,12 +174,12 @@ public class Scoreboard : MonoBehaviour
 		
 		if (negativeCombo < 0)
 		{
-			score += ratingValues[(int)rate] * 0.5;
+			stats.score += ratingValues[(int)rate] * 0.5;
 		}
 
 		else
 		{
-			score += ratingValues[(int)rate];
+			stats.score += ratingValues[(int)rate];
 		}
 	}
 
@@ -210,15 +222,15 @@ public class Scoreboard : MonoBehaviour
 
 		if (combo >= 3)
 		{
-			if (notesMiss > 0)
+			if (stats.notesMiss > 0)
 			{
 				streakText.fontMaterial = ratingColors[4];
 			}
 
 			else
 			{
-				if ((notesPerfect == 0) && (notesGood == 0)) { streakText.fontMaterial = ratingColors[5]; } // Unbroken Marvelous
-				else if ((notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; } // Unbroken Perfect
+				if ((stats.notesPerfect == 0) && (stats.notesGood == 0)) { streakText.fontMaterial = ratingColors[5]; } // Unbroken Marvelous
+				else if ((stats.notesGood == 0)) { streakText.fontMaterial = ratingColors[(int)Ratings.Perfect]; } // Unbroken Perfect
 				else { streakText.fontMaterial = ratingColors[(int)Ratings.Good]; } // Unbroken Good
 			}
 

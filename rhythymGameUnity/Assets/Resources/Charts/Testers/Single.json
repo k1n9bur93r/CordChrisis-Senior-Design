@@ -1,0 +1,17 @@
+{
+	"background": "none",
+	"title": "none",
+	"artist": "none",
+	"genre": "none",
+	"tempo_normal": 150.0,
+	"tempo_change_amount": [150.0],
+    "tempo_change_beat": [0.0],
+	"offset": 0.0,
+	"difficulty": "none",
+	"beats": [
+		2.0
+	],
+	"notes": [
+		1
+	]
+}
