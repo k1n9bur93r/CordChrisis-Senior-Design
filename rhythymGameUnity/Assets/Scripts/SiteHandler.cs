@@ -60,6 +60,9 @@ public class SiteHandler : MonoBehaviour
 	{
 		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
 
+		GameObject loadingText = GameObject.Find("LoadText");
+		loadingText.GetComponent<TextMeshProUGUI>().text = "";
+
 		if (!waitForSettings || !webMode)
 		{
 			userOffset = userOffset / 1000.0;

@@ -40,12 +40,13 @@ public class Metronome : MonoBehaviour
 	private const double BASE_OFFSET = 0.1; // Base visual delay
 
 	public Track meta;
-
 	public Text timer;
+	private GameObject files; // SiteHandler
+	private GameObject switcher; // PlaytestSwitcher
 
 	private bool playbackStarted = false;
 
-	public double startBeat;
+	private double startBeat;
 	private double startTime;
 
 	[Header("Used by SiteHandler - LEAVE THESE BLANK")]
@@ -72,7 +73,7 @@ public class Metronome : MonoBehaviour
 	
 	void Awake()
 	{		
-		GameObject files = GameObject.Find("SiteHandler");
+		files = GameObject.Find("SiteHandler");
 		
 		if (files.GetComponent<SiteHandler>().webMode)
 		{
@@ -88,7 +89,7 @@ public class Metronome : MonoBehaviour
 
 		// ---
 
-		GameObject switcher = GameObject.Find("PlaytestSwitcher");
+		switcher = GameObject.Find("PlaytestSwitcher");
 
 		if (switcher != null)
 		{
