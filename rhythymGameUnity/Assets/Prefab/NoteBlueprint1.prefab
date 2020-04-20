@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8485788866923567274}
   - component: {fileID: 9142208869214248753}
   m_Layer: 0
-  m_Name: NoteBlueprint
+  m_Name: NoteBlueprint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,3 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cccd3d659dceecf44b1d8f3569a94a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beat: 0
+  length: 0
+  queueNum: 0
+  srcLine: {fileID: 294451225485616511, guid: 134668d2f1770714f921248816aa1301, type: 3}
