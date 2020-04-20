@@ -17,7 +17,7 @@ using TMPro;
 public class ArgumentsContainer
 {
 	public string audioLocation;
-	public string chartLocation;
+	//public string chartLocation;
 	public bool gameMode;
 	public float userSpeed;
 	public double userOffset;
@@ -80,10 +80,10 @@ public class SiteHandler : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			string mySettings =
-			"{\"audioLocation\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartLocation\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
+			"{\"audioLocation\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
 
 			string myChart =
-			"{\"background\": \"none\",\"title\": \"none\",\"artist\": \"none\",\"genre\": \"none\",\"tempo_normal\": 150.0,\"tempo_change_amount\": [150.0],\"tempo_change_beat\": [0.0],\"offset\": 0.0,\"difficulty\": \"none\",\"beats\": [2.0],\"notes\": [1]}";
+			"{\"title\": \"none\",\"artist\": \"none\",\"genre\": \"none\",\"tempo_normal\": 150.0,\"tempo_change_amount\": [150.0],\"tempo_change_beat\": [0.0],\"offset\": 0.0,\"difficulty\": \"none\",\"beats\": [2.0],\"notes\": [1]}";
 
 			GetSiteInfo(mySettings);
 			GetChartFromSite(myChart);
@@ -132,7 +132,7 @@ public class SiteHandler : MonoBehaviour
 		audioLocation = settings.audioLocation;
 		//chartLocation = settings.chartLocation;
 		gameMode = settings.gameMode;
-		userSpeed = (float)settings.userSpeed; // REBUILD
+		userSpeed = (float)settings.userSpeed;
 		userOffset = settings.userOffset / 1000.0;
 
 		infoDone = true;

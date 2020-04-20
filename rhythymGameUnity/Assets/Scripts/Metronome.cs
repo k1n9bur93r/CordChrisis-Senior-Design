@@ -102,6 +102,7 @@ public class Metronome : MonoBehaviour
 
 		else
 		{
+			beatsElapsed = -4.0;
 			startBeat = -4.0; // Super-arbitrary delay
 			StartCoroutine(Play());
 		}
