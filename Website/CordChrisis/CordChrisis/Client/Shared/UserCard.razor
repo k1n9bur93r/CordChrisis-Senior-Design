@@ -1,0 +1,66 @@
+﻿@using CordChrisis.Shared.Models
+@inject HttpClient Http;
+@inject Blazored.SessionStorage.ISessionStorageService Storage;
+
+    <div class="homepage-user-card p-2 bg-light rounded dark-text">
+        <img class="rounded-circle border border-warning border-1 ml-auto IconSize" src="@imagefile" id="pfpDropDown">
+        <a class="m-2">Welcome back @baseUserInfo.UserName!</a>
+        <div class="m-1 rounded bg-white">Games Played: @stats.TotalGamesPlayed</div>
+        <div class="m-1 rounded bg-white">High Score: @stats.HighestScore</div>
+        <div class="m-1 rounded bg-white">Total Score: @stats.TotalScore</div>
+    </div>
+
+@code
+{
+    [Parameter]
+    public string MapMakerID { get; set; }
+    [Parameter]
+    public Task<string> UserID { get; set; }
+    string ID = "Temp";
+    bool hasID = false;
+    Task<bool> checkGameRunning { get; set; }
+    UserStats stats = new UserStats();
+    User baseUserInfo = new User();
+    string imagefile;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ID = await Storage.GetItemAsync<string>("LoggedIn");
+        if (MapMakerID != null && MapMakerID != ID)
+        {
+
+            stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", MapMakerID);
+            baseUserInfo = await Http.PostJsonAsync<User>("user/post", MapMakerID);
+            hasID = true;
+        }
+        else
+        {
+            if (!String.IsNullOrWhiteSpace(ID))
+            {
+
+                Console.WriteLine(ID);
+                hasID = true;
+                stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
+                Console.WriteLine("after stats");
+                baseUserInfo = await Http.PostJsonAsync<User>("user/post", ID);
+
+                Console.WriteLine("after baseuserinfo");
+
+            }
+            else
+            {
+                StateHasChanged();
+            }
+        }
+
+        if (stats.UserImage == null)
+        {
+            imagefile = "/css/images/pfp2.jpg";
+        }
+        else
+        {
+            imagefile = await Storage.GetItemAsync<string>("UserPFP");
+        }
+        StateHasChanged();
+    }
+}
