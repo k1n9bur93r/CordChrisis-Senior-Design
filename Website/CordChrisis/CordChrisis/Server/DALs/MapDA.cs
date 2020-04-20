@@ -51,7 +51,7 @@ namespace CordChrisis.DAOs
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                data = context.Map.Where(n => n.CreatedDate <= DateTime.Now && (n.CreatedDate > DateTime.Now.AddMonths(-1)) && (n.Rating > (decimal)3.0)).OrderBy(n => n.Rating).ToList();
+                data = context.Map.Where(n => n.CreatedDate <= DateTime.Now && (n.CreatedDate > DateTime.Now.AddMonths(-3)) && (n.Rating > (decimal)3.0)).OrderBy(n => n.Rating).ToList();
             }
             return data;
         }

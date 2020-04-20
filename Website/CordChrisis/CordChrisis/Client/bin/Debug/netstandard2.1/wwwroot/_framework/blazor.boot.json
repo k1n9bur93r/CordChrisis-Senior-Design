@@ -5,7 +5,7 @@
   "linkerEnabled": false,
   "resources": {
     "assembly": {
-      "CordChrisis.Client.dll": "sha256-8czcunl9pSulNzk0q83F9i7Rrn+EEZWwGcVf29Rz8F4=",
+      "CordChrisis.Client.dll": "sha256-nX\/m43oMquxYUZvo+4qhMxVb3fvnD7GLMX4tmgAPXnI=",
       "Newtonsoft.Json.dll": "sha256-mRd6TL4DYldo1ko9czkjEDcoiPdMPrJxz3dekwV6OOY=",
       "netstandard.dll": "sha256-\/zcPVM75OAY+joGVM8yIC1gO1SFYWP1CFERgQ8PJkfA=",
       "System.Xml.Linq.dll": "sha256-UcgIuNxTv0vMMscShyt5E8UJqByugn57x0++iV\/FB2Y=",
@@ -56,7 +56,7 @@
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-As4J4IKSKh3bNALtK4PSknM5suoP1j6I5YXiOIrIZ3U="
     },
     "pdb": {
-      "CordChrisis.Client.pdb": "sha256-beHfVQWjV6UmEAOBMmPSyzPpsV87+\/qEHB5XHw63bF4=",
+      "CordChrisis.Client.pdb": "sha256-Hdu+FhaSQNJSGcimO5IVwW\/nRXrKbb3tUq0BCbUPSIg=",
       "CordChrisis.Shared.pdb": "sha256-utRQnSEp0tRq6zaISI7awmXA8mg5V7c7KT2VZNY\/+pw="
     },
     "runtime": {

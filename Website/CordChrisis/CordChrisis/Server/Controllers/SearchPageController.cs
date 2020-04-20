@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using CordChrisis.Shared.Models;
 using CordChrisis.BOs;
 using Newtonsoft.Json;
+using System.IO;
+using System.Net.Http;
 
 namespace CordChrisis.Server.Controllers
 {
@@ -38,6 +40,16 @@ namespace CordChrisis.Server.Controllers
             Map data = new Map();
             data = map.GetMapData(ID);
             return data;
+        }
+        [HttpGet]
+        [Route("readsinglesong/{ID}")]
+        public Stream GetMapSongByID([FromRoute]string ID)
+        {
+            MapBO map = new MapBO();
+            //HttpContent fileStreamContent = new StreamContent(map.GetMapMusic(ID));
+            Stream data = map.GetMapMusic(ID);
+            return data;
+
         }
 
 

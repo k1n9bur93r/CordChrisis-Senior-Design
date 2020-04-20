@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CordChrisis.BOs.Interfaces;
@@ -11,6 +12,22 @@ namespace CordChrisis.BOs
 {
     public class MapBO : IMapBO 
     {
+
+		public Stream GetMapMusic(string ID)
+		{
+			try
+			{
+				MapMusicDA mapMusic = new MapMusicDA();
+				return mapMusic.GetMapMusic(ID);
+			}
+			catch (Exception ex)
+			{
+				Trace.TraceError("Error: " + ex.Message + " Unable to post informaiton for map: ");
+				throw;
+			}
+
+		}
+
 		public Map GetMapData(string mapID) {
 			try
 			{
