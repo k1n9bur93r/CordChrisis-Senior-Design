@@ -1,6 +1,6 @@
 ﻿var unityWebGL;
 var gameIsRunning = false;
-//Boolean gamemode;
+var gameChart;
 var passThroughData;
 
 
@@ -12,7 +12,8 @@ var settings =
         postRun: [function () {
             gameIsRunning = true;
          
-            unityWebGL.SendMessage("SiteHandler", "GetSiteInfo",passThroughData);
+            unityWebGL.SendMessage("SiteHandler", "GetSiteInfo", passThroughData);
+            unityWebGL.SendMessage("SiteHandler","GetChartFromSite",gameChart);
             console.log("user stats sent");
 
         }]
@@ -20,13 +21,14 @@ var settings =
 };
 //window.CordChrisis = {
 function start(mode, speed, offset, chart, audio) {
-    // console.log(chart);
-    var newdata = { audioURL: audio, chartURL: chart, gameMode: mode, userSpeed: speed, userOffset: offset };
-    console.log(audio);
-    passThroughData = JSON.stringify(newdata);
-    unityWebGL = UnityLoader.instantiate("unityContainer", "unity/Build/webgl thing.json", settings);
+    gameChart = chart;
 
-    console.log("Game should be started ");
+    var newdata = { audioLocation: audio, gameMode: mode, userSpeed: speed, userOffset: offset };
+
+    console.log(audio+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    passThroughData = JSON.stringify(newdata);
+    console.log(passThroughData);
+    unityWebGL = UnityLoader.instantiate("unityContainer", "unity/Build/webgl thing.json", settings);
 }
 
 function FullScreen() {

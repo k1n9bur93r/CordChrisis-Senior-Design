@@ -181,8 +181,7 @@
         // string passSong = song.ToString();
         Console.WriteLine("About to call the js to start the game and pass its data");
         string songurl = NavigationManager.BaseUri + @"searchpage/readsinglesong/"+GameMap.ID;
-        string mapurl = NavigationManager.BaseUri  + @"GameFiles/game.json";
-        await this.js.InvokeVoidAsync("start", passGameMode, "2.0", "0.0", mapurl, songurl);
+        await this.js.InvokeVoidAsync("start", passGameMode, "2.0", "0.0",GameMap.JSON, songurl);
         await Storage.SetItemAsync("GameRunning", false);
         await SaveGameActivationToSession();
         StateHasChanged();
