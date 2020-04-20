@@ -60,7 +60,7 @@ public class Track : MonoBehaviour
 
 		else
 		{
-			json_string = Resources.Load<TextAsset>(files.GetComponent<SiteHandler>().chartURL).ToString();
+			json_string = Resources.Load<TextAsset>(files.GetComponent<SiteHandler>().chartLocation).ToString();
 		}
 
         JsonTrack json = JsonUtility.FromJson<JsonTrack>(json_string);

@@ -82,7 +82,7 @@ public class Metronome : MonoBehaviour
 
 		else
 		{
-			GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(files.GetComponent<SiteHandler>().audioURL);
+			GetComponent<AudioSource>().clip = Resources.Load<AudioClip>(files.GetComponent<SiteHandler>().audioLocation);
 		}
 
 		userOffset = files.GetComponent<SiteHandler>().userOffset;

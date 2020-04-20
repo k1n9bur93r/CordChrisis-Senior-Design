@@ -16,8 +16,8 @@ using TMPro;
 
 public class ArgumentsContainer
 {
-	public string audioURL;
-	public string chartURL;
+	public string audioLocation;
+	public string chartLocation;
 	public bool gameMode;
 	public float userSpeed;
 	public double userOffset;
@@ -28,22 +28,23 @@ public class SiteHandler : MonoBehaviour
 	[Tooltip("On: Download data from a given URL.\nOff: Read data from the Resources folder.\n\nEnable this when building for WebGL!")]
 	public bool webMode;
 
-	[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nEnable this when building for WebGL!")]
-	public bool waitForSettings;
+	//[Tooltip("On: Ignore inspector and wait for settings from the site.\nOff: Use user settings from the inspector.\n\nThis option is ignored when Web Mode is disabled.\nEnable this when building for WebGL!")]
+	//public bool waitForSettings;
 
-	[Header("Non-Wait For Settings options")]
+	[Header("These options are ignored when Web Mode is enabled!")]
 	[Tooltip("On: Launch game in play mode.\nOff: Launch game in editor.\n\nThis option is ignored when Wait For Settings is enabled.")]
 	public bool gameMode;
 
 	private bool infoDone;
+	private bool chartDone;
 
 	// Track vars
-	public string chartURL;
+	public string chartLocation;
 	[HideInInspector]
 	public string chartFile;
 
 	// Metronome vars
-	public string audioURL;
+	public string audioLocation;
 	[HideInInspector]
 	public AudioClip audioFile;
 	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
@@ -63,10 +64,9 @@ public class SiteHandler : MonoBehaviour
 		GameObject loadingText = GameObject.Find("LoadText");
 		loadingText.GetComponent<TextMeshProUGUI>().text = "";
 
-		if (!waitForSettings || !webMode)
+		if (!webMode) //(!waitForSettings || !webMode)
 		{
 			userOffset = userOffset / 1000.0;
-			infoDone = true;
 		}
 
 		Debug.Log("[SiteHandler] Downloading...");
@@ -80,22 +80,26 @@ public class SiteHandler : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			string mySettings =
-			"{\"audioURL\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartURL\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
+			"{\"audioLocation\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"chartLocation\": \"https://se7enytes.github.io/Charts/Lucky%20Star.json\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
+
+			string myChart =
+			"{\"background\": \"none\",\"title\": \"none\",\"artist\": \"none\",\"genre\": \"none\",\"tempo_normal\": 150.0,\"tempo_change_amount\": [150.0],\"tempo_change_beat\": [0.0],\"offset\": 0.0,\"difficulty\": \"none\",\"beats\": [2.0],\"notes\": [1]}";
 
 			GetSiteInfo(mySettings);
+			GetChartFromSite(myChart);
 		}
 	}
 
 	IEnumerator StartDownloads()
 	{
-		// Get user settings
-		Coroutine site = StartCoroutine(WaitForSite());
-		yield return site;
+		// Get chart and user settings via argument
+		if (webMode)
+		{
+			Coroutine site = StartCoroutine(WaitForSite());
+			yield return site;
+		}
 
-		// Download the files (does not download in parallel, but the only big file will be audio anyway)
-		Coroutine chart = StartCoroutine(GetChart());
-		yield return chart;
-
+		// Download audio
 		Coroutine audio = StartCoroutine(GetAudio());
 		yield return audio;
 
@@ -106,7 +110,7 @@ public class SiteHandler : MonoBehaviour
 
 	IEnumerator WaitForSite()
 	{
-		while (!infoDone)
+		while (!infoDone || !chartDone)
 		{
 			GameObject loadingText = GameObject.Find("LoadText");
 			loadingText.GetComponent<TextMeshProUGUI>().text = "Waiting for response from site...";
@@ -117,12 +121,16 @@ public class SiteHandler : MonoBehaviour
 		yield return true;
 	}
 
+	/*
+		Recieves JSON stringified data.
+		To be called by website.
+	*/
 	public void GetSiteInfo(string data)
 	{
 		ArgumentsContainer settings = JsonUtility.FromJson<ArgumentsContainer>(data);
 
-		audioURL = settings.audioURL;
-		chartURL = settings.chartURL;
+		audioLocation = settings.audioLocation;
+		//chartLocation = settings.chartLocation;
 		gameMode = settings.gameMode;
 		userSpeed = (float)settings.userSpeed; // REBUILD
 		userOffset = settings.userOffset / 1000.0;
@@ -130,9 +138,17 @@ public class SiteHandler : MonoBehaviour
 		infoDone = true;
 	}
 
+	public void GetChartFromSite(string data)
+	{
+		chartFile = data;
+
+		chartDone = true;
+	}
+
+	/*
 	IEnumerator GetChart()
 	{
-		UnityWebRequest www = UnityWebRequest.Get(chartURL);
+		UnityWebRequest www = UnityWebRequest.Get(chartLocation);
 		
 		if (webMode)
 		{
@@ -156,10 +172,11 @@ public class SiteHandler : MonoBehaviour
 			}
 		}
 	}
+	*/
 
 	IEnumerator GetAudio()
 	{
-		UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioURL, AudioType.MPEG); // MP3
+		UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(audioLocation, AudioType.MPEG); // MP3
 		
 		if (webMode)
 		{
