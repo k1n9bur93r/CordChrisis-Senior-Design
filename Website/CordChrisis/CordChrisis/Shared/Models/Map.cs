@@ -21,7 +21,7 @@ namespace CordChrisis.Shared.Models
 
         [Required]
         [MaxLength(2048)]
-        public string URL { get; set; }
+        public string JSON { get; set; }
         [Required]
         [MaxLength(25)]
         public string Genre { get; set; }
