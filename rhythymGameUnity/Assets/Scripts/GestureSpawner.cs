@@ -12,6 +12,8 @@ public class GestureSpawner : MonoBehaviour
     public Dictionary<double, GameObject> gestureGameObjects = new Dictionary<double, GameObject>();
     public Dictionary<double, int> gestureNums = new Dictionary<double, int>();
 
+    public int cycle = 0;
+
     void Awake()
     {
         // for (int i = 0; i < 4; i++)
@@ -51,7 +53,7 @@ public class GestureSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("up")) {
+        /*if (Input.GetKey("up")) {
             spawnGesture(0, 4);
         } else if (Input.GetKey("right")) {
             spawnGesture(1, 4);
@@ -62,6 +64,20 @@ public class GestureSpawner : MonoBehaviour
         } else if (Input.GetKey("backspace")) {
             Debug.Log("delete");
             removeGesture();
+        }*/
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (cycle >= 0 && cycle < 4)
+            {
+                spawnGesture(cycle, 4);
+            }
+            else
+            {
+                removeGesture();
+                cycle = -1;
+            }
+            cycle++;
         }
     }
 }
