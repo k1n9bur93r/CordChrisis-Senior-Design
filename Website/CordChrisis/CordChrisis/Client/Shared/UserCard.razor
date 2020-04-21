@@ -23,44 +23,10 @@
     User baseUserInfo = new User();
     string imagefile;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async void OnInitialized()
     {
-        ID = await Storage.GetItemAsync<string>("LoggedIn");
-        if (MapMakerID != null && MapMakerID != ID)
-        {
-
-            stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", MapMakerID);
-            baseUserInfo = await Http.PostJsonAsync<User>("user/post", MapMakerID);
-            hasID = true;
-        }
-        else
-        {
-            if (!String.IsNullOrWhiteSpace(ID))
-            {
-
-                Console.WriteLine(ID);
-                hasID = true;
-                stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
-                Console.WriteLine("after stats");
-                baseUserInfo = await Http.PostJsonAsync<User>("user/post", ID);
-
-                Console.WriteLine("after baseuserinfo");
-
-            }
-            else
-            {
-                StateHasChanged();
-            }
-        }
-
-        if (stats.UserImage == null)
-        {
-            imagefile = "/css/images/pfp2.jpg";
-        }
-        else
-        {
             imagefile = await Storage.GetItemAsync<string>("UserPFP");
-        }
         StateHasChanged();
+
     }
 }

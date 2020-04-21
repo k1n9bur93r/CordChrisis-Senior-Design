@@ -137,6 +137,18 @@ app {
     top: 0.5rem;
 }
 
+@font-face {
+font-family:"neon-like";
+
+src:url("Fonts/neon-like.woff")format('woff');
+
+}
+
+.FancyFont {
+    font-family:neon-like!important;
+
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
@@ -534,6 +546,136 @@ app {
         text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
     }
 }
+
+/*Flashing neon text*/
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body {
+    background-color: black;
+}
+
+
+.flicker {
+    letter-spacing: 10px;
+    animation: text-flicker 8s linear infinite;
+}
+
+.flicker-offset {
+    animation: letter-flicker 6s linear infinite;
+}
+
+@keyframes text-flicker {
+    0% {
+        opacity: 0.1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    2% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    8% {
+        opacity: 0.1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    9% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    12% {
+        opacity: 0.1;
+        text-shadow: 0px 0px rgba(112, 59, 181, 1);
+    }
+
+    20% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    25% {
+        opacity: 0.3;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    30% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    70% {
+        opacity: 0.7;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    72% {
+        opacity: 0.2;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    77% {
+        opacity: .9;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+
+    100% {
+        opacity: .9;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1)
+    }
+}
+
+
+@keyframes letter-flicker {
+    0% {
+        opacity: 0.1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    2% {
+        opacity: 0.1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    4% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+
+    19% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    21% {
+        opacity: 0.1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    23% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    80% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    83% {
+        opacity: 0.4;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+
+    87% {
+        opacity: 1;
+        text-shadow: 0px 0px 29px rgba(112, 59, 181, 1);
+    }
+}
+
+
 
 
 /* Animated gradient Boarder*/

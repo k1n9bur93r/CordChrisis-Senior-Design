@@ -120,6 +120,7 @@ else
 
     async Task waitForLogin()
     {
+        Console.WriteLine("Have I been called?");
         ID = await Storage.GetItemAsync<string>("LoggedIn");
         if (MapMakerID != null && MapMakerID != ID)
         {
@@ -138,7 +139,7 @@ else
                 stats = await Http.PostJsonAsync<UserStats>(@"userstats/post", ID);
                 Console.WriteLine("after stats");
                 baseUserInfo = await Http.PostJsonAsync<User>("user/post", ID);
-                
+
                 Console.WriteLine("after baseuserinfo");
 
             }
