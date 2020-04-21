@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class NoteCreator : MonoBehaviour
 {
     public int noteNum;
     public EditorNoteController editorController;
+    public GameObject gs;
 
     // objects to create
     private GameObject note;
@@ -19,12 +19,15 @@ public class NoteCreator : MonoBehaviour
     private Color originalColor;
     private Color hoverColor;
 
+    public bool isNoteAlive;
+
     void Start()
     {
         originalColor = GetComponent<MeshRenderer>().material.color;
         note = holdLine = endNote = null;
         hoverColor = originalColor;
         hoverColor.a = 1;
+        isNoteAlive = false;
     }
 
     void Update()
@@ -41,7 +44,7 @@ public class NoteCreator : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (editorController.isNoteIn(noteNum) == false)
+        if (editorController.isNoteIn(noteNum) == false && !gs.GetComponent<GestureSpawner>().isGestureAlive)
         {
             // init note setup
             note = Instantiate(originalNote);
@@ -58,9 +61,6 @@ public class NoteCreator : MonoBehaviour
             // tap notes length default to zero; length increases based on drag
             note.GetComponent<NoteData>().length = 0.0;
 
-            // queue number
-            Debug.Log("NoteNum: " + note.GetComponent<NoteData>().queueNum);            
-
             // hold note setup
             holdLine = Instantiate(line);
             holdLine.GetComponent<Transform>().parent = note.GetComponent<Transform>();
@@ -74,10 +74,12 @@ public class NoteCreator : MonoBehaviour
             endNote.GetComponent<Transform>().parent = note.GetComponent<Transform>();
             endNote.GetComponent<Transform>().position = note.GetComponent<Transform>().position;
 
-            // setting up for DragHandler
+            // setting up for NoteData
             note.GetComponent<NoteData>().holdLine = holdLine;
             endNote.GetComponent<NoteData>().endNote = endNote;
             endNote.GetComponent<NoteData>().holdLine = holdLine;
+
+            isNoteAlive = true;
         }
         else
         {
@@ -85,6 +87,8 @@ public class NoteCreator : MonoBehaviour
             //Destroy(holdLine);
             //adding a null note is the same as removing it from the dict
             editorController.AddNote(noteNum, null);
+
+            isNoteAlive = false;
         }
     }
 

@@ -12,7 +12,12 @@ public class GestureSpawner : MonoBehaviour
     public Dictionary<double, GameObject> gestureGameObjects = new Dictionary<double, GameObject>();
     public Dictionary<double, int> gestureNums = new Dictionary<double, int>();
 
-    public int cycle = 0;
+    private int cycle = 0;
+    public bool isGestureAlive = false;
+    public GameObject printer1;
+    public GameObject printer2;
+    public GameObject printer3;
+    public GameObject printer4;
 
     void Awake()
     {
@@ -53,7 +58,7 @@ public class GestureSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.GetKey("up")) {
+        if (Input.GetKey("up")) {
             spawnGesture(0, 4);
         } else if (Input.GetKey("right")) {
             spawnGesture(1, 4);
@@ -64,18 +69,26 @@ public class GestureSpawner : MonoBehaviour
         } else if (Input.GetKey("backspace")) {
             Debug.Log("delete");
             removeGesture();
-        }*/
+        }
 
-        if (Input.GetMouseButtonDown(1))
+        // is any note out there?
+        bool check = (  printer1.GetComponent<NoteCreator>().isNoteAlive ||
+                        printer2.GetComponent<NoteCreator>().isNoteAlive ||
+                        printer3.GetComponent<NoteCreator>().isNoteAlive ||
+                        printer4.GetComponent<NoteCreator>().isNoteAlive ) ? true : false ;
+
+        if (Input.GetMouseButtonDown(1) && !check)
         {
             if (cycle >= 0 && cycle < 4)
             {
                 spawnGesture(cycle, 4);
+                isGestureAlive = true;
             }
             else
             {
                 removeGesture();
                 cycle = -1;
+                isGestureAlive = false;
             }
             cycle++;
         }

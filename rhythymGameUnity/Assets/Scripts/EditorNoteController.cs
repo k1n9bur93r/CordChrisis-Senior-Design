@@ -20,12 +20,23 @@ public class EditorNoteController : MonoBehaviour
         on the same beat)
     */
     public Dictionary<double, GameObject[]> notes;
+
+    public GameObject p1;
+    public GameObject p2;
+    public GameObject p3;
+    public GameObject p4;
+    public GameObject gs;    
     
+    public double scrollIncrement;
+    private Camera camera;
+
     // Start is called before the first frame update
     void Start()
     {
         notes = new Dictionary<double,GameObject[]>(); 
         curBeat = 0;
+        scrollIncrement = 0.25;     // default increment
+        camera = Camera.main;
     }
 
     // Update is called once per frame
@@ -57,6 +68,9 @@ public class EditorNoteController : MonoBehaviour
                 }
             }
         }
+
+        ChangeIncrement();
+        ScrollBeat();
     }
     public bool isNoteIn(int noteNum)
     {
@@ -89,4 +103,43 @@ public class EditorNoteController : MonoBehaviour
         notes[curBeat] = beatInfo;
     }
 
+    public void ScrollBeat()
+    {
+        bool scrollable =   p1.GetComponent<NoteCreator>().isNoteAlive ||
+                            p2.GetComponent<NoteCreator>().isNoteAlive ||
+                            p3.GetComponent<NoteCreator>().isNoteAlive ||
+                            p4.GetComponent<NoteCreator>().isNoteAlive ||
+                            gs.GetComponent<GestureSpawner>().isGestureAlive ? true : false;
+
+        if (scrollable)
+        {
+            // scroll up/down either the camera/the track here
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                camera.transform.position += new Vector3(0, 0, (float)scrollIncrement);
+                //curBeat += scrollIncrement;
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                camera.transform.position -= new Vector3(0, 0, (float)scrollIncrement);
+                //curBeat -= scrollIncrement;
+            }
+        }
+    }
+
+    public void ChangeIncrement()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            scrollIncrement += 0.25;              
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            scrollIncrement -= 0.25;
+        }
+        //Debug.Log(scrollIncrement);
+    }
 }
