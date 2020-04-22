@@ -2,12 +2,10 @@
 @inject HttpClient Http;
 @inject Blazored.SessionStorage.ISessionStorageService Storage;
 
-    <div class="homepage-user-card p-2 bg-light rounded dark-text">
+    <div class=" mt-4 bg-light rounded dark-text pb-2 w-100">
         <img class="rounded-circle border border-warning border-1 ml-auto IconSize" src="@imagefile" id="pfpDropDown">
-        <a class="m-2">Welcome back @baseUserInfo.UserName!</a>
-        <div class="m-1 rounded bg-white">Games Played: @stats.TotalGamesPlayed</div>
-        <div class="m-1 rounded bg-white">High Score: @stats.HighestScore</div>
-        <div class="m-1 rounded bg-white">Total Score: @stats.TotalScore</div>
+        <a class="m-2">Welcome back @baseUserInfo.UserName !</a>
+        <div class="m-1 rounded bg-white"><p class="h4 ">Games Played: @stats.TotalGamesPlayed</p></div>
     </div>
 
 @code
@@ -25,7 +23,11 @@
 
     protected override async void OnInitialized()
     {
-            imagefile = await Storage.GetItemAsync<string>("UserPFP");
+        ID = await Storage.GetItemAsync<string>("LoggedIn");
+        stats =await Http.PostJsonAsync<UserStats>("User/post",ID);
+        baseUserInfo =await Http.PostJsonAsync<User>("UserStats/post",ID);
+        imagefile = await Storage.GetItemAsync<string>("UserPFP");
+        Console.WriteLine("Current User name "+baseUserInfo.UserName);
         StateHasChanged();
 
     }

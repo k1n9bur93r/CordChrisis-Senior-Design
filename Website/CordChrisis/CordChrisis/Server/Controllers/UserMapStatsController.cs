@@ -13,6 +13,7 @@ namespace CordChrisis.Server.Controllers
     public class UserMapStatsController : Controller
     {
 
+
         [Route("post")]
         [HttpPost]
         public void SaveUserMapStats([FromBody]UserMapStats stats)

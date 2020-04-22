@@ -11,39 +11,40 @@
         <div>
         <img class="mb-2"src="/css/images/CC logo long.png">
         </div>
+        <p class="text-primary splashText h3 text-right m-3">@SplashText</p>
         <p class="lead">
-            Welcome to Chord Chrisis! Search our popular maps, or create your own. Then, challenge your friends to beat your high scores.
+            Welcome to Chord Chrisis! Play popular maps, search for your perfect map, or make something no one has played before! Then, challenge the world to beat your high scores.
         </p>
-        <div class="float-container">
-            <div class="float-child">
+       
+
                 <p>Find the right Map for you, or make one yourself!</p>
-                <div class="single-line">
+                <div class="single-line d-flex w-100">
+                    <div class="w-50 mr-2">
                     <NavLink href="searchpage">
-                        <button class="btn btn-shadow btn-primary btn-lg" href="">Search</button>
+                        <button class="btn btn-shadow btn-primary btn-lg btn-block" href="" style="margin-left:0px!important">Search</button>
                     </NavLink>
+                        </div>
+                    <div class="w-50">
                     <NavLink hrev="creator">
-                        <button class="btn btn-shadow btn-secondary  btn-lg" href="">Map Maker</button>
+                        <button class="btn btn-shadow btn-secondary btn-block btn-lg" href="">Map Maker</button>
                     </NavLink>
+                        </div>
                 </div>
-            </div>
-            <div class="float-child">
                     @if (UserID == null)
                     {
-                        <div class="float-right">
-                            <p> Sign in to save your Maps and High Scores!</p>
-                            <NavLink href="login">
-                                <button class="btn btn-shadow btn-warning btn-lg" href="login">Sign In</button>
+                        <div class="w-100 mt-4">
+                            <p class="text-center"> Sign in to save your Maps and High Scores!</p>
+                            <NavLink href="login" class="">
+                                <button class="btn btn-shadow btn-block  btn-warning btn-lg" href="login">Sign In</button>
                             </NavLink>
-                            <p class="font-weight-lighter"> Don't have an account? <a  href="signup" class="text-primary"> Create</a>  one today!</p>
+                            <p class="font-weight-lighter text-center mt-3"> Don't have an account? <a  href="signup" class="text-primary NeonV"> Create</a>  one today!</p>
                         </div>
                     }
                     else
                     {
                         <UserCard />
                     }
-            </div>
-        </div>
-        <span class="clearfix"></span>
+
     </div>
 
     <div id="DemoImages" class="carousel slide" data-ride="carousel">
@@ -54,7 +55,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100" src="/css/images/slide1.png" alt="First slide">
+                <img class="d-block w-100" src="/css/images/Slide1.jpg" alt="First slide">
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100" src="/css/images/slide2.jpg" alt="Second slide">
@@ -90,8 +91,10 @@
     string GetSession = String.Empty;
     string OldID;
     string UserID;
+    string SplashText { get; set; }
     User baseUserInfo = null;
     List<Map> popularMaps { get; set; }
+    string[] SplashTextOptions = {"Now with 50% more crisis per crisis!","Part of a balanced breakfast!","Help, I'm trapped in a website!","Virus free!","Don't forget to like and subscribe!","Light gun compatible!","Get ready for the next battle!","Woosh woosh!","MAX300","Currently in a Crisis","Loading chords and crises","Don't cut the chord!","Insert witty splash text here","Don't have a crisis! Just hit some cords!","What even is Java anyways?","python shmython...","100% Evidence Backed!"};
 
     public async Task<List<Map>> getPopularMaps()
     {
@@ -102,8 +105,8 @@
     protected override async void OnInitialized()
     {
         //await SaveGameActivationToSession();
-
-               Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
+        GetSplashText();
+        Task<bool> checkGameRunning = Storage.GetItemAsync<bool>("GameRunning");
         bool isRunning = await checkGameRunning;
 
         if (isRunning)
@@ -113,7 +116,7 @@
             base.OnInitialized();
         }
         Console.WriteLine(isRunning);
-        base.OnInitialized();
+
         base.OnInitialized();
 
     }
@@ -132,7 +135,7 @@
         GetSession = await Storage.GetItemAsync<string>("LoggedIn");
     }
 
-     protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         UserID = await Storage.GetItemAsync<string>("LoggedIn");
         if (UserID != null)
@@ -146,12 +149,11 @@
             }
         }
     }
-    //protected override void OnInitialized()
-    //{
-    //    if (firstRender)
-    //    { 
 
-    //    }
-
-    //}
+    void GetSplashText()
+    {
+        Random rnd = new Random();
+        int splashNum = rnd.Next(0, SplashTextOptions.Length - 1);
+        SplashText = SplashTextOptions[splashNum];
+    }
 }
