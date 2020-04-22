@@ -221,12 +221,14 @@ public class SiteHandler : MonoBehaviour
 	{
 		if (gameMode)
 		{
-			SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
+			Initiate.Fade("Main Game", Color.black, 2.5f);
+			//SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
 		}
 
 		else
 		{
-			SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
+			Initiate.Fade("NoteEditor", Color.black, 2.5f);
+			//SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
 		}
 	}
 }

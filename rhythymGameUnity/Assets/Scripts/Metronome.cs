@@ -96,7 +96,8 @@ public class Metronome : MonoBehaviour
 
 		if (switcher != null)
 		{
-			startBeat = switcher.GetComponent<PlaytestSwitcher>().currentBeat;
+			beatsElapsed = switcher.GetComponent<PlaytestSwitcher>().currentBeat;
+			startBeat = beatsElapsed;
 			StartCoroutine(Play());
 		}
 

@@ -103,6 +103,7 @@ public class ResultsManager : MonoBehaviour
 
 		// Change scenes
 		//SceneManager.LoadScene("ResultsScreen", LoadSceneMode.Single);
+		//Initiate.Fade("ResultsScreen", Color.black, 1.75f);
 		StartCoroutine(LoadResultsScreen());
 	}
 
