@@ -43,7 +43,7 @@ else
             <div class="row">
                 <div class="rounded bg-secondary col-2 pl-1 ">
                     <img class="rounded-circle border border-light border-4" src=@imagefile>
-                    @if (MapMakerID != null && UserID != null)
+                    @if (MapMakerID == null && ID != null)
                     {
                         <InputFile OnChange="HandleFile" />
                     }

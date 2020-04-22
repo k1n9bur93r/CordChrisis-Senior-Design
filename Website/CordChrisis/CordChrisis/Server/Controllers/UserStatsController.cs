@@ -36,7 +36,7 @@ namespace CordChrisis.Server.Controllers
             userStats.AddUserImage(pic);
 
 
-            return null;
+            return pic;
 
         }
 
