@@ -1,11 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.Globalization;
 
 public class EditorNoteController : MonoBehaviour
 { 
     public double distPerBeat;
     public double curBeat;
+
+    // stuff for creating the json file
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI artist;
+    public TextMeshProUGUI genre;
+    public TMP_Text tempo;
+    public TMP_Text offset;
+    public TextMeshProUGUI difficulty;
 
     /*
         notes:
@@ -19,18 +30,22 @@ public class EditorNoteController : MonoBehaviour
         any gesture note (multiple gesture notes may not be
         on the same beat)
     */
-    public Dictionary<double, GameObject[]> notes;
+    public SortedDictionary<double, GameObject[]> notes;
     
     // Start is called before the first frame update
     void Start()
     {
-        notes = new Dictionary<double,GameObject[]>(); 
+        notes = new SortedDictionary<double,GameObject[]>(); 
         curBeat = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.J)) {
+            Debug.Log(ToJson());
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             foreach (KeyValuePair<double,GameObject[]> kvp in notes)
@@ -89,4 +104,66 @@ public class EditorNoteController : MonoBehaviour
         notes[curBeat] = beatInfo;
     }
 
+    double ConvertToDouble(string num)
+    {
+        // TODO: SHOULD ADD ERROR CHECKING AND NOTIFY THE USER
+
+        // TextMeshPro ends things in a ZERO WIDTH SPACE
+        Char lastChar = num.ToCharArray()[num.Length - 1];
+        if (Convert.ToInt16(lastChar) == 8203) {
+            // ends in a ZERO WIDTH SPACE
+            num = num.Substring(0, num.Length - 1);
+        }
+
+        if (num == null || num.Equals("")) {
+            return 0;
+        }
+
+        return Convert.ToDouble(num);
+    }
+
+    public string ToJson()
+    {
+        GameObject go;
+        JsonTrack json = new JsonTrack();
+        List<double> beats = new List<double>();
+        List<int> notes_nums = new List<int>();
+        List<double> note_lengths = new List<double>();
+
+        foreach (KeyValuePair<double, GameObject[]> kvp in notes)
+        {
+
+            // tap / held notes
+            for (int i = 0; i < 4; i++) {
+                go = kvp.Value[i];
+                if (go != null) {
+                    beats.Add(kvp.Key);
+                    notes_nums.Add(i + 1);
+                    note_lengths.Add(go.GetComponent<NoteData>().length);
+                }
+            }
+
+            // gesture notes
+            go = kvp.Value[4];
+            if (go != null) {
+                beats.Add(kvp.Key);
+                notes_nums.Add(go.GetComponent<NoteData>().gestureNum);
+                note_lengths.Add(go.GetComponent<NoteData>().length);
+            }
+        }
+
+        json.beats = beats.ToArray();
+        json.notes = notes_nums.ToArray();
+        json.note_lengths = note_lengths.ToArray();
+
+        json.title = title.text;
+        json.artist = artist.text;
+        json.genre = genre.text;
+        json.difficulty = difficulty.text;
+
+        json.offset = ConvertToDouble(offset.text);
+        json.tempo_normal = ConvertToDouble(tempo.text);
+
+        return JsonUtility.ToJson(json);
+    }
 }

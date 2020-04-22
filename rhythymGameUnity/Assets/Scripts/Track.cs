@@ -17,6 +17,8 @@ public class JsonTrack
     public string background;
     public string title;
     public string artist;
+    public string genre;
+    public string difficulty;
 
     // Chart pieces
     public double offset;

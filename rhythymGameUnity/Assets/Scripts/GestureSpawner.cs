@@ -33,6 +33,7 @@ public class GestureSpawner : MonoBehaviour
 
         curGesture.AddComponent<NoteData>();
         curGesture.GetComponent<NoteData>().beat = editorNoteController.curBeat;
+        curGesture.GetComponent<NoteData>().gestureNum = gestureNum + 5;
         
         editorNoteController.AddNote(4, curGesture);
 

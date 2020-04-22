@@ -8,6 +8,7 @@ public class NoteData : MonoBehaviour
     public double beat;
     public double length;
     public int queueNum;
+    public int gestureNum;  // 5 - 8
 
     void Start()
     {
