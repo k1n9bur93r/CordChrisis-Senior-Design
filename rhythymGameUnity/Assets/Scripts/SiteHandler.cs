@@ -19,8 +19,8 @@ public class ArgumentsContainer
 	public string audioLocation;
 	//public string chartLocation;
 	public bool gameMode;
-	public float userSpeed;
-	public double userOffset;
+	//public float userSpeed;
+	//public double userOffset;
 }
 
 public class SiteHandler : MonoBehaviour
@@ -47,12 +47,14 @@ public class SiteHandler : MonoBehaviour
 	public string audioLocation;
 	[HideInInspector]
 	public AudioClip audioFile;
-	[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
-	public double userOffset;
+	//[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
+	[HideInInspector]
+	public double userOffset;// = 0.0;
 
 	// NoteSpawner vars
-	[Tooltip("Note scroll speed.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
-	public float userSpeed;
+	//[Tooltip("Note scroll speed.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
+	[HideInInspector]
+	public float userSpeed;//= 1.0f;
 
 	// InputController vars
 		// BINDINGS GO HERE
@@ -61,13 +63,19 @@ public class SiteHandler : MonoBehaviour
 	{
 		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
 
+		// GROSS PUBLIC HACK
+		userSpeed = 1.0f;
+		userOffset = 0.0;
+
 		GameObject loadingText = GameObject.Find("LoadText");
 		loadingText.GetComponent<TextMeshProUGUI>().text = "";
 
+		/*
 		if (!webMode) //(!waitForSettings || !webMode)
 		{
 			userOffset = userOffset / 1000.0;
 		}
+		*/
 
 		Debug.Log("[SiteHandler] Downloading...");
 
@@ -80,7 +88,7 @@ public class SiteHandler : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			string mySettings =
-			"{\"audioLocation\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"gameMode\": \"true\", \"userSpeed\": 3.0, \"userOffset\": 0.0 }";
+			"{\"audioLocation\": \"https://se7enytes.github.io/Music/Lucky%20Star.mp3\", \"gameMode\": \"true\", \"userSpeed\": 1.0, \"userOffset\": 0.0 }";
 
 			string myChart =
 			"{\"title\": \"none\",\"artist\": \"none\",\"genre\": \"none\",\"tempo_normal\": 150.0,\"tempo_change_amount\": [150.0],\"tempo_change_beat\": [0.0],\"offset\": 0.0,\"difficulty\": \"none\",\"beats\": [2.0],\"notes\": [1]}";
@@ -125,6 +133,7 @@ public class SiteHandler : MonoBehaviour
 		Recieves JSON stringified data.
 		To be called by website.
 	*/
+
 	public void GetSiteInfo(string data)
 	{
 		ArgumentsContainer settings = JsonUtility.FromJson<ArgumentsContainer>(data);
@@ -132,8 +141,8 @@ public class SiteHandler : MonoBehaviour
 		audioLocation = settings.audioLocation;
 		//chartLocation = settings.chartLocation;
 		gameMode = settings.gameMode;
-		userSpeed = (float)settings.userSpeed;
-		userOffset = settings.userOffset / 1000.0;
+		//userSpeed = (float)settings.userSpeed;
+		//userOffset = settings.userOffset / 1000.0;
 
 		infoDone = true;
 	}
@@ -182,7 +191,7 @@ public class SiteHandler : MonoBehaviour
 		{
 			// Download the file and sit tight
 			GameObject loadingText = GameObject.Find("LoadText");
-			loadingText.GetComponent<TextMeshProUGUI>().text = "Loading music: ";
+			loadingText.GetComponent<TextMeshProUGUI>().text = "Get Ready!\n";
 
 			StartCoroutine(ProgressBar(www));
 			yield return www.SendWebRequest();
@@ -217,8 +226,15 @@ public class SiteHandler : MonoBehaviour
 		}
 	}
 
+	public void SetOptionsIngame(float speed, double offset)
+	{
+		userSpeed = speed;
+		userOffset = offset / 1000.0;
+	}
+
 	private void LoadNextScene()
 	{
+		/*
 		if (gameMode)
 		{
 			Initiate.Fade("Main Game", Color.black, 2.5f);
@@ -230,5 +246,8 @@ public class SiteHandler : MonoBehaviour
 			Initiate.Fade("NoteEditor", Color.black, 2.5f);
 			//SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
 		}
+		*/
+
+		SceneManager.LoadScene("Options", LoadSceneMode.Single);
 	}
 }
