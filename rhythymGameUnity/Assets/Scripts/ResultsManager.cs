@@ -163,7 +163,7 @@ public class ResultsManager : MonoBehaviour
 
 				else
 				{
-					finalClearType = "Great Full Combo!";
+					finalClearType = "Full Combo!";
 				}
 			}
 
@@ -194,12 +194,13 @@ public class ResultsManager : MonoBehaviour
 		
 		// ---
 
-		judgeType.GetComponent<TextMeshProUGUI>().text = "Perfect\nGreat\nGood\nMiss";
+		judgeType.GetComponent<TextMeshProUGUI>().text = "Perfect\nGreat\nGood\nMiss\nMax Combo";
 
 		judgeCount.GetComponent<TextMeshProUGUI>().text =
 			stats.notesMarvelous + "\n"
 			+ stats.notesPerfect + "\n"
 			+ stats.notesGood + "\n"
-			+ stats.notesMiss;
+			+ stats.notesMiss + "\n"
+			+ stats.comboMax;
 	}
 }
