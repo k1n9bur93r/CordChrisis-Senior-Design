@@ -17635,9 +17635,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6589405268361139011, guid: 638f971fe766033429b46acb744387e0,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6589405268361139011, guid: 638f971fe766033429b46acb744387e0,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 754921686}
+    - target: {fileID: 6589405268361139011, guid: 638f971fe766033429b46acb744387e0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6589405268361139013, guid: 638f971fe766033429b46acb744387e0,
         type: 3}
       propertyPath: m_Name

@@ -51,7 +51,7 @@ public class ResultsManager : MonoBehaviour
 		if (!songFinished)
 		{
 			CheckRemainingNotes();
-		}		
+		}
 	}
 
 	private void CheckRemainingNotes()

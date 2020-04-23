@@ -19,6 +19,9 @@ public class RestartHandler : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
+			GameObject results = GameObject.Find("ResultsManager");
+			Destroy(results); // This object persists into the options screen, causing null refs
+
 			RestartSong();
 		}
 	}
