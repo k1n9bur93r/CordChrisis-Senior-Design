@@ -35,13 +35,15 @@ public class PlaytestSwitcher : MonoBehaviour
 				GameObject editor = GameObject.Find("EditorNoteController");
 				currentBeat = editor.GetComponent<EditorNoteController>().curBeat;
 
-				SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
+				//SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
+				Initiate.Fade("Main Game", Color.black, 5.0f);
 				testing = true;
 			}
 
 			else
 			{
-				SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
+				//SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
+				Initiate.Fade("NoteEditor", Color.black, 5.0f);
 				testing = false;
 
 				// TO DO: EditorNoteController forgets curBeat upon reloading scene, do something about this

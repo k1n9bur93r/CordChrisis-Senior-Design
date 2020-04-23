@@ -105,7 +105,12 @@ public class ResultsManager : MonoBehaviour
 		//SceneManager.LoadScene("ResultsScreen", LoadSceneMode.Single);
 		//Initiate.Fade("ResultsScreen", Color.black, 1.75f);
 		StartCoroutine(LoadResultsScreen());
+
+		//Initiate.Fade("ResultsScreen", Color.black, 5.0f);
+		//DrawResults();
 	}
+
+	// ISSUE: Need a way to asynchronously load the next scene AND do the screen fade
 
 	private IEnumerator LoadResultsScreen()
 	{

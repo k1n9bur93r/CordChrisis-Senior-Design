@@ -27,6 +27,11 @@ public class OptionsMenu : MonoBehaviour
 
 		userSpeed = files.GetComponent<SiteHandler>().userSpeed;
 		userOffset = files.GetComponent<SiteHandler>().userOffset;
+
+		// ---
+
+		GameObject playtester = GameObject.Find("PlaytestSwitcher");
+		Destroy(playtester); // Do not want the playtest switcher in the options menu
 	}
 
 	void Update()
@@ -60,9 +65,9 @@ public class OptionsMenu : MonoBehaviour
 
 	private void ValidateSpeed()
 	{
-		if (userSpeed < 0.5)
+		if (userSpeed < 1.0)
 		{
-			userSpeed = 0.5f;
+			userSpeed = 1.0f;
 		}
 
 		if (userSpeed > 10.0)

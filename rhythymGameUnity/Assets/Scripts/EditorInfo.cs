@@ -37,8 +37,8 @@ public class EditorInfo : MonoBehaviour
 
 	private void TruncateAll()
 	{
-		beatText = String.Format("{0:f2}", Math.Truncate(clock.beatsElapsed * 100) / 100);
-		tempoText = String.Format("{0:f2}", Math.Truncate(clock.tempo * 100) / 100);
+		beatText = clock.beatsElapsed.ToString("0.0000"); //String.Format("{0:f2}", Math.Truncate(clock.beatsElapsed * 100) / 100);
+		tempoText = clock.tempo.ToString("0.0000"); //String.Format("{0:f2}", Math.Truncate(clock.tempo * 100) / 100);
 	}
 
 	private void DrawText()
