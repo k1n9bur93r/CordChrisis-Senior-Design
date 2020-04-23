@@ -12,6 +12,9 @@ public class RestartHandler : MonoBehaviour
 
 	public void RestartSong()
 	{
+		GameObject results = GameObject.Find("ResultsManager");
+		Destroy(results); // This object persists into the options screen, causing null refs
+
 		Initiate.Fade("Options", Color.black, 5.0f);
 	}
 
@@ -19,9 +22,6 @@ public class RestartHandler : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.BackQuote))
 		{
-			GameObject results = GameObject.Find("ResultsManager");
-			Destroy(results); // This object persists into the options screen, causing null refs
-
 			RestartSong();
 		}
 	}
