@@ -57,3 +57,8 @@ crashlytics-build.properties
 
 #
 .DS_Store
+
+# build directories for blazor
+Website/CordChrisis/CordChrisis/Client/bin/
+Website/CordChrisis/CordChrisis/Server/bin/
+Website/CordChrisis/CordChrisis/Shared/bin/
