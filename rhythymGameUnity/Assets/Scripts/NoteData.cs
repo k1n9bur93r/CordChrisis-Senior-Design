@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class NoteData : MonoBehaviour
+public class NoteData : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     // info created based on NoteCreator
     public double beat;
@@ -10,24 +11,67 @@ public class NoteData : MonoBehaviour
     public int queueNum;
     public int gestureNum;  // 5 - 8
 
-    void Start()
-    {
-        // string firstParent = gameObject.transform.parent.name;
-        // string secondParent;
-        // if (gameObject.transform.parent.transform.parent != null)
-        //     secondParent = gameObject.transform.parent.transform.parent.name;
-        // else
-        //     secondParent = "";
+    public GameObject holdLine;
+    public GameObject endNote;
 
-        // if (firstParent == "Note Printer 1" || secondParent == "Note Printer 1")
-        //     queueNum = 1;
-        // else if (firstParent == "Note Printer 2" || secondParent == "Note Printer 2")
-        //     queueNum = 2;
-        // else if (firstParent == "Note Printer 3" || secondParent == "Note Printer 3")
-        //     queueNum = 3;
-        // else if (firstParent == "Note Printer 4" || secondParent == "Note Printer 4")
-        //     queueNum = 4;
-        // else
-        //     queueNum = -1;
+    public void OnBeginDrag(PointerEventData ped)
+    {
+
+    }
+
+    public void OnDrag(PointerEventData ped)
+    {
+        Plane plane = new Plane(Vector3.up, transform.position);
+        Ray ray = ped.pressEventCamera.ScreenPointToRay(ped.position);
+        Vector2 mouseDelta = ped.delta;
+
+        float distance;
+
+        if (plane.Raycast(ray, out distance))
+        {
+            float scalar = 0.0025f;
+
+            if (gameObject != null)
+            {
+                holdLine.SetActive(true);
+                endNote.SetActive(true);
+                Transform parent = gameObject.transform.parent;
+
+                if (mouseDelta.y > 0)
+                {
+                    holdLine.GetComponent<Transform>().transform.localPosition += new Vector3(0f, 0f, scalar / 2.0f);
+                    holdLine.GetComponent<Transform>().transform.localScale += new Vector3(0f, 0f, scalar);
+                    endNote.GetComponent<Transform>().position = 
+                        new Vector3(holdLine.GetComponent<Transform>().position.x,
+                                    holdLine.GetComponent<Transform>().position.y,
+                                    holdLine.GetComponent<Transform>().position.z* 2f);
+                    parent.GetComponent<NoteData>().length += scalar* 10.0;
+                }
+                else if (mouseDelta.y == 0)
+                {
+                    holdLine.GetComponent<Transform>().transform.localPosition += Vector3.zero;
+                    holdLine.GetComponent<Transform>().transform.localScale += Vector3.zero;
+                    endNote.GetComponent<Transform>().transform.position += Vector3.zero;
+                    parent.GetComponent<NoteData>().length += 0;
+
+                }
+                else
+                {
+                    holdLine.GetComponent<Transform>().transform.localPosition -= new Vector3(0f, 0f, scalar / 2.0f);
+                    holdLine.GetComponent<Transform>().transform.localScale -= new Vector3(0f, 0f, scalar);
+                    endNote.GetComponent<Transform>().position =
+                        new Vector3(holdLine.GetComponent<Transform>().position.x,
+                                    holdLine.GetComponent<Transform>().position.y,
+                                    holdLine.GetComponent<Transform>().position.z* 2f);
+                    parent.GetComponent<NoteData>().length -= scalar* 10.0;
+                }
+            }
+            //Debug.Log(GetComponent<BoxCollider>().size);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData ped)
+    {
+
     }
 }
