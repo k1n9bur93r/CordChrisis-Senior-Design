@@ -11,7 +11,11 @@ using TMPro;
 	> SiteHandler class
 
 	Recieves data from website for use ingame.
-	Do not add this object to any other scene besides Loader. It transfers itself via scene transitions.
+	
+	USAGE WARNINGS:
+	- Do not add this object to any other scene besides Loader. It transfers itself via scene transitions.
+	- Do not set this as a public variable to other objects, they will lose those references when transitioning scenes.
+		Instead, use GameObject.Find() to reference it.
 */
 
 public class ArgumentsContainer
@@ -39,20 +43,18 @@ public class SiteHandler : MonoBehaviour
 	private bool chartDone;
 
 	// Track vars
-	public string chartLocation;
+	public string chartLocation; // The Resources path to this chart
 	[HideInInspector]
-	public string chartFile;
+	public string chartFile; // The chart JSON as a string
 
 	// Metronome vars
-	public string audioLocation;
+	public string audioLocation; // The URL (or Resources path) to this audio file
 	[HideInInspector]
-	public AudioClip audioFile;
-	//[Tooltip("Visual offset between note movement and audio.\nIncrease this if notes are coming too early,\nor decrease it if notes are coming too late.\n\nValues are factors of 1 millisecond.\nLowest possible value is -100.")]
+	public AudioClip audioFile; // The converted audio file
 	[HideInInspector]
 	public double userOffset;// = 0.0;
 
 	// NoteSpawner vars
-	//[Tooltip("Note scroll speed.\n\nValues are factors of 100 BPM.\nLowest recommended value is 1.\nValue must be above 0.")]
 	[HideInInspector]
 	public float userSpeed;//= 1.0f;
 
