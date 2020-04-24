@@ -12,7 +12,8 @@ namespace CordChrisis.DAOs
 {
     public class MapMusicDA
     {
-        private string ConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION");
+        private string ConnectionString = "DefaultEndpointsProtocol=https;AccountName=chordcrisis;AccountKey=ZNKvIn5Bx2PFXPrDd1KVL1tGth5qS9gikjZ8Gd5qR9iDfHzQI5Wc3v35pEL5f6PX2ZHVpEUPJY4oI8EAI8u0PQ==;EndpointSuffix=core.windows.net";
+
         public Stream GetMapMusic(string ID)
         {
 
