@@ -55,8 +55,7 @@ public class NoteCreator : MonoBehaviour
             
             //add the note to the editor dictionary
             editorController.AddNote(noteNum, note.gameObject);
-
-            /** things to pass to NoteSpawner **/
+            
             // note's beat should be set to current position in editor
             note.GetComponent<NoteData>().beat = editorController.curBeat;
 

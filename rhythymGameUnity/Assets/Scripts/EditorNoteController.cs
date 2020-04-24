@@ -40,13 +40,17 @@ public class EditorNoteController : MonoBehaviour
     public GameObject gs;
 
     public double scrollIncrement;
+    private double[] divisions;
+    private int divIndex;
 
     // Start is called before the first frame update
     void Start()
     {
         notes = new SortedDictionary<double,GameObject[]>(); 
         curBeat = 0;
-        scrollIncrement = 0.25;     // default increment
+        divIndex = 0;
+        divisions = new double[6] { 1.0, 0.5, 1.0 / 3.0, 0.25, 0.125, 0.0625 };
+        scrollIncrement = divisions[divIndex];     // default increment
     }
 
     // Update is called once per frame
@@ -191,7 +195,7 @@ public class EditorNoteController : MonoBehaviour
 
         if (scrollable)
         {
-            // scroll up/down either the camera/the track here
+            // keys for scrolling up/down
 
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -208,14 +212,17 @@ public class EditorNoteController : MonoBehaviour
     public void ChangeIncrement()
     {
         if (Input.GetKeyDown(KeyCode.D))
-        {
-            scrollIncrement += 0.25;
+        {            
+            divIndex = divIndex < divisions.Length - 1 ? divIndex + 1 : 0;
+            scrollIncrement = divisions[divIndex];
+            //Debug.Log(scrollIncrement);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            scrollIncrement -= 0.25;
+            divIndex = divIndex > 0 ? divIndex - 1 : divisions.Length - 1;
+            scrollIncrement = divisions[divIndex];
+            //Debug.Log(scrollIncrement);
         }
-        //Debug.Log(scrollIncrement);
     }
 }
