@@ -89,7 +89,7 @@ public class EditorNoteController : MonoBehaviour
                 {
                     float newZ = (float)((gb.GetComponent<NoteData>().beat - curBeat) * (float)distPerBeat);
 
-                    gb.transform.position = new Vector3 (gb.transform.position.x, gb.transform.position.y, newZ);
+                    gb.transform.position = new Vector3 (gb.transform.position.x, gb.transform.position.y, -newZ);
                 }
             }
         }
@@ -210,12 +210,6 @@ public class EditorNoteController : MonoBehaviour
                             gs.GetComponent<GestureSpawner>().isGestureAlive ? true : false;
 
         // keys for scrolling up/down
-        /*if (Input.GetKeyDown(KeyCode.W))
-        {
-            timer = 0;
-            curBeat += scrollIncrement;
-        }*/
-
         if (Input.GetKeyDown(KeyCode.W))
         {
             timer = 0;

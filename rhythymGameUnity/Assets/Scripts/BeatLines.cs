@@ -5,7 +5,7 @@ using UnityEngine;
 public class BeatLines : MonoBehaviour
 {
     int beats = 100;
-    int beat_length = 2;
+    int beat_length = 4;
     int track_width = 4;
     float line_width = 0.2f;
     List<GameObject> lines;
@@ -34,7 +34,7 @@ public class BeatLines : MonoBehaviour
         lineRenderer.material.color = Color.grey;
         lineRenderer.SetPosition(0, new Vector3( track_width, 0, z_position));
         lineRenderer.SetPosition(1, new Vector3(-track_width, 0, z_position));
-        lineRenderer.widthMultiplier = 0.2f;
+        lineRenderer.widthMultiplier = line_width;
     }
 
     void destroyLines() {
