@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Testers/Loader Test B.unity
     guid: bc6ca58c4e1565f42b8bbe49bd8f0c44
+  - enabled: 0
+    path: Assets/Scenes/Testers/VU_Test.unity
+    guid: cc06eb3786a8e2c4891dbcd3cf4caaa0
   m_configObjects: {}
