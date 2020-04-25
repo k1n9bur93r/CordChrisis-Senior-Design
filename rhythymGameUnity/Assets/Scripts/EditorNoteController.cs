@@ -43,13 +43,17 @@ public class EditorNoteController : MonoBehaviour
     private double[] divisions;
     private int divIndex;
 
+    public TMP_Text beatText;
+    public TMP_Text tempoText;
+    public TMP_Text incrementText;    
+
     // Start is called before the first frame update
     void Start()
     {
         notes = new SortedDictionary<double,GameObject[]>(); 
         curBeat = 0;
         divIndex = 0;
-        divisions = new double[6] { 1.0, 0.5, 1.0 / 3.0, 0.25, 0.125, 0.0625 };
+        divisions = new double[6] { 1.0, 0.5, 0.33, 0.25, 0.125, 0.0625 };
         scrollIncrement = divisions[divIndex];     // default increment
     }
 
@@ -89,6 +93,9 @@ public class EditorNoteController : MonoBehaviour
 
         ChangeIncrement();
         ScrollBeat();
+        beatText.text = "current beat: " + curBeat;
+        tempoText.text = "current tempo: ";// + tempo;
+        incrementText.text = "beat increment: " + scrollIncrement;
     }
 
     public bool isNoteIn(int noteNum)
@@ -103,6 +110,7 @@ public class EditorNoteController : MonoBehaviour
         }
         return false;
     }
+
     public void AddNote(int spot, GameObject newNote)
     {
         GameObject[] beatInfo;
@@ -193,20 +201,19 @@ public class EditorNoteController : MonoBehaviour
                             p4.GetComponent<NoteCreator>().isNoteAlive ||
                             gs.GetComponent<GestureSpawner>().isGestureAlive ? true : false;
 
-        if (scrollable)
+        // if (scrollable)
+        
+        // keys for scrolling up/down
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            // keys for scrolling up/down
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                curBeat += scrollIncrement;
-            }
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                curBeat -= scrollIncrement;
-            }
+            curBeat += scrollIncrement;
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            curBeat -= scrollIncrement;
+        }
+        
     }
 
     public void ChangeIncrement()

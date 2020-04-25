@@ -82,6 +82,7 @@ public class GestureSpawner : MonoBehaviour
             if (cycle >= 0 && cycle < 4)
             {
                 spawnGesture(cycle, 4);
+                isGestureAlive = true;
             }
             else
             {
