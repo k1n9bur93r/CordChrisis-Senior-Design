@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 
 public class PlaytestSwitcher : MonoBehaviour
 {
+	public static PlaytestSwitcher instance;
+
 	[HideInInspector]
 	public double currentBeat;
 
@@ -18,36 +20,51 @@ public class PlaytestSwitcher : MonoBehaviour
 
 	void Awake()
 	{
-		DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
+		// https://answers.unity.com/questions/1108634/dontdestroyonload-many-instances-of-one-object.html
+		if (instance == null)
+		{
+			instance = this;
+			DontDestroyOnLoad(this.gameObject); // Makes it survives scene transitions
+		}
+
+		else if (instance != this)
+		{
+			Destroy(this);
+		}		
 	}
 
 	void Update()
 	{
-		PlayTestButton();
-	}
-
-	private void PlayTestButton()
-	{
+		/*
 		if (Input.GetKeyDown(KeyCode.T))
 		{
-			if (!testing)
-			{
-				GameObject editor = GameObject.Find("EditorNoteController");
-				currentBeat = editor.GetComponent<EditorNoteController>().curBeat;
+			PlayTestToggle();
+		}
+		*/
 
-				//SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
-				Initiate.Fade("Main Game", Color.black, 5.0f);
-				testing = true;
-			}
+		//Debug.Log(testing);
+	}
 
-			else
-			{
-				//SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
-				Initiate.Fade("NoteEditor", Color.black, 5.0f);
-				testing = false;
+	public void PlayTestToggle()
+	{
+		Scene currentScene = SceneManager.GetActiveScene();
 
-				// TO DO: EditorNoteController forgets curBeat upon reloading scene, do something about this
-			}
+		if (!testing && (currentScene.name == "NoteEditor")) // ISSUE/TEMP FIX: For some reason this conditional fires off when switching from game to editor
+		{
+			testing = true;
+
+			GameObject editor = GameObject.Find("EditorNoteController");
+			currentBeat = editor.GetComponent<EditorNoteController>().curBeat;
+			Initiate.Fade("Main Game", Color.black, 5.0f);
+			//SceneManager.LoadScene("Main Game", LoadSceneMode.Single);
+		}
+
+		else
+		{
+			testing = false;
+
+			Initiate.Fade("NoteEditor", Color.black, 5.0f);
+			//SceneManager.LoadScene("NoteEditor", LoadSceneMode.Single);
 		}
 	}
 }
