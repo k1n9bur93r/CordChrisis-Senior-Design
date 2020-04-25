@@ -43,7 +43,7 @@ public class NoteCreator : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (editorController.isNoteIn(noteNum) == false && !gs.GetComponent<GestureSpawner>().isGestureAlive)
+        if (editorController.isNoteIn(noteNum) == false)// && !gs.GetComponent<GestureSpawner>().isGestureAlive)
         {
             // init note setup
             note = Instantiate(originalNote);

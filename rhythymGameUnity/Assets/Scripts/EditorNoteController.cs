@@ -42,17 +42,20 @@ public class EditorNoteController : MonoBehaviour
     public double scrollIncrement;
     private double[] divisions;
     private int divIndex;
+    private float timer;
 
     public TMP_Text beatText;
     public TMP_Text tempoText;
     public TMP_Text incrementText;    
 
+    
     // Start is called before the first frame update
     void Start()
     {
         notes = new SortedDictionary<double,GameObject[]>(); 
         curBeat = 0;
         divIndex = 0;
+        timer = 0;
         divisions = new double[6] { 1.0, 0.5, 0.33, 0.25, 0.125, 0.0625 };
         scrollIncrement = divisions[divIndex];     // default increment
     }
@@ -91,10 +94,14 @@ public class EditorNoteController : MonoBehaviour
             }
         }
 
-        ChangeIncrement();
-        ScrollBeat();
+        if (!Metadata.isPanelUp)
+        {
+            ChangeIncrement();
+            ScrollBeat();
+        }
+
         beatText.text = "current beat: " + curBeat;
-        tempoText.text = "current tempo: ";// + tempo;
+        tempoText.text = "current tempo: " + tempo.text;
         incrementText.text = "beat increment: " + scrollIncrement;
     }
 
@@ -195,25 +202,54 @@ public class EditorNoteController : MonoBehaviour
 
     public void ScrollBeat()
     {
+        // if (scrollable)
         bool scrollable = p1.GetComponent<NoteCreator>().isNoteAlive ||
                             p2.GetComponent<NoteCreator>().isNoteAlive ||
                             p3.GetComponent<NoteCreator>().isNoteAlive ||
                             p4.GetComponent<NoteCreator>().isNoteAlive ||
                             gs.GetComponent<GestureSpawner>().isGestureAlive ? true : false;
 
-        // if (scrollable)
-        
         // keys for scrolling up/down
+        /*if (Input.GetKeyDown(KeyCode.W))
+        {
+            timer = 0;
+            curBeat += scrollIncrement;
+        }*/
+
         if (Input.GetKeyDown(KeyCode.W))
         {
+            timer = 0;
             curBeat += scrollIncrement;
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
+            timer = 0;
             curBeat -= scrollIncrement;
         }
-        
+
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            timer += Time.deltaTime;
+
+            if (timer > 0.5f)
+            {
+                timer = 0;
+                curBeat += scrollIncrement;
+            }           
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            timer += Time.deltaTime;
+
+            if (timer > 0.5f)
+            {
+                timer = 0;
+                curBeat -= scrollIncrement;
+            }
+        }
     }
 
     public void ChangeIncrement()

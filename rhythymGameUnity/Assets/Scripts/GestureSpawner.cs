@@ -77,7 +77,7 @@ public class GestureSpawner : MonoBehaviour
                         p3.GetComponent<NoteCreator>().isNoteAlive ||
                         p4.GetComponent<NoteCreator>().isNoteAlive) ? true : false;
 
-        if (Input.GetMouseButtonDown(1) && !check)
+        if (Input.GetMouseButtonDown(1))// && !check)
         {
             if (cycle >= 0 && cycle < 4)
             {
