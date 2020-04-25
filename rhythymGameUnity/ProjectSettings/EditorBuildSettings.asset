@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Loader.unity
     guid: bd8ece6cef5323e41b179f589f3ee666
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main Game.unity
     guid: 39e2ad9cde4791a40adde9c2d5577005
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NoteEditor.unity
     guid: 88bed1bc32ff4ea45a20e35053c31bfc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ResultsScreen.unity
     guid: 76c90410163604c469a41c28f348f63a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Options.unity
     guid: 916225a52d652d74fa4347c586bf5329
   - enabled: 0
@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Testers/Loader Test B.unity
     guid: bc6ca58c4e1565f42b8bbe49bd8f0c44
+  - enabled: 1
+    path: Assets/Scenes/Testers/VU_Test.unity
+    guid: cc06eb3786a8e2c4891dbcd3cf4caaa0
   m_configObjects: {}
